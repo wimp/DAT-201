@@ -14,16 +14,11 @@ public class GuiStack extends GuiElement {
 	
 	public GuiStack(){
 		super();
-		
 		s = new Stack();
-		s.push("Hello");
-		s.push("Hello1");
-		s.push("Hello2");
-		s.pop();
-		draw();
+		initGraphics();
 	}
 	
-	private void draw(){
+	private void initGraphics(){
 		Object[] data = s.toArray();
 		JList list = new JList(data); //data has type Object[]
 		list.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
