@@ -10,28 +10,22 @@ import sim.structures.Stack;
 
 public class GuiStack extends GuiElement {
 	
-	Stack s;
-	
-	public GuiStack(){
+	JList list;
+	public void setData(Object[] data){
+		list.setListData(data);
+	}
+	public GuiStack(Object[] data){
 		super();
-		s = new Stack();
-		initGraphics();
+		initGraphics(data);
 	}
 	
-	private void initGraphics(){
-		Object[] data = s.toArray();
-		JList list = new JList(data); //data has type Object[]
+	private void initGraphics(Object[] data){
+		list = new JList(data); //data has type Object[]
 		list.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 		list.setLayoutOrientation(JList.VERTICAL);
 		list.setVisibleRowCount(-1);
 		JScrollPane listScroller = new JScrollPane(list);
 		listScroller.setPreferredSize(new Dimension(250, 80));
 		this.add(listScroller);
-	}
-	public void push(Object obj){
-		s.push(obj);
-	}
-	public Object pop(){
-		return s.pop();
 	}
 }

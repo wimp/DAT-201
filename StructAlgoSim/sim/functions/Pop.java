@@ -2,15 +2,16 @@ package sim.functions;
 
 import java.awt.event.ActionEvent;
 
-import sim.gui.elements.GuiStack;
-import sim.gui.elements.GuiVariable;
+import sim.structures.Stack;
+import sim.structures.Variable;
+
 
 public class Pop extends Function {
 	
-	GuiStack s;
-	GuiVariable v;
+	Stack s;
+	Variable v;
 	
-	public Pop(GuiStack s, GuiVariable v) {
+	public Pop(Stack s, Variable v) {
 		super("Pop");
 		this.s=s;
 		this.v=v;
