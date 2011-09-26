@@ -2,7 +2,7 @@ package sim.gui.elements;
 
 import javax.swing.JPanel;
 
-public class GuiElement extends JPanel {
+public abstract class GuiElement extends JPanel {
 	
 	GuiElement(){
 		setSize(100, 300);
