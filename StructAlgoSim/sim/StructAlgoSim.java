@@ -1,8 +1,12 @@
 package sim;
 
+import java.awt.FlowLayout;
+
 import javax.swing.JFrame;
 
+import sim.functions.Push;
 import sim.gui.elements.GuiStack;
+import sim.gui.elements.Variable;
 
 public class StructAlgoSim {
 
@@ -15,8 +19,10 @@ public class StructAlgoSim {
 		frame.setSize(700,600);
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
-		frame.add(new GuiStack());
+		frame.setLayout(new FlowLayout());
+		GuiStack s = new GuiStack();
+		frame.add(s);
+		frame.add(new Push(s.getStack(),new Variable("",true));
 		frame.validate();
 	}
 

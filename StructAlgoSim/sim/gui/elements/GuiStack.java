@@ -19,6 +19,7 @@ public class GuiStack extends GuiElement {
 		s.push("Hello");
 		s.push("Hello1");
 		s.push("Hello2");
+		s.pop();
 		draw();
 	}
 	
@@ -31,5 +32,9 @@ public class GuiStack extends GuiElement {
 		JScrollPane listScroller = new JScrollPane(list);
 		listScroller.setPreferredSize(new Dimension(250, 80));
 		this.add(listScroller);
+	}
+
+	public Stack getStack() {
+		return s;
 	}
 }
