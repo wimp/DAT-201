@@ -2,6 +2,8 @@ package sim;
 
 import javax.swing.JFrame;
 
+import sim.gui.elements.GuiStack;
+
 public class StructAlgoSim {
 
 	/**
@@ -15,6 +17,7 @@ public class StructAlgoSim {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		frame.add(new GuiStack());
+		frame.validate();
 	}
 
 }
