@@ -2,18 +2,15 @@ package sim.functions;
 
 import java.awt.event.ActionEvent;
 
-import javax.swing.JButton;
-
-import sim.gui.elements.Variable;
-import sim.structures.Stack;
+import sim.gui.elements.GuiStack;
+import sim.gui.elements.GuiVariable;
 
 public class Push extends Function {
-	public Push(Stack s, Variable v){
+	public Push(GuiStack s, GuiVariable v){
 		super("Push");
 	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
 		System.out.println("WINWINWIN!");
 	}
 }

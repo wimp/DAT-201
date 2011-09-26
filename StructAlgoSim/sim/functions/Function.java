@@ -19,16 +19,7 @@ public abstract class Function extends GuiElement implements ActionListener{
 		b = new JButton(s);
 		b.addActionListener(this);
 		setSize(WIDTH, HEIGHT);
-<<<<<<< HEAD
 		add(b);
-=======
-<<<<<<< HEAD
 	}
-	public void actionPerformed(ActionEvent e){
-		
-=======
-		add(b);
->>>>>>> origin/master
->>>>>>> b35b16214d42b0d7fdf72e6c8907fd0766841590
-	}
+	public abstract void actionPerformed(ActionEvent e);
 }

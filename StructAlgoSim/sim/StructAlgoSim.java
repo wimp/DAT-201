@@ -4,9 +4,10 @@ import java.awt.FlowLayout;
 
 import javax.swing.JFrame;
 
+import sim.functions.Pop;
 import sim.functions.Push;
 import sim.gui.elements.GuiStack;
-import sim.gui.elements.Variable;
+import sim.gui.elements.GuiVariable;
 
 public class StructAlgoSim {
 
@@ -21,16 +22,11 @@ public class StructAlgoSim {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLayout(new FlowLayout());
 		GuiStack s = new GuiStack();
+		GuiVariable v = new GuiVariable("win",false);
+		Pop p = new Pop(s, v);
+		frame.add(p);
+		frame.add(v);
 		frame.add(s);
-<<<<<<< HEAD
-		frame.add(new Push(s.getStack(),new Variable("",true)));
-=======
-<<<<<<< HEAD
-		frame.add(new Push(s,new Variable("",true));
-=======
-		frame.add(new Push(s.getStack(),new Variable("",true)));
->>>>>>> origin/master
->>>>>>> b35b16214d42b0d7fdf72e6c8907fd0766841590
 		frame.validate();
 	}
 
