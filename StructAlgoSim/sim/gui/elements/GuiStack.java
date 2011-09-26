@@ -33,8 +33,10 @@ public class GuiStack extends GuiElement {
 		listScroller.setPreferredSize(new Dimension(250, 80));
 		this.add(listScroller);
 	}
-
-	public Stack getStack() {
-		return s;
+	public void push(Object obj){
+		s.push(obj);
+	}
+	public Object pop(){
+		return s.pop();
 	}
 }

@@ -22,7 +22,15 @@ public class StructAlgoSim {
 		frame.setLayout(new FlowLayout());
 		GuiStack s = new GuiStack();
 		frame.add(s);
+<<<<<<< HEAD
 		frame.add(new Push(s.getStack(),new Variable("",true)));
+=======
+<<<<<<< HEAD
+		frame.add(new Push(s,new Variable("",true));
+=======
+		frame.add(new Push(s.getStack(),new Variable("",true)));
+>>>>>>> origin/master
+>>>>>>> b35b16214d42b0d7fdf72e6c8907fd0766841590
 		frame.validate();
 	}
 
