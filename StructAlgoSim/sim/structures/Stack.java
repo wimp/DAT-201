@@ -3,13 +3,14 @@ package sim.structures;
 import java.util.Vector;
 
 public class Stack {
+	
 	private Vector<Object> s = new Vector<Object>();
 	public void push(Object obj){
 		s.add(obj);
 	}
 	
 	public Object pop(){
-		if(s.size()==0) return null;
+		if(isEmpty()) return null;
 		Object obj = s.get(s.size()-1);
 		s.remove(obj);
 		return obj;
@@ -18,8 +19,8 @@ public class Stack {
 	public boolean isEmpty(){
 		if(s.size() == 0)
 			return true;
-		else
-			return false;
+		
+		return false;
 	}
 	
 	public Object[] toArray(){

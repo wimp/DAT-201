@@ -17,4 +17,7 @@ public class GuiVariable extends GuiElement{
 		this.value = value;
 		t.setText(value);
 	}
+	public String getValue(){
+		return value;
+	}
 }
