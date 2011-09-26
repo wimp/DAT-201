@@ -14,7 +14,7 @@ public class StructAlgoSim {
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		  
+		frame.add(new GuiStack());
 	}
 
 }
