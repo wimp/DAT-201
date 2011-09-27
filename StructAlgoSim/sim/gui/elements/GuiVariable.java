@@ -18,8 +18,4 @@ public class GuiVariable extends GuiElement{
 	public String getValue(){
 		return t.getText();
 	}
-	@Override
-	public JComponent getGuiElement() {
-		return t;
-	}
 }

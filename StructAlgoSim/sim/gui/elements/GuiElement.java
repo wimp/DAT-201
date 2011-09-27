@@ -9,7 +9,4 @@ public abstract class GuiElement extends JPanel {
 		setSize(100, 300);
 		setVisible(true);
 	}
-	
-	public abstract JComponent getGuiElement();
-	
 }

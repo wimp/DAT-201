@@ -16,8 +16,6 @@ public class Stack {
 	
 	public Stack(){
 		gui = new GuiStack(s.toArray());
-		push("mordi");
-		push("mordi");
 	}
 	public void push(Object obj){
 		s.add(obj);
