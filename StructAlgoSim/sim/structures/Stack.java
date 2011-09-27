@@ -32,8 +32,8 @@ public class Stack {
 	public boolean isEmpty(){
 		if(s.size() == 0)
 			return true;
-		
-		return false;
+		else
+			return false;
 	}
 	
 	public Object[] toArray(){

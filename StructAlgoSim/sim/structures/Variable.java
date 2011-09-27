@@ -1,9 +1,7 @@
 package sim.structures;
 
 import java.awt.Rectangle;
-
-import javax.swing.JComponent;
-
+import sim.gui.elements.GuiElement;
 import sim.gui.elements.GuiVariable;
 
 public class Variable {
@@ -13,7 +11,7 @@ public class Variable {
 	public Variable(Rectangle bounds, String value, boolean editable){
 		gui = new GuiVariable(bounds,value, editable);
 	}
-	public JComponent getGuiElement() {
+	public GuiElement getGuiElement() {
 		return gui;
 	}
 	public void setValue(String value){

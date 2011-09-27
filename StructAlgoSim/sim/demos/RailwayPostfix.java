@@ -4,10 +4,10 @@ import java.awt.Rectangle;
 
 import javax.swing.JFrame;
 
+import sim.functions.GetChar;
 import sim.functions.Pop;
 import sim.functions.Push;
-import sim.structures.GetChar;
-import sim.structures.GetChar.Direction;
+import sim.functions.GetChar.Direction;
 import sim.structures.Stack;
 import sim.structures.Variable;
 

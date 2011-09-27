@@ -21,11 +21,10 @@ public class StructAlgoSim {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLayout(null);
 
-		Stack s = new Stack(new Rectangle(100,300, 50, 100));
+		Stack s = new Stack(new Rectangle(100,300, 100, 100));
 		Variable v = new Variable(new Rectangle(50,10,100,20),"win", true);
 		Pop pop = new Pop(new Rectangle(100,200,100,25),s, v);
 		Push push = new Push(new Rectangle(200,200,100,25), v, s);
-		
 		frame.add(pop.getGuiElement());
 		frame.add(push.getGuiElement());
 		frame.add(v.getGuiElement());
