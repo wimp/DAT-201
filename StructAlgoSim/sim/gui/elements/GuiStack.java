@@ -2,6 +2,7 @@ package sim.gui.elements;
 
 import java.awt.Dimension;
 
+import javax.swing.JComponent;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
@@ -27,5 +28,9 @@ public class GuiStack extends GuiElement {
 		JScrollPane listScroller = new JScrollPane(list);
 		listScroller.setPreferredSize(new Dimension(250, 80));
 		this.add(listScroller);
+	}
+	@Override
+	public JComponent getGuiElement() {
+		return list;
 	}
 }

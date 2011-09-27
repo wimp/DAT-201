@@ -2,16 +2,18 @@ package sim.functions;
 
 import java.awt.event.ActionEvent;
 
+import javax.swing.JComponent;
+
+import sim.gui.elements.GuiVariable;
 import sim.structures.Stack;
-import sim.structures.Variable;
 
 public class Push extends Function {
 	
 	
 	Stack s;
-	Variable v;
+	GuiVariable v;
 	
-	public Push(Stack s, Variable v){
+	public Push(Stack s, GuiVariable v){
 		super("Push");
 		this.s = s;
 		this.v = v;
@@ -19,5 +21,9 @@ public class Push extends Function {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		s.push((Object)v.getValue());
+	}
+	@Override
+	public JComponent getGuiElement() {
+		return null;
 	}
 }

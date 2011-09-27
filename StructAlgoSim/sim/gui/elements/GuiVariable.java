@@ -1,5 +1,6 @@
 package sim.gui.elements;
 
+import javax.swing.JComponent;
 import javax.swing.JTextField;
 
 public class GuiVariable extends GuiElement{
@@ -13,5 +14,12 @@ public class GuiVariable extends GuiElement{
 	}
 	public void setValue(String value){
 		t.setText(value);
+	}
+	public String getValue(){
+		return t.getText();
+	}
+	@Override
+	public JComponent getGuiElement() {
+		return t;
 	}
 }

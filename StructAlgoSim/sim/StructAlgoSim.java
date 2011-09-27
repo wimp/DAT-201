@@ -6,8 +6,8 @@ import javax.swing.JFrame;
 
 import sim.functions.Pop;
 import sim.functions.Push;
+import sim.gui.elements.GuiVariable;
 import sim.structures.Stack;
-import sim.structures.Variable;
 
 public class StructAlgoSim {
 
@@ -20,9 +20,9 @@ public class StructAlgoSim {
 		frame.setSize(700,600);
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setLayout(null);
+		frame.setLayout(new FlowLayout());
 		Stack s = new Stack();
-		Variable v = new Variable("win");
+		GuiVariable v = new GuiVariable("win",true);
 		Pop pop = new Pop(s, v);
 		Push push = new Push(s, v);
 		frame.add(pop);
