@@ -1,6 +1,7 @@
 package sim;
 
 import java.awt.FlowLayout;
+import java.awt.Point;
 
 import javax.swing.JFrame;
 
@@ -18,18 +19,19 @@ public class StructAlgoSim {
 		JFrame frame = new JFrame();
 		frame.setTitle("StructAlgoSim 0.1");
 		frame.setSize(700,600);
-		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setLayout(new FlowLayout());
-		Stack s = new Stack();
-		Variable v = new Variable("win");
-		Pop pop = new Pop(s, v);
-		Push push = new Push(s, v);
-		frame.add(pop);
-		frame.add(push);
+		frame.setLayout(null);
+		Stack s = new Stack(100,100, 50, 100);
+		Variable v = new Variable(50,50,100,100,"win");
+		Pop pop = new Pop(100,200,100,50,s, v);
+		Push push = new Push(200,200,100,50,s, v);
+		
+		frame.add(pop.getGuiElement());
+		frame.add(push.getGuiElement());
 		frame.add(v.getGuiElement());
 		frame.add(s.getGuiElement());
 		frame.validate();
+		frame.setVisible(true);
 	}
 
 }

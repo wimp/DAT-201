@@ -1,13 +1,9 @@
 package sim.gui.elements;
 
 import java.awt.Dimension;
-
-import javax.swing.JComponent;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
-
-import sim.structures.Stack;
 
 public class GuiStack extends GuiElement {
 	
@@ -15,8 +11,9 @@ public class GuiStack extends GuiElement {
 	public void setData(Object[] data){
 		list.setListData(data);
 	}
-	public GuiStack(Object[] data){
+	public GuiStack(int x, int y, int w, int h,Object[] data){
 		super();
+		setBounds(x,y,w,h);
 		initGraphics(data);
 	}
 	
@@ -26,7 +23,7 @@ public class GuiStack extends GuiElement {
 		list.setLayoutOrientation(JList.VERTICAL);
 		list.setVisibleRowCount(-1);
 		JScrollPane listScroller = new JScrollPane(list);
-		listScroller.setPreferredSize(new Dimension(250, 80));
+		listScroller.setPreferredSize(new Dimension(getWidth(), getHeight()));
 		this.add(listScroller);
 	}
 }

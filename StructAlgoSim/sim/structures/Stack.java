@@ -1,5 +1,6 @@
 package sim.structures;
 
+import java.awt.Point;
 import java.util.Vector;
 
 import sim.gui.elements.GuiElement;
@@ -13,9 +14,9 @@ public class Stack {
 	public GuiElement getGuiElement(){
 		return gui;
 	}
-	
-	public Stack(){
-		gui = new GuiStack(toArray());
+	public Stack(int x, int y, int w, int h){
+		gui = new GuiStack(x,y,w,h,toArray());
+
 		push("mordi");
 		push("mordi");
 	}
@@ -23,7 +24,6 @@ public class Stack {
 		s.add(obj);
 		gui.setData(toArray());
 	}
-	
 	public Object pop(){
 		if(isEmpty()) return null;
 		Object obj = s.get(s.size()-1);
