@@ -16,9 +16,6 @@ public class Stack {
 	}
 	public Stack(Rectangle bounds){
 		gui = new GuiStack(bounds,toArray());
-
-		push("mordi");
-		push("mordi");
 	}
 	public void push(Object obj){
 		s.add(obj);

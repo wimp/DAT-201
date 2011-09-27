@@ -7,13 +7,13 @@ import javax.swing.JPanel;
  * @author 
  *
  */
+@SuppressWarnings("serial")
 public abstract class GuiElement extends JPanel {
 // Class variables //
-	private static final long serialVersionUID = 1L; // Auto generated default serial for the JPanel extension
 
 // Class constructor //
 	/**
-	 * Class constructor - sets the instance of the class visible.
+	 * Class constructor - sets the instance of the class to visible.
 	 */
 	public GuiElement(){
 		setVisible(true);
