@@ -15,24 +15,20 @@ public class Stack {
 	}
 	
 	public Stack(){
-<<<<<<< HEAD
-		gui = new GuiStack(s.toArray());
-=======
-		gui = new GuiStack(this.toArray());
+		gui = new GuiStack(toArray());
 		push("mordi");
 		push("mordi");
->>>>>>> a92478ca3ed4e279ba478b18da192942c052e3f3
 	}
 	public void push(Object obj){
 		s.add(obj);
-		gui.setData(this.toArray());
+		gui.setData(toArray());
 	}
 	
 	public Object pop(){
 		if(isEmpty()) return null;
 		Object obj = s.get(s.size()-1);
 		s.remove(obj);
-		gui.setData(this.toArray());
+		gui.setData(toArray());
 		return obj;
 	}
 	
