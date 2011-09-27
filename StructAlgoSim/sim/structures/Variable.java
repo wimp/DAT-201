@@ -11,9 +11,9 @@ public class Variable {
 	GuiVariable gui;
 	String value;
 	
-	public Variable(int x, int y, int w, int h, String value){
+	public Variable(int x, int y, int w, int h, String value, boolean editable){
 		this.value = value;
-		gui = new GuiVariable(x,y,w,h,value, false);
+		gui = new GuiVariable(x,y,w,h,value, editable);
 	}
 	public JComponent getGuiElement() {
 		return gui;
