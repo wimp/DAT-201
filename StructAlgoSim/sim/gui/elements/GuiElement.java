@@ -1,5 +1,7 @@
 package sim.gui.elements;
 
+import java.awt.GridLayout;
+
 import javax.swing.JPanel;
 
 /**
@@ -16,6 +18,7 @@ public abstract class GuiElement extends JPanel {
 	 * Class constructor - sets the instance of the class visible.
 	 */
 	public GuiElement(){
+		setLayout(new GridLayout(1,1));
 		setVisible(true);
 	}
 }

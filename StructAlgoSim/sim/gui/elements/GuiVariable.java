@@ -10,7 +10,7 @@ public class GuiVariable extends GuiElement{
 
 	public GuiVariable(Rectangle bounds,String value, boolean editable){
 		super();
-		t = new JTextField(value, (int) (bounds.width/11.5));
+		t = new JTextField(value);
 		t.setEditable(editable);
 		t.setBounds(0,0,bounds.width,bounds.height);
 		setBounds(bounds);
