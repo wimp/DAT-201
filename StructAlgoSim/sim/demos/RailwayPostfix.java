@@ -1,5 +1,7 @@
 package sim.demos;
 
+import java.awt.Rectangle;
+
 import javax.swing.JFrame;
 
 import sim.functions.Pop;
@@ -16,16 +18,16 @@ public class RailwayPostfix {
 		frame.setSize(700,600);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLayout(null);
-		Stack s = new Stack(300,200, 70, 200);
-		Variable v = new Variable(280,170,100,100,"#",false);
-		Variable infix = new Variable(500,170,200,100,"2+2",true);
-		GetChar moveInfix = new GetChar(450,170,100,100,Direction.LEFT, false,true,infix,v);
+		Stack s = new Stack(new Rectangle(300,200, 70, 200));
+		Variable v = new Variable(new Rectangle(280,170,100,100),"#",false);
+		Variable infix = new Variable(new Rectangle(500,170,200,100),"2+2",true);
+		GetChar moveInfix = new GetChar(new Rectangle(450,170,100,100),Direction.LEFT, false,true,infix,v);
 		
-		Variable postfix = new Variable(50,170,200,100,"                               ",true);
-		GetChar movePostfix = new GetChar(200,170,100,100,Direction.LEFT, true,true,v,postfix);
+		Variable postfix = new Variable(new Rectangle(50,170,200,100),"                               ",true);
+		GetChar movePostfix = new GetChar(new Rectangle(200,170,100,100),Direction.LEFT, true,true,v,postfix);
 		
-		Pop pop = new Pop(200,200,100,50,s, v);
-		Push push = new Push(200,250,100,50,s, v);
+		Pop pop = new Pop(new Rectangle(200,200,100,50),s, v);
+		Push push = new Push(new Rectangle(200,250,100,50),v, s);
 		
 		frame.add(pop.			getGuiElement());
 		frame.add(push.			getGuiElement());

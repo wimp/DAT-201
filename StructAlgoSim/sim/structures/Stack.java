@@ -1,6 +1,6 @@
 package sim.structures;
 
-import java.awt.Point;
+import java.awt.Rectangle;
 import java.util.Vector;
 
 import sim.gui.elements.GuiElement;
@@ -14,8 +14,8 @@ public class Stack {
 	public GuiElement getGuiElement(){
 		return gui;
 	}
-	public Stack(int x, int y, int w, int h){
-		gui = new GuiStack(x,y,w,h,toArray());
+	public Stack(Rectangle bounds){
+		gui = new GuiStack(bounds,toArray());
 	}
 	public void push(Object obj){
 		s.add(obj);

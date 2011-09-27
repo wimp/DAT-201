@@ -1,5 +1,6 @@
 package sim.structures;
 
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -27,9 +28,9 @@ public class GetChar implements ActionListener {
 	 * @param input = input var
 	 * @param output = output var
 	 */
-	public GetChar(int x, int y, int w, int h, Direction dir, boolean append, boolean removeAfterFetch,Variable input, Variable output){
-		//TODO add direction here
-		gui = new GuiFunction(x,y,w,h,"<-");
+	public GetChar(Rectangle bounds, Direction dir, boolean append, boolean removeAfterFetch,Variable input, Variable output){
+	//TODO add direction here
+		gui = new GuiFunction(bounds,"<-");
 		gui.getButton().addActionListener(this);
 		this.input = input;
 		this.output = output;
