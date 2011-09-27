@@ -10,43 +10,45 @@ public class GetChar implements ActionListener {
 	Variable input;
 	Variable output;
 	GuiFunction gui;
-	private FetchType type;
 	private boolean removeAfterFetch;
+	private boolean append;
 	public GuiElement getGuiElement(){
 		return gui;
 	}
-	public GetChar(int x, int y, int w, int h, Direction dir, FetchType type, boolean removeAfterFetch,Variable input, Variable output){
+	/**
+	 * @author Rune B. Kalleberg
+	 * @param x = x Pos
+	 * @param y = y Pos
+	 * @param w = width
+	 * @param h = height
+	 * @param dir = direction of arrow
+	 * @param append = append output (true) or replace output(false)
+	 * @param removeAfterFetch = remove character from input after fetch
+	 * @param input = input var
+	 * @param output = output var
+	 */
+	public GetChar(int x, int y, int w, int h, Direction dir, boolean append, boolean removeAfterFetch,Variable input, Variable output){
 		//TODO add direction here
 		gui = new GuiFunction(x,y,w,h,"<-");
 		gui.getButton().addActionListener(this);
 		this.input = input;
 		this.output = output;
-		this.type = type;
 		this.removeAfterFetch = removeAfterFetch;
+		this.append = append;
 	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String val = input.getValue();
-		if(type == FetchType.FIRST){
-			output.setValue(val.substring(0,1));
+			if(append)
+				output.setValue(output.getValue() + val.substring(0,1));
+			else
+				output.setValue(val.substring(0,1));
 			if(removeAfterFetch){
 				input.setValue(val.substring(1));
 			}
-		}
-		else{
-			output.setValue(val.substring(val.length()-1));
-			if(removeAfterFetch){
-				input.setValue(val.substring(0,val.length()-2));
-			}
-		}
-		
-		
 	}
 
 	public enum Direction{
 		UP,DOWN,LEFT,RIGHT;
-	}
-	public enum FetchType{
-		FIRST,LAST;
 	}
 }
