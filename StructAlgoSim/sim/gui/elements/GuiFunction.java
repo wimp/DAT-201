@@ -12,7 +12,8 @@ public class GuiFunction extends GuiElement{
 		super();
 		b = new JButton(s);
 		add(b);
-		setBounds(x,y,w,h);
+		b.setBounds(x,y,w,h);
+		b.setBounds(x,y,w,h);
 	}
 	public JButton getButton(){
 		return b;
