@@ -27,12 +27,9 @@ public class Push implements ActionListener{
 // Class constructor //
 		/**
 		 * The class constructor. Initializes the graphical element - {@link GuiFunction}
-		 * @param x - Top left x-value of graphical representation of element
-		 * @param y - Top left y-value of graphical representation of element
-		 * @param w - Width of graphical representation of element
-		 * @param h - Height of graphical representation of element
-		 * @param v - The input variable.
-		 * @param s - The structure on which to perform the push()-action 
+		 * @param bounds 	- The size and placement of the graphical element
+		 * @param v 		- The input variable.
+		 * @param s 		- The structure on which to perform the push()-action 
 		 */
 	public Push(Rectangle bounds, Variable v, Stack s){
 		gui = new GuiFunction(bounds,"Push");

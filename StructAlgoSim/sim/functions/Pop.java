@@ -27,12 +27,9 @@ public class Pop implements ActionListener {
 // Class constructor //
 	/**
 	 * The class constructor. Initializes the graphical element - {@link GuiFunction}
-	 * @param x - Top left x-value of graphical representation of element
-	 * @param y - Top left y-value of graphical representation of element
-	 * @param w - Width of graphical representation of element
-	 * @param h - Height of graphical representation of element
-	 * @param s - The structure on which to perform the pop()-action
-	 * @param v - The output variable. 
+	 * @param bounds 	- The size and placement of the graphical element
+	 * @param s 		- The structure on which to perform the pop()-action
+	 * @param v 		- The output variable
 	 */
 	public Pop(Rectangle bounds, Stack s, Variable v) {
 		gui = new GuiFunction(bounds,"Pop");
