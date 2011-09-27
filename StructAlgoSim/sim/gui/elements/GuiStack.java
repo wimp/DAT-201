@@ -1,19 +1,25 @@
 package sim.gui.elements;
 
 import java.awt.Dimension;
+import java.awt.Rectangle;
+
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 
+@SuppressWarnings("serial")
 public class GuiStack extends GuiElement {
+// Class variables //
 	
 	JList list;
+
+// Getters and setters //
 	public void setData(Object[] data){
 		list.setListData(data);
 	}
-	public GuiStack(int x, int y, int w, int h,Object[] data){
+	public GuiStack(Rectangle bounds,Object[] data){
 		super();
-		setBounds(x,y,w,h);
+		setBounds(bounds);
 		initGraphics(data);
 	}
 	

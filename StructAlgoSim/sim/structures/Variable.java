@@ -1,6 +1,6 @@
 package sim.structures;
 
-import java.awt.Point;
+import java.awt.Rectangle;
 
 import javax.swing.JComponent;
 
@@ -11,9 +11,9 @@ public class Variable {
 	GuiVariable gui;
 	String value;
 	
-	public Variable(int x, int y, int w, int h, String value){
+	public Variable(Rectangle bounds, String value){
 		this.value = value;
-		gui = new GuiVariable(x,y,w,h,value, false);
+		gui = new GuiVariable(bounds,value, false);
 	}
 	public JComponent getGuiElement() {
 		return gui;
