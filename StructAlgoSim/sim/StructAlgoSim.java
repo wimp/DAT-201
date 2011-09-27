@@ -22,7 +22,7 @@ public class StructAlgoSim {
 		frame.setLayout(null);
 
 		Stack s = new Stack(new Rectangle(100,100, 50, 100));
-		Variable v = new Variable(new Rectangle(50,50,100,100),"win");
+		Variable v = new Variable(new Rectangle(50,50,100,100),"win", true);
 		Pop pop = new Pop(new Rectangle(100,200,100,50),s, v);
 		Push push = new Push(new Rectangle(200,200,100,50), v, s);
 		

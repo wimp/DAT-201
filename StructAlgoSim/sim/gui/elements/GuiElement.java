@@ -1,6 +1,5 @@
 package sim.gui.elements;
 
-import java.awt.FlowLayout;
 import javax.swing.JPanel;
 
 /**
@@ -17,8 +16,6 @@ public abstract class GuiElement extends JPanel {
 	 * Class constructor - sets the instance of the class visible.
 	 */
 	public GuiElement(){
-		setLayout(new FlowLayout());
-		setOpaque(false);
 		setVisible(true);
 	}
 }

@@ -9,20 +9,17 @@ import sim.gui.elements.GuiVariable;
 public class Variable {
 
 	GuiVariable gui;
-	String value;
 	
-	public Variable(Rectangle bounds, String value){
-		this.value = value;
-		gui = new GuiVariable(bounds,value, false);
+	public Variable(Rectangle bounds, String value, boolean editable){
+		gui = new GuiVariable(bounds,value, editable);
 	}
 	public JComponent getGuiElement() {
 		return gui;
 	}
 	public void setValue(String value){
-		this.value = value;
 		gui.setValue(value);
 	}
 	public String getValue(){
-		return value;
+		return gui.getValue();
 	}
 }
