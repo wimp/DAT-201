@@ -28,6 +28,7 @@ public class GuiList extends GuiElement {
 	}
 	public GuiList(Rectangle bounds,Vector<SingleLinkedList.Node> data){
 		super();
+		this.data = data;
 		setBounds(bounds);
 		initGraphics(data);
 	}
@@ -35,9 +36,9 @@ public class GuiList extends GuiElement {
 	public void paintComponent(Graphics g){
 		super.paintComponent(g);
 		Graphics2D g2d = (Graphics2D)g;
-		
+		System.out.println("Drawing");
 		for(int i = 0; i<data.size(); i++){
-			//g2d.fillOval(i*, listPanel.getHeight()/2, width, height)
+			g2d.fillOval(i*drawNodeWidth, listPanel.getHeight()/2, drawNodeWidth, drawNodeWidth);
 		}
 	}
 	private void initGraphics(Vector<SingleLinkedList.Node> data){

@@ -1,5 +1,6 @@
 package sim.structures;
 
+import java.awt.Rectangle;
 import java.util.Vector;
 
 import sim.gui.elements.GuiElement;
@@ -13,12 +14,14 @@ public class SingleLinkedList {
 	private GuiList gui;
 	private Vector<Node> v = new Vector<Node>();
 	
-	public GuiElement getGuiElement(){
+	public GuiList getGuiElement(){
 		return gui;
 	}
 	
-	public SingleLinkedList(){
+	public SingleLinkedList(Rectangle bounds){
+		gui = new GuiList(bounds,v);
 		v.add(null);
+		v.add(new Node(0, null, null, "mordi"));
 	}
 	
 	public void insertBeforeElement(Node element, Object value){
@@ -48,9 +51,8 @@ public class SingleLinkedList {
 	}
 	
 	/**
-	 * The Node class is an inner class of {@link SingleLinkedList} that contains information about where an 
-	 * element is in relationship to other elements in a list
-	 *
+	 * The Node class is an inner class of {@link SingleLinkedList} that contains 
+	 * information about where an element is in relationship to other elements in a list
 	 */
 	public class Node{
 	// Class variables

@@ -1,6 +1,5 @@
 package sim.gui.elements;
 
-import java.awt.Graphics;
 import java.awt.GridLayout;
 
 import javax.swing.JPanel;
@@ -22,8 +21,4 @@ public abstract class GuiElement extends JPanel {
 		setLayout(new GridLayout(1,1));
 		setVisible(true);
 	}
-//	@Override 
-//	public void paintComponent(Graphics g){
-//		super.paintComponent(g);
-//	}
 }
