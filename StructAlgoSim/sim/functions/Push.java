@@ -42,5 +42,6 @@ public class Push implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		s.push((Object)v.getValue());
+		v.setValue("");
 	}
 }
