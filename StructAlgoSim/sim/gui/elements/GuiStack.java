@@ -7,10 +7,12 @@ import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 
+/**
+ * The graphical element of the {@link sim.structures.Stack} stack class
+ */
 @SuppressWarnings("serial")
 public class GuiStack extends GuiElement {
 // Class variables //
-	
 	JList list;
 
 // Getters and setters //
