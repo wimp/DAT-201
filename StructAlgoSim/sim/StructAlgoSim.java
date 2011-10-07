@@ -6,7 +6,7 @@ import javax.swing.JFrame;
 
 import sim.functions.Pop;
 import sim.functions.Push;
-import sim.structures.SingleLinkedList;
+import sim.structures.LinkedList;
 import sim.structures.Stack;
 import sim.structures.Variable;
 
@@ -28,7 +28,7 @@ public class StructAlgoSim {
 		Variable v = new Variable(new Rectangle(50,10,100,20),"win", true);
 		Pop pop = new Pop(new Rectangle(100,200,100,25),s, v);
 		Push push = new Push(new Rectangle(200,200,100,25), v, s);
-		SingleLinkedList list = new SingleLinkedList(new Rectangle(100,100,100,100));
+		LinkedList list = new LinkedList(new Rectangle(100,100,400,100),LinkedList.ListType.NONCIRCULARSINGLE);
 		frame.add(list.getGuiElement());
 		frame.validate();
 		frame.setVisible(true);
