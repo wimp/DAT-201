@@ -52,7 +52,13 @@ public class LinkedList {
 		
 		gui = new GuiList(bounds,v);
 	}
-	
+	public void addElement(Object value){
+		Node n = new Node(, value);
+		n.setPrevious(element.getPrevious());
+		n.setNext(element);
+		
+		element.getPrevious().setNext(n);
+	}
 	public void insertBeforeElement(Node element, Object value){
 		Node n = new Node(v.indexOf(element), value);
 		n.setPrevious(element.getPrevious());
