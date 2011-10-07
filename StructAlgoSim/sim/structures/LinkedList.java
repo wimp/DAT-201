@@ -29,16 +29,27 @@ public class LinkedList {
 	public LinkedList(Rectangle bounds, ListType type){
 
 		Node n0 = new Node(1, "head");
-		Node n1 = new Node(1, "foo");
+		Node n1 = new Node(2, "foo");
 		n0.setNext(n1);
-		n1.setPrevious(n0);
-		Node n2 = new Node(2, "bar");
+		Node n2 = new Node(3, "bar");
 		n1.setNext(n2);
 		n2.setPrevious(n1);
+		Node n3 = new Node(4, "boo");
+		n2.setNext(n3);
+		n3.setPrevious(n2);
+		Node n4 = new Node(5, "bar");
+		n3.setNext(n4);
+		n4.setPrevious(n3);
+		
+		n4.setNext(n1);
+		n1.setPrevious(n4);
 		
 		v.add(n0);
 		v.add(n1);
 		v.add(n2);
+		v.add(n3);
+		v.add(n4);
+		
 		gui = new GuiList(bounds,v);
 	}
 	

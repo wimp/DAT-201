@@ -19,8 +19,8 @@ public class GuiList extends GuiElement {
 // Class variables //
 	private Vector<LinkedList.Node> data;
 	private ListPanel listPanel;
-	private final int drawNodeWidth = 20;
-	private final int drawNodeHeight = 20;
+	private final int drawNodeWidth = 30;
+	private final int drawNodeHeight = 30;
 	
 // Getters and setters //
 	public void setData(Vector<LinkedList.Node> data){
@@ -36,6 +36,8 @@ public class GuiList extends GuiElement {
 		listPanel = new ListPanel();
 		listPanel.setPreferredSize(new Dimension(getWidth(), getHeight()));
 		JScrollPane listScroller = new JScrollPane(listPanel);
+		listScroller.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		listScroller.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 		listScroller.setPreferredSize(new Dimension(getWidth(), getHeight()));
 		this.add(listScroller);
 	}
@@ -43,17 +45,83 @@ public class GuiList extends GuiElement {
 		@Override 
 		public void paintComponent(Graphics g){
 			Graphics2D g2d = (Graphics2D)g;
-			for(int i = 1; i<data.size(); i++){
-				LinkedList.Node n = data.elementAt(i);
-				g2d.drawOval((2*i)*drawNodeWidth, listPanel.getHeight()/2, drawNodeWidth, drawNodeWidth);
+//			g2d.drawRect(drawNodeWidth, listPanel.getHeight()/4, drawNodeWidth, drawNodeHeight);
+
+			for(LinkedList.Node n : data){
+				g2d.drawOval((2*n.getIndex())*drawNodeWidth, listPanel.getHeight()/4, drawNodeWidth, drawNodeHeight);
 				if(n.getNext()!=null){
-					g2d.drawLine((2*i)*drawNodeWidth+drawNodeWidth/2,listPanel.getHeight()/2+drawNodeHeight,
-							(2*(i+1))*drawNodeWidth-drawNodeWidth/2,listPanel.getHeight()/2+(3/2)*drawNodeHeight);
-					g2d.drawLine((2*(i+1))*drawNodeWidth-drawNodeWidth/2,listPanel.getHeight()/2+(3/2)*drawNodeHeight,
-							(2*(i+1))*drawNodeWidth-drawNodeWidth/2,listPanel.getHeight()/2+drawNodeHeight);
+					int[] linkX = 
+					{ 
+							(2*(n.getIndex()))*drawNodeWidth+drawNodeWidth/2,
+							(2*(n.getIndex()))*drawNodeWidth+drawNodeWidth/2,
+							(int)((2*n.getNext().getIndex())*drawNodeWidth-drawNodeWidth*(3/8.0)),
+							(int)((2*n.getNext().getIndex())*drawNodeWidth-drawNodeWidth*(3/8.0)),
+							(2*n.getNext().getIndex())*drawNodeWidth
+					};
+
+					float f = ((n.getIndex()-n.getNext().getIndex()) < 0) ? 5/4f : 6/4f;
+					
+					int[] linkY = 
+					{ 
+							listPanel.getHeight()/4+drawNodeHeight,
+							(int)(listPanel.getHeight()/4+f*drawNodeHeight),	
+							(int)(listPanel.getHeight()/4+f*drawNodeHeight),	
+							listPanel.getHeight()/4+drawNodeHeight/2,	
+							listPanel.getHeight()/4+drawNodeHeight/2	
+					};
+					int[] arrowX = 
+					{ 
+							(int)((2*n.getNext().getIndex())*drawNodeWidth-drawNodeWidth*(1/4.0)),
+							(int)((2*n.getNext().getIndex())*drawNodeWidth),
+							(int)((2*n.getNext().getIndex())*drawNodeWidth-drawNodeWidth*(1/4.0)),
 							
+					};
+					int[] arrowY = 
+					{ 
+							(int)(listPanel.getHeight()/4+(1/4.0)*drawNodeHeight),	
+							listPanel.getHeight()/4+drawNodeHeight/2,
+							(int)(listPanel.getHeight()/4+(3/4.0)*drawNodeHeight),	
+					};
+					g2d.drawPolyline(linkX, linkY, linkX.length);
+					g2d.fillPolygon(arrowX, arrowY, arrowX.length);
 				}
-				g2d.drawString((String)data.elementAt(i).getValue(), (2*i)*drawNodeWidth,listPanel.getHeight()/2);
+				if(n.getPrevious() != null){
+					int[] linkX = 
+					{ 
+							(2*(n.getIndex()))*drawNodeWidth+drawNodeWidth/2,
+							(2*(n.getIndex()))*drawNodeWidth+drawNodeWidth/2,
+							(int)((2*n.getPrevious().getIndex())*drawNodeWidth+drawNodeWidth*(11/8.0)),
+							(int)((2*n.getPrevious().getIndex())*drawNodeWidth+drawNodeWidth*(11/8.0)),
+							(2*n.getPrevious().getIndex()+1)*drawNodeWidth					
+					};
+					
+					float f = ((n.getIndex()-n.getPrevious().getIndex()) > 0) ? 1/4f : 2/4f;
+					
+					int[] linkY = 
+					{ 	
+							listPanel.getHeight()/4,
+							(int)(listPanel.getHeight()/4-f*drawNodeHeight),
+							(int)(listPanel.getHeight()/4-f*drawNodeHeight),							
+							listPanel.getHeight()/4+drawNodeHeight/2,
+							listPanel.getHeight()/4+drawNodeHeight/2,
+							listPanel.getHeight()/4+drawNodeHeight/2
+					};
+					int[] arrowX = 
+					{ 
+							(int)((2*n.getPrevious().getIndex())*drawNodeWidth+drawNodeWidth*(5/4.0)),
+							(int)((2*n.getPrevious().getIndex())*drawNodeWidth+drawNodeWidth),
+							(int)((2*n.getPrevious().getIndex())*drawNodeWidth+drawNodeWidth*(5/4.0))	
+					};
+					int[] arrowY = 
+					{ 
+							(int)(listPanel.getHeight()/4+(1/4.0)*drawNodeHeight),	
+							listPanel.getHeight()/4+drawNodeHeight/2,
+							(int)(listPanel.getHeight()/4+(3/4.0)*drawNodeHeight)	
+					};
+					g2d.drawPolyline(linkX, linkY, linkX.length);
+					g2d.fillPolygon(arrowX, arrowY, arrowX.length);
+				}
+				g2d.drawString((String)n.getValue(), (2*n.getIndex())*drawNodeWidth,listPanel.getHeight()/4+drawNodeHeight/2);
 			}
 		}	
 	}
