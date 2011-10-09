@@ -7,90 +7,76 @@ import sim.gui.elements.GuiElement;
 import sim.gui.elements.GuiList;
 
 /**
- * A class representing a single-linked list
+ * A class representing a linked list. 
+ * The attributes, doubly or singly linked and circular or non-circular 
+ * are set in the constructor.
  *
  */
 public class LinkedList {
-
-	public enum ListType{
-		CIRCULARSINGLE,
-		NONCIRCULARSINGLE,
-		CIRCULARDOUBLE,
-		NONCIRCULARDOUBLE
-	}
 	
+	private boolean circular;
+	private boolean doublyLinked;
 	private GuiList gui;
 	private Vector<Node> v = new Vector<Node>();
 	
 	public GuiList getGuiElement(){
 		return gui;
 	}
-	
-	public LinkedList(Rectangle bounds, ListType type){
-
-		Node n0 = new Node(1, "head");
-		Node n1 = new Node(2, "foo");
-		n0.setNext(n1);
-		Node n2 = new Node(3, "bar");
-		n1.setNext(n2);
-		n2.setPrevious(n1);
-		Node n3 = new Node(4, "boo");
-		n2.setNext(n3);
-		n3.setPrevious(n2);
-		Node n4 = new Node(5, "bar");
-		n3.setNext(n4);
-		n4.setPrevious(n3);
+	/**
+	 * Constructor. 
+	 * @param bounds The size of the graphical element.
+	 * @param doublyLinked Determines whether nodes will link both forwards and backwards.
+	 * @param circular Determines if the last node will link to the first of the list (and vice verse if the list if doubly-linked)
+	 */
+	public LinkedList(Rectangle bounds, boolean doublyLinked, boolean circular){
 		
-		n4.setNext(n1);
-		n1.setPrevious(n4);
+		this.doublyLinked = doublyLinked;
+		this.circular = circular;
 		
-		v.add(n0);
-		v.add(n1);
-		v.add(n2);
-		v.add(n3);
-		v.add(n4);
+		Node dummy = new Node("dummy");
+			
+		if(circular) dummy.setNext(dummy);
+		if(doublyLinked && circular) dummy.setPrevious(dummy);
 		
+		v.add(dummy);
 		gui = new GuiList(bounds,v);
 	}
-	public void addElement(Object value){
-		Node n = new Node(, value);
-		n.setPrevious(element.getPrevious());
-		n.setNext(element);
-		
-		element.getPrevious().setNext(n);
+	/**
+	 * Adds a node to the start of the list.
+	 * @param value The object (most likely a string of text) that this node is to contain.
+	 */
+	public void addFirst(Object value){
+		insertAfterElement(v.elementAt(0), value);
 	}
 	public void insertBeforeElement(Node element, Object value){
-		Node n = new Node(v.indexOf(element), value);
+		Node n = new Node(value);
 		n.setPrevious(element.getPrevious());
 		n.setNext(element);
 		
 		element.getPrevious().setNext(n);
 		
 		v.insertElementAt(n, v.indexOf(element));
-		for(int i = 0;i<v.size();i++){
-			Node el = v.get(i);
-			if(el != null)
-				el.setIndex(v.indexOf(el));
-		}
+		
 		element.setPrevious(n);
+		
+		
+		gui.validate();
+		gui.repaint();
 	}
-	
 	public void insertAfterElement(Node element, Object value){
-		Node n = new Node(v.indexOf(element), value);
+		Node n = new Node(value);
 		
 		n.setPrevious(element);
 		n.setNext(element.getNext());
 		
 		element.getNext().setPrevious(n);
-		v.insertElementAt(n, element.getNext().getIndex());
 		
-		for(int i = 0;i<v.size();i++){
-			Node el = v.get(i);
-			if(el != null)
-				el.setIndex(v.indexOf(el));
-		}
-		
+		v.insertElementAt(n, v.indexOf(element)+1);
+
 		element.setNext(n);
+		
+		gui.validate();
+		gui.repaint();
 	}
 	
 	/**
@@ -100,7 +86,6 @@ public class LinkedList {
 	public class Node{
 	// Class variables
 		private Object 	value;
-		private int 	index;
 		private Node 	next;
 		private Node 	previous;
 	
@@ -120,15 +105,6 @@ public class LinkedList {
 		public void setPrevious(Node previous) {
 			this.previous = previous;
 		}
-		
-		public int getIndex(){
-			return index;
-		}
-		
-		public void setIndex(int index){
-			this.index = index;
-		}
-		
 		public Object getValue() {
 			return value;
 		}
@@ -138,8 +114,7 @@ public class LinkedList {
 		}
 	
 	// Class constructor
-		public Node(int index, Object value){
-			this.index 		= index;
+		public Node(Object value){
 			this.previous 	= null;
 			this.next 		= null;
 			this.value		= value;
