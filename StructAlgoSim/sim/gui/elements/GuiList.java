@@ -27,14 +27,15 @@ public class GuiList extends GuiElement {
 	public void setData(Vector<LinkedList.Node> data){
 		
 	}
-	public GuiList(Rectangle bounds,Vector<LinkedList.Node> data){
+	public GuiList(Rectangle bounds,Vector<LinkedList.Node> data, boolean circular, boolean doublyLinked){
 		super();
 		this.data = data;
-		setBounds(bounds);
+		setBounds(bounds);		
+		listPanel = new ListPanel(circular, doublyLinked);
 		initGraphics(data);
+
 	}
 	private void initGraphics(Vector<LinkedList.Node> data){
-		listPanel = new ListPanel();
 		listPanel.setPreferredSize(new Dimension(getWidth(), getHeight()));
 		JScrollPane listScroller = new JScrollPane(listPanel);
 		listScroller.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -42,12 +43,19 @@ public class GuiList extends GuiElement {
 		listScroller.setPreferredSize(new Dimension(getWidth(), getHeight()));
 		this.add(listScroller);
 	}
-	private class ListPanel extends JPanel implements Scrollable{
+	private class ListPanel extends JPanel{
+		private boolean circular;
+		private boolean doublyLinked;
+		
+		public ListPanel(boolean circular, boolean doublyLinked){
+			this.circular = circular;
+			this.doublyLinked = doublyLinked;
+		}
 		@Override 
 		public void paintComponent(Graphics g){
 			Graphics2D g2d = (Graphics2D)g;
 			setPreferredSize(new Dimension(drawNodeWidth*data.size()*2, getHeight()));
-//			g2d.drawRect(drawNodeWidth, listPanel.getHeight()/4, drawNodeWidth, drawNodeHeight);
+			
 			for(LinkedList.Node n : data){
 				if(n == null) continue;
 				
@@ -55,7 +63,7 @@ public class GuiList extends GuiElement {
 				int indexOfNext = data.indexOf(n.getNext())+1;
 				int indexOfPrev = data.indexOf(n.getPrevious())+1;
 				
-				g2d.drawOval((2*indexOfNode)*drawNodeWidth, listPanel.getHeight()/4, drawNodeWidth, drawNodeHeight);
+				g2d.drawOval((2*indexOfNode)*drawNodeWidth, getHeight()/4, drawNodeWidth, drawNodeHeight);
 				if(n.getNext()!=null){
 					int[] linkX = 
 					{ 
@@ -67,14 +75,14 @@ public class GuiList extends GuiElement {
 					};
 
 					float f = ((indexOfNode-indexOfNext) < 0) ? 5/4f : 6/4f;
-					
+					if(indexOfNode-indexOfNext < 0 || (indexOfNode-indexOfNext >= 0 && circular)){
 					int[] linkY = 
 					{ 
-							listPanel.getHeight()/4+drawNodeHeight,
-							(int)(listPanel.getHeight()/4+f*drawNodeHeight),	
-							(int)(listPanel.getHeight()/4+f*drawNodeHeight),	
-							listPanel.getHeight()/4+drawNodeHeight/2,	
-							listPanel.getHeight()/4+drawNodeHeight/2	
+							getHeight()/4+drawNodeHeight,
+							(int)(getHeight()/4+f*drawNodeHeight),	
+							(int)(getHeight()/4+f*drawNodeHeight),	
+							getHeight()/4+drawNodeHeight/2,	
+							getHeight()/4+drawNodeHeight/2	
 					};
 					int[] arrowX = 
 					{ 
@@ -85,14 +93,15 @@ public class GuiList extends GuiElement {
 					};
 					int[] arrowY = 
 					{ 
-							(int)(listPanel.getHeight()/4+(1/4.0)*drawNodeHeight),	
-							listPanel.getHeight()/4+drawNodeHeight/2,
-							(int)(listPanel.getHeight()/4+(3/4.0)*drawNodeHeight),	
+							(int)(getHeight()/4+(1/4.0)*drawNodeHeight),	
+							getHeight()/4+drawNodeHeight/2,
+							(int)(getHeight()/4+(3/4.0)*drawNodeHeight),	
 					};
 					g2d.drawPolyline(linkX, linkY, linkX.length);
 					g2d.fillPolygon(arrowX, arrowY, arrowX.length);
+					}
 				}
-				if(n.getPrevious() != null){
+				if(doublyLinked && n.getPrevious() != null){
 					int[] linkX = 
 					{ 
 							(2*(indexOfNode))*drawNodeWidth+drawNodeWidth/2,
@@ -103,15 +112,15 @@ public class GuiList extends GuiElement {
 					};
 					
 					float f = ((indexOfNode-indexOfPrev) > 0) ? 1/4f : 2/4f;
-					
+					if(indexOfNode-indexOfPrev > 0 || (indexOfNode-indexOfPrev <= 0 && circular)){
 					int[] linkY = 
 					{ 	
-							listPanel.getHeight()/4,
-							(int)(listPanel.getHeight()/4-f*drawNodeHeight),
-							(int)(listPanel.getHeight()/4-f*drawNodeHeight),							
-							listPanel.getHeight()/4+drawNodeHeight/2,
-							listPanel.getHeight()/4+drawNodeHeight/2,
-							listPanel.getHeight()/4+drawNodeHeight/2
+							getHeight()/4,
+							(int)(getHeight()/4-f*drawNodeHeight),
+							(int)(getHeight()/4-f*drawNodeHeight),							
+							getHeight()/4+drawNodeHeight/2,
+							getHeight()/4+drawNodeHeight/2,
+							getHeight()/4+drawNodeHeight/2
 					};
 					int[] arrowX = 
 					{ 
@@ -121,46 +130,17 @@ public class GuiList extends GuiElement {
 					};
 					int[] arrowY = 
 					{ 
-							(int)(listPanel.getHeight()/4+(1/4.0)*drawNodeHeight),	
-							listPanel.getHeight()/4+drawNodeHeight/2,
-							(int)(listPanel.getHeight()/4+(3/4.0)*drawNodeHeight)	
+							(int)(getHeight()/4+(1/4.0)*drawNodeHeight),	
+							getHeight()/4+drawNodeHeight/2,
+							(int)(getHeight()/4+(3/4.0)*drawNodeHeight)	
 					};
 					g2d.drawPolyline(linkX, linkY, linkX.length);
 					g2d.fillPolygon(arrowX, arrowY, arrowX.length);
 				}
-				g2d.drawString((String)n.getValue(), (2*indexOfNode)*drawNodeWidth,listPanel.getHeight()/4+drawNodeHeight/2);
+				}
+				g2d.drawString((String)n.getValue(), (2*indexOfNode)*drawNodeWidth,getHeight()/4+drawNodeHeight/2);
 			}
+			listPanel.revalidate();
 		}
-
-		@Override
-		public Dimension getPreferredScrollableViewportSize() {
-			
-			return this.getPreferredSize();
-		}
-
-		@Override
-		public int getScrollableBlockIncrement(Rectangle arg0, int arg1,
-				int arg2) {
-			// TODO Auto-generated method stub
-			return 1;
-		}
-
-		@Override
-		public boolean getScrollableTracksViewportHeight() {
-			// TODO Auto-generated method stub
-			return false;
-		}
-
-		@Override
-		public boolean getScrollableTracksViewportWidth() {
-			// TODO Auto-generated method stub
-			return false;
-		}
-
-		@Override
-		public int getScrollableUnitIncrement(Rectangle arg0, int arg1, int arg2) {
-			// TODO Auto-generated method stub
-			return 1;
-		}	
 	}
 }

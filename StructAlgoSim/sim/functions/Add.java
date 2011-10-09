@@ -11,7 +11,7 @@ import sim.structures.Stack;
 import sim.structures.Variable;
 
 /**
- * Pop - Instances of this class is used with structures such as stack to fetch the top element. (LIFO)
+ * Add - Instances of this class is used with structures such as linked-list or array to add an element to the end. (LIFO)
  * @author 
  */
 public class Add implements ActionListener {
@@ -38,10 +38,11 @@ public class Add implements ActionListener {
 		this.l=l;
 		this.v=v;
 	}
-
 // Action Listener implementation //
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		l.addFirst(v.getValue());
+		//l.addFirst(v.getValue());
+		l.addLast(v.getValue());
+
 	}
 }

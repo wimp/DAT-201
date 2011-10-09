@@ -13,9 +13,6 @@ import sim.gui.elements.GuiList;
  *
  */
 public class LinkedList {
-	
-	private boolean circular;
-	private boolean doublyLinked;
 	private GuiList gui;
 	private Vector<Node> v = new Vector<Node>();
 	
@@ -29,25 +26,34 @@ public class LinkedList {
 	 * @param circular Determines if the last node will link to the first of the list (and vice verse if the list if doubly-linked)
 	 */
 	public LinkedList(Rectangle bounds, boolean doublyLinked, boolean circular){
-		
-		this.doublyLinked = doublyLinked;
-		this.circular = circular;
-		
+
 		Node dummy = new Node("dummy");
-			
-		if(circular) dummy.setNext(dummy);
-		if(doublyLinked && circular) dummy.setPrevious(dummy);
+		
+		dummy.setNext(dummy);
+		dummy.setPrevious(dummy);
 		
 		v.add(dummy);
-		gui = new GuiList(bounds,v);
+		gui = new GuiList(bounds,v, doublyLinked, circular);
 	}
 	/**
-	 * Adds a node to the start of the list.
+	 * Adds a new node to the start of the list.
 	 * @param value The object (most likely a string of text) that this node is to contain.
 	 */
 	public void addFirst(Object value){
 		insertAfterElement(v.elementAt(0), value);
 	}
+	/**
+	 * Adds a new node to the end of the list.
+	 * @param value The object (most likely a string of text) that this node is to contain.
+	 */
+	public void addLast(Object value){
+		insertAfterElement(v.elementAt(v.size()-1), value);
+	}
+	/**
+	 * Adds a new node before a node in the list.
+	 * @param element The element that the new node will be placed before.
+	 * @param value The object (most likely a string of text) that this node is to contain.
+	 */
 	public void insertBeforeElement(Node element, Object value){
 		Node n = new Node(value);
 		n.setPrevious(element.getPrevious());
@@ -59,10 +65,14 @@ public class LinkedList {
 		
 		element.setPrevious(n);
 		
-		
 		gui.validate();
 		gui.repaint();
 	}
+	/**
+	 * Adds a new node after a node in the list.
+	 * @param element The element that the new node will be placed after.
+	 * @param value The object (most likely a string of text) that this node is to contain.
+	 */
 	public void insertAfterElement(Node element, Object value){
 		Node n = new Node(value);
 		

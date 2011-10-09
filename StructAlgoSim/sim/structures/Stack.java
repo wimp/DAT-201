@@ -36,7 +36,7 @@ public class Stack {
 			return false;
 	}
 	
-	public Object[] toArray(){
+	private Object[] toArray(){
 		Object[] obj = new Object[s.size()];
 		for(int i =0; i<s.size();i++){
 			obj[s.size()-i-1] = s.get(i);
