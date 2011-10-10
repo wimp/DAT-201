@@ -8,6 +8,7 @@ import sim.functions.Add;
 import sim.functions.InsertBefore;
 import sim.functions.Pop;
 import sim.functions.Push;
+import sim.functions.Remove;
 import sim.structures.Array;
 import sim.structures.LinkedList;
 import sim.structures.Stack;
@@ -37,11 +38,13 @@ public class StructAlgoSim {
 		Array a = new Array(new Rectangle(100,100,400,100),8);
 		Add add = new Add(new Rectangle(200,200, 70,50), a, v);
 		InsertBefore ib = new InsertBefore(new Rectangle(290,200,120,50),a,v,i);
+		Remove rm = new Remove(new Rectangle(400,200,120,50),a,r,i);
 		
 		frame.add(v.getGuiElement());
 		frame.add(i.getGuiElement());
 		frame.add(a.getGuiElement());
-//		frame.add(list.getGuiElement());
+		frame.add(rm.getGuiElement());
+		frame.add(r.getGuiElement());
 		frame.add(add.getGuiElement());
 		frame.add(ib.getGuiElement());
 		frame.validate();

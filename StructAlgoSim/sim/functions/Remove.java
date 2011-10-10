@@ -39,6 +39,7 @@ public class Remove implements ActionListener {
 		gui.getButton().addActionListener(this);
 		this.l=l;
 		this.v=v;
+		this.i=i;
 	}
 	
 // Action Listener implementation //

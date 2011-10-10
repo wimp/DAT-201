@@ -50,7 +50,6 @@ public class Array {
 	
 	public void addItem(Object item){
 		if(v.size() < size){
-			System.out.println(item);
 			v.add(item);
 			gui.setData(v);
 			gui.validate();
@@ -99,10 +98,17 @@ public class Array {
 	}
 	
 	public Object removeItem(int index){
-		Object val = v.remove(index);
-		gui.setData(v);
-		gui.validate();
-		gui.repaint();
-		return val;
+		try{
+			Object val = v.remove(index);
+			gui.setData(v);
+			gui.validate();
+			gui.repaint();
+			return val;
+		}catch(NullPointerException e){
+			return null;
+		}catch(IndexOutOfBoundsException e){
+			return null;
+		}
+		
 	}
 }
