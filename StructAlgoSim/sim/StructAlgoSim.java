@@ -29,7 +29,7 @@ public class StructAlgoSim {
 		frame.setLayout(null);
 
 		Variable v = new Variable(new Rectangle(100,50,100,20),"win", true);
-		LinkedList list = new LinkedList(new Rectangle(100,100,500,100), true,true);
+		LinkedList list = new LinkedList(new Rectangle(200,300,500,100), true,true);
 		Add add = new Add(new Rectangle(200,200, 75,50), list, v);
 		Stack s = new Stack(new Rectangle(100,300, 100, 100));
 		Variable i = new Variable(new Rectangle(100,50,100,20),"1",true);
