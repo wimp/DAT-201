@@ -31,7 +31,7 @@ public class LinkedList {
 		
 		dummy.setNext(dummy);
 		dummy.setPrevious(dummy);
-		
+		dummy.setAnimated(false);
 		v.add(dummy);
 		gui = new GuiList(bounds,v, doublyLinked, circular);
 	}
@@ -64,7 +64,7 @@ public class LinkedList {
 		v.insertElementAt(n, v.indexOf(element));
 		
 		element.setPrevious(n);
-		
+		gui.getAnimation().start();
 		gui.validate();
 		gui.repaint();
 	}
@@ -84,7 +84,8 @@ public class LinkedList {
 		v.insertElementAt(n, v.indexOf(element)+1);
 
 		element.setNext(n);
-		
+
+		gui.getAnimation().start();
 		gui.validate();
 		gui.repaint();
 	}
@@ -98,7 +99,8 @@ public class LinkedList {
 		private Object 	value;
 		private Node 	next;
 		private Node 	previous;
-	
+		private boolean animated;
+		
 	// Getters and setters
 		public Node getNext() {
 			return next;
@@ -115,6 +117,13 @@ public class LinkedList {
 		public void setPrevious(Node previous) {
 			this.previous = previous;
 		}
+		public boolean isAnimated() {
+			return animated;
+		}
+
+		public void setAnimated(boolean animated) {
+			this.animated = animated;
+		}
 		public Object getValue() {
 			return value;
 		}
@@ -128,6 +137,7 @@ public class LinkedList {
 			this.previous 	= null;
 			this.next 		= null;
 			this.value		= value;
+			animated = true;
 		}
 	}
 }
