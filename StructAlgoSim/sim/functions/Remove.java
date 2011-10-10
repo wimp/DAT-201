@@ -14,10 +14,11 @@ import sim.structures.Variable;
  * Add - Instances of this class is used with structures such as linked-list or array to add an element to the end. (LIFO)
  * @author 
  */
-public class Add implements ActionListener {
+public class Remove implements ActionListener {
 // Class variables //
 	Object l;
 	Variable v;
+	Variable i;
 	GuiFunction gui;
 	
 // Getters and setters //
@@ -31,9 +32,10 @@ public class Add implements ActionListener {
 	 * @param bounds 	- The size and placement of the graphical element
 	 * @param l 		- The structure on which to perform the add()-action
 	 * @param v 		- The output variable
+	 * @param i			- The input variable. The index to be removed from the list/array
 	 */
-	public Add(Rectangle bounds, Object l, Variable v) {
-		gui = new GuiFunction(bounds,"Add");
+	public Remove(Rectangle bounds, Object l, Variable v, Variable i) {
+		gui = new GuiFunction(bounds,"Remove");
 		gui.getButton().addActionListener(this);
 		this.l=l;
 		this.v=v;
@@ -43,7 +45,8 @@ public class Add implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(l instanceof Array){
-			((Array) l).addItem(v.getValue());
+			String s = ((Array) l).removeItem(Integer.parseInt(i.getValue())).toString();
+			v.setValue(s);
 		}else if(l instanceof LinkedList){
 			((LinkedList) l).addLast(v.getValue());
 		}
