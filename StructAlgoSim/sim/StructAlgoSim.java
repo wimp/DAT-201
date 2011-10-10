@@ -25,12 +25,9 @@ public class StructAlgoSim {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLayout(null);
 
-		Stack s = new Stack(new Rectangle(100,300, 100, 100));
-		Variable v = new Variable(new Rectangle(50,10,100,20),"win", true);
-		Pop pop = new Pop(new Rectangle(100,200,100,25),s, v);
-		Push push = new Push(new Rectangle(200,200,100,25), v, s);
-		LinkedList list = new LinkedList(new Rectangle(100,100,400,100),false, true);
-		Add add = new Add(new Rectangle(200,200, 50,50), list, v);
+		Variable v = new Variable(new Rectangle(100,50,100,20),"win", true);
+		LinkedList list = new LinkedList(new Rectangle(100,100,500,100), true,true);
+		Add add = new Add(new Rectangle(200,200, 75,50), list, v);
 		
 		frame.add(v.getGuiElement());
 		frame.add(add.getGuiElement());
@@ -38,5 +35,4 @@ public class StructAlgoSim {
 		frame.validate();
 		frame.setVisible(true);
 	}
-
 }
