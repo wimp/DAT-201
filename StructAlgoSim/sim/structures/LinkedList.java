@@ -49,6 +49,9 @@ public class LinkedList {
 	public void addLast(Object value){
 		insertAfterElement(v.elementAt(v.size()-1), value);
 	}
+	public Node elementAt(int value){
+		return v.elementAt(value);
+	}
 	/**
 	 * Adds a new node before a node in the list.
 	 * @param element The element that the new node will be placed before.

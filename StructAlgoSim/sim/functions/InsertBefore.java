@@ -48,7 +48,7 @@ public class InsertBefore implements ActionListener {
 		if(l instanceof Array){
 			((Array) l).insertBefore(v.getValue(),Integer.parseInt(i.getValue()));
 		}else if(l instanceof LinkedList){
-			((LinkedList) l).addLast(v.getValue());
+			((LinkedList) l).insertBeforeElement(((LinkedList) l).elementAt(Integer.parseInt(i.getValue())),v.getValue());
 		}
 		//l.addFirst(v.getValue());
 		
