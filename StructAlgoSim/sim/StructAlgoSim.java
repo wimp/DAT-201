@@ -27,22 +27,16 @@ public class StructAlgoSim {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLayout(null);
 
-<<<<<<< HEAD
 		Variable v = new Variable(new Rectangle(100,50,100,20),"win", true);
 		LinkedList list = new LinkedList(new Rectangle(100,100,500,100), true,true);
 		Add add = new Add(new Rectangle(200,200, 75,50), list, v);
-=======
 		Stack s = new Stack(new Rectangle(100,300, 100, 100));
-		Variable v = new Variable(new Rectangle(50,10,100,20),"win", true);
 		Variable i = new Variable(new Rectangle(100,50,100,20),"1",true);
 		Variable r = new Variable(new Rectangle(400,50,100,20)," ",false);
 		Pop pop = new Pop(new Rectangle(100,200,100,25),s, v);
 		Push push = new Push(new Rectangle(200,200,100,25), v, s);
-		LinkedList list = new LinkedList(new Rectangle(20,20,400,100),true, false);
 		Array a = new Array(new Rectangle(100,100,400,100),8);
-		Add add = new Add(new Rectangle(200,200, 70,50), a, v);
 		InsertBefore ib = new InsertBefore(new Rectangle(290,200,120,50),a,v,i);
->>>>>>> 5d930ef90b2e93eecd876e51384b690baab82759
 		
 		frame.add(v.getGuiElement());
 		frame.add(i.getGuiElement());
