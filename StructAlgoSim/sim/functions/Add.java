@@ -6,8 +6,8 @@ import java.awt.event.ActionListener;
 
 import sim.gui.elements.GuiElement;
 import sim.gui.elements.GuiFunction;
+import sim.structures.Array;
 import sim.structures.LinkedList;
-import sim.structures.Stack;
 import sim.structures.Variable;
 
 /**
@@ -16,7 +16,7 @@ import sim.structures.Variable;
  */
 public class Add implements ActionListener {
 // Class variables //
-	LinkedList l;
+	Object l;
 	Variable v;
 	GuiFunction gui;
 	
@@ -32,17 +32,23 @@ public class Add implements ActionListener {
 	 * @param l 		- The structure on which to perform the add()-action
 	 * @param v 		- The output variable
 	 */
-	public Add(Rectangle bounds, LinkedList l, Variable v) {
+	public Add(Rectangle bounds, Object l, Variable v) {
 		gui = new GuiFunction(bounds,"Add");
 		gui.getButton().addActionListener(this);
 		this.l=l;
 		this.v=v;
 	}
+	
 // Action Listener implementation //
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		if(l instanceof Array){
+			((Array) l).addItem(v.getValue());
+		}else if(l instanceof LinkedList){
+			((LinkedList) l).addLast(v.getValue());
+		}
 		//l.addFirst(v.getValue());
-		l.addLast(v.getValue());
+		
 
 	}
 }
