@@ -29,20 +29,17 @@ public class StructAlgoSim {
 		frame.setLayout(null);
 
 		Variable v = new Variable(new Rectangle(100,50,100,20),"win", true);
-		LinkedList list = new LinkedList(new Rectangle(200,300,500,100), true,true);
+		LinkedList list = new LinkedList(new Rectangle(200,300,500,100), true,true,false);
 		Add add = new Add(new Rectangle(200,200, 75,50), list, v);
 		Stack s = new Stack(new Rectangle(100,300, 100, 100));
 		Variable i = new Variable(new Rectangle(100,50,100,20),"1",true);
 		Variable r = new Variable(new Rectangle(400,50,100,20)," ",false);
-		Pop pop = new Pop(new Rectangle(100,200,100,25),s, v);
-		Push push = new Push(new Rectangle(200,200,100,25), v, s);
-		Array a = new Array(new Rectangle(100,100,400,100),8);
-		InsertBefore ib = new InsertBefore(new Rectangle(290,200,120,50),a,v,i);
-		Remove rm = new Remove(new Rectangle(400,200,120,50),a,r,i);
+		InsertBefore ib = new InsertBefore(new Rectangle(290,200,120,50),list,v,i);
+		Remove rm = new Remove(new Rectangle(400,200,120,50),list,r,i);
 		
 		frame.add(v.getGuiElement());
 		frame.add(i.getGuiElement());
-		frame.add(a.getGuiElement());
+		frame.add(list.getGuiElement());
 		frame.add(rm.getGuiElement());
 		frame.add(r.getGuiElement());
 		frame.add(add.getGuiElement());

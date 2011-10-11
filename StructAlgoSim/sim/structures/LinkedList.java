@@ -25,29 +25,45 @@ public class LinkedList {
 	 * @param doublyLinked Determines whether nodes will link both forwards and backwards.
 	 * @param circular Determines if the last node will link to the first of the list (and vice verse if the list if doubly-linked)
 	 */
-	public LinkedList(Rectangle bounds, boolean doublyLinked, boolean circular){
+	public LinkedList(Rectangle bounds, boolean doublyLinked, boolean circular, boolean animated){
 
 		Node dummy = new Node("dummy");
 		
 		dummy.setNext(dummy);
 		dummy.setPrevious(dummy);
-		dummy.setAnimated(false);
+		dummy.setAdded(false);
 		v.add(dummy);
-		gui = new GuiList(bounds,v, doublyLinked, circular);
+		gui = new GuiList(bounds,v, doublyLinked, circular, animated);
+	}
+	/**
+	 * Constructor. 
+	 * @param bounds The size of the graphical element.
+	 * @param doublyLinked Determines whether nodes will link both forwards and backwards.
+	 * @param circular Determines if the last node will link to the first of the list (and vice verse if the list if doubly-linked)
+	 */
+	public LinkedList(Rectangle bounds, boolean doublyLinked, boolean circular){
+		this(bounds, doublyLinked, circular, true);
 	}
 	/**
 	 * Adds a new node to the start of the list.
 	 * @param value The object (most likely a string of text) that this node is to contain.
 	 */
 	public void addFirst(Object value){
-		insertAfterElement(v.elementAt(0), value);
+		insertAt(1, value);
 	}
 	/**
 	 * Adds a new node to the end of the list.
 	 * @param value The object (most likely a string of text) that this node is to contain.
 	 */
 	public void addLast(Object value){
-		insertAfterElement(v.elementAt(v.size()-1), value);
+		insertAt(v.size()-1, value);
+	}
+	public void removeElementAt(int index){
+		if(index > 0){
+		v.elementAt(index).setRemoved(true);
+		gui.repaint();
+		gui.getAnimation().start();
+		}
 	}
 	public Node elementAt(int value){
 		return v.elementAt(value);
@@ -57,42 +73,21 @@ public class LinkedList {
 	 * @param element The element that the new node will be placed before.
 	 * @param value The object (most likely a string of text) that this node is to contain.
 	 */
-	public void insertBeforeElement(Node element, Object value){
+	public void insertAt( int index, Object value){
+		if(index>0){
 		Node n = new Node(value);
-		n.setPrevious(element.getPrevious());
-		n.setNext(element);
+		v.elementAt(index).getPrevious().setNext(n);
+		n.setPrevious(v.elementAt(index).getPrevious());
 		
-		element.getPrevious().setNext(n);
+		v.elementAt(index).setPrevious(n);
+		n.setNext(v.elementAt(index));
 		
-		v.insertElementAt(n, v.indexOf(element));
+		v.insertElementAt(n, index);
 		
-		element.setPrevious(n);
-		gui.getAnimation().start();
-		gui.validate();
 		gui.repaint();
-	}
-	/**
-	 * Adds a new node after a node in the list.
-	 * @param element The element that the new node will be placed after.
-	 * @param value The object (most likely a string of text) that this node is to contain.
-	 */
-	public void insertAfterElement(Node element, Object value){
-		Node n = new Node(value);
-		
-		n.setPrevious(element);
-		n.setNext(element.getNext());
-		
-		element.getNext().setPrevious(n);
-		
-		v.insertElementAt(n, v.indexOf(element)+1);
-
-		element.setNext(n);
-
 		gui.getAnimation().start();
-		gui.validate();
-		gui.repaint();
+		}
 	}
-	
 	/**
 	 * The Node class is an inner class of {@link SingleLinkedList} that contains 
 	 * information about where an element is in relationship to other elements in a list
@@ -102,7 +97,8 @@ public class LinkedList {
 		private Object 	value;
 		private Node 	next;
 		private Node 	previous;
-		private boolean animated;
+		private boolean added;
+		private boolean removed;
 		
 	// Getters and setters
 		public Node getNext() {
@@ -120,17 +116,22 @@ public class LinkedList {
 		public void setPrevious(Node previous) {
 			this.previous = previous;
 		}
-		public boolean isAnimated() {
-			return animated;
+		public boolean isAdded() {
+			return added;
+		}
+		public void setAdded(boolean added) {
+			this.added = added;
+		}		
+		public boolean isRemoved() {
+			return removed;
 		}
 
-		public void setAnimated(boolean animated) {
-			this.animated = animated;
+		public void setRemoved(boolean removed) {
+			this.removed = removed;
 		}
 		public Object getValue() {
 			return value;
 		}
-
 		public void setValue(Object value) {
 			this.value = value;
 		}
@@ -140,7 +141,8 @@ public class LinkedList {
 			this.previous 	= null;
 			this.next 		= null;
 			this.value		= value;
-			animated = true;
+			added = true;
+			removed = false;
 		}
 	}
 }

@@ -23,6 +23,7 @@ import sim.structures.LinkedList.Node;
 public class GuiList extends GuiElement implements ActionListener{
 // Class variables //
 	private Vector<LinkedList.Node> data;
+	private Vector<Link> links;
 	private ListPanel listPanel;
 	private final int drawNodeWidth = 30;
 	private final int drawNodeHeight = 30;
@@ -31,14 +32,40 @@ public class GuiList extends GuiElement implements ActionListener{
 	public void setData(Vector<LinkedList.Node> data){
 		this.data = data;
 	}
-	public GuiList(Rectangle bounds,Vector<LinkedList.Node> data, boolean doublyLinked, boolean circular){
+	public GuiList(Rectangle bounds,Vector<LinkedList.Node> data, boolean doublyLinked, boolean circular, boolean animated){
 		super();
-		animation = new Timer(1000,this);
+		if(animated) animation = new Timer(750,this);
+		else 
+			animation = new Timer(0, this);
 		this.data = data;
+
 		setBounds(bounds);		
-		listPanel = new ListPanel(circular, doublyLinked);
+		listPanel = new ListPanel(circular, doublyLinked);		
+		links = new Vector<Link>();
+		updateLinks();
 		initGraphics(data);
 
+	}
+	public void updateLinks(){
+		links.removeAllElements();
+		for(Node n : data){
+			if(listPanel.isCircular() || data.indexOf(n)-data.indexOf(n.getNext()) <0)
+			{
+				if(data.indexOf(n)-data.indexOf(n.getNext()) >0)
+				{
+				links.add(new Link(n,n.getNext(), 1, true));
+				}
+				else 
+				links.add(new Link(n,n.getNext(), 1, false));
+			}
+			if(listPanel.isDoublyLinked() && (listPanel.isCircular() || data.indexOf(n)-data.indexOf(n.getPrevious()) >1))
+				if(data.indexOf(n)-data.indexOf(n.getPrevious()) <1)
+				{
+				links.add(new Link(n,n.getPrevious(), -1, true));
+				}
+				else 
+				links.add(new Link(n,n.getPrevious(), -1, false));
+		}
 	}
 	private void initGraphics(Vector<LinkedList.Node> data){
 		listPanel.setPreferredSize(new Dimension(getWidth(), getHeight()));
@@ -48,26 +75,23 @@ public class GuiList extends GuiElement implements ActionListener{
 		listScroller.setPreferredSize(new Dimension(getWidth(), getHeight()));
 		this.add(listScroller);
 	}
-	private class ListPanel extends JPanel{
-		private boolean circular;
-		private boolean doublyLinked;
-		private int direction;
+	private class Link{
+		Node a;
+		Node b;
+		int direction;
+		boolean circular;
 		
-		public ListPanel(boolean circular, boolean doublyLinked){
+		Color c = Color.BLACK;
+		public Link(Node a, Node b, int direction, boolean circular){
+			this.a = a;
+			this.b = b;
+			this.direction = direction;
 			this.circular = circular;
-			this.doublyLinked = doublyLinked;
 		}
-		private void drawLink(Graphics2D g2d, Node start, Node end){
-			
-			int indexOfStart = data.indexOf(start)+1;
-			int indexOfEnd = data.indexOf(end)+1;
-			
-			if(indexOfStart == data.size() && indexOfEnd == 1){
-				if(!circular) return;
-			}
-			if(indexOfStart == 1 && indexOfEnd == data.size()){
-				if(!circular) return;
-			}
+		public void drawLink(Graphics2D g2d){
+			g2d.setColor(c);
+			int indexOfStart = data.indexOf(a)+1;
+			int indexOfEnd = data.indexOf(b)+1;
 
 			float f = (direction < 0) ? 11/8f : -3/8f;
 			
@@ -81,7 +105,7 @@ public class GuiList extends GuiElement implements ActionListener{
 				};
 
 			f = (direction < 0) ? -1f : 1f;
-			float d = (Math.abs(indexOfStart-indexOfEnd) > 1) || (data.indexOf(start)== data.size()-1 && data.size()==2)  ? direction*(1/8.0f) : 0f;		
+			float d = circular ? direction*(1/8.0f) : 0f;		
 			
 			int[] linkY = 
 				{ 
@@ -109,63 +133,168 @@ public class GuiList extends GuiElement implements ActionListener{
 				g2d.drawPolyline(linkX, linkY, linkX.length);
 				g2d.fillPolygon(arrowX, arrowY, arrowX.length);
 				}
+	}
+	private class ListPanel extends JPanel{
+		private boolean circular;
+		private boolean doublyLinked;
+		
+		public ListPanel(boolean circular, boolean doublyLinked){
+			this.circular = circular;
+			this.doublyLinked = doublyLinked;
+		}		
+		public boolean isCircular() {
+			return circular;
+		}
+		public boolean isDoublyLinked() {
+			return doublyLinked;
+		}
 		private void drawNode(Graphics2D g2d, Node n){
 			int indexOfNode = data.indexOf(n)+1;
 			
 			g2d.drawOval((2*indexOfNode)*drawNodeWidth, getHeight()/4, drawNodeWidth, drawNodeHeight);
 			g2d.drawString((String)n.getValue(), (2*indexOfNode)*drawNodeWidth,getHeight()/4+drawNodeHeight/2);
 		}
+		private void addAnimation(Node n){
+			switch(frame){
+			case 1:
+				 if(data.size()==3 && circular) links.remove(2);
+				 else for(int i = 0; i<links.size(); i++){
+					 if(links.get(i).b == n.getPrevious() && links.get(i).a == n.getNext()){
+						 links.remove(links.get(i));
+						 i--;
+						 break;
+					 }
+				 }
+				 break;
+			case 2:
+				if(data.size()==3 && circular) links.remove(1);
+				else for(int i = 0; i<links.size(); i++){
+					 if(links.get(i).b == n.getNext() && links.get(i).a == n.getPrevious()){
+						 links.remove(links.get(i));
+						 i--;
+						 break;
+					 }
+				 }
+				 break;
+			case 3:
+				if(listPanel.isCircular() || data.indexOf(n)-data.indexOf(n.getNext()) <0)
+				{
+					if(data.indexOf(n)-data.indexOf(n.getNext()) >0)
+					{
+					links.add(new Link(n,n.getNext(), 1, true));
+					}
+					else 
+					links.add(new Link(n,n.getNext(), 1, false));
+				}
+				break;
+			case 4:
+				if(listPanel.isDoublyLinked() && (listPanel.isCircular() || data.indexOf(n)-data.indexOf(n.getPrevious()) >1))
+					if(data.indexOf(n)-data.indexOf(n.getPrevious()) <1)
+					{
+					links.add(new Link(n,n.getPrevious(), -1, true));
+					}
+					else 
+					links.add(new Link(n,n.getPrevious(), -1, false));
+				break;
+			case 5:
+				if(listPanel.isCircular() || data.indexOf(n.getNext())-data.indexOf(n) <0)
+				{
+					if(data.indexOf(n.getNext())-data.indexOf(n) >0)
+					{
+					links.add(new Link(n.getNext(),n, -1, false));
+					}
+					else 
+					links.add(new Link(n.getNext(),n, -1,true));
+				}
+				break;
+			case 6:
+				if(listPanel.isDoublyLinked() && (listPanel.isCircular() || data.indexOf(n.getPrevious())-data.indexOf(n) >1))
+					if(data.indexOf(n.getPrevious())-data.indexOf(n) <1)
+					{
+					links.add(new Link(n.getPrevious(),n, 1, false));
+					}
+					else 
+					links.add(new Link(n.getPrevious(),n, 1, true));
+				break;
+			default:
+			break;
+			}
+		}
+		private void removeAnimation(Node n){
+			switch(frame){
+			case 1:
+				 for(int i = 0; i<links.size(); i++){
+					 if(links.get(i).b == n.getPrevious() && links.get(i).a == n){
+						 links.remove(links.get(i));
+						 i--;
+						 break;
+					 }
+				 }
+				 break;
+			case 2:
+				 for(int i = 0; i<links.size(); i++){
+					 if(links.get(i).b == n.getNext() && links.get(i).a == n){
+						 links.remove(links.get(i));
+						 i--;
+						 break;
+					 }
+				 }
+				 break;
+			case 3:
+				 for(int i = 0; i<links.size(); i++){
+					 if(links.get(i).a == n.getNext() && links.get(i).b == n){
+						 links.remove(links.get(i));
+						 i--;
+						 break;
+					 }
+				 }
+				break;
+			case 4:
+				 for(int i = 0; i<links.size(); i++){
+					 if(links.get(i).a == n.getPrevious() && links.get(i).b == n){
+						 links.remove(links.get(i));
+						 i--;
+						 break;
+					 }
+				 }
+				break;
+			case 5:
+				if(listPanel.isCircular() || data.indexOf(n.getNext())-data.indexOf(n.getPrevious()) <0)
+				{
+					if(data.indexOf(n.getNext())-data.indexOf(n.getPrevious()) >0)
+					{
+					links.add(new Link(n.getNext(),n.getPrevious(), -1, false));
+					}
+					else 
+					links.add(new Link(n.getNext(),n.getPrevious(), -1,true));
+				}
+				break;
+			case 6:
+				if(listPanel.isDoublyLinked() && (listPanel.isCircular() || data.indexOf(n.getPrevious())-data.indexOf(n.getNext()) >1))
+					if(data.indexOf(n.getPrevious())-data.indexOf(n.getNext()) <1)
+					{
+					links.add(new Link(n.getPrevious(),n.getNext(), 1, false));
+					}
+					else 
+					links.add(new Link(n.getPrevious(),n.getNext(), 1, true));
+				break;
+			default:
+		break;
+			}
+		}
 		@Override 
 		public void paintComponent(Graphics g){
 			Graphics2D g2d = (Graphics2D)g;
 			setPreferredSize(new Dimension(drawNodeWidth*data.size()*2, getHeight()));
 			
-			for(LinkedList.Node n : data){
-
-				if(n == null) continue;
-				
-				if(n.isAnimated()){
-					Color c = g2d.getColor();
-					switch(frame){
-					default:
-					case 4:
-						g2d.setColor(Color.RED);
-						direction = -1;						
-						drawLink(g2d, n.getNext(), n);						
-					case 3:
-						g2d.setColor(Color.GREEN);
-						direction = -1;	
-						drawLink(g2d, n, n.getPrevious());						
-					case 2:
-						g2d.setColor(Color.RED);
-						direction = 1;	
-						drawLink(g2d, n, n.getNext());
-						
-					case 1:
-						g2d.setColor(Color.GREEN);
-						direction = 1;	
-						drawLink(g2d, n.getPrevious(), n);						
-					case 0:
-
-						g2d.setColor(c);
-					break;
-					}
-				}
-				drawNode(g2d, n);
-				if(n.getNext() != null && !n.isAnimated())
-				{
-				if(!n.getNext().isAnimated()){
-						direction = 1;
-						drawLink(g2d, n, n.getNext());
-					}
-				}
-				if(doublyLinked && n.getPrevious() != null && !n.isAnimated())
-				{
-				 if(!n.getPrevious().isAnimated()){
-					direction = -1;	
-					drawLink(g2d, n,n.getPrevious());
-				}
-				}
+			for(Node n : data){
+			drawNode(g2d, n);
+			if(n.isAdded()) addAnimation(n);
+			if(n.isRemoved()) removeAnimation(n);
+			}
+			
+			for(Link l : links){
+					l.drawLink(g2d);
 				}
 			listPanel.validate();
 		}
@@ -174,10 +303,22 @@ public class GuiList extends GuiElement implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource()==animation){
 			frame++;
+			System.out.println(frame);
 			if(frame > MAXFRAME){
-				for(Node n : data)
-					if(n.isAnimated())
-						n.setAnimated(false);
+				for(int i =0; i< data.size(); i++){
+					if(data.get(i).isAdded()){
+						data.get(i).setAdded(false);
+						updateLinks();
+					}
+					if(data.get(i).isRemoved()){
+						data.get(i).getNext().setPrevious(data.get(i).getPrevious());
+						data.get(i).getPrevious().setNext(data.get(i).getNext());
+						data.remove(data.get(i));
+						
+						i--;
+						updateLinks();
+					}
+				}
 				frame = 0;
 				animation.stop();
 				repaint();
