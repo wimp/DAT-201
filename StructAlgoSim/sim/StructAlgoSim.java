@@ -24,6 +24,7 @@ public class StructAlgoSim {
 //		RailwayPostfix rsim = new RailwayPostfix();
 		EditorGui gui = new EditorGui();
 		
+
 //		JFrame frame = new JFrame();
 //		frame.setTitle("StructAlgoSim 0.1");
 //		frame.setSize(700,600);
