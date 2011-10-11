@@ -8,8 +8,11 @@ public class Variable {
 
 	GuiVariable gui;
 	
+	public boolean isEditable;
+	
 	public Variable(Rectangle bounds, String value, boolean editable){
 		gui = new GuiVariable(bounds,value, editable);
+		this.isEditable = editable;
 	}
 	public GuiElement getGuiElement() {
 		return gui;
