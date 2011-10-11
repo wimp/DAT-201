@@ -5,7 +5,7 @@ import java.awt.Rectangle;
 import javax.swing.JFrame;
 
 import sim.functions.Add;
-import sim.functions.InsertBefore;
+import sim.functions.Insert;
 import sim.functions.Pop;
 import sim.functions.Push;
 import sim.functions.Remove;
@@ -34,9 +34,9 @@ public class StructAlgoSim {
 		Stack s = new Stack(new Rectangle(100,300, 100, 100));
 		Variable i = new Variable(new Rectangle(100,50,100,20),"1",true);
 		Variable r = new Variable(new Rectangle(400,50,100,20)," ",false);
-		InsertBefore ib = new InsertBefore(new Rectangle(290,200,120,50),list,v,i);
 		Remove rm = new Remove(new Rectangle(400,200,120,50),list,r,i);
-		
+		Array a = new Array(new Rectangle(100,100,400,100),8);
+		Insert ib = new Insert(new Rectangle(290,200,120,50),a,v,i);
 		frame.add(v.getGuiElement());
 		frame.add(i.getGuiElement());
 		frame.add(list.getGuiElement());
