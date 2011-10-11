@@ -11,8 +11,7 @@ import sim.structures.LinkedList;
 import sim.structures.Variable;
 
 /**
- * Add - Instances of this class is used with structures such as linked-list or array to add an element to the end. (LIFO)
- * @author 
+ * Remove - Instances of this class is used with structures such as linked-list or array to remove an element at the index i.
  */
 public class Remove implements ActionListener {
 // Class variables //
@@ -26,11 +25,35 @@ public class Remove implements ActionListener {
 		return gui;
 	}
 	
-// Class constructor //
+	public Object getL() {
+		return l;
+	}
+
+	public void setL(Object l) {
+		this.l = l;
+	}
+
+	public Variable getV() {
+		return v;
+	}
+
+	public void setV(Variable v) {
+		this.v = v;
+	}
+
+	public Variable getI() {
+		return i;
+	}
+
+	public void setI(Variable i) {
+		this.i = i;
+	}
+
+	// Class constructor //
 	/**
 	 * The class constructor. Initializes the graphical element - {@link GuiFunction}
 	 * @param bounds 	- The size and placement of the graphical element
-	 * @param l 		- The structure on which to perform the add()-action
+	 * @param l 		- The structure on which to perform the remove()-action
 	 * @param v 		- The output variable
 	 * @param i			- The input variable. The index to be removed from the list/array
 	 */
@@ -39,7 +62,7 @@ public class Remove implements ActionListener {
 		gui.getButton().addActionListener(this);
 		this.l=l;
 		this.v=v;
-		this.i=i;
+		this.i=i == null ? new Variable(new Rectangle(0,0,0,0),"0",false) : i;
 	}
 	
 // Action Listener implementation //

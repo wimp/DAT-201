@@ -25,6 +25,22 @@ public class Add implements ActionListener {
 		return gui;
 	}
 	
+	public Object getL(){
+		return l;
+	}
+	
+	public void setL(Object l){
+		this.l = l;
+	}
+	
+	public Variable getV(){
+		return v;
+	}
+	
+	public void setV(Variable v){
+		this.v = v;
+	}
+	
 // Class constructor //
 	/**
 	 * The class constructor. Initializes the graphical element - {@link GuiFunction}
