@@ -49,10 +49,11 @@ public class Remove implements ActionListener {
 			String s = ((Array) l).removeItem(Integer.parseInt(i.getValue())).toString();
 			v.setValue(s);
 		}else if(l instanceof LinkedList){
-			((LinkedList) l).removeElementAt(Integer.parseInt(i.getValue()));
+			Object o = ((LinkedList) l).removeElementAt(Integer.parseInt(i.getValue()));
+			if(o!=null){
+				String s = o.toString();
+				v.setValue(s);
+			}
 		}
-		//l.addFirst(v.getValue());
-		
-
 	}
 }

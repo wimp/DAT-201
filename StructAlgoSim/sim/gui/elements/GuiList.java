@@ -181,20 +181,31 @@ public class GuiList extends GuiElement implements ActionListener{
 				{
 					if(data.indexOf(n)-data.indexOf(n.getNext()) >0)
 					{
-					links.add(new Link(n,n.getNext(), 1, true));
+					Link l = new Link(n,n.getNext(), 1, true);
+					l.c = Color.GREEN;
+					links.add(l);
 					}
-					else 
-					links.add(new Link(n,n.getNext(), 1, false));
+					else {
+					Link l = new Link(n,n.getNext(), 1, true);
+					l.c = Color.GREEN;
+					links.add(l);
+				}
 				}
 				break;
 			case 4:
 				if(listPanel.isDoublyLinked() && (listPanel.isCircular() || data.indexOf(n)-data.indexOf(n.getPrevious()) >1))
 					if(data.indexOf(n)-data.indexOf(n.getPrevious()) <1)
 					{
-					links.add(new Link(n,n.getPrevious(), -1, true));
+					Link l = new Link(n,n.getPrevious(), -1, true);
+					l.c = Color.GREEN;
+					links.add(l);
 					}
 					else 
-					links.add(new Link(n,n.getPrevious(), -1, false));
+					{
+						Link l = new Link(n,n.getPrevious(), -1, false);
+						l.c = Color.GREEN;
+						links.add(l);
+					}
 				break;
 			case 5:
 				if(listPanel.isCircular() || data.indexOf(n.getNext())-data.indexOf(n) <0)

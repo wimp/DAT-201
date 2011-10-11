@@ -58,12 +58,14 @@ public class LinkedList {
 	public void addLast(Object value){
 		insertAt(v.size()-1, value);
 	}
-	public void removeElementAt(int index){
-		if(index > 0){
+	public Object removeElementAt(int index){
+		if(index > 0 && index < v.size()){
 		v.elementAt(index).setRemoved(true);
 		gui.repaint();
 		gui.getAnimation().start();
+		return v.elementAt(index).getValue();
 		}
+		else return null;
 	}
 	public Node elementAt(int value){
 		return v.elementAt(value);
@@ -74,7 +76,7 @@ public class LinkedList {
 	 * @param value The object (most likely a string of text) that this node is to contain.
 	 */
 	public void insertAt( int index, Object value){
-		if(index>0){
+		if(index>0 && v.size()>=2){
 		Node n = new Node(value);
 		v.elementAt(index).getPrevious().setNext(n);
 		n.setPrevious(v.elementAt(index).getPrevious());
@@ -83,10 +85,21 @@ public class LinkedList {
 		n.setNext(v.elementAt(index));
 		
 		v.insertElementAt(n, index);
-		
+		}
+		else {
+			Node n = new Node(value);
+			v.elementAt(0).getPrevious().setNext(n);
+			n.setPrevious(v.elementAt(0).getPrevious());
+			
+			v.elementAt(0).setPrevious(n);
+			n.setNext(v.elementAt(0));
+			
+			v.add(n);
+			
+
+		}
 		gui.repaint();
 		gui.getAnimation().start();
-		}
 	}
 	/**
 	 * The Node class is an inner class of {@link SingleLinkedList} that contains 

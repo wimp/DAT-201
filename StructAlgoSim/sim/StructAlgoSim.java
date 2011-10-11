@@ -29,14 +29,13 @@ public class StructAlgoSim {
 		frame.setLayout(null);
 
 		Variable v = new Variable(new Rectangle(100,50,100,20),"win", true);
-		LinkedList list = new LinkedList(new Rectangle(200,300,500,100), true,true,false);
+		LinkedList list = new LinkedList(new Rectangle(200,300,500,100), true,true,true);
 		Add add = new Add(new Rectangle(200,200, 75,50), list, v);
-		Stack s = new Stack(new Rectangle(100,300, 100, 100));
 		Variable i = new Variable(new Rectangle(100,50,100,20),"1",true);
 		Variable r = new Variable(new Rectangle(400,50,100,20)," ",false);
 		Remove rm = new Remove(new Rectangle(400,200,120,50),list,r,i);
-		Array a = new Array(new Rectangle(100,100,400,100),8);
-		Insert ib = new Insert(new Rectangle(290,200,120,50),a,v,i);
+		Insert ib = new Insert(new Rectangle(290,200,120,50),list,v,i);
+		
 		frame.add(v.getGuiElement());
 		frame.add(i.getGuiElement());
 		frame.add(list.getGuiElement());
