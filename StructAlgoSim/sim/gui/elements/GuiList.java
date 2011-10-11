@@ -212,20 +212,30 @@ public class GuiList extends GuiElement implements ActionListener{
 				{
 					if(data.indexOf(n.getNext())-data.indexOf(n) >0)
 					{
-					links.add(new Link(n.getNext(),n, -1, false));
+						Link l =new Link(n.getNext(),n, -1, false);
+						l.c = Color.GREEN;
+						links.add(l);
 					}
-					else 
-					links.add(new Link(n.getNext(),n, -1,true));
-				}
+					else {
+						Link l =new Link(n.getNext(),n, -1,true);
+						l.c = Color.GREEN;
+						links.add(l);
+					}
+					}
 				break;
 			case 6:
 				if(listPanel.isDoublyLinked() && (listPanel.isCircular() || data.indexOf(n.getPrevious())-data.indexOf(n) >1))
 					if(data.indexOf(n.getPrevious())-data.indexOf(n) <1)
 					{
-					links.add(new Link(n.getPrevious(),n, 1, false));
+						Link l =new Link(n.getPrevious(),n, 1, false);
+						l.c = Color.GREEN;
+						links.add(l);
 					}
-					else 
-					links.add(new Link(n.getPrevious(),n, 1, true));
+					else {
+						Link l = new Link(n.getPrevious(),n, 1, true);
+						l.c = Color.GREEN;
+						links.add(l);
+					}
 				break;
 			default:
 			break;
@@ -274,20 +284,30 @@ public class GuiList extends GuiElement implements ActionListener{
 				{
 					if(data.indexOf(n.getNext())-data.indexOf(n.getPrevious()) >0)
 					{
-					links.add(new Link(n.getNext(),n.getPrevious(), -1, false));
+						Link l = new Link(n.getNext(),n.getPrevious(), -1, false);
+						l.c = Color.GREEN;
+						links.add(l);
 					}
-					else 
-					links.add(new Link(n.getNext(),n.getPrevious(), -1,true));
+					else {
+						Link l = new Link(n.getNext(),n.getPrevious(), -1,true);
+						l.c = Color.GREEN;
+						links.add(l);
+					}
 				}
 				break;
 			case 6:
 				if(listPanel.isDoublyLinked() && (listPanel.isCircular() || data.indexOf(n.getPrevious())-data.indexOf(n.getNext()) >1))
 					if(data.indexOf(n.getPrevious())-data.indexOf(n.getNext()) <1)
 					{
-					links.add(new Link(n.getPrevious(),n.getNext(), 1, false));
+						Link l = new Link(n.getPrevious(),n.getNext(), 1, false);
+						l.c = Color.GREEN;
+						links.add(l);
 					}
-					else 
-					links.add(new Link(n.getPrevious(),n.getNext(), 1, true));
+					else {
+						Link l = new Link(n.getPrevious(),n.getNext(), 1, true);
+						l.c = Color.GREEN;
+						links.add(l);
+					}
 				break;
 			default:
 		break;
