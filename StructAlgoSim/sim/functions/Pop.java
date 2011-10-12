@@ -24,7 +24,23 @@ public class Pop implements ActionListener {
 		return gui;
 	}
 	
-// Class constructor //
+	public Stack getS() {
+		return s;
+	}
+
+	public void setS(Stack s) {
+		this.s = s;
+	}
+
+	public Variable getV() {
+		return v;
+	}
+
+	public void setV(Variable v) {
+		this.v = v;
+	}
+
+	// Class constructor //
 	/**
 	 * The class constructor. Initializes the graphical element - {@link GuiFunction}
 	 * @param bounds 	- The size and placement of the graphical element
@@ -41,6 +57,9 @@ public class Pop implements ActionListener {
 // Action Listener implementation //
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		v.setValue((String)s.pop());
+		if(v != null)
+			v.setValue((String)s.pop());
+		else
+			s.pop();
 	}
 }

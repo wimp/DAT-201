@@ -20,6 +20,18 @@ public class MoveChar implements ActionListener {
 	public GuiElement getGuiElement(){
 		return gui;
 	}
+	public Variable getInput() {
+		return input;
+	}
+	public void setInput(Variable input) {
+		this.input = input;
+	}
+	public Variable getOutput() {
+		return output;
+	}
+	public void setOutput(Variable output) {
+		this.output = output;
+	}
 	/**
 	 * Constructor.
 	 * 
@@ -40,10 +52,14 @@ public class MoveChar implements ActionListener {
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-			String val = input.getValue();	
-			output.setValue(output.getValue() + val.substring(0,1));
-			input.setValue(val.substring(1));
+		if(input != null && output != null){
+			String val = input.getValue();
+			if(val.length() > 0){
+				output.setValue(output.getValue() + val.substring(0,1));
+				input.setValue(val.substring(1));
+			}
 		}
+	}
 	/**
 	 * The direction enum is used to specify the direction the arrow will point in the
 	 * GUIelement.

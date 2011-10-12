@@ -27,7 +27,31 @@ public class Insert implements ActionListener {
 		return gui;
 	}
 	
-// Class constructor //
+	public Object getL() {
+		return l;
+	}
+
+	public void setL(Object l) {
+		this.l = l;
+	}
+
+	public Variable getV() {
+		return v;
+	}
+
+	public void setV(Variable v) {
+		this.v = v;
+	}
+
+	public Variable getI() {
+		return i;
+	}
+
+	public void setI(Variable i) {
+		this.i = i;
+	}
+
+	// Class constructor //
 	/**
 	 * The class constructor. Initializes the graphical element - {@link GuiFunction}
 	 * @param bounds 			- The size and placement of the graphical element
