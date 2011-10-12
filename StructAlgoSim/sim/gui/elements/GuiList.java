@@ -326,7 +326,7 @@ public class GuiList extends GuiElement implements ActionListener{
 			for(Link l : links){
 					l.drawLink(g2d);
 				}
-			this.validate();
+			listPanel.validate();
 		}
 	}
 	@Override

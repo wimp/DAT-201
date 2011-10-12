@@ -72,16 +72,20 @@ public class Tree {
 		TreeNode lol = new TreeNode("1", root);
 		lol.insert("1.1");
 		TreeNode fu = new TreeNode("1.2", lol);
+		fu.insert("1.2.1");		
 		fu.insert("1.2.1");
 		fu.insert("1.2.2");
 		lol.addSubTree(fu);
-		lol.insert("1.3");
-		lol.insert("1.4");
-
 		TreeNode fu1 = new TreeNode("1.3", lol);
-		fu.insert("1.3.1");
-		fu.insert("1.3.2");
+		fu1.insert("1.3.1");		
+		fu1.insert("1.3.1");
+		fu1.insert("1.3.2");
 		lol.addSubTree(fu1);
+		TreeNode lol1 = new TreeNode("1.3", root);
+		lol1.insert("1.3.1");		
+		lol1.insert("1.3.1");
+		lol1.insert("1.3.2");
+		root.addSubTree(lol1);
 		root.addSubTree(lol);
 		gui = new GuiTree(bounds, root, animated);
 	}

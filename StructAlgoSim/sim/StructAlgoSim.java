@@ -13,8 +13,8 @@ public class StructAlgoSim {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-//		RailwayPostfix rsim = new RailwayPostfix();
-		//EditorGui gui = new EditorGui();
+	//	RailwayPostfix rsim = new RailwayPostfix();
+	//	EditorGui gui = new EditorGui();
 		
 
 		JFrame frame = new JFrame();

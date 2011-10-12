@@ -38,30 +38,31 @@ public class GuiTree extends GuiElement{
 		this.add(listScroller);
 	}
 	private class TreePanel extends JPanel{
-		int drawNodeWidth = 10;
-		int drawNodeHeight = 10;
+		int drawNodeWidth = 40;
+		int drawNodeHeight = 40;
+		int clusterWidth;
 		int maxCluster;
+		int maxDepth; 
+		
 		public TreePanel(){
-			
 		}
-		public int drawTree(Graphics2D g2d ,Tree.TreeNode tree){
-			int prevCluster;
-			int indent;
+		public void drawTree(Graphics2D g2d ,Tree.TreeNode tree){
 			for(Tree.TreeNode q : tree.getChildren())
 			{
-				if(q.getChildren().size()>0) prevCluster = drawTree(g2d , q);
-				int relativeNodePos = (tree.getChildren().indexOf(q)*drawNodeWidth*2)+maxCluster*tree.getChildren().indexOf(q);
-				int levelOffset = tree.getParent()== null ? 0 : tree.getParent().getChildren().indexOf(tree)*drawNodeWidth;
-				g2d.drawOval(relativeNodePos + levelOffset, drawNodeHeight * 3* q.getDepth(),
+				if(q.getChildren().size()>0) drawTree(g2d , q);
+				int relativeNodePos = tree.getParent()==null ? getWidth()/2 :
+					getWidth()/2+(((int)(Math.pow(maxCluster,q.getDepth()+1))*drawNodeWidth)/(int)(Math.pow(maxCluster,q.getDepth()+1))*(tree.getChildren().indexOf(q))
+						+(tree.getParent().getChildren().indexOf(tree))*clusterWidth)
+						;
+				g2d.drawOval(relativeNodePos, drawNodeHeight * 3* q.getDepth(),
 						drawNodeWidth, drawNodeHeight);
-				//g2d.drawString((String)q.getValue(), (q.getChildren().size())*drawNodeWidth+drawNodeWidth, drawNodeHeight*q.getDepth()+drawNodeWidth);
+				g2d.drawString((String)q.getValue(), relativeNodePos, drawNodeHeight*3*q.getDepth());
 				System.out.println(q.getParent().getValue().toString()+" - "+tree.getChildren().indexOf(q)+": " +q.getValue().toString());
 			}
-			return 0;
 		}
 		public int findMaxCluster(Tree.TreeNode t, int max){
 			if(t.getChildren().size()>max){
-				max = (t.getDepth()+1)*drawNodeWidth;
+				max = t.getChildren().size();
 			}
 			for(Tree.TreeNode q : t.getChildren())
 			{
@@ -69,14 +70,28 @@ public class GuiTree extends GuiElement{
 			}
 			return max;
 		}
+		public int findMaxDepth(Tree.TreeNode t, int max){
+			if(t.getDepth()>max){
+				max = t.getDepth();
+			}
+			for(Tree.TreeNode q : t.getChildren())
+			{
+				max = findMaxDepth(q, max);
+			}
+			return max;
+		}
 		@Override 
 		public void paintComponent(Graphics g){
 			Graphics2D g2d = (Graphics2D)g;
 			maxCluster = root.getChildren().size();
+			maxDepth = findMaxDepth(root,0);
 			maxCluster = findMaxCluster(root, maxCluster);
+			clusterWidth = maxCluster*drawNodeWidth;
+			setPreferredSize(new Dimension((int)(drawNodeWidth*Math.pow(maxCluster, maxDepth)), drawNodeHeight*2*maxDepth));
 			System.out.println("Maxcluster: "+maxCluster);
+			System.out.println("Maxdepth: "+maxDepth);
 			drawTree(g2d, root);
-			this.validate();
+			treePanel.validate();
 
 		}
 	}
