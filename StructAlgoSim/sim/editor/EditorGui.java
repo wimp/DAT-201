@@ -2,6 +2,7 @@ package sim.editor;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.GridLayout;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JFrame;
@@ -21,7 +22,7 @@ public class EditorGui extends JFrame {
 		JPanel topPanel 	= new JPanel();
 		editorPanel = new JPanel();
 		editorPanel.addMouseListener(el);
-		editorPanel.setBackground(Color.BLUE);
+		editorPanel.setBackground(Color.cyan);
 		editorPanel.setLayout(null);
 		
 		// Init. items that should be in the top panel //
@@ -37,6 +38,8 @@ public class EditorGui extends JFrame {
 		JToggleButton variable	= new JToggleButton("Variable");
 		JToggleButton link		= new JToggleButton("Link");
 		JToggleButton select	= new JToggleButton("Select and Push");
+		JToggleButton moveChar	= new JToggleButton("Move Char");
+		JToggleButton delete	= new JToggleButton("Delete Element");
 		
 		// Add actionlisteners and set action commands //
 		stack.addActionListener(el);
@@ -61,6 +64,10 @@ public class EditorGui extends JFrame {
 		link.setActionCommand("10");
 		select.addActionListener(el);
 		select.setActionCommand("11");
+		moveChar.addActionListener(el);
+		moveChar.setActionCommand("12");
+		delete.addActionListener(el);
+		delete.setActionCommand("13");
 		
 		// Add toggle buttons to the button group //
 		bg.add(stack);
@@ -72,10 +79,13 @@ public class EditorGui extends JFrame {
 		bg.add(push);
 		bg.add(pop);
 		bg.add(variable);
+		bg.add(moveChar);
 		bg.add(link);
 		bg.add(select);
+		bg.add(delete);
 		
 		// Add elements to the top panel //
+		topPanel.setLayout(new GridLayout(2,1));
 		topPanel.add(stack);
 		topPanel.add(array);
 		topPanel.add(list);
@@ -85,8 +95,10 @@ public class EditorGui extends JFrame {
 		topPanel.add(push);
 		topPanel.add(pop);
 		topPanel.add(variable);
+		topPanel.add(moveChar);
 		topPanel.add(link);
 		topPanel.add(select);
+		topPanel.add(delete);
 		
 		// Add elements to the main frame in the gridLayout //
 		add(topPanel,BorderLayout.NORTH);

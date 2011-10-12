@@ -57,6 +57,9 @@ public class Pop implements ActionListener {
 // Action Listener implementation //
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		v.setValue((String)s.pop());
+		if(v != null)
+			v.setValue((String)s.pop());
+		else
+			s.pop();
 	}
 }
