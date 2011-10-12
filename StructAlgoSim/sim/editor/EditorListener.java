@@ -172,6 +172,36 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 							((Add) endElement).setV((Variable) startElement);
 						}else if(endElement instanceof Remove){
 							((Remove) endElement).setI((Variable) startElement);
+						}else if(endElement instanceof Insert){
+							((Insert) endElement).setI((Variable) startElement);
+						}else if(endElement instanceof Push){
+							((Push) endElement).setV((Variable) startElement);
+						}else if(endElement instanceof Pop){
+							((Pop) endElement).setV((Variable) startElement);
+						}
+					}else if(startElement instanceof Stack){
+						if(endElement instanceof Push){
+							((Push) endElement).setS((Stack) startElement);
+						}else if(endElement instanceof Pop){
+							((Pop) endElement).setS((Stack) startElement);
+						}
+					}else if(startElement instanceof Push){
+						if(endElement instanceof Stack){
+							((Push) startElement).setS((Stack) endElement);
+						}else if(endElement instanceof Variable){
+							((Push) startElement).setV((Variable) endElement);
+						}
+					}else if(startElement instanceof Pop){
+						if(endElement instanceof Stack){
+							((Pop) startElement).setS((Stack) endElement);
+						}else if(endElement instanceof Variable){
+							((Pop) startElement).setV((Variable) endElement);
+						}
+					}else if(startElement instanceof LinkedList){
+						if(endElement instanceof Remove){
+							((Remove) endElement).setL(startElement);
+						}else if(endElement instanceof Insert){
+							((Insert) endElement).setL(startElement);
 						}
 					}
 					break;

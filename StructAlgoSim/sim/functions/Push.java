@@ -24,13 +24,29 @@ public class Push implements ActionListener{
 		return gui;
 	}
 	
+	public Stack getS() {
+		return s;
+	}
+
+	public void setS(Stack s) {
+		this.s = s;
+	}
+
+	public Variable getV() {
+		return v;
+	}
+
+	public void setV(Variable v) {
+		this.v = v;
+	}
+
 // Class constructor //
-		/**
-		 * The class constructor. Initializes the graphical element - {@link GuiFunction}
-		 * @param bounds 	- The size and placement of the graphical element
-		 * @param v 		- The input variable.
-		 * @param s 		- The structure on which to perform the push()-action 
-		 */
+	/**
+	 * The class constructor. Initializes the graphical element - {@link GuiFunction}
+	 * @param bounds 	- The size and placement of the graphical element
+	 * @param v 		- The input variable.
+	 * @param s 		- The structure on which to perform the push()-action 
+	 */
 	public Push(Rectangle bounds, Variable v, Stack s){
 		gui = new GuiFunction(bounds,"Push");
 		gui.getButton().addActionListener(this);
