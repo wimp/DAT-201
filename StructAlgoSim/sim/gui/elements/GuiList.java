@@ -24,6 +24,7 @@ public class GuiList extends GuiElement implements ActionListener{
 	private Vector<Node> data;
 	private Vector<Link> links;
 	private ListPanel listPanel;
+	private JScrollPane listScroller;
 	private final int drawNodeWidth = 30;
 	private final int drawNodeHeight = 30;
 
@@ -68,7 +69,7 @@ public class GuiList extends GuiElement implements ActionListener{
 	}
 	private void initGraphics(){
 		listPanel.setPreferredSize(new Dimension(getWidth(), getHeight()));
-		JScrollPane listScroller = new JScrollPane(listPanel);
+		listScroller = new JScrollPane(listPanel);
 		listScroller.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		listScroller.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 		listScroller.setPreferredSize(new Dimension(getWidth(), getHeight()));
@@ -156,7 +157,7 @@ public class GuiList extends GuiElement implements ActionListener{
 		private void addAnimation(Node n){
 			switch(frame){
 			case 1:
-				 if(data.size()==3 && circular) links.remove(2);
+				 if(data.size()==3 && circular&& links.size()>2) links.remove(2);
 				 else for(int i = 0; i<links.size(); i++){
 					 if(links.get(i).b == n.getPrevious() && links.get(i).a == n.getNext()){
 						 links.remove(links.get(i));
@@ -166,7 +167,7 @@ public class GuiList extends GuiElement implements ActionListener{
 				 }
 				 break;
 			case 2:
-				if(data.size()==3 && circular) links.remove(1);
+				if(data.size()==3 && circular && links.size()>1) links.remove(1);
 				else for(int i = 0; i<links.size(); i++){
 					 if(links.get(i).b == n.getNext() && links.get(i).a == n.getPrevious()){
 						 links.remove(links.get(i));
@@ -315,18 +316,18 @@ public class GuiList extends GuiElement implements ActionListener{
 		@Override 
 		public void paintComponent(Graphics g){
 			Graphics2D g2d = (Graphics2D)g;
-			setPreferredSize(new Dimension(drawNodeWidth*data.size()*2, getHeight()));
+			g2d.clearRect(0, 0, getWidth(), getHeight());
+			setPreferredSize(new Dimension(drawNodeWidth*(data.size()+1)*2, getHeight()));
 			
 			for(Node n : data){
 			drawNode(g2d, n);
 			if(n.isAdded()) addAnimation(n);
 			if(n.isRemoved()) removeAnimation(n);
 			}
-			
 			for(Link l : links){
 					l.drawLink(g2d);
 				}
-			listPanel.validate();
+			listPanel.revalidate();
 		}
 	}
 	@Override

@@ -63,31 +63,56 @@ public class Tree {
 	 */
 	GuiTree gui;
 	int maxDepth;
+	TreeNode root; 
 	
+	public TreeNode getRoot() {
+		return root;
+	}
+	public void setRoot(TreeNode root) {
+		this.root = root;
+	}
 	public GuiTree getGuiElement() {
 		return gui;
 	}
 	public Tree(Rectangle bounds,boolean animated){
-		TreeNode root = new TreeNode("root", null);
-		TreeNode lol = new TreeNode("1", root);
-		lol.insert("1.1");
-		TreeNode fu = new TreeNode("1.2", lol);
-		fu.insert("1.2.1");		
-		fu.insert("1.2.1");
-		fu.insert("1.2.2");
-		lol.addSubTree(fu);
-		TreeNode fu1 = new TreeNode("1.3", lol);
-		fu1.insert("1.3.1");		
-		fu1.insert("1.3.1");
-		fu1.insert("1.3.2");
-		lol.addSubTree(fu1);
-		TreeNode lol1 = new TreeNode("1.3", root);
-		lol1.insert("1.3.1");		
-		lol1.insert("1.3.1");
-		lol1.insert("1.3.2");
+		root = new TreeNode("root", null);
+		TreeNode lol0 = new TreeNode("1", root);
+		lol0.insert("11");		
+		lol0.insert("12");
+		lol0.insert("13");
+		TreeNode lol1 = new TreeNode("2", root);
+		lol1.insert("21");		
+		lol1.insert("22");
+		lol1.insert("23");
+		TreeNode lol2 = new TreeNode("3", root);
+		lol2.insert("31");		
+		lol2.insert("32");
+		lol2.insert("33");
+		root.addSubTree(lol0);
 		root.addSubTree(lol1);
-		root.addSubTree(lol);
-		gui = new GuiTree(bounds, root, animated);
+		root.addSubTree(lol2);
+		
+		gui = new GuiTree(bounds, this, animated);
 	}
+	public int findMaxCluster(TreeNode t, int max){
+		
+		if(t.getChildren().size()>max) max = t.getChildren().size();
 
+		for(Tree.TreeNode q : t.getChildren())
+		{
+			return findMaxCluster(q, max);
+		}
+		return max;
+	}
+	public int getHeight(TreeNode t){
+		return 0;
+	}
+	public int findMaxDepth(TreeNode t, int max){
+		if(t.getDepth()>max) max = t.getDepth();
+		for(Tree.TreeNode q : t.getChildren())
+		{
+			return findMaxDepth(q, max);
+		}
+		return max;
+	}
 }

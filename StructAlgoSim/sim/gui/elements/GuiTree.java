@@ -1,11 +1,11 @@
 package sim.gui.elements;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
-import java.util.Vector;
+import java.awt.event.AdjustmentEvent;
+import java.awt.event.AdjustmentListener;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -14,16 +14,16 @@ import javax.swing.Timer;
 import sim.structures.Tree;
 
 public class GuiTree extends GuiElement{
-	Tree.TreeNode root;
+	Tree tree;
 	TreePanel treePanel;
 	
-	public GuiTree(Rectangle bounds,Tree.TreeNode root, boolean animated){
+	public GuiTree(Rectangle bounds,Tree tree, boolean animated){
 		super();
 		
 		if(animated) animation = new Timer(750,this);
 		else 
 			animation = new Timer(0, this);
-		this.root = root;
+		this.tree = tree;
 
 		setBounds(bounds);			
 		initGraphics();
@@ -38,61 +38,54 @@ public class GuiTree extends GuiElement{
 		this.add(listScroller);
 	}
 	private class TreePanel extends JPanel{
-		int drawNodeWidth = 40;
-		int drawNodeHeight = 40;
-		int clusterWidth;
+		int drawNodeWidth = 20;
+		int drawNodeHeight = 20;
 		int maxCluster;
 		int maxDepth; 
 		
 		public TreePanel(){
 		}
+		private int getIndent(Tree.TreeNode n){
+			int indent = 0;
+			for(int i =0; i<=(maxDepth)-n.getDepth()+1; i++){
+					indent= (int)Math.pow(maxCluster, i);
+				}
+
+			return indent;
+		}
+		private int getIndex(Tree.TreeNode n){
+			int index =0;
+					while(n!=null){
+						if(n.getParent()!=null )
+						index += n.getParent().getChildren().indexOf(n)*getIndent(n);
+						n = n.getParent();
+					}
+			return index;
+		}
 		public void drawTree(Graphics2D g2d ,Tree.TreeNode tree){
 			for(Tree.TreeNode q : tree.getChildren())
 			{
 				if(q.getChildren().size()>0) drawTree(g2d , q);
-				int relativeNodePos = tree.getParent()==null ? getWidth()/2 :
-					getWidth()/2+(((int)(Math.pow(maxCluster,q.getDepth()+1))*drawNodeWidth)/(int)(Math.pow(maxCluster,q.getDepth()+1))*(tree.getChildren().indexOf(q))
-						+(tree.getParent().getChildren().indexOf(tree))*clusterWidth)
-						;
-				g2d.drawOval(relativeNodePos, drawNodeHeight * 3* q.getDepth(),
+					int index = getIndex(q)+tree.getChildren().indexOf(q);
+					System.out.println(q.getValue().toString() + "- index : "+index);
+					int x = index*drawNodeWidth;
+					
+						g2d.drawOval(x, drawNodeHeight * 1* q.getDepth(),
 						drawNodeWidth, drawNodeHeight);
-				g2d.drawString((String)q.getValue(), relativeNodePos, drawNodeHeight*3*q.getDepth());
-				System.out.println(q.getParent().getValue().toString()+" - "+tree.getChildren().indexOf(q)+": " +q.getValue().toString());
+				g2d.drawString((String)q.getValue(), x, drawNodeHeight*1*q.getDepth());
 			}
-		}
-		public int findMaxCluster(Tree.TreeNode t, int max){
-			if(t.getChildren().size()>max){
-				max = t.getChildren().size();
-			}
-			for(Tree.TreeNode q : t.getChildren())
-			{
-				max = findMaxCluster(q, max);
-			}
-			return max;
-		}
-		public int findMaxDepth(Tree.TreeNode t, int max){
-			if(t.getDepth()>max){
-				max = t.getDepth();
-			}
-			for(Tree.TreeNode q : t.getChildren())
-			{
-				max = findMaxDepth(q, max);
-			}
-			return max;
 		}
 		@Override 
 		public void paintComponent(Graphics g){
 			Graphics2D g2d = (Graphics2D)g;
-			maxCluster = root.getChildren().size();
-			maxDepth = findMaxDepth(root,0);
-			maxCluster = findMaxCluster(root, maxCluster);
-			clusterWidth = maxCluster*drawNodeWidth;
-			setPreferredSize(new Dimension((int)(drawNodeWidth*Math.pow(maxCluster, maxDepth)), drawNodeHeight*2*maxDepth));
+			g2d.clearRect(0, 0, getWidth(), getHeight());
+			maxDepth = tree.findMaxDepth(tree.getRoot(), 0);
+			maxCluster = tree.findMaxCluster(tree.getRoot(), 0);
+			setPreferredSize(new Dimension((int)(drawNodeWidth*Math.pow(maxCluster, maxDepth+1)), drawNodeHeight*2*maxDepth));
 			System.out.println("Maxcluster: "+maxCluster);
 			System.out.println("Maxdepth: "+maxDepth);
-			drawTree(g2d, root);
-			treePanel.validate();
-
+			drawTree(g2d, tree.getRoot());
+			revalidate();
 		}
 	}
 }
