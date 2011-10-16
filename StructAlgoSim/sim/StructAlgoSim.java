@@ -4,8 +4,10 @@ import java.awt.Rectangle;
 
 import javax.swing.JFrame;
 
+import sim.functions.Add;
 import sim.structures.LinkedList;
 import sim.structures.Tree;
+import sim.structures.Variable;
 
 public class StructAlgoSim {
 
@@ -19,14 +21,17 @@ public class StructAlgoSim {
 
 		JFrame frame = new JFrame();
 		frame.setTitle("StructAlgoSim 0.1");
-		frame.setSize(700,600);
+		frame.setSize(800,600);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLayout(null);
-		
-		LinkedList l = new LinkedList(new Rectangle(100,400, 300,100), true, true);
-		Tree t = new Tree(new Rectangle(100,100, 500,500),false);
-		frame.add(t.getGuiElement());
+		Tree t = new Tree(new Rectangle(100,100, 650,300),false);
+		LinkedList l = new LinkedList(new Rectangle(100, 400, 300, 200));
+		Variable v = new Variable(new Rectangle(100, 10, 100, 25), "", true);
+		Add a = new Add(new Rectangle(10,10, 90,90),t, v);
 		frame.add(l.getGuiElement());
+		frame.add(t.getGuiElement());
+		frame.add(v.getGuiElement());
+		frame.add(a.getGuiElement());
 		frame.validate();
 		frame.setVisible(true);
 	}

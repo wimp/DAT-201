@@ -1,5 +1,6 @@
 package sim.gui.elements;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -7,8 +8,11 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.util.Vector;
 
+import javax.swing.JCheckBox;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.Timer;
@@ -19,11 +23,13 @@ import sim.structures.elements.Node;
  * The graphical element of the {@link sim.structures.LinkedList} LinkedList class
  */
 @SuppressWarnings("serial")
-public class GuiList extends GuiElement implements ActionListener{
+public class GuiList extends GuiElement implements ActionListener, ItemListener{
 // Class variables //
 	private Vector<Node> data;
 	private Vector<Link> links;
 	private ListPanel listPanel;
+	private JCheckBox circular;
+	private JCheckBox doublyLinked;
 	private JScrollPane listScroller;
 	private final int drawNodeWidth = 30;
 	private final int drawNodeHeight = 30;
@@ -32,19 +38,36 @@ public class GuiList extends GuiElement implements ActionListener{
 	public void setData(Vector<Node> data){
 		this.data = data;
 	}
-	public GuiList(Rectangle bounds,Vector<Node> data, boolean doublyLinked, boolean circular, boolean animated){
+	public GuiList(Rectangle bounds,Vector<Node> data, boolean animated){
 		super();
 		if(animated) animation = new Timer(750,this);
 		else 
 			animation = new Timer(0, this);
 		this.data = data;
-
+		this.setLayout(new BorderLayout());
 		setBounds(bounds);		
-		listPanel = new ListPanel(circular, doublyLinked);		
+		listPanel = new ListPanel(false, false);		
 		links = new Vector<Link>();
 		updateLinks();
 		initGraphics();
 
+	}	
+	private void initGraphics(){
+		listPanel.setPreferredSize(new Dimension(getWidth(), getHeight()));
+		listScroller = new JScrollPane(listPanel);
+		listScroller.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		listScroller.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+		listScroller.setPreferredSize(new Dimension(getWidth(), getHeight()));
+		
+		circular = new JCheckBox("Circular");
+		circular.addItemListener(this);
+		doublyLinked = new JCheckBox("Doublylinked");
+		doublyLinked.addItemListener(this);
+		JPanel check = new JPanel(new BorderLayout());
+		check.add(circular, BorderLayout.WEST);
+		check.add(doublyLinked, BorderLayout.EAST);
+		this.add(check, BorderLayout.NORTH);
+		this.add(listScroller, BorderLayout.CENTER);
 	}
 	public void updateLinks(){
 		links.removeAllElements();
@@ -58,7 +81,7 @@ public class GuiList extends GuiElement implements ActionListener{
 				else 
 					links.add(new Link(n,n.getNext(), 1, false));
 			}
-			if(listPanel.isDoublyLinked() && (listPanel.isCircular() || data.indexOf(n)-data.indexOf(n.getPrevious()) >1))
+			if(listPanel.isDoublyLinked() && (listPanel.isCircular() || data.indexOf(n)-data.indexOf(n.getPrevious()) >=1))
 				if(data.indexOf(n)-data.indexOf(n.getPrevious()) <1)
 				{
 					links.add(new Link(n,n.getPrevious(), -1, true));
@@ -67,14 +90,7 @@ public class GuiList extends GuiElement implements ActionListener{
 					links.add(new Link(n,n.getPrevious(), -1, false));
 		}
 	}
-	private void initGraphics(){
-		listPanel.setPreferredSize(new Dimension(getWidth(), getHeight()));
-		listScroller = new JScrollPane(listPanel);
-		listScroller.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		listScroller.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-		listScroller.setPreferredSize(new Dimension(getWidth(), getHeight()));
-		this.add(listScroller);
-	}
+
 	private class Link{
 		Node a;
 		Node b;
@@ -137,27 +153,43 @@ public class GuiList extends GuiElement implements ActionListener{
 	private class ListPanel extends JPanel{
 		private boolean circular;
 		private boolean doublyLinked;
-		
+
 		public ListPanel(boolean circular, boolean doublyLinked){
 			this.circular = circular;
 			this.doublyLinked = doublyLinked;
 		}		
 		public boolean isCircular() {
 			return circular;
+		}		
+		public void setCircular(boolean circular) {
+			this.circular = circular;
 		}
+
 		public boolean isDoublyLinked() {
 			return doublyLinked;
+		}		
+		public void setDoublyLinked(boolean doublyLinked) {
+			this.doublyLinked = doublyLinked;
 		}
 		private void drawNode(Graphics2D g2d, Node n){
 			int indexOfNode = data.indexOf(n)+1;
+			Color c = g2d.getColor();
+			if(n.isAdded()) g2d.setColor(GuiSettings.LISTADDEDCOLOR);
+			else if(n.isRemoved()) g2d.setColor(GuiSettings.LISTREMOVEDCOLOR);
+			else if(data.indexOf(n.getNext())<data.indexOf(n) || n.getNext() == n) g2d.setColor(GuiSettings.LISTLASTCOLOR);
+			else if(data.indexOf(n)==0) g2d.setColor(GuiSettings.LISTHEADCOLOR);
+			else g2d.setColor(GuiSettings.LISTNODECOLOR);
 			
+			g2d.fillOval((2*indexOfNode)*drawNodeWidth, getHeight()/4, drawNodeWidth, drawNodeHeight);
+			g2d.setColor(c);
 			g2d.drawOval((2*indexOfNode)*drawNodeWidth, getHeight()/4, drawNodeWidth, drawNodeHeight);
 			g2d.drawString((String)n.getValue(), (2*indexOfNode)*drawNodeWidth,getHeight()/4+drawNodeHeight/2);
+			g2d.setColor(c);
 		}
 		private void addAnimation(Node n){
 			switch(frame){
 			case 1:
-				 if(data.size()==3 && circular&& links.size()>2) links.remove(2);
+				 if(data.size()==3 && listPanel.isCircular()&& links.size()>2) links.remove(2);
 				 else for(int i = 0; i<links.size(); i++){
 					 if(links.get(i).b == n.getPrevious() && links.get(i).a == n.getNext()){
 						 links.remove(links.get(i));
@@ -167,7 +199,7 @@ public class GuiList extends GuiElement implements ActionListener{
 				 }
 				 break;
 			case 2:
-				if(data.size()==3 && circular && links.size()>1) links.remove(1);
+				if(data.size()==3 && listPanel.isCircular() && links.size()>1) links.remove(1);
 				else for(int i = 0; i<links.size(); i++){
 					 if(links.get(i).b == n.getNext() && links.get(i).a == n.getPrevious()){
 						 links.remove(links.get(i));
@@ -216,8 +248,13 @@ public class GuiList extends GuiElement implements ActionListener{
 						l.c = Color.GREEN;
 						links.add(l);
 					}
-					else {
+					else if(data.size()!=2){
 						Link l =new Link(n.getNext(),n, -1,true);
+						l.c = Color.GREEN;
+						links.add(l);
+					}
+					else {
+						Link l =new Link(n.getNext(),n, 1,false);
 						l.c = Color.GREEN;
 						links.add(l);
 					}
@@ -334,7 +371,6 @@ public class GuiList extends GuiElement implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource()==animation){
 			frame++;
-			System.out.println(frame);
 			if(frame > MAXFRAME){
 				for(int i =0; i< data.size(); i++){
 					if(data.get(i).isAdded()){
@@ -356,5 +392,17 @@ public class GuiList extends GuiElement implements ActionListener{
 			}
 			repaint();
 		}
+	}
+	@Override
+	public void itemStateChanged(ItemEvent e) {
+		if(e.getSource() == circular){
+			listPanel.setCircular(!listPanel.isCircular());
+		}
+		else if(e.getSource() == doublyLinked){
+			listPanel.setDoublyLinked(!listPanel.isDoublyLinked());
+		}
+		
+		updateLinks();
+		repaint();
 	}
 }

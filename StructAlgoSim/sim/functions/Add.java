@@ -8,6 +8,7 @@ import sim.gui.elements.GuiElement;
 import sim.gui.elements.GuiFunction;
 import sim.structures.Array;
 import sim.structures.LinkedList;
+import sim.structures.Tree;
 import sim.structures.Variable;
 
 /**
@@ -62,6 +63,8 @@ public class Add implements ActionListener {
 			((Array) l).addItem(v.getValue());
 		}else if(l instanceof LinkedList){
 			((LinkedList) l).addLast(v.getValue());
+		}else if(l instanceof Tree){
+		((Tree) l).addBreadthFirst(v.getValue());
 		}
 		//l.addFirst(v.getValue());
 		

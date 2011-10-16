@@ -7,6 +7,107 @@ import sim.gui.elements.GuiTree;
 
 
 public class Tree {
+
+	/**
+	 * @param args
+	 */
+	GuiTree gui;
+	public int getMaxDepth() {
+		return findMaxDepth(root, 0);
+	}
+	public int getMaxCluster() {
+		return maxCluster;
+	}
+	public void setMaxCluster(int maxCluster) {
+		this.maxCluster = maxCluster;
+		rebuildTree();
+	}
+	int maxCluster = 2;
+	
+	TreeNode root; 
+	
+	public TreeNode getRoot() {
+		return root;
+	}
+	public void setRoot(TreeNode root) {
+		this.root = root;
+	}
+	public GuiTree getGuiElement() {
+		return gui;
+	}
+	public Tree(Rectangle bounds,boolean animated){
+		root = new TreeNode("root", null);	
+		gui = new GuiTree(bounds, this, animated);
+	}
+	protected Tree(){
+		root = new TreeNode("root", null);	
+	}
+	public void rebuildTree(){
+		Vector<TreeNode> nodes = getAllNodes(new Vector<TreeNode>(), root);
+		nodes.remove(root);
+		root = new TreeNode("root", null);
+		//nodes.remove(root);
+		for(TreeNode n : nodes)
+			addBreadthFirst(n.getValue().toString());
+	}
+	public Vector<TreeNode> getAllNodes(Vector<TreeNode> nodes, TreeNode n){
+		nodes.add(n);
+		for(TreeNode t : n.getChildren())
+			getAllNodes(nodes, t);
+		return nodes;
+	}
+	
+	public void swapNodes(TreeNode a, TreeNode b){
+		Object o = a.getValue().toString();
+		a.setValue(b.getValue().toString());
+		b.setValue(o);
+	}
+	public void addBreadthFirst(String value){
+		breadthFirstInsert().insert(value);
+		gui.repaint();
+	}
+	private TreeNode depthFirstInsert(){
+		Vector<TreeNode> nodeQueue = new Vector<TreeNode>();
+		TreeNode n = root;
+		nodeQueue.addAll(n.getChildren());
+		while(n.getChildren().size()==maxCluster && nodeQueue.size()>0){
+			nodeQueue.addAll(n.getChildren());
+			n = nodeQueue.remove(nodeQueue.size()-1);
+		}
+		return n;
+	}
+	private TreeNode breadthFirstInsert(){
+		Vector<TreeNode> nodeQueue = new Vector<TreeNode>();
+		TreeNode n = root;
+		nodeQueue.addAll(n.getChildren());
+		while(n.getChildren().size()==maxCluster && nodeQueue.size()>0){
+			nodeQueue.addAll(n.getChildren());
+			n = nodeQueue.remove(0);
+		}
+		return n;
+	}
+	public int findMaxCluster(TreeNode t, int max){
+		
+		if(t.getChildren().size()>max) max = t.getChildren().size();
+		for(Tree.TreeNode q : t.getChildren())
+		{
+			max = findMaxCluster(q, max);
+		}
+		return max;
+	}
+	public int getHeight(TreeNode t){
+		if(t==null) return 0;
+		return findMaxDepth(t, 0)-t.getDepth();
+	}
+	public int findMaxDepth(TreeNode t, int max){
+		if(t==null) return max;
+		if(t.getDepth()>max) max = t.getDepth();
+		for(Tree.TreeNode q : t.getChildren())
+		{
+			max = findMaxDepth(q, max);
+		}
+		return max;
+	}
 	public class TreeNode{
 		private TreeNode parent;
 		public TreeNode getParent() {
@@ -16,22 +117,21 @@ public class Tree {
 			this.parent = parent;
 		}
 		private Vector<TreeNode> children;
-		private boolean leaf;
-		private int depth;
 		private Object value;
 		
 		public boolean isLeaf() {
-			return leaf;
-		}
-		public void setLeaf(boolean leaf) {
-			this.leaf = leaf;
+			return !(children.size()>0);
 		}
 		public int getDepth() {
+			if(getParent() == null) return 0;
+			TreeNode n = getParent();
+			int depth = 0;
+			while(n!=null){
+				n =	n.getParent();
+				depth++;
+			}
 			return depth;
 		}
-		public void setDepth(int depth) {
-			this.depth = depth;
-		}	
 		public Vector<TreeNode> getChildren(){
 			return children;
 		}
@@ -52,67 +152,8 @@ public class Tree {
 		}
 		public TreeNode(Object value, TreeNode parent){
 			this.value = value;
-			if(parent != null) this.depth = parent.getDepth()+1;
-			else this.depth = 0;
 			this.parent = parent;
 			children = new Vector<TreeNode>();
 		}
-	}
-	/**
-	 * @param args
-	 */
-	GuiTree gui;
-	int maxDepth;
-	TreeNode root; 
-	
-	public TreeNode getRoot() {
-		return root;
-	}
-	public void setRoot(TreeNode root) {
-		this.root = root;
-	}
-	public GuiTree getGuiElement() {
-		return gui;
-	}
-	public Tree(Rectangle bounds,boolean animated){
-		root = new TreeNode("root", null);
-		TreeNode lol0 = new TreeNode("1", root);
-		lol0.insert("11");		
-		lol0.insert("12");
-		lol0.insert("13");
-		TreeNode lol1 = new TreeNode("2", root);
-		lol1.insert("21");		
-		lol1.insert("22");
-		lol1.insert("23");
-		TreeNode lol2 = new TreeNode("3", root);
-		lol2.insert("31");		
-		lol2.insert("32");
-		lol2.insert("33");
-		root.addSubTree(lol0);
-		root.addSubTree(lol1);
-		root.addSubTree(lol2);
-		
-		gui = new GuiTree(bounds, this, animated);
-	}
-	public int findMaxCluster(TreeNode t, int max){
-		
-		if(t.getChildren().size()>max) max = t.getChildren().size();
-
-		for(Tree.TreeNode q : t.getChildren())
-		{
-			return findMaxCluster(q, max);
-		}
-		return max;
-	}
-	public int getHeight(TreeNode t){
-		return 0;
-	}
-	public int findMaxDepth(TreeNode t, int max){
-		if(t.getDepth()>max) max = t.getDepth();
-		for(Tree.TreeNode q : t.getChildren())
-		{
-			return findMaxDepth(q, max);
-		}
-		return max;
 	}
 }

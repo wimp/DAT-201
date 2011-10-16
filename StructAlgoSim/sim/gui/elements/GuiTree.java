@@ -1,91 +1,242 @@
 package sim.gui.elements;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.GridLayout;
 import java.awt.Rectangle;
-import java.awt.event.AdjustmentEvent;
-import java.awt.event.AdjustmentListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+import javax.swing.ButtonGroup;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 import javax.swing.Timer;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
+import sim.structures.Heap;
+import sim.structures.Heap.CompareKey;
 import sim.structures.Tree;
 
-public class GuiTree extends GuiElement{
+public class GuiTree extends GuiElement implements ActionListener{
+	boolean isheap;
 	Tree tree;
 	TreePanel treePanel;
+	JTextField nval;
+	ButtonGroup bg;
+	ButtonGroup bg1;
+	JRadioButton nary;
+	JRadioButton bin;
+	JRadioButton min;
+	JRadioButton max;
+	JRadioButton alpha;
+	JRadioButton num;
+	JRadioButton strlen;
 	
+	public GuiTree(Rectangle bounds,Heap heap, boolean animated){
+		super();
+		isheap = true;
+		if(animated) animation = new Timer(750,this);
+		else 
+			animation = new Timer(0, this);
+		this.tree = heap;
+		setLayout(new BorderLayout());
+		setBounds(bounds);			
+		initHeapGraphics();
+	}
 	public GuiTree(Rectangle bounds,Tree tree, boolean animated){
 		super();
-		
+		isheap = false;
 		if(animated) animation = new Timer(750,this);
 		else 
 			animation = new Timer(0, this);
 		this.tree = tree;
-
+		setLayout(new BorderLayout());
 		setBounds(bounds);			
-		initGraphics();
+		initTreeGraphics();
 	}
-	private void initGraphics(){
+	private void initTreeGraphics(){
 		treePanel = new TreePanel();
 		treePanel.setPreferredSize(new Dimension(getWidth(), getHeight()));
 		JScrollPane listScroller = new JScrollPane(treePanel);
 		listScroller.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		listScroller.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 		listScroller.setPreferredSize(new Dimension(getWidth(), getHeight()));
-		this.add(listScroller);
+		JPanel check = new JPanel(new GridLayout(1,8));
+		nval = new JTextField("N-value");
+		nval.setEditable(false);
+		nval.addActionListener(this);
+		nary = new JRadioButton("N-ary");
+		nary.addActionListener(this);
+		bin = new JRadioButton("Binary");
+		bin.setSelected(true);
+		bin.addActionListener(this);
+		bg = new ButtonGroup();
+		bg.add(nary);
+		bg.add(bin);
+		check.add(bin);
+		check.add(nary);
+		check.add(nval);
+
+		check.add(new JLabel("      "));
+		check.add(new JLabel("      "));
+		check.add(new JLabel("      "));
+		check.add(new JLabel("      "));
+		check.add(new JLabel("      "));
+		check.add(new JLabel("      "));
+		
+		this.add(check, BorderLayout.NORTH);
+		this.add(listScroller, BorderLayout.CENTER);
+	}
+	private void initHeapGraphics(){
+		treePanel = new TreePanel();
+		treePanel.setPreferredSize(new Dimension(getWidth(), getHeight()));
+		JScrollPane listScroller = new JScrollPane(treePanel);
+		listScroller.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		listScroller.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+		listScroller.setPreferredSize(new Dimension(getWidth(), getHeight()));
+		JPanel check = new JPanel(new GridLayout(1,8));
+		min = new JRadioButton("Min");
+		min.setSelected(true);
+		min.addActionListener(this);
+		max = new JRadioButton("Max");
+		max.addActionListener(this);
+		bg = new ButtonGroup();
+		bg.add(min);
+		bg.add(max);
+		check.add(min);
+		check.add(max);
+		
+		alpha = new JRadioButton("Alphabetical");
+		alpha.addActionListener(this);
+		num = new JRadioButton("Numerical");
+		num.addActionListener(this);
+		strlen = new JRadioButton("Length");
+		strlen.addActionListener(this);
+		bg1 = new ButtonGroup();
+		bg1.add(alpha);
+		bg1.add(num);
+		bg1.add(strlen);
+		
+		check.add(alpha);
+		check.add(num);
+		check.add(strlen);
+		
+		check.add(new JLabel("      "));
+		check.add(new JLabel("      "));
+		check.add(new JLabel("      "));
+		
+		this.add(check, BorderLayout.NORTH);
+		this.add(listScroller, BorderLayout.CENTER);
 	}
 	private class TreePanel extends JPanel{
 		int drawNodeWidth = 20;
 		int drawNodeHeight = 20;
-		int maxCluster;
-		int maxDepth; 
+
+		int[] indent;
 		
 		public TreePanel(){
 		}
 		private int getIndent(Tree.TreeNode n){
 			int indent = 0;
-			for(int i =0; i<=(maxDepth)-n.getDepth()+1; i++){
-					indent= (int)Math.pow(maxCluster, i);
+			for(int i =0; i<=(tree.getMaxDepth())-n.getDepth(); i++){
+					indent= (int)Math.pow(tree.getMaxCluster(), i);
 				}
 
 			return indent;
 		}
-		private int getIndex(Tree.TreeNode n){
-			int index =0;
+		private int getOffset(Tree.TreeNode n){
+			int[] index = new int[tree.getMaxDepth()];
+			float in = getIndent(n)/2.0f;
 					while(n!=null){
-						if(n.getParent()!=null )
-						index += n.getParent().getChildren().indexOf(n)*getIndent(n);
+						indent[n.getDepth()] = getIndent(n);
+						if(n.getParent()!=null ){
+						index[n.getDepth()-1] = n.getParent().getChildren().indexOf(n);
+						}
 						n = n.getParent();
 					}
-			return index;
+					for(int i=0; i<index.length; i++)
+						in+=index[i]*indent[i+1];
+			return (int)(in*drawNodeWidth);
 		}
 		public void drawTree(Graphics2D g2d ,Tree.TreeNode tree){
 			for(Tree.TreeNode q : tree.getChildren())
 			{
 				if(q.getChildren().size()>0) drawTree(g2d , q);
-					int index = getIndex(q)+tree.getChildren().indexOf(q);
-					System.out.println(q.getValue().toString() + "- index : "+index);
-					int x = index*drawNodeWidth;
-					
-						g2d.drawOval(x, drawNodeHeight * 1* q.getDepth(),
-						drawNodeWidth, drawNodeHeight);
-				g2d.drawString((String)q.getValue(), x, drawNodeHeight*1*q.getDepth());
+					drawNode(g2d, q, getOffset(q));
 			}
+		}
+		private void drawNode(Graphics2D g2d, Tree.TreeNode n, int offset){
+			Color c = g2d.getColor();
+			g2d.setColor(n.isLeaf() ? GuiSettings.TREENODECOLOR : GuiSettings.TREELEAFCOLOR);
+			g2d.fillOval(offset, drawNodeHeight *2* n.getDepth()+drawNodeHeight,
+					drawNodeWidth, drawNodeHeight);
+			g2d.setColor(c);			
+			g2d.drawOval(offset, drawNodeHeight *2* n.getDepth()+drawNodeHeight,
+					drawNodeWidth, drawNodeHeight);
+			g2d.drawString((String)n.getValue(), offset, drawNodeHeight*2*n.getDepth()+drawNodeHeight);
+		
 		}
 		@Override 
 		public void paintComponent(Graphics g){
 			Graphics2D g2d = (Graphics2D)g;
 			g2d.clearRect(0, 0, getWidth(), getHeight());
-			maxDepth = tree.findMaxDepth(tree.getRoot(), 0);
-			maxCluster = tree.findMaxCluster(tree.getRoot(), 0);
-			setPreferredSize(new Dimension((int)(drawNodeWidth*Math.pow(maxCluster, maxDepth+1)), drawNodeHeight*2*maxDepth));
-			System.out.println("Maxcluster: "+maxCluster);
-			System.out.println("Maxdepth: "+maxDepth);
+			
+			indent = new int[tree.getMaxDepth()+1];
+			setPreferredSize(new Dimension((int)(drawNodeWidth*Math.pow(tree.getMaxCluster(), tree.getMaxDepth())), drawNodeHeight*2*tree.getMaxDepth()));
+			
+			drawNode(g2d, tree.getRoot(), getOffset(tree.getRoot()));
 			drawTree(g2d, tree.getRoot());
+			
 			revalidate();
 		}
+	}
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if(e.getSource()==nary){
+			nval.setText("");
+			nval.setEditable(true);
+			
+		}
+		else if(e.getSource() == nval){
+			int mc;
+			try{
+				mc = Integer.parseInt(nval.getText());
+
+				tree.setMaxCluster(mc);
+			}
+			catch(NumberFormatException nfe){
+				
+			}
+		}
+		else if(e.getSource()==bin){
+			nval.setText("N-value");
+			nval.setEditable(false);
+			tree.setMaxCluster(2);
+		}
+		else if(e.getSource() == max){
+			if(isheap) ((Heap)tree).maxHeapifyTree(tree.getRoot());
+		}
+		else if(e.getSource() == min){
+			if(isheap) ((Heap)tree).minHeapifyTree(tree.getRoot());			
+		}
+		else if(e.getSource() == alpha){
+			if(isheap) ((Heap)tree).setSortKey(CompareKey.ALPHABETICAL);
+		}
+		else if(e.getSource() == num){
+			if(isheap) ((Heap)tree).setSortKey(CompareKey.NUMERICAL);		
+		}
+		else if(e.getSource() == strlen){
+			if(isheap) ((Heap)tree).setSortKey(CompareKey.STRLEN);		
+		}
+		repaint();
+		validate();
 	}
 }

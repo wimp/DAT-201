@@ -26,7 +26,7 @@ public class LinkedList {
 	 * @param doublyLinked Determines whether nodes will link both forwards and backwards.
 	 * @param circular Determines if the last node will link to the first of the list (and vice verse if the list if doubly-linked)
 	 */
-	public LinkedList(Rectangle bounds, boolean doublyLinked, boolean circular, boolean animated){
+	public LinkedList(Rectangle bounds, boolean animated){
 
 		Node dummy = new Node("dummy");
 		
@@ -34,16 +34,14 @@ public class LinkedList {
 		dummy.setPrevious(dummy);
 		dummy.setAdded(false);
 		v.add(dummy);
-		gui = new GuiList(bounds,v, doublyLinked, circular, animated);
+		gui = new GuiList(bounds,v, animated);
 	}
 	/**
 	 * Constructor. 
 	 * @param bounds The size of the graphical element.
-	 * @param doublyLinked Determines whether nodes will link both forwards and backwards.
-	 * @param circular Determines if the last node will link to the first of the list (and vice verse if the list if doubly-linked)
 	 */
-	public LinkedList(Rectangle bounds, boolean doublyLinked, boolean circular){
-		this(bounds, doublyLinked, circular, true);
+	public LinkedList(Rectangle bounds){
+		this(bounds, true);
 	}
 	/**
 	 * Adds a new node to the start of the list.

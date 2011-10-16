@@ -80,7 +80,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 		case LIST:
 			bounds.width 	= bounds.width < 200 ? 200 : bounds.width;
 			bounds.height 	= bounds.height < 75 ? 75 : bounds.height;
-			LinkedList listElement = new LinkedList(bounds,true,true);
+			LinkedList listElement = new LinkedList(bounds);
 			elements.add(listElement);
 			index = elements.lastIndexOf(listElement);
 			guiElements.add(index,listElement.getGuiElement());

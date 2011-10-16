@@ -24,7 +24,6 @@ public class GuiStack extends GuiElement {
 		setBounds(bounds);
 		initGraphics(data);
 	}
-	
 	private void initGraphics(Object[] data){
 		list = new JList(data); //data has type Object[]
 		list.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);

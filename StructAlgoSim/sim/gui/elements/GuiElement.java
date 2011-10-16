@@ -13,7 +13,7 @@ import javax.swing.Timer;
  *
  */
 @SuppressWarnings("serial")
-public abstract class GuiElement extends JPanel implements ActionListener{
+public abstract class GuiElement extends JPanel{
 // Class variables //
 	Timer animation;
 	public Timer getAnimation() {
@@ -31,9 +31,5 @@ public abstract class GuiElement extends JPanel implements ActionListener{
 	public GuiElement(){
 		setLayout(new GridLayout(1,1));
 		setVisible(true);
-	}
-	@Override
-	public void actionPerformed(ActionEvent e){
-		
 	}
 }
