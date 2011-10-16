@@ -11,6 +11,11 @@ public class Tree {
 	/**
 	 * @param args
 	 */
+	public enum Traversal{
+		PREORDER,
+		INORDER,
+		POSTORDER
+	}
 	GuiTree gui;
 	public int getMaxDepth() {
 		return findMaxDepth(root, 0);
@@ -38,6 +43,21 @@ public class Tree {
 	public Tree(Rectangle bounds,boolean animated){
 		root = new TreeNode("root", null);	
 		gui = new GuiTree(bounds, this, animated);
+		
+		addBreadthFirst("1");
+		addBreadthFirst("2");
+		addBreadthFirst("3");
+		addBreadthFirst("4");
+		addBreadthFirst("5");
+		addBreadthFirst("6");
+		addBreadthFirst("7");
+		addBreadthFirst("8");
+		addBreadthFirst("9");
+		addBreadthFirst("10");
+		addBreadthFirst("11");
+		addBreadthFirst("12");
+		addBreadthFirst("13");		
+		addBreadthFirst("14");
 	}
 	protected Tree(){
 		root = new TreeNode("root", null);	
@@ -75,6 +95,63 @@ public class Tree {
 			n = nodeQueue.remove(nodeQueue.size()-1);
 		}
 		return n;
+	}
+	// Get element methods
+	private int currentIndex = 0;
+	private TreeNode currentNode = null;
+	private Traversal traversal = Traversal.INORDER;
+	public Traversal getTraversal() {
+		return traversal;
+	}
+	public void setTraversal(Traversal traversal) {
+		this.traversal = traversal;
+	}
+	public TreeNode elementAt(int index){
+		currentNode = null;
+		currentIndex = 0;
+		switch(traversal){
+		case INORDER:
+			inOrderElementAt(root, index);
+		break;
+		case PREORDER:
+			preOrderElementAt(root, index);
+		break;
+		case POSTORDER:
+			postOrderElementAt(root, index);
+		break;
+		}
+		return currentNode;
+	}
+	public void inOrderElementAt(TreeNode n, int index){
+		for(int i= 0; i<n.getChildren().size()-1; i++){
+					inOrderElementAt(n.getChildren().elementAt(i), index);
+		}		
+		currentIndex++;
+		if(index == currentIndex) currentNode = n;
+		
+		if(n.getChildren().size()>0)
+			inOrderElementAt(n.getChildren().elementAt(n.getChildren().size()-1), index);
+	}
+	public void preOrderElementAt(TreeNode n, int index){
+		currentIndex++;
+		if(index == currentIndex) currentNode = n;
+		
+		for(int i= 0; i<n.getChildren().size()-1; i++){
+					preOrderElementAt(n.getChildren().elementAt(i), index);
+		}		
+		if(n.getChildren().size()>0)
+			preOrderElementAt(n.getChildren().elementAt(n.getChildren().size()-1), index);
+	}
+	public void postOrderElementAt(TreeNode n, int index){
+
+		for(int i= 0; i<n.getChildren().size()-1; i++){
+					postOrderElementAt(n.getChildren().elementAt(i), index);
+		}		
+		if(n.getChildren().size()>0)
+			postOrderElementAt(n.getChildren().elementAt(n.getChildren().size()-1), index);
+		
+		currentIndex++;
+		if(index == currentIndex) currentNode = n;
 	}
 	private TreeNode breadthFirstInsert(){
 		Vector<TreeNode> nodeQueue = new Vector<TreeNode>();

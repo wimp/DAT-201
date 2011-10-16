@@ -29,11 +29,20 @@ public class GuiTree extends GuiElement implements ActionListener{
 	boolean isheap;
 	Tree tree;
 	TreePanel treePanel;
+	
+	//TREE
 	JTextField nval;
 	ButtonGroup bg;
-	ButtonGroup bg1;
 	JRadioButton nary;
 	JRadioButton bin;
+	ButtonGroup trg;
+	JRadioButton inorder;
+	JRadioButton preorder;
+	JRadioButton postorder;
+	
+	
+	//HEAP
+	ButtonGroup bg1;
 	JRadioButton min;
 	JRadioButton max;
 	JRadioButton alpha;
@@ -85,11 +94,21 @@ public class GuiTree extends GuiElement implements ActionListener{
 		check.add(nary);
 		check.add(nval);
 
-		check.add(new JLabel("      "));
-		check.add(new JLabel("      "));
-		check.add(new JLabel("      "));
-		check.add(new JLabel("      "));
-		check.add(new JLabel("      "));
+		preorder = new JRadioButton("PreOrder");
+		preorder.addActionListener(this);
+		inorder = new JRadioButton("InOrder");
+		inorder.addActionListener(this);
+		postorder = new JRadioButton("PostOrder");
+		postorder.addActionListener(this);
+		trg = new ButtonGroup();
+		trg.add(preorder);
+		trg.add(inorder);
+		trg.add(postorder);
+		
+		check.add(preorder);
+		check.add(inorder);
+		check.add(postorder);
+		
 		check.add(new JLabel("      "));
 		
 		this.add(check, BorderLayout.NORTH);

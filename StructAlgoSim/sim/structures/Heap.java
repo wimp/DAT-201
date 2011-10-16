@@ -4,8 +4,10 @@ import java.awt.Rectangle;
 import java.util.Vector;
 
 import sim.gui.elements.GuiTree;
+import sim.structures.Tree.TreeNode;
 
 public class Heap extends Tree{
+	
 	public enum CompareKey{
 		ALPHABETICAL,
 		NUMERICAL,
@@ -32,12 +34,42 @@ public class Heap extends Tree{
 		v.add("8");
 		v.add("3");
 		v.add("4");
+		v.add("1");
+		v.add("2");
+		v.add("6");
+		v.add("8");
+		v.add("3");
+		v.add("4");
 		buildTree(v);
 		
 		maxHeapifyTree(root);
-		
+		for(TreeNode n: heapSort()){
+			if(n!=null)
+			System.out.println(n.getValue().toString());
+		}
 		gui.repaint();
+	}
+	public Vector<TreeNode> heapSort(){
+		Vector<TreeNode> sorted = new Vector<TreeNode>();
+		while(root.getChildren().size()>0){
+			maxHeapifyTree(root);
+			
+			sorted.add(root);
+			
+			Vector<String> values = new Vector<String>();
+			for(TreeNode t : getAllNodes(new Vector<TreeNode>() , root)){
+				if(t!=null && t!=root)
+				values.add(t.getValue().toString());
+			}
+			buildTree(values);
+		}
+		sorted.add(root);
+		Vector<String> values = new Vector<String>();
+		for(TreeNode n: sorted) 
+			values.add(n.getValue().toString());
 		
+		buildTree(values);
+		return sorted;
 	}
 	public void buildTree(Vector<String> values){
 		if(values.size()==0) return;
