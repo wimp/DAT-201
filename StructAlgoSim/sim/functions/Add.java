@@ -44,19 +44,37 @@ public class Add implements ActionListener {
 
 	
 // Class constructor //
+
+	public Add(Rectangle bounds) {
+		gui = new GuiFunction(bounds,"Add");
+		gui.getButton().addActionListener(this);
+		this.l=null;
+		this.v=null;
+	}	
 	/**
 	 * The class constructor. Initializes the graphical element - {@link GuiFunction}
 	 * @param bounds 	- The size and placement of the graphical element
 	 * @param l 		- The structure on which to perform the add()-action
 	 * @param v 		- The output variable
 	 */
-	public Add(Rectangle bounds, Object l, Variable v) {
+	public Add(Rectangle bounds, Array l, Variable v) {
 		gui = new GuiFunction(bounds,"Add");
 		gui.getButton().addActionListener(this);
 		this.l=l;
 		this.v=v;
 	}
-	
+	public Add(Rectangle bounds, LinkedList l, Variable v) {
+		gui = new GuiFunction(bounds,"Add");
+		gui.getButton().addActionListener(this);
+		this.l=l;
+		this.v=v;
+	}
+	public Add(Rectangle bounds, Tree l, Variable v) {
+		gui = new GuiFunction(bounds,"Add");
+		gui.getButton().addActionListener(this);
+		this.l=l;
+		this.v=v;
+	}
 // Action Listener implementation //
 	@Override
 	public void actionPerformed(ActionEvent e) {

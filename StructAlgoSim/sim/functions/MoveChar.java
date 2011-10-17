@@ -32,6 +32,13 @@ public class MoveChar implements ActionListener {
 	public void setOutput(Variable output) {
 		this.output = output;
 	}
+	public MoveChar(Rectangle bounds, Direction dir){
+	//TODO add direction here
+		gui = new GuiFunction(bounds,"<-");
+		gui.getButton().addActionListener(this);
+		this.input = null;
+		this.output = null;
+	}
 	/**
 	 * Constructor.
 	 * 
