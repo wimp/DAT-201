@@ -8,6 +8,7 @@ import sim.gui.elements.GuiElement;
 import sim.gui.elements.GuiFunction;
 import sim.structures.Array;
 import sim.structures.LinkedList;
+import sim.structures.Queue;
 import sim.structures.Tree;
 import sim.structures.Variable;
 
@@ -75,6 +76,12 @@ public class Add implements ActionListener {
 		this.l=l;
 		this.v=v;
 	}
+	public Add(Rectangle bounds, Queue l, Variable v) {
+		gui = new GuiFunction(bounds,"Add");
+		gui.getButton().addActionListener(this);
+		this.l=l;
+		this.v=v;
+	}
 // Action Listener implementation //
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -84,6 +91,8 @@ public class Add implements ActionListener {
 			((LinkedList) l).addLast(v.getValue());
 		}else if(l instanceof Tree){
 		((Tree) l).addBreadthFirst(v.getValue());
+		}else if(l instanceof Queue){
+		((Queue) l).add(v.getValue());
 		}
 		//l.addFirst(v.getValue());
 		

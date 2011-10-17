@@ -53,7 +53,7 @@ public class Push implements ActionListener{
 	 * @param v 		- The input variable.
 	 * @param s 		- The structure on which to perform the push()-action 
 	 */
-	public Push(Rectangle bounds, Variable v, Object l){
+	public Push(Rectangle bounds, Variable v, Stack l){
 		gui = new GuiFunction(bounds,"Push");
 		gui.getButton().addActionListener(this);
 		this.l = l;

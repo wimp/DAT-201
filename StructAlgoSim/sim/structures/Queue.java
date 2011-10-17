@@ -1,37 +1,32 @@
 package sim.structures;
 
 
+import java.awt.Rectangle;
+import java.util.Vector;
+
 import sim.gui.elements.GuiElement;
 import sim.gui.elements.GuiQueue;
-import sim.structures.elements.Node;
 
 public class Queue {
-	Node start;
-	Node end;
+	Vector<Object> data;
 	GuiQueue gui;
+	
 	public GuiElement getGuiElement(){
 		return gui;
 	}
-	public Queue(){
-		start = new Node("foran");
-		end = new Node("bak");
-		gui = new GuiQueue(start, end);
+	public Queue(Rectangle bounds){
+		data = new Vector<Object>();
+		gui = new GuiQueue(bounds, data);
 	}
 	
 	public void add(Object o){
-		Node n = new Node(o);
-		n.setPrevious(end);
-		end.getNext().setPrevious(n);
-		end.setNext(n);
+		data.add(o);
+		gui.repaint();
 	}
 	public Object remove(){
-		if(start.getPrevious()!= end){
-		start.getPrevious().getPrevious().setNext(start);
-		Node n = start.getPrevious();
-		start.setPrevious(start.getPrevious().getPrevious());
-		return n.getValue().toString();
-		}
-		else return null;
+		Object o = data.remove(data.size()-1);
+		gui.repaint();
+		return o;
 	}
 	
 }

@@ -54,7 +54,7 @@ public class Pop implements ActionListener {
 	 * @param s 		- The structure on which to perform the pop()-action
 	 * @param v 		- The output variable
 	 */
-	public Pop(Rectangle bounds, Object l, Variable v) {
+	public Pop(Rectangle bounds, Stack l, Variable v) {
 		gui = new GuiFunction(bounds,"Pop");
 		gui.getButton().addActionListener(this);
 		this.l=l;

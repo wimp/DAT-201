@@ -31,8 +31,8 @@ public class GuiList extends GuiElement implements ActionListener, ItemListener{
 	private JCheckBox circular;
 	private JCheckBox doublyLinked;
 	private JScrollPane listScroller;
-	private final int drawNodeWidth = 30;
-	private final int drawNodeHeight = 30;
+	private final int drawNodeWidth = GuiSettings.LISTNODEWIDTH;
+	private final int drawNodeHeight = GuiSettings.LISTNODEHEIGHT;
 
 // Getters and setters //
 	public void setData(Vector<Node> data){

@@ -155,8 +155,8 @@ public class GuiTree extends GuiElement implements ActionListener{
 		this.add(listScroller, BorderLayout.CENTER);
 	}
 	private class TreePanel extends JPanel{
-		int drawNodeWidth = 20;
-		int drawNodeHeight = 20;
+		int drawNodeWidth = GuiSettings.TREENODEWIDTH;
+		int drawNodeHeight = GuiSettings.TREENODEHEIGHT;
 
 		int[] indent;
 		
