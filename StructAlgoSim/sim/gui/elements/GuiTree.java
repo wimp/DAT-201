@@ -12,19 +12,17 @@ import java.awt.event.ActionListener;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.Timer;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 
 import sim.structures.Heap;
 import sim.structures.Heap.CompareKey;
 import sim.structures.Tree;
 
+@SuppressWarnings("serial")
 public class GuiTree extends GuiElement implements ActionListener{
 	boolean isheap;
 	Tree tree;

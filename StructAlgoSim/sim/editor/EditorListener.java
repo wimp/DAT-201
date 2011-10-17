@@ -35,7 +35,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 	Vector<GuiElement> guiElements = new Vector<GuiElement>();
 	private Object startElement;
 	private Object endElement;
-	private GuiElement startGuiElement, endGuiElement;
+	private GuiElement startGuiElement;
 	private GlassPanel panel = new GlassPanel();
 	private Vector<Point> links = new Vector<Point>();
 	private Vector<Link> linkys = new Vector<Link>();
@@ -372,6 +372,8 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 							((Add) startElement).setV((Variable) endElement);
 						}else if(endElement instanceof LinkedList){
 							((Add) startElement).setL(endElement);
+						}else if(endElement instanceof Tree){
+							((Add) startElement).setL(endElement);
 						}
 					}else if(startElement instanceof Variable){
 						if(endElement instanceof Add){
@@ -420,6 +422,8 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 							((Remove) startElement).setL(endElement);
 						}else if(endElement instanceof LinkedList){
 							((Remove) startElement).setL(endElement);
+						}else if(endElement instanceof Tree){
+							((Remove) startElement).setL(endElement);
 						}
 					}else if(startElement instanceof Array){
 						if(endElement instanceof Add){
@@ -432,6 +436,22 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 					}else if(startElement instanceof MoveChar){
 						if(endElement instanceof Variable){
 							((MoveChar) startElement).setOutput((Variable) endElement);
+						}
+					}else if(startElement instanceof Tree){
+						if(endElement instanceof Insert){
+							((Insert) endElement).setL(startElement);
+						}else if(endElement instanceof Add){
+							((Add) endElement).setL(startElement);
+						}
+					}else if(startElement instanceof Insert){
+						if(endElement instanceof Tree){
+							((Insert) startElement).setL(endElement);
+						}else if(endElement instanceof LinkedList){
+							((Insert) startElement).setL(endElement);
+						}else if(endElement instanceof Variable){
+							((Insert) startElement).setV((Variable) endElement);
+						}else if(endElement instanceof Array){
+							((Insert) startElement).setL(endElement);
 						}
 					}
 					break;
@@ -563,6 +583,9 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 			gui.editorPanel.setComponentZOrder(panel, 0);
 			gui.editorPanel.validate();
 			break;
+		case 14:
+			type = ElementType.TREE;
+			break;
 		}
 		gui.editorPanel.validate();
 	}
@@ -612,14 +635,59 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 	}
 	
 	private class Link{
-		protected GuiElement fromGui;
-		protected GuiElement toGui;
-		protected Object	 from;
-		protected Object	 to;
+		protected GuiElement 	fromGui;
+		protected GuiElement 	toGui;
+		protected Object	 	from;
+		protected Object	 	to;
+		protected LinkDirection direction;
+		protected Point			p1;
+		protected Point			p2;
+		protected Point			p3;
+		protected Point			p4;
 		
+		protected void getDirection(){
+			int fromX 		= fromGui.getX();
+			int fromY 		= fromGui.getY();
+			int fromWidth 	= fromGui.getWidth();
+			int fromHeight 	= fromGui.getHeight();
+			
+			int toX			= toGui.getX();
+			int toY			= toGui.getY();
+			int toWidth 	= toGui.getWidth();
+			int toHeight 	= toGui.getHeight();
+			
+			
+			if(fromX+fromWidth < toX){ // 1st element is to the left of 2nd element
+				int middleOfElements = toX - ((toX - (fromX + fromWidth)) / 2);
+				p1 = new Point(fromX+fromWidth,fromY + (fromHeight / 2));
+				p2 = new Point(middleOfElements,p1.y);
+				p3 = new Point(middleOfElements,toY + (toHeight / 2));
+				p4 = new Point(toX,p3.y);
+			}else if(fromX > toX+toWidth){ // 1st element is to the right of 2nd element
+				int middleOfElements = fromX - ((fromX - (toX + toWidth)) / 2);
+				p1 = new Point(toX+toWidth,toY + (toHeight / 2));
+				p2 = new Point(middleOfElements,p1.y);
+				p3 = new Point(middleOfElements,fromY + (fromHeight / 2));
+				p4 = new Point(fromX,p3.y);
+			}else{ // The elements are above or below each other
+				if(fromY+fromHeight < toY){ // 1st element is above 2nd element
+					int middleOfElements = fromHeight - ((fromHeight - (toY + toHeight)) / 2);
+					p1 = new Point(fromX + (fromWidth / 2),fromY+fromHeight);
+					p2 = new Point(p1.x,middleOfElements);
+					p3 = new Point(toX + (toWidth / 2), middleOfElements);
+					p4 = new Point(p3.x,toY);
+				}else if(fromY > toY+toHeight){ // 1st element is below 2nd element
+					
+				}
+			}
+		}
 	}
 	
 	public enum ElementType{
-		STACK,ARRAY,LIST,ADD,REMOVE,INSERT,PUSH,POP,VARIABLE,LINK,SELECT,MOVECHAR,DELETE
+		STACK,ARRAY,LIST,ADD,REMOVE,INSERT,PUSH,POP,VARIABLE,LINK,SELECT,MOVECHAR,DELETE,TREE
+	}
+	
+	private enum LinkDirection{
+		UP,DOWN,LEFT,RIGHT
 	}
 }
