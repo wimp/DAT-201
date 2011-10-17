@@ -133,6 +133,14 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 			index = elements.lastIndexOf(moveCharElement);
 			guiElements.add(index,moveCharElement.getGuiElement());
 			return moveCharElement.getGuiElement();
+		case TREE:
+			bounds.width	= bounds.width < 250 ? 250 : bounds.width;
+			bounds.height	= bounds.height < 250 ? 250 : bounds.height;
+			Tree treeElement = new Tree(bounds,false);
+			elements.add(treeElement);
+			index = elements.lastIndexOf(treeElement);
+			guiElements.add(index,treeElement.getGuiElement());
+			return treeElement.getGuiElement();
 		}
 		return null;
 	}
@@ -361,7 +369,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 						addLinks(startGuiElement, guiElements.get(i));
 						link.to = endElement;
 						link.toGui = guiElements.get(i);
-						linkys.add(link);
+						linkys.add(i,link);
 						link = null;
 					}
 					
@@ -645,7 +653,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 		protected Point			p3;
 		protected Point			p4;
 		
-		protected void getDirection(){
+		void getDirection(){
 			int fromX 		= fromGui.getX();
 			int fromY 		= fromGui.getY();
 			int fromWidth 	= fromGui.getWidth();
@@ -656,19 +664,24 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 			int toWidth 	= toGui.getWidth();
 			int toHeight 	= toGui.getHeight();
 			
-			
 			if(fromX+fromWidth < toX){ // 1st element is to the left of 2nd element
 				int middleOfElements = toX - ((toX - (fromX + fromWidth)) / 2);
 				p1 = new Point(fromX+fromWidth,fromY + (fromHeight / 2));
 				p2 = new Point(middleOfElements,p1.y);
 				p3 = new Point(middleOfElements,toY + (toHeight / 2));
 				p4 = new Point(toX,p3.y);
+				
+				if(checkCompatability(from, to))
+					direction = checkCompatability(to, from) ? LinkDirection.LEFT_RIGHT : LinkDirection.RIGHT;
 			}else if(fromX > toX+toWidth){ // 1st element is to the right of 2nd element
 				int middleOfElements = fromX - ((fromX - (toX + toWidth)) / 2);
 				p1 = new Point(toX+toWidth,toY + (toHeight / 2));
 				p2 = new Point(middleOfElements,p1.y);
 				p3 = new Point(middleOfElements,fromY + (fromHeight / 2));
 				p4 = new Point(fromX,p3.y);
+				
+				if(checkCompatability(from, to))
+					direction = checkCompatability(to, from) ? LinkDirection.LEFT_RIGHT : LinkDirection.LEFT;
 			}else{ // The elements are above or below each other
 				if(fromY+fromHeight < toY){ // 1st element is above 2nd element
 					int middleOfElements = fromHeight - ((fromHeight - (toY + toHeight)) / 2);
@@ -676,8 +689,18 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 					p2 = new Point(p1.x,middleOfElements);
 					p3 = new Point(toX + (toWidth / 2), middleOfElements);
 					p4 = new Point(p3.x,toY);
-				}else if(fromY > toY+toHeight){ // 1st element is below 2nd element
 					
+					if(checkCompatability(from, to))
+						direction = checkCompatability(to, from) ? LinkDirection.UP_DOWN : LinkDirection.DOWN;
+				}else if(fromY > toY+toHeight){ // 1st element is below 2nd element
+					int middleOfElements = toHeight - ((toHeight - (fromY + fromHeight)) / 2);
+					p1 = new Point(toX + (toWidth / 2), toY+toHeight);
+					p2 = new Point(p1.x,middleOfElements);
+					p3 = new Point(fromX + (fromWidth / 2), middleOfElements);
+					p4 = new Point(p3.x,fromY);
+					
+					if(checkCompatability(from, to))
+						direction = checkCompatability(to, from) ? LinkDirection.UP_DOWN : LinkDirection.UP;
 				}
 			}
 		}
@@ -688,6 +711,6 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 	}
 	
 	private enum LinkDirection{
-		UP,DOWN,LEFT,RIGHT
+		UP,DOWN,LEFT,RIGHT,LEFT_RIGHT,UP_DOWN
 	}
 }
