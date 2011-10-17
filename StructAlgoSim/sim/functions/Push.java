@@ -41,6 +41,12 @@ public class Push implements ActionListener{
 	}
 
 // Class constructor //
+	public Push(Rectangle bounds){
+		gui = new GuiFunction(bounds,"Push");
+		gui.getButton().addActionListener(this);
+		this.l = null;
+		this.v = null;
+	}
 	/**
 	 * The class constructor. Initializes the graphical element - {@link GuiFunction}
 	 * @param bounds 	- The size and placement of the graphical element

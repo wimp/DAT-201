@@ -8,6 +8,7 @@ import sim.gui.elements.GuiElement;
 import sim.gui.elements.GuiFunction;
 import sim.structures.Array;
 import sim.structures.LinkedList;
+import sim.structures.Queue;
 import sim.structures.Variable;
 
 /**
@@ -51,6 +52,14 @@ public class Remove implements ActionListener {
 	}
 
 	// Class constructor //
+	public Remove(Rectangle bounds) {
+		gui = new GuiFunction(bounds,"Remove");
+		gui.getButton().addActionListener(this);
+		this.l=null;
+		this.v=null;
+		this.i= null;
+	}
+	
 	/**
 	 * The class constructor. Initializes the graphical element - {@link GuiFunction}
 	 * @param bounds 	- The size and placement of the graphical element
@@ -58,12 +67,26 @@ public class Remove implements ActionListener {
 	 * @param v 		- The output variable
 	 * @param i			- The input variable. The index to be removed from the list/array
 	 */
-	public Remove(Rectangle bounds, Object l, Variable v, Variable i) {
+	public Remove(Rectangle bounds, Queue l, Variable v) {
+		gui = new GuiFunction(bounds,"Remove");
+		gui.getButton().addActionListener(this);
+		this.l = l;
+		this.v = v;
+		this.i = null;
+	}
+	public Remove(Rectangle bounds, LinkedList l, Variable v, Variable i) {
 		gui = new GuiFunction(bounds,"Remove");
 		gui.getButton().addActionListener(this);
 		this.l=l;
 		this.v=v;
-		this.i=i == null ? new Variable(new Rectangle(0,0,0,0),"0",false) : i;
+		this.i= i == null ? new Variable(new Rectangle(0,0,0,0),"0",false) : i;
+	}
+	public Remove(Rectangle bounds, Array l, Variable v, Variable i) {
+		gui = new GuiFunction(bounds,"Remove");
+		gui.getButton().addActionListener(this);
+		this.l=l;
+		this.v=v;
+		this.i= i == null ? new Variable(new Rectangle(0,0,0,0),"0",false) : i;
 	}
 	
 // Action Listener implementation //
@@ -74,6 +97,12 @@ public class Remove implements ActionListener {
 			v.setValue(s);
 		}else if(l instanceof LinkedList){
 			Object o = ((LinkedList) l).removeElementAt(Integer.parseInt(i.getValue()));
+			if(o!=null){
+				String s = o.toString();
+				v.setValue(s);
+			}
+		}else if(l instanceof Queue){
+			Object o = ((Queue) l).remove();
 			if(o!=null){
 				String s = o.toString();
 				v.setValue(s);

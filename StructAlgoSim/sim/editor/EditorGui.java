@@ -40,6 +40,7 @@ public class EditorGui extends JFrame {
 		JToggleButton select	= new JToggleButton("Select and Push");
 		JToggleButton moveChar	= new JToggleButton("Move Char");
 		JToggleButton delete	= new JToggleButton("Delete Element");
+		JToggleButton tree		= new JToggleButton("Tre");
 		
 		// Add actionlisteners and set action commands //
 		stack.addActionListener(el);
@@ -68,6 +69,8 @@ public class EditorGui extends JFrame {
 		moveChar.setActionCommand("12");
 		delete.addActionListener(el);
 		delete.setActionCommand("13");
+		tree.addActionListener(el);
+		tree.setActionCommand("14");
 		
 		// Add toggle buttons to the button group //
 		bg.add(stack);
@@ -83,6 +86,7 @@ public class EditorGui extends JFrame {
 		bg.add(link);
 		bg.add(select);
 		bg.add(delete);
+		bg.add(tree);
 		
 		// Add elements to the top panel //
 		topPanel.setLayout(new GridLayout(2,1));
@@ -99,6 +103,7 @@ public class EditorGui extends JFrame {
 		topPanel.add(link);
 		topPanel.add(select);
 		topPanel.add(delete);
+		topPanel.add(tree);
 		
 		// Add elements to the main frame in the gridLayout //
 		add(topPanel,BorderLayout.NORTH);

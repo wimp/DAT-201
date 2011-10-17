@@ -45,14 +45,14 @@ public class GuiStack extends GuiElement {
 		
 		@Override
 		public void paintComponent(Graphics g){
-			int elementH = getHeight()/data.size();
+			int elementH = getHeight()/(data.size()+1);
 			int elementW = getWidth();
 			
 			for(int i = 0; i<data.size(); i++){
 				String s = (String)data.get(i);
 				
-				g.drawRoundRect(i*elementH, 0, elementW, elementH, 5, 5);
-				g.drawString(s, i*elementH, 0);
+				g.drawRoundRect(0, i*elementH, elementW, elementH, 5, 5);
+				g.drawString(s,0, i*elementH);
 			}
 		}
 	}

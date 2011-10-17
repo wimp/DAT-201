@@ -42,6 +42,12 @@ public class Pop implements ActionListener {
 
 
 	// Class constructor //
+	public Pop(Rectangle bounds) {
+		gui = new GuiFunction(bounds,"Pop");
+		gui.getButton().addActionListener(this);
+		this.l=null;
+		this.v=null;
+	}
 	/**
 	 * The class constructor. Initializes the graphical element - {@link GuiFunction}
 	 * @param bounds 	- The size and placement of the graphical element
