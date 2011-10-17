@@ -133,6 +133,14 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 			index = elements.lastIndexOf(moveCharElement);
 			guiElements.add(index,moveCharElement.getGuiElement());
 			return moveCharElement.getGuiElement();
+		case TREE:
+			bounds.width	= bounds.width < 500 ? 500 : bounds.width;
+			bounds.height	= bounds.height < 250 ? 250 : bounds.height;
+			Tree treeElement = new Tree(bounds,false);
+			elements.add(treeElement);
+			index = elements.lastIndexOf(treeElement);
+			guiElements.add(index,treeElement.getGuiElement());
+			return treeElement.getGuiElement();
 		}
 		return null;
 	}
@@ -145,6 +153,8 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 			}else if(element2 instanceof Variable){
 				return true;
 			}else if(element2 instanceof LinkedList){
+				return true;
+			}else if(element2 instanceof Tree){
 				return true;
 			}else{
 				return false;
@@ -178,8 +188,6 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 				return true;
 			}else if(element2 instanceof Variable){
 				return true;
-			}else{
-				return false;
 			}
 		}else if(element1 instanceof Pop){
 			if(element2 instanceof Stack){
@@ -206,6 +214,8 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 				return true;
 			}else if(element2 instanceof LinkedList){
 				return true;
+			}else if(element2 instanceof Tree){
+				return true;
 			}else{
 				return false;
 			}
@@ -221,6 +231,26 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 			}
 		}else if(element1 instanceof MoveChar){
 			if(element2 instanceof Variable){
+				return true;
+			}else{
+				return false;
+			}
+		}else if(element1 instanceof Tree){
+			if(element2 instanceof Insert){
+				return true;
+			}else if(element2 instanceof Add){
+				return true;
+			}else{
+				return false;
+			}
+		}else if(element1 instanceof Insert){
+			if(element2 instanceof Tree){
+				return true;
+			}else if(element2 instanceof LinkedList){
+				return true;
+			}else if(element2 instanceof Variable){
+				return true;
+			}else if(element2 instanceof Array){
 				return true;
 			}else{
 				return false;
@@ -297,11 +327,13 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 				}
 			}
 			
-			gui.editorPanel.remove(guiElements.get(elementIndex));
-			guiElements.remove(elementIndex);
-			elements.remove(elementIndex);
-			panel.r = null;
-			gui.editorPanel.validate();
+			if(elementIndex != -1){
+				gui.editorPanel.remove(guiElements.get(elementIndex));
+				guiElements.remove(elementIndex);
+				elements.remove(elementIndex);
+				panel.r = null;
+				gui.editorPanel.validate();
+			}
 			return;
 		}
 		if(type != ElementType.LINK){
@@ -361,6 +393,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 						addLinks(startGuiElement, guiElements.get(i));
 						link.to = endElement;
 						link.toGui = guiElements.get(i);
+						link.getDirection();
 						linkys.add(link);
 						link = null;
 					}
@@ -619,7 +652,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 			
 			if(links.size() >=4){
 				g2d.setColor(Color.black);
-				for(int i = 0;i < links.size();i+=4){
+				/*for(int i = 0;i < links.size();i+=4){
 					if(links.size() >= i+3){
 						g2d.drawLine(links.get(i).x, links.get(i).y, links.get(i+1).x, links.get(i+1).y);
 						g2d.drawLine(links.get(i+1).x, links.get(i+1).y, links.get(i+2).x, links.get(i+2).y);
@@ -628,13 +661,35 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 						g2d.fillOval(links.get(i).x-4, links.get(i).y-4, 8, 8);
 						g2d.fillOval(links.get(i+3).x-4, links.get(i+3).y-4, 8, 8);
 					}
+				}*/
+				
+				for(int i = 0;i<linkys.size();i++){
+					Link l = linkys.get(i);
+					g2d.drawLine(l.p1.x, l.p1.y, l.p2.x, l.p2.y);
+					g2d.drawLine(l.p2.x, l.p2.y, l.p3.x, l.p3.y);
+					g2d.drawLine(l.p3.x, l.p3.y, l.p4.x, l.p4.y);
+					
+					switch(l.direction){
+					case LEFT:
+						break;
+					case RIGHT:
+						break;
+					case DOWN:
+						break;
+					case UP:
+						break;
+					case LEFT_RIGHT:
+						break;
+					case UP_DOWN:
+						break;
+					}
 				}
 				g2d.setColor(c);
 			}
 		}
 	}
 	
-	private class Link{
+	class Link{
 		protected GuiElement 	fromGui;
 		protected GuiElement 	toGui;
 		protected Object	 	from;
@@ -645,7 +700,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 		protected Point			p3;
 		protected Point			p4;
 		
-		protected void getDirection(){
+		void getDirection(){
 			int fromX 		= fromGui.getX();
 			int fromY 		= fromGui.getY();
 			int fromWidth 	= fromGui.getWidth();
@@ -656,28 +711,43 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 			int toWidth 	= toGui.getWidth();
 			int toHeight 	= toGui.getHeight();
 			
-			
 			if(fromX+fromWidth < toX){ // 1st element is to the left of 2nd element
 				int middleOfElements = toX - ((toX - (fromX + fromWidth)) / 2);
 				p1 = new Point(fromX+fromWidth,fromY + (fromHeight / 2));
 				p2 = new Point(middleOfElements,p1.y);
 				p3 = new Point(middleOfElements,toY + (toHeight / 2));
 				p4 = new Point(toX,p3.y);
+				
+				if(checkCompatability(from, to))
+					direction = checkCompatability(to, from) ? LinkDirection.LEFT_RIGHT : LinkDirection.RIGHT;
 			}else if(fromX > toX+toWidth){ // 1st element is to the right of 2nd element
 				int middleOfElements = fromX - ((fromX - (toX + toWidth)) / 2);
 				p1 = new Point(toX+toWidth,toY + (toHeight / 2));
 				p2 = new Point(middleOfElements,p1.y);
 				p3 = new Point(middleOfElements,fromY + (fromHeight / 2));
 				p4 = new Point(fromX,p3.y);
+				
+				if(checkCompatability(from, to))
+					direction = checkCompatability(to, from) ? LinkDirection.LEFT_RIGHT : LinkDirection.LEFT;
 			}else{ // The elements are above or below each other
 				if(fromY+fromHeight < toY){ // 1st element is above 2nd element
-					int middleOfElements = fromHeight - ((fromHeight - (toY + toHeight)) / 2);
+					int middleOfElements = toY - ((toY - (fromY + fromHeight)) / 2);
 					p1 = new Point(fromX + (fromWidth / 2),fromY+fromHeight);
 					p2 = new Point(p1.x,middleOfElements);
 					p3 = new Point(toX + (toWidth / 2), middleOfElements);
 					p4 = new Point(p3.x,toY);
-				}else if(fromY > toY+toHeight){ // 1st element is below 2nd element
 					
+					if(checkCompatability(from, to))
+						direction = checkCompatability(to, from) ? LinkDirection.UP_DOWN : LinkDirection.DOWN;
+				}else if(fromY > toY+toHeight){ // 1st element is below 2nd element
+					int middleOfElements = fromY - ((fromY - (toY + toHeight)) / 2);
+					p1 = new Point(toX + (toWidth / 2), toY+toHeight);
+					p2 = new Point(p1.x,middleOfElements);
+					p3 = new Point(fromX + (fromWidth / 2), middleOfElements);
+					p4 = new Point(p3.x,fromY);
+					
+					if(checkCompatability(from, to))
+						direction = checkCompatability(to, from) ? LinkDirection.UP_DOWN : LinkDirection.UP;
 				}
 			}
 		}
@@ -688,6 +758,6 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 	}
 	
 	private enum LinkDirection{
-		UP,DOWN,LEFT,RIGHT
+		UP,DOWN,LEFT,RIGHT,LEFT_RIGHT,UP_DOWN
 	}
 }

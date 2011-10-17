@@ -93,6 +93,7 @@ public class EditorGui extends JFrame {
 		topPanel.add(stack);
 		topPanel.add(array);
 		topPanel.add(list);
+		topPanel.add(tree);
 		topPanel.add(add);
 		topPanel.add(remove);
 		topPanel.add(insert);
@@ -103,7 +104,6 @@ public class EditorGui extends JFrame {
 		topPanel.add(link);
 		topPanel.add(select);
 		topPanel.add(delete);
-		topPanel.add(tree);
 		
 		// Add elements to the main frame in the gridLayout //
 		add(topPanel,BorderLayout.NORTH);

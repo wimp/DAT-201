@@ -20,7 +20,7 @@ public class StructAlgoSim {
 	 */
 	public static void main(String[] args) {
 	//	RailwayPostfix rsim = new RailwayPostfix();
-		//EditorGui gui = new EditorGui();
+		//new EditorGui();
 		
 
 		JFrame frame = new JFrame();
