@@ -61,7 +61,7 @@ public class LinkedList {
 		if(index > 0 && index < v.size()){
 		v.elementAt(index).setRemoved(true);
 		gui.repaint();
-		gui.getAnimation().start();
+		gui.startAnimation();
 		return v.elementAt(index).getValue();
 		}
 		else return null;

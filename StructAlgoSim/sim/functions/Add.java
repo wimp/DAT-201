@@ -26,21 +26,22 @@ public class Add implements ActionListener {
 		return gui;
 	}
 	
-	public Object getL(){
+	public Object getTarget() {
 		return l;
 	}
-	
-	public void setL(Object l){
+
+	public void setTarget(Object l) {
 		this.l = l;
 	}
-	
-	public Variable getV(){
+
+	public Variable getSourceVariable() {
 		return v;
 	}
-	
-	public void setV(Variable v){
+
+	public void setSourceVariable(Variable v) {
 		this.v = v;
 	}
+
 	
 // Class constructor //
 	/**

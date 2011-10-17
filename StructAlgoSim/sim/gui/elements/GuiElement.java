@@ -19,8 +19,9 @@ public abstract class GuiElement extends JPanel{
 	public Timer getAnimation() {
 		return animation;
 	}
-	public void setAnimation(Timer animation) {
-		this.animation = animation;
+	public void startAnimation() {
+		if(animation != null)
+		animation.start();
 	}
 	int frame;
 	final int MAXFRAME = 6;
