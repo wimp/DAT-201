@@ -56,7 +56,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 		case ADD:
 			bounds.width 	= bounds.width < 70 ? 70 : bounds.width;
 			bounds.height 	= bounds.height < 30 ? 30 : bounds.height;
-			Add addElement = new Add(bounds,null,null);
+			Add addElement = new Add(bounds);
 			elements.add(addElement);
 			index = elements.lastIndexOf(addElement);
 			guiElements.add(index,addElement.getGuiElement());
@@ -72,7 +72,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 		case INSERT:
 			bounds.width 	= bounds.width < 150 ? 150 : bounds.width;
 			bounds.height 	= bounds.height < 30 ? 30 : bounds.height;
-			Insert insertElement = new Insert(bounds,null,null,null);
+			Insert insertElement = new Insert(bounds);
 			elements.add(insertElement);
 			index = elements.lastIndexOf(insertElement);
 			guiElements.add(index,insertElement.getGuiElement());
@@ -88,7 +88,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 		case POP:
 			bounds.width 	= bounds.width < 70 ? 70 : bounds.width;
 			bounds.height 	= bounds.height < 30 ? 30 : bounds.height;
-			Pop popElement = new Pop(bounds,null,null);
+			Pop popElement = new Pop(bounds);
 			elements.add(popElement);
 			index = elements.lastIndexOf(popElement);
 			guiElements.add(index,popElement.getGuiElement());
@@ -96,7 +96,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 		case PUSH:
 			bounds.width 	= bounds.width < 70 ? 70 : bounds.width;
 			bounds.height 	= bounds.height < 30 ? 30 : bounds.height;
-			Push pushElement = new Push(bounds,null,null);
+			Push pushElement = new Push(bounds);
 			elements.add(pushElement);
 			index = elements.lastIndexOf(pushElement);
 			guiElements.add(pushElement.getGuiElement());
@@ -104,7 +104,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 		case REMOVE:
 			bounds.width 	= bounds.width < 100 ? 100 : bounds.width;
 			bounds.height 	= bounds.height < 30 ? 30 : bounds.height;
-			Remove removeElement = new Remove(bounds, null, null, null);
+			Remove removeElement = new Remove(bounds);
 			elements.add(removeElement);
 			index = elements.lastIndexOf(removeElement);
 			guiElements.add(index,removeElement.getGuiElement());
@@ -128,7 +128,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 		case MOVECHAR:
 			bounds.width	= bounds.width < 70 ? 70 : bounds.width;
 			bounds.height	= bounds.height < 30 ? 30: bounds.height;
-			MoveChar moveCharElement = new MoveChar(bounds,Direction.LEFT,null,null);
+			MoveChar moveCharElement = new MoveChar(bounds,Direction.LEFT);
 			elements.add(moveCharElement);
 			index = elements.lastIndexOf(moveCharElement);
 			guiElements.add(index,moveCharElement.getGuiElement());
@@ -366,73 +366,73 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 					}
 					
 					if(startElement instanceof Add){
-						if(endElement instanceof Array){
-							((Add) startElement).setV(endElement);
-						}else if(endElement instanceof Variable){
-							((Add) startElement).setV((Variable) endElement);
-						}else if(endElement instanceof LinkedList){
-							((Add) startElement).setL(endElement);
-						}
-					}else if(startElement instanceof Variable){
-						if(endElement instanceof Add){
-							((Add) endElement).setV((Variable) startElement);
-						}else if(endElement instanceof Remove){
-							((Remove) endElement).setI((Variable) startElement);
-						}else if(endElement instanceof Insert){
-							((Insert) endElement).setI((Variable) startElement);
-						}else if(endElement instanceof Push){
-							((Push) endElement).setV((Variable) startElement);
-						}else if(endElement instanceof Pop){
-							((Pop) endElement).setV((Variable) startElement);
-						}else if(endElement instanceof MoveChar){
-							((MoveChar) endElement).setInput((Variable) startElement);
-						}
-					}else if(startElement instanceof Stack){
-						if(endElement instanceof Push){
-							((Push) endElement).setS((Stack) startElement);
-						}else if(endElement instanceof Pop){
-							((Pop) endElement).setS((Stack) startElement);
-						}
-					}else if(startElement instanceof Push){
-						if(endElement instanceof Stack){
-							((Push) startElement).setS((Stack) endElement);
-						}else if(endElement instanceof Variable){
-							((Push) startElement).setV((Variable) endElement);
-						}
-					}else if(startElement instanceof Pop){
-						if(endElement instanceof Stack){
-							((Pop) startElement).setS((Stack) endElement);
-						}else if(endElement instanceof Variable){
-							((Pop) startElement).setV((Variable) endElement);
-						}
-					}else if(startElement instanceof LinkedList){
-						if(endElement instanceof Remove){
-							((Remove) endElement).setL(startElement);
-						}else if(endElement instanceof Insert){
-							((Insert) endElement).setL(startElement);
-						}else if(endElement instanceof Add){
-							((Add) endElement).setL(startElement);
-						}
-					}else if(startElement instanceof Remove){
-						if(endElement instanceof Variable){
-							((Remove) startElement).setV((Variable) endElement);
-						}else if(endElement instanceof Array){
-							((Remove) startElement).setL(endElement);
-						}else if(endElement instanceof LinkedList){
-							((Remove) startElement).setL(endElement);
-						}
-					}else if(startElement instanceof Array){
-						if(endElement instanceof Add){
-							((Add) endElement).setL(startElement);
-						}else if(endElement instanceof Remove){
-							((Remove) endElement).setL(startElement);
-						}else if(endElement instanceof Insert){
-							((Insert) endElement).setL(startElement);
-						}
-					}else if(startElement instanceof MoveChar){
-						if(endElement instanceof Variable){
-							((MoveChar) startElement).setOutput((Variable) endElement);
-						}
+//						if(endElement instanceof Array){
+//							((Add) startElement).setV(endElement);
+//						}else if(endElement instanceof Variable){
+//							((Add) startElement).setV((Variable) endElement);
+//						}else if(endElement instanceof LinkedList){
+//							((Add) startElement).setL(endElement);
+//						}
+//					}else if(startElement instanceof Variable){
+//						if(endElement instanceof Add){
+//							((Add) endElement).setV((Variable) startElement);
+//						}else if(endElement instanceof Remove){
+//							((Remove) endElement).setI((Variable) startElement);
+//						}else if(endElement instanceof Insert){
+//							((Insert) endElement).setI((Variable) startElement);
+//						}else if(endElement instanceof Push){
+//							((Push) endElement).setV((Variable) startElement);
+//						}else if(endElement instanceof Pop){
+//							((Pop) endElement).setV((Variable) startElement);
+//						}else if(endElement instanceof MoveChar){
+//							((MoveChar) endElement).setInput((Variable) startElement);
+//						}
+//					}else if(startElement instanceof Stack){
+//						if(endElement instanceof Push){
+//							((Push) endElement).setS((Stack) startElement);
+//						}else if(endElement instanceof Pop){
+//							((Pop) endElement).setS((Stack) startElement);
+//						}
+//					}else if(startElement instanceof Push){
+//						if(endElement instanceof Stack){
+//							((Push) startElement).setS((Stack) endElement);
+//						}else if(endElement instanceof Variable){
+//							((Push) startElement).setV((Variable) endElement);
+//						}
+//					}else if(startElement instanceof Pop){
+//						if(endElement instanceof Stack){
+//							((Pop) startElement).setS((Stack) endElement);
+//						}else if(endElement instanceof Variable){
+//							((Pop) startElement).setV((Variable) endElement);
+//						}
+//					}else if(startElement instanceof LinkedList){
+//						if(endElement instanceof Remove){
+//							((Remove) endElement).setL(startElement);
+//						}else if(endElement instanceof Insert){
+//							((Insert) endElement).setL(startElement);
+//						}else if(endElement instanceof Add){
+//							((Add) endElement).setL(startElement);
+//						}
+//					}else if(startElement instanceof Remove){
+//						if(endElement instanceof Variable){
+//							((Remove) startElement).setV((Variable) endElement);
+//						}else if(endElement instanceof Array){
+//							((Remove) startElement).setL(endElement);
+//						}else if(endElement instanceof LinkedList){
+//							((Remove) startElement).setL(endElement);
+//						}
+//					}else if(startElement instanceof Array){
+//						if(endElement instanceof Add){
+//							((Add) endElement).setL(startElement);
+//						}else if(endElement instanceof Remove){
+//							((Remove) endElement).setL(startElement);
+//						}else if(endElement instanceof Insert){
+//							((Insert) endElement).setL(startElement);
+//						}
+//					}else if(startElement instanceof MoveChar){
+//						if(endElement instanceof Variable){
+//							((MoveChar) startElement).setOutput((Variable) endElement);
+//						}
 					}
 					break;
 				}

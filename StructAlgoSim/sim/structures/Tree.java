@@ -106,6 +106,8 @@ public class Tree {
 	public void setTraversal(Traversal traversal) {
 		this.traversal = traversal;
 	}
+	public void insertAt(int index,Object value){
+	}
 	public TreeNode elementAt(int index){
 		currentNode = null;
 		currentIndex = 0;

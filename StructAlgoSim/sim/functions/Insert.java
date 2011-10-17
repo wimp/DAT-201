@@ -8,6 +8,7 @@ import sim.gui.elements.GuiElement;
 import sim.gui.elements.GuiFunction;
 import sim.structures.Array;
 import sim.structures.LinkedList;
+import sim.structures.Tree;
 import sim.structures.Variable;
 
 /**
@@ -27,31 +28,39 @@ public class Insert implements ActionListener {
 		return gui;
 	}
 	
-	public Object getL() {
+	public Object getTarget() {
 		return l;
 	}
 
-	public void setL(Object l) {
+	public void setTarget(Object l) {
 		this.l = l;
 	}
 
-	public Variable getV() {
+	public Variable getSourceVariable() {
 		return v;
 	}
 
-	public void setV(Variable v) {
+	public void setSourceVariable(Variable v) {
 		this.v = v;
 	}
 
-	public Variable getI() {
+	public Variable getIndexVariable() {
 		return i;
 	}
 
-	public void setI(Variable i) {
+	public void setIndexVariable(Variable i) {
 		this.i = i;
 	}
 
 	// Class constructor //
+	public Insert(Rectangle bounds, boolean insertAfterElement) {
+		gui = new GuiFunction(bounds,"Insert Before");
+		gui.getButton().addActionListener(this);
+		this.l = null;
+		this.v = null;
+		this.i = null;
+		this.insertAfterElement = insertAfterElement;
+	}
 	/**
 	 * The class constructor. Initializes the graphical element - {@link GuiFunction}
 	 * @param bounds 			- The size and placement of the graphical element
@@ -60,11 +69,23 @@ public class Insert implements ActionListener {
 	 * @param i					- The input variable (The index of array element that is to be "added before")
 	 * @param insertAfterElement- Whether the element at i should be added after (true) or before (false).
 	 */
-	public Insert(Rectangle bounds, Object l, Variable v, Variable i) {
-		this(bounds,l,v,i,false);
+	public Insert(Rectangle bounds, LinkedList l, Variable v, Variable i, boolean insertAfterElement) {
+		gui = new GuiFunction(bounds,"Insert Before");
+		gui.getButton().addActionListener(this);
+		this.l = l;
+		this.v = v;
+		this.i = i;
+		this.insertAfterElement = insertAfterElement;
 	}
-	
-	public Insert(Rectangle bounds, Object l, Variable v, Variable i, boolean insertAfterElement) {
+	public Insert(Rectangle bounds, Array l, Variable v, Variable i, boolean insertAfterElement) {
+		gui = new GuiFunction(bounds,"Insert Before");
+		gui.getButton().addActionListener(this);
+		this.l = l;
+		this.v = v;
+		this.i = i;
+		this.insertAfterElement = insertAfterElement;
+	}
+	public Insert(Rectangle bounds, Tree l, Variable v, Variable i, boolean insertAfterElement) {
 		gui = new GuiFunction(bounds,"Insert Before");
 		gui.getButton().addActionListener(this);
 		this.l = l;
@@ -86,6 +107,11 @@ public class Insert implements ActionListener {
 				((LinkedList) l).insertAt(Integer.parseInt(i.getValue()),v.getValue());
 			else
 				((LinkedList) l).insertAt(Integer.parseInt(i.getValue()),v.getValue());
+		}else if(l instanceof Tree){
+			if(insertAfterElement)
+				((Tree) l).insertAt(Integer.parseInt(i.getValue()),v.getValue());
+			else
+				((Tree) l).insertAt(Integer.parseInt(i.getValue()),v.getValue());
 		}
 		//l.addFirst(v.getValue());
 		

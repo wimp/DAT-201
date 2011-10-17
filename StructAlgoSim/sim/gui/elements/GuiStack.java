@@ -1,11 +1,12 @@
 package sim.gui.elements;
 
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.util.Vector;
 
-import javax.swing.JList;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.ListSelectionModel;
 
 /**
  * The graphical element of the {@link sim.structures.Stack} stack class
@@ -13,24 +14,46 @@ import javax.swing.ListSelectionModel;
 @SuppressWarnings("serial")
 public class GuiStack extends GuiElement {
 // Class variables //
-	JList list;
-
+	StackPanel stackPanel;
 // Getters and setters //
-	public void setData(Object[] data){
-		list.setListData(data);
-	}
-	public GuiStack(Rectangle bounds,Object[] data){
+	
+	public GuiStack(Rectangle bounds,Vector<Object> data){
 		super();
 		setBounds(bounds);
 		initGraphics(data);
 	}
-	private void initGraphics(Object[] data){
-		list = new JList(data); //data has type Object[]
-		list.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-		list.setLayoutOrientation(JList.VERTICAL);
-		list.setVisibleRowCount(-1);
-		JScrollPane listScroller = new JScrollPane(list);
+	private void initGraphics(Vector<Object> data){
+		stackPanel = new StackPanel(data);
+		JScrollPane listScroller = new JScrollPane(stackPanel);
+		stackPanel.setPreferredSize(new Dimension(getWidth(), getHeight()));
 		listScroller.setPreferredSize(new Dimension(getWidth(), getHeight()));
 		this.add(listScroller);
+	}
+	private class StackPanel extends JPanel{
+
+	Vector<Object> data;
+	
+	public Vector<Object> getData() {
+			return data;
+		}
+		public void setData(Vector<Object> data) {
+			this.data = data;
+		}
+		public StackPanel(Vector<Object> data){
+			this.data = data;
+		}
+		
+		@Override
+		public void paintComponent(Graphics g){
+			int elementH = getHeight()/data.size();
+			int elementW = getWidth();
+			
+			for(int i = 0; i<data.size(); i++){
+				String s = (String)data.get(i);
+				
+				g.drawRoundRect(i*elementH, 0, elementW, elementH, 5, 5);
+				g.drawString(s, i*elementH, 0);
+			}
+		}
 	}
 }
