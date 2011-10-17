@@ -15,7 +15,7 @@ import sim.structures.Variable;
  */
 public class Pop implements ActionListener {
 // Class variables //
-	Stack s;
+	Object l;
 	Variable v;
 	GuiFunction gui;
 	
@@ -24,21 +24,22 @@ public class Pop implements ActionListener {
 		return gui;
 	}
 	
-	public Stack getS() {
-		return s;
+	public Object getTarget() {
+		return l;
 	}
 
-	public void setS(Stack s) {
-		this.s = s;
+	public void setTarget(Object l) {
+		this.l = l;
 	}
 
-	public Variable getV() {
+	public Variable getSourceVariable() {
 		return v;
 	}
 
-	public void setV(Variable v) {
+	public void setSourceVariable(Variable v) {
 		this.v = v;
 	}
+
 
 	// Class constructor //
 	/**
@@ -47,19 +48,21 @@ public class Pop implements ActionListener {
 	 * @param s 		- The structure on which to perform the pop()-action
 	 * @param v 		- The output variable
 	 */
-	public Pop(Rectangle bounds, Stack s, Variable v) {
+	public Pop(Rectangle bounds, Object l, Variable v) {
 		gui = new GuiFunction(bounds,"Pop");
 		gui.getButton().addActionListener(this);
-		this.s=s;
+		this.l=l;
 		this.v=v;
 	}
 
 // Action Listener implementation //
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(v != null)
-			v.setValue((String)s.pop());
-		else
-			s.pop();
+		if(l instanceof Stack){
+			if(v != null)
+				v.setValue((String)((Stack)l).pop());
+			else
+				((Stack)l).pop();
+		}
 	}
 }

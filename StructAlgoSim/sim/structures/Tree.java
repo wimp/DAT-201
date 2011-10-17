@@ -187,6 +187,20 @@ public class Tree {
 	}
 	public class TreeNode{
 		private TreeNode parent;
+		private boolean added;
+		private boolean removed;
+		public boolean isAdded() {
+			return added;
+		}
+		public void setAdded(boolean added) {
+			this.added = added;
+		}
+		public boolean isRemoved() {
+			return removed;
+		}
+		public void setRemoved(boolean removed) {
+			this.removed = removed;
+		}
 		public TreeNode getParent() {
 			return parent;
 		}
@@ -222,7 +236,9 @@ public class Tree {
 			return value;
 		}
 		public void insert(Object value){
-			addSubTree(new TreeNode(value, this));
+			TreeNode n = new TreeNode(value, this);
+			n.setAdded(true);
+			addSubTree(n);
 		}
 		public void addSubTree(TreeNode root){
 			children.add(root);	

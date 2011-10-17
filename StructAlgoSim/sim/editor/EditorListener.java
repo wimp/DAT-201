@@ -367,71 +367,71 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 					
 					if(startElement instanceof Add){
 						if(endElement instanceof Array){
-							((Add) startElement).setL(endElement);
+							((Add) startElement).setTarget(endElement);
 						}else if(endElement instanceof Variable){
-							((Add) startElement).setV((Variable) endElement);
+							((Add) startElement).setSourceVariable((Variable) endElement);
 						}else if(endElement instanceof LinkedList){
-							((Add) startElement).setL(endElement);
+							((Add) startElement).setTarget(endElement);
 						}else if(endElement instanceof Tree){
-							((Add) startElement).setL(endElement);
+							((Add) startElement).setTarget(endElement);
 						}
 					}else if(startElement instanceof Variable){
 						if(endElement instanceof Add){
-							((Add) endElement).setV((Variable) startElement);
+							((Add) endElement).setSourceVariable((Variable) startElement);
 						}else if(endElement instanceof Remove){
-							((Remove) endElement).setI((Variable) startElement);
+							((Remove) endElement).setIndexVariable((Variable) startElement);
 						}else if(endElement instanceof Insert){
-							((Insert) endElement).setI((Variable) startElement);
+							((Insert) endElement).setIndexVariable((Variable) startElement);
 						}else if(endElement instanceof Push){
-							((Push) endElement).setV((Variable) startElement);
+							((Push) endElement).setSourceVariable((Variable) startElement);
 						}else if(endElement instanceof Pop){
-							((Pop) endElement).setV((Variable) startElement);
+							((Pop) endElement).setSourceVariable((Variable) startElement);
 						}else if(endElement instanceof MoveChar){
 							((MoveChar) endElement).setInput((Variable) startElement);
 						}
 					}else if(startElement instanceof Stack){
 						if(endElement instanceof Push){
-							((Push) endElement).setS((Stack) startElement);
+							((Push) endElement).setTarget(startElement);
 						}else if(endElement instanceof Pop){
-							((Pop) endElement).setS((Stack) startElement);
+							((Pop) endElement).setTarget(startElement);
 						}
 					}else if(startElement instanceof Push){
 						if(endElement instanceof Stack){
-							((Push) startElement).setS((Stack) endElement);
+							((Push) startElement).setTarget(endElement);
 						}else if(endElement instanceof Variable){
-							((Push) startElement).setV((Variable) endElement);
+							((Push) startElement).setSourceVariable((Variable) endElement);
 						}
 					}else if(startElement instanceof Pop){
 						if(endElement instanceof Stack){
-							((Pop) startElement).setS((Stack) endElement);
+							((Pop) startElement).setTarget(endElement);
 						}else if(endElement instanceof Variable){
-							((Pop) startElement).setV((Variable) endElement);
+							((Pop) startElement).setSourceVariable((Variable) endElement);
 						}
 					}else if(startElement instanceof LinkedList){
 						if(endElement instanceof Remove){
-							((Remove) endElement).setL(startElement);
+							((Remove) endElement).setTarget(startElement);
 						}else if(endElement instanceof Insert){
-							((Insert) endElement).setL(startElement);
+							((Insert) endElement).setTarget(startElement);
 						}else if(endElement instanceof Add){
-							((Add) endElement).setL(startElement);
+							((Add) endElement).setTarget(startElement);
 						}
 					}else if(startElement instanceof Remove){
 						if(endElement instanceof Variable){
-							((Remove) startElement).setV((Variable) endElement);
+							((Remove) startElement).setSourceVariable((Variable) endElement);
 						}else if(endElement instanceof Array){
-							((Remove) startElement).setL(endElement);
+							((Remove) startElement).setTarget(endElement);
 						}else if(endElement instanceof LinkedList){
-							((Remove) startElement).setL(endElement);
+							((Remove) startElement).setTarget(endElement);
 						}else if(endElement instanceof Tree){
-							((Remove) startElement).setL(endElement);
+							((Remove) startElement).setTarget(endElement);
 						}
 					}else if(startElement instanceof Array){
 						if(endElement instanceof Add){
-							((Add) endElement).setL(startElement);
+							((Add) endElement).setTarget(startElement);
 						}else if(endElement instanceof Remove){
-							((Remove) endElement).setL(startElement);
+							((Remove) endElement).setTarget(startElement);
 						}else if(endElement instanceof Insert){
-							((Insert) endElement).setL(startElement);
+							((Insert) endElement).setTarget(startElement);
 						}
 					}else if(startElement instanceof MoveChar){
 						if(endElement instanceof Variable){
@@ -439,19 +439,19 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 						}
 					}else if(startElement instanceof Tree){
 						if(endElement instanceof Insert){
-							((Insert) endElement).setL(startElement);
+							((Insert) endElement).setTarget(startElement);
 						}else if(endElement instanceof Add){
-							((Add) endElement).setL(startElement);
+							((Add) endElement).setTarget(startElement);
 						}
 					}else if(startElement instanceof Insert){
 						if(endElement instanceof Tree){
-							((Insert) startElement).setL(endElement);
+							((Insert) startElement).setTarget(endElement);
 						}else if(endElement instanceof LinkedList){
-							((Insert) startElement).setL(endElement);
+							((Insert) startElement).setTarget(endElement);
 						}else if(endElement instanceof Variable){
-							((Insert) startElement).setV((Variable) endElement);
+							((Insert) startElement).setSourceVariable((Variable) endElement);
 						}else if(endElement instanceof Array){
-							((Insert) startElement).setL(endElement);
+							((Insert) startElement).setTarget(endElement);
 						}
 					}
 					break;

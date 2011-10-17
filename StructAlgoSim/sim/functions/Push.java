@@ -15,7 +15,7 @@ import sim.structures.Variable;
  */
 public class Push implements ActionListener{
 // Class variables //
-	Stack s;
+	Object l;
 	Variable v;
 	GuiFunction gui;
 
@@ -24,19 +24,19 @@ public class Push implements ActionListener{
 		return gui;
 	}
 	
-	public Stack getS() {
-		return s;
+	public Object getTarget() {
+		return l;
 	}
 
-	public void setS(Stack s) {
-		this.s = s;
+	public void setTarget(Object l) {
+		this.l = l;
 	}
 
-	public Variable getV() {
+	public Variable getSourceVariable() {
 		return v;
 	}
 
-	public void setV(Variable v) {
+	public void setSourceVariable(Variable v) {
 		this.v = v;
 	}
 
@@ -47,17 +47,20 @@ public class Push implements ActionListener{
 	 * @param v 		- The input variable.
 	 * @param s 		- The structure on which to perform the push()-action 
 	 */
-	public Push(Rectangle bounds, Variable v, Stack s){
+	public Push(Rectangle bounds, Variable v, Object l){
 		gui = new GuiFunction(bounds,"Push");
 		gui.getButton().addActionListener(this);
-		this.s = s;
+		this.l = l;
 		this.v = v;
 	}
 	
 // Implementation of the actionListener //
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		s.push((Object)v.getValue());
+		if(l instanceof Stack)
+		{
+		((Stack)l).push((Object)v.getValue());
 		v.setValue("");
+	}
 	}
 }

@@ -6,8 +6,8 @@ import javax.swing.JFrame;
 
 import sim.editor.EditorGui;
 import sim.functions.Add;
-import sim.structures.Heap;
 import sim.structures.LinkedList;
+import sim.structures.Tree;
 import sim.structures.Variable;
 
 public class StructAlgoSim {
@@ -35,5 +35,6 @@ public class StructAlgoSim {
 //		frame.add(a.getGuiElement());
 //		frame.validate();
 //		frame.setVisible(true);
+
 	}
 }

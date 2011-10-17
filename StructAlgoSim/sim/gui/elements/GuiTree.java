@@ -20,6 +20,7 @@ import javax.swing.Timer;
 
 import sim.structures.Heap;
 import sim.structures.Heap.CompareKey;
+import sim.structures.Tree.Traversal;
 import sim.structures.Tree;
 
 @SuppressWarnings("serial")
@@ -199,7 +200,6 @@ public class GuiTree extends GuiElement implements ActionListener{
 			g2d.drawOval(offset, drawNodeHeight *2* n.getDepth()+drawNodeHeight,
 					drawNodeWidth, drawNodeHeight);
 			g2d.drawString((String)n.getValue(), offset, drawNodeHeight*2*n.getDepth()+drawNodeHeight);
-		
 		}
 		@Override 
 		public void paintComponent(Graphics g){
@@ -217,6 +217,16 @@ public class GuiTree extends GuiElement implements ActionListener{
 	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		if(e.getSource()== preorder){
+			tree.setTraversal(Traversal.PREORDER);
+		}
+		else if(e.getSource()== inorder){
+			tree.setTraversal(Traversal.INORDER);			
+		}
+		else if(e.getSource()==postorder){
+			tree.setTraversal(Traversal.POSTORDER);
+		}
+		if(!isheap)
 		if(e.getSource()==nary){
 			nval.setText("");
 			nval.setEditable(true);
@@ -238,20 +248,21 @@ public class GuiTree extends GuiElement implements ActionListener{
 			nval.setEditable(false);
 			tree.setMaxCluster(2);
 		}
-		else if(e.getSource() == max){
-			if(isheap) ((Heap)tree).maxHeapifyTree(tree.getRoot());
+		if(isheap) 
+		if(e.getSource() == max){
+			((Heap)tree).maxHeapifyTree(tree.getRoot());
 		}
 		else if(e.getSource() == min){
-			if(isheap) ((Heap)tree).minHeapifyTree(tree.getRoot());			
+			((Heap)tree).minHeapifyTree(tree.getRoot());			
 		}
 		else if(e.getSource() == alpha){
-			if(isheap) ((Heap)tree).setSortKey(CompareKey.ALPHABETICAL);
+			((Heap)tree).setSortKey(CompareKey.ALPHABETICAL);
 		}
 		else if(e.getSource() == num){
-			if(isheap) ((Heap)tree).setSortKey(CompareKey.NUMERICAL);		
+			((Heap)tree).setSortKey(CompareKey.NUMERICAL);		
 		}
 		else if(e.getSource() == strlen){
-			if(isheap) ((Heap)tree).setSortKey(CompareKey.STRLEN);		
+			((Heap)tree).setSortKey(CompareKey.STRLEN);		
 		}
 		repaint();
 		validate();
