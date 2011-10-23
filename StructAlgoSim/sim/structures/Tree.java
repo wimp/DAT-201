@@ -124,7 +124,7 @@ public class Tree {
 		}
 		return currentNode;
 	}
-	public void inOrderElementAt(TreeNode n, int index){
+	private void inOrderElementAt(TreeNode n, int index){
 		for(int i= 0; i<n.getChildren().size()-1; i++){
 					inOrderElementAt(n.getChildren().elementAt(i), index);
 		}		
@@ -134,7 +134,7 @@ public class Tree {
 		if(n.getChildren().size()>0)
 			inOrderElementAt(n.getChildren().elementAt(n.getChildren().size()-1), index);
 	}
-	public void preOrderElementAt(TreeNode n, int index){
+	private void preOrderElementAt(TreeNode n, int index){
 		currentIndex++;
 		if(index == currentIndex) currentNode = n;
 		
@@ -144,7 +144,7 @@ public class Tree {
 		if(n.getChildren().size()>0)
 			preOrderElementAt(n.getChildren().elementAt(n.getChildren().size()-1), index);
 	}
-	public void postOrderElementAt(TreeNode n, int index){
+	private void postOrderElementAt(TreeNode n, int index){
 
 		for(int i= 0; i<n.getChildren().size()-1; i++){
 					postOrderElementAt(n.getChildren().elementAt(i), index);
@@ -224,6 +224,9 @@ public class Tree {
 				depth++;
 			}
 			return depth;
+		}
+		public int getDegree(){
+			return children.size();
 		}
 		public Vector<TreeNode> getChildren(){
 			return children;

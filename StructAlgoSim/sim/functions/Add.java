@@ -85,10 +85,8 @@ public class Add implements ActionListener {
 // Action Listener implementation //
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(l instanceof Array){
-			((Array) l).addItem(v.getValue());
-		}else if(l instanceof LinkedList){
-			((LinkedList) l).addLast(v.getValue());
+		if(l instanceof LinkedList){
+		((LinkedList) l).addLast(v.getValue());
 		}else if(l instanceof Tree){
 		((Tree) l).addBreadthFirst(v.getValue());
 		}else if(l instanceof Queue){

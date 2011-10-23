@@ -15,6 +15,7 @@ public class Array {
 	public GuiArray gui;
 	private int size;
 	private int sizeB;
+	public final int MAXSIZE = 100;
 	
 // Getters and setters //
 	public GuiArray getGuiElement(){
@@ -28,9 +29,14 @@ public class Array {
 	 * @param size
 	 */
 	public Array(Rectangle bounds, int size){
+		if(size < MAXSIZE){
 		v = new Vector<Object>();
+		for(int x = 0;x < size;x++){
+			v.add(x, "");
+		}
 		gui = new GuiArray(bounds,v);
 		this.size = size;
+		}
 	}
 	
 	/**
@@ -40,66 +46,32 @@ public class Array {
 	 * @param sizeB
 	 */
 	public Array(Rectangle bounds, int sizeA, int sizeB){
+		if(sizeA < MAXSIZE && sizeB<MAXSIZE){
 		v = new Vector<Object>();
 		for(int i = 0;i < sizeA;i++){
+			Vector<Object> v1 = new Vector<Object>(sizeB);
+			for(int x = 0;x < sizeB;x++){
+				v1.add(x, "");
+			}
 			v.add(i, new Vector<Object>(sizeB));
 		}
-		gui = new GuiArray(bounds,v);
-		
+			gui = new GuiArray(bounds,v);
+		}
 	}
-	
-	public void addItem(Object item){
+	public void insertAt(Object itemToAdd, int index){
 		if(v.size() < size){
-			v.add(item);
+			v.set(index,itemToAdd);
 			gui.setData(v);
 			gui.validate();
 			gui.repaint();
 		}else return;
 	}
-	
-	public void insertBefore(Object itemToAdd, Object item){
-		if(v.size() < size){
-			int index = v.indexOf(item);
-			v.add(index,itemToAdd);
-			gui.setData(v);
-			gui.validate();
-			gui.repaint();
-		}else return;
+	public Object valueAt(int index){
+			return v.get(index);
 	}
-	
-	public void insertBefore(Object itemToAdd, int index){
-		if(v.size() < size){
-			v.add(index, itemToAdd);
-			gui.setData(v);
-			gui.validate();
-			gui.repaint();
-		}else return;
-	}
-	
-	public void insertAfter(Object itemToAdd, Object item){
-		if(v.size() < size){
-			int index = v.indexOf(item);
-			index++;
-			v.add(index,itemToAdd);
-			gui.setData(v);
-			gui.validate();
-			gui.repaint();
-		}else return;
-	}
-	
-	public void insertAfter(Object itemToAdd, int index){
-		if(v.size() < size){
-			index++;
-			v.add(index, itemToAdd);
-			gui.setData(v);
-			gui.validate();
-			gui.repaint();
-		}else return;
-	}
-	
 	public Object removeItem(int index){
 		try{
-			Object val = v.remove(index);
+			Object val = v.set(index, "");
 			gui.setData(v);
 			gui.validate();
 			gui.repaint();

@@ -148,9 +148,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 	private boolean checkCompatability(Object element1, Object element2){
 		
 		if(element1 instanceof Add){
-			if(element2 instanceof Array){
-				return true;
-			}else if(element2 instanceof Variable){
+			if(element2 instanceof Variable){
 				return true;
 			}else if(element2 instanceof LinkedList){
 				return true;

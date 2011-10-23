@@ -188,8 +188,17 @@ public class GuiTree extends GuiElement implements ActionListener{
 			for(Tree.TreeNode q : tree.getChildren())
 			{
 				if(q.getChildren().size()>0) drawTree(g2d , q);
-					drawNode(g2d, q, getOffset(q));
+				drawLink(g2d, q, q.getParent());	
+				drawNode(g2d, q, getOffset(q));
+					
 			}
+		}
+		private void drawLink(Graphics2D g2d, Tree.TreeNode n, Tree.TreeNode m){
+			Color c = g2d.getColor();
+			g2d.setColor(c);			
+			if(m!=null && n != null)
+			g2d.drawLine(getOffset(n)+drawNodeHeight/2, drawNodeHeight *2* n.getDepth()+drawNodeHeight,
+					getOffset(m)+drawNodeHeight/2,  drawNodeHeight *2* m.getDepth()+drawNodeHeight+drawNodeHeight/2);
 		}
 		private void drawNode(Graphics2D g2d, Tree.TreeNode n, int offset){
 			Color c = g2d.getColor();
@@ -209,9 +218,9 @@ public class GuiTree extends GuiElement implements ActionListener{
 			indent = new int[tree.getMaxDepth()+1];
 			setPreferredSize(new Dimension((int)(drawNodeWidth*Math.pow(tree.getMaxCluster(), tree.getMaxDepth())), drawNodeHeight*2*tree.getMaxDepth()));
 			
-			drawNode(g2d, tree.getRoot(), getOffset(tree.getRoot()));
+
 			drawTree(g2d, tree.getRoot());
-			
+			drawNode(g2d, tree.getRoot(), getOffset(tree.getRoot()));			
 			revalidate();
 		}
 	}

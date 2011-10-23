@@ -72,7 +72,7 @@ public class GuiStack extends GuiElement {
 				g.drawRoundRect(0, getHeight()-i*elementH-elementH, elementW, elementH, 5, 5);
 				
 			}
-			revalidate();
+			//revalidate();
 		}
 	}
 }

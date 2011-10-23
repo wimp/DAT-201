@@ -99,9 +99,9 @@ public class Insert implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if(l instanceof Array){
 			if(insertAfterElement)
-				((Array) l).insertAfter(v.getValue(),Integer.parseInt(i.getValue()));
+				((Array) l).insertAt(v.getValue(),Integer.parseInt(i.getValue()));
 			else
-				((Array) l).insertBefore(v.getValue(),Integer.parseInt(i.getValue()));
+				((Array) l).insertAt(v.getValue(),Integer.parseInt(i.getValue()));
 		}else if(l instanceof LinkedList){
 			if(insertAfterElement)
 				((LinkedList) l).insertAt(Integer.parseInt(i.getValue()),v.getValue());
