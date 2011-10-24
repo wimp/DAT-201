@@ -18,6 +18,7 @@ import sim.structures.LinkedList;
 import sim.structures.Queue;
 import sim.structures.Stack;
 import sim.structures.Tree;
+import sim.structures.Variable;
 
 @SuppressWarnings("serial")
 public class EditorInfo extends JPanel{
@@ -74,6 +75,7 @@ public class EditorInfo extends JPanel{
 			JScrollPane textPane = new JScrollPane(text);
 			add(textPane);
 			text.setLineWrap(true);
+			text.setWrapStyleWord(true);
 			textPane.setPreferredSize(new Dimension(getWidth()-150,getHeight()));
 			
 			String t;
@@ -104,10 +106,10 @@ public class EditorInfo extends JPanel{
 				a.insertAt("value 3", 4);
 				add(a.getGuiElement(), BorderLayout.WEST);
 				t = 
-						"The array is wicked cool, yo!"
+						"Et array består av en liste med objekter som ofte har en gitt størrelsesorden før den tas i bruk." +
+						" Objektene sorteres med en tallindeks og kan leses og skrives fra/til alle indekser."
 					;
 				text.setText(t);
-				add(text);
 				break;
 			case HEAP:
 				break;
@@ -119,7 +121,10 @@ public class EditorInfo extends JPanel{
 				
 				add(ll.getGuiElement(), BorderLayout.WEST);
 				t = 
-						"The linkedlist is wicked cool, yo!"
+						"En linket liste er en liste hvor et objekt peker til det neste objektet i listen." +
+						"En dobbeltlenket liste peker og til objektet før." +
+						"Dersom listen er sirkulær peker det siste objektet til det første." +
+						"Dersom listen og er dobbeltlenket, peker det første objektet og til det siste."
 					;
 				text.setText(t);
 				
@@ -151,6 +156,13 @@ public class EditorInfo extends JPanel{
 				
 				break;
 			case VARIABLE:
+				Variable v = new Variable(new Rectangle(0,0,50,100), "Variable value", false);
+				
+				add(v.getGuiElement());
+				t= 
+						"En standard variabel. Disse kan leses ut til og skrives til."
+						;
+				text.setText(t);
 				break;
 			}
 		}
