@@ -120,7 +120,7 @@ public class GuiTree extends GuiElement implements ActionListener{
 		listScroller.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		listScroller.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 		listScroller.setPreferredSize(new Dimension(getWidth(), getHeight()));
-		JPanel check = new JPanel(new GridLayout(1,8));
+		JPanel check = new JPanel(new GridLayout(1,5));
 		min = new JRadioButton("Min");
 		min.setSelected(true);
 		min.addActionListener(this);
@@ -146,10 +146,6 @@ public class GuiTree extends GuiElement implements ActionListener{
 		check.add(alpha);
 		check.add(num);
 		check.add(strlen);
-		
-		check.add(new JLabel("      "));
-		check.add(new JLabel("      "));
-		check.add(new JLabel("      "));
 		
 		this.add(check, BorderLayout.NORTH);
 		this.add(listScroller, BorderLayout.CENTER);
@@ -185,6 +181,7 @@ public class GuiTree extends GuiElement implements ActionListener{
 			return (int)(in*drawNodeWidth);
 		}
 		public void drawTree(Graphics2D g2d ,Tree.TreeNode tree){
+			if(tree == null) return;
 			for(Tree.TreeNode q : tree.getChildren())
 			{
 				if(q.getChildren().size()>0) drawTree(g2d , q);
@@ -201,6 +198,8 @@ public class GuiTree extends GuiElement implements ActionListener{
 					getOffset(m)+drawNodeHeight/2,  drawNodeHeight *2* m.getDepth()+drawNodeHeight+drawNodeHeight/2);
 		}
 		private void drawNode(Graphics2D g2d, Tree.TreeNode n, int offset){
+
+			
 			Color c = g2d.getColor();
 			g2d.setColor(n.isLeaf() ? GuiSettings.TREENODECOLOR : GuiSettings.TREELEAFCOLOR);
 			g2d.fillOval(offset, drawNodeHeight *2* n.getDepth()+drawNodeHeight,
@@ -220,6 +219,7 @@ public class GuiTree extends GuiElement implements ActionListener{
 			
 
 			drawTree(g2d, tree.getRoot());
+			if(tree.getRoot() != null)
 			drawNode(g2d, tree.getRoot(), getOffset(tree.getRoot()));			
 			revalidate();
 		}

@@ -12,10 +12,10 @@ import sim.gui.elements.GuiArray;
 public class Array {
 // Class variables //
 	private Vector<Object> v;
-	public GuiArray gui;
+	private  GuiArray gui;
 	private int size;
 	private int sizeB;
-	public final int MAXSIZE = 100;
+	private final int MAXSIZE = 100;
 	
 // Getters and setters //
 	public GuiArray getGuiElement(){
