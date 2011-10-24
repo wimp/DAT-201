@@ -109,11 +109,11 @@ public class Tree {
 			return;
 		}
 		TreeNode element = elementAt(index);
+		if(element == null) return;
 		TreeNode newnode = new TreeNode(value, element);
 		if(element.getChildren().size()<maxCluster){
 			element.getChildren().add(newnode);
 		}
-		else addBreadthFirst((String)value);
 		gui.repaint();
 	}
 	public String removeAt(int index){
@@ -131,16 +131,15 @@ public class Tree {
 			return;
 		}
 		TreeNode element = elementAt(index);
+		if(element == null) return;
 		TreeNode newnode = new TreeNode(value, element);
-
+		
 		if(element.getChildren().size()>0){
 			element.getChildren().get(0).setParent(newnode);
 			newnode.getChildren().add(element.getChildren().get(0));
 			element.getChildren().remove(0);
 			element.getChildren().add(0, newnode);
 			}
-		else
-			element.insert(newnode.getValue());
 		gui.repaint();
 	}
 	// GET METHODS

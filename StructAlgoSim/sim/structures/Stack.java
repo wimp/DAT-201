@@ -41,6 +41,7 @@ public class Stack {
 		if(isEmpty()) return null;
 		Object obj = s.get(s.size()-1);
 		gui.setRemoved((String)obj);
+		s.remove(obj);
 		gui.startAnimation();
 		gui.repaint();
 		return obj;

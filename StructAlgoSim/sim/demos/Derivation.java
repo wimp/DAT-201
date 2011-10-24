@@ -40,7 +40,7 @@ public class Derivation extends DemoFrame {
 			}
 		}
 		
-		int i = 1; 
+		int i = 0; 
 		
 //		for(int j = 1;j<11;j++){
 //		//tree.insertAt(j, "insert "+j);
@@ -54,7 +54,6 @@ public class Derivation extends DemoFrame {
 				tree.addChildAt(i, i + " " +valStack.pop());
 			if(!valStack.isEmpty())
 				tree.addChildAt(i, i + " " +valStack.pop());
-			i++;
 		}	
 		
 		add(tree.getGuiElement());
