@@ -13,8 +13,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.image.BufferedImage;
 import java.util.Vector;
 
+import javax.swing.AbstractButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
@@ -40,6 +43,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 	private Vector<Point> links = new Vector<Point>();
 	private Vector<Link> linkys = new Vector<Link>();
 	private Link link;
+	private boolean grid;
 
 // Class Methods //
 	public EditorListener(EditorGui gui){
@@ -596,6 +600,12 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 		panel.removeMouseListener(this);
 		panel.removeMouseMotionListener(this);
 		gui.validate();
+		
+		if(e.getActionCommand().equals("17")){
+			gui.editorPanel.grid = ((JCheckBox) e.getSource()).isSelected() ? true : false;
+			gui.editorPanel.repaint();
+		}
+		
 		switch(Integer.parseInt(e.getActionCommand())){
 		case 1:
 			type = ElementType.STACK;
@@ -678,6 +688,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 		public void paintComponent(Graphics g){
 			super.paintComponent(g);
 			Graphics2D g2d = (Graphics2D) g;
+			
 			
 			if(r != null){
 				g2d.setColor(Color.yellow);

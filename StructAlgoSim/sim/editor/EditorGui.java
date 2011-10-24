@@ -3,9 +3,12 @@ package sim.editor;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.GridLayout;
 
 import javax.swing.ButtonGroup;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -15,22 +18,22 @@ import javax.swing.JToggleButton;
 @SuppressWarnings("serial")
 public class EditorGui extends JFrame {
 	EditorListener el = new EditorListener(this);
-	JPanel editorPanel;
+	EditorPanel editorPanel;
 	JLabel mouseCoords;
 	
 	public EditorGui(){
 		// General initialization //
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setSize(900, 400);
+		setSize(900, 600);
 		setLayout(new BorderLayout());
 		JPanel topPanel 	= new JPanel();
 		JPanel westPanel	= new JPanel();
 		JPanel eastPanel	= new JPanel();
 		JPanel bottomPanel	= new JPanel();
-		editorPanel = new JPanel();
+		editorPanel = new EditorPanel();
 		editorPanel.addMouseListener(el);
 		editorPanel.addMouseMotionListener(el);
-		editorPanel.setBackground(Color.cyan);
+		editorPanel.setBackground(Color.lightGray);
 		editorPanel.setLayout(null);
 		mouseCoords = new JLabel("X:   Y:");
 		JSeparator s = new JSeparator();
@@ -53,6 +56,7 @@ public class EditorGui extends JFrame {
 		JToggleButton tree		= new JToggleButton("Tre");
 		JToggleButton heap		= new JToggleButton("Heap");
 		JToggleButton queue		= new JToggleButton("Kø");
+		JCheckBox grid			= new JCheckBox("Rutenett");
 		
 		// Add actionlisteners and set action commands //
 		stack.addActionListener(el);
@@ -87,6 +91,9 @@ public class EditorGui extends JFrame {
 		heap.setActionCommand("15");
 		queue.addActionListener(el);
 		queue.setActionCommand("16");
+		grid.addActionListener(el);
+		grid.setActionCommand("17");
+		
 		
 		// Add toggle buttons to the button group //
 		bg.add(stack);
@@ -141,7 +148,9 @@ public class EditorGui extends JFrame {
 		
 		JPanel leftOnTop = new JPanel();
 			leftOnTop.setPreferredSize(new Dimension(250,30));
+			leftOnTop.setLayout(new GridLayout(1,2));
 			leftOnTop.add(mouseCoords);
+			leftOnTop.add(grid);
 		JPanel rightOnTop = new JPanel();
 			rightOnTop.setPreferredSize(new Dimension(250,30));
 		
@@ -158,5 +167,23 @@ public class EditorGui extends JFrame {
 		
 		validate();
 		setVisible(true);
+	}
+	
+	protected class EditorPanel extends JPanel{
+		public boolean grid;
+		protected void paintComponent(Graphics g){
+			super.paintComponent(g);
+			Graphics2D g2d = (Graphics2D) g;
+			g2d.setColor(Color.gray);
+			
+			if(grid){
+				for(int i = 20; i < this.getWidth();i+=20){
+					g2d.drawLine(i, 0, i, this.getHeight());
+				}
+				for(int i = 20; i < this.getHeight();i+=20){
+					g2d.drawLine(0, i, this.getWidth(), i);
+				}
+			}
+		}
 	}
 }
