@@ -22,10 +22,9 @@ public class EditorInfo extends JPanel{
 	InfoPanel panel;
 	InfoType infotype;
 
-	public EditorInfo(Rectangle bounds){
-		panel = new InfoPanel(InfoType.NONE,bounds);
+	public EditorInfo(){
+		panel = new InfoPanel();
 		panel.changeInfo(InfoType.TREE);
-		setBounds(bounds);
 		add(panel);
 	}
 	public void setInfoType(InfoType infotype){
