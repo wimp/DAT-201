@@ -216,7 +216,7 @@ public class GuiTree extends GuiElement implements ActionListener{
 			g2d.clearRect(0, 0, getWidth(), getHeight());
 			
 			indent = new int[tree.getMaxDepth()+1];
-			setPreferredSize(new Dimension((int)(drawNodeWidth*Math.pow(tree.getMaxCluster(), tree.getMaxDepth())), drawNodeHeight*2*tree.getMaxDepth()));
+			setPreferredSize(new Dimension((int)(drawNodeWidth*Math.pow(tree.getMaxCluster(), tree.getMaxDepth())), drawNodeHeight*3*tree.getMaxDepth()));
 			
 
 			drawTree(g2d, tree.getRoot());

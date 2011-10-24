@@ -20,6 +20,7 @@ public class Add implements ActionListener {
 // Class variables //
 	Object l;
 	Variable v;
+	Variable i;
 	GuiFunction gui;
 	
 // Getters and setters //
@@ -41,6 +42,13 @@ public class Add implements ActionListener {
 
 	public void setSourceVariable(Variable v) {
 		this.v = v;
+	}
+	public Variable getIndexVariable() {
+		return i;
+	}
+
+	public void setIndexVariable(Variable i) {
+		this.i = i;
 	}
 
 	
@@ -70,10 +78,11 @@ public class Add implements ActionListener {
 		this.l=l;
 		this.v=v;
 	}
-	public Add(Rectangle bounds, Tree l, Variable v) {
+	public Add(Rectangle bounds, Tree l, Variable v, Variable i) {
 		gui = new GuiFunction(bounds,"Add");
 		gui.getButton().addActionListener(this);
 		this.l=l;
+		this.i=i;
 		this.v=v;
 	}
 	public Add(Rectangle bounds, Queue l, Variable v) {
@@ -89,7 +98,7 @@ public class Add implements ActionListener {
 			if(l instanceof LinkedList){
 			((LinkedList) l).addLast(v.getValue());
 			}else if(l instanceof Tree){
-			((Tree) l).addBreadthFirst(v.getValue());
+			((Tree) l).addChildAt(Integer.parseInt(i.getValue()),v.getValue());
 			}else if(l instanceof Queue){
 			((Queue) l).add(v.getValue());
 			}

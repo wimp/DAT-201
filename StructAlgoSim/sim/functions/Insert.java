@@ -98,19 +98,13 @@ public class Insert implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(l instanceof Array){
-			if(insertAfterElement)
-				((Array) l).insertAt(v.getValue(),Integer.parseInt(i.getValue()));
-			else
 				((Array) l).insertAt(v.getValue(),Integer.parseInt(i.getValue()));
 		}else if(l instanceof LinkedList){
 			if(insertAfterElement)
-				((LinkedList) l).insertAt(Integer.parseInt(i.getValue()),v.getValue());
+				((LinkedList) l).insertAt(Integer.parseInt(i.getValue()+1),v.getValue());
 			else
 				((LinkedList) l).insertAt(Integer.parseInt(i.getValue()),v.getValue());
 		}else if(l instanceof Tree){
-			if(insertAfterElement)
-				((Tree) l).insertAt(Integer.parseInt(i.getValue()),v.getValue());
-			else
 				((Tree) l).insertAt(Integer.parseInt(i.getValue()),v.getValue());
 		}
 		//l.addFirst(v.getValue());
