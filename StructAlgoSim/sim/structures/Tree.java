@@ -16,9 +16,27 @@ public class Tree {
 		INORDER,
 		POSTORDER
 	}
+
+	int maxCluster = 2;
+	TreeNode root; 
 	GuiTree gui;
+	
+	//GETTERS AND SETTERS
 	public int getMaxDepth() {
 		return findMaxDepth(root, 0);
+	}
+	public int getHeight(TreeNode t){
+		if(t==null) return 0;
+		return findMaxDepth(t, 0)-t.getDepth();
+	}
+	public int findMaxDepth(TreeNode t, int max){
+		if(t==null) return max;
+		if(t.getDepth()>max) max = t.getDepth();
+		for(Tree.TreeNode q : t.getChildren())
+		{
+			max = findMaxDepth(q, max);
+		}
+		return max;
 	}
 	public int getMaxCluster() {
 		return maxCluster;
@@ -27,10 +45,6 @@ public class Tree {
 		this.maxCluster = maxCluster;
 		rebuildTree();
 	}
-	int maxCluster = 2;
-	
-	TreeNode root; 
-	
 	public TreeNode getRoot() {
 		return root;
 	}
@@ -40,6 +54,8 @@ public class Tree {
 	public GuiTree getGuiElement() {
 		return gui;
 	}
+
+//CONSTRUCTORS
 	public Tree(Rectangle bounds,boolean animated){
 		root = new TreeNode("root", null);	
 		gui = new GuiTree(bounds, this, animated);
@@ -47,7 +63,8 @@ public class Tree {
 	protected Tree(){
 		root = new TreeNode("root", null);	
 	}
-	
+
+
 	public void rebuildTree(){
 		Vector<TreeNode> nodes = getAllNodes(new Vector<TreeNode>(), root);
 		nodes.remove(root);
@@ -68,6 +85,7 @@ public class Tree {
 		a.setValue(b.getValue().toString());
 		b.setValue(o);
 	}
+	//ADD AND INSERT METHODS
 	public void addBreadthFirst(String value){
 		Vector<TreeNode> nodeQueue = new Vector<TreeNode>();
 		TreeNode n = root;
@@ -77,16 +95,6 @@ public class Tree {
 			n = nodeQueue.remove(0);
 		}
 		n.insert(value);
-	}
-	// Get element methods
-	private int currentIndex = 0;
-	private TreeNode currentNode = null;
-	private Traversal traversal = Traversal.INORDER;
-	public Traversal getTraversal() {
-		return traversal;
-	}
-	public void setTraversal(Traversal traversal) {
-		this.traversal = traversal;
 	}
 	public void addChildAt(int index, Object value){
 		TreeNode element = elementAt(index);
@@ -111,6 +119,17 @@ public class Tree {
 		else
 			element.insert(newnode.getValue());
 		gui.repaint();
+	}
+	// GET METHODS
+	private int currentIndex = 0;
+	private TreeNode currentNode = null;
+	private Traversal traversal = Traversal.INORDER;
+	
+	public Traversal getTraversal() {
+		return traversal;
+	}
+	public void setTraversal(Traversal traversal) {
+		this.traversal = traversal;
 	}
 	public TreeNode elementAt(int index){
 		currentNode = null;
@@ -157,28 +176,6 @@ public class Tree {
 		
 		currentIndex++;
 		if(index == currentIndex) currentNode = n;
-	}
-	public int findMaxCluster(TreeNode t, int max){
-		
-		if(t.getChildren().size()>max) max = t.getChildren().size();
-		for(Tree.TreeNode q : t.getChildren())
-		{
-			max = findMaxCluster(q, max);
-		}
-		return max;
-	}
-	public int getHeight(TreeNode t){
-		if(t==null) return 0;
-		return findMaxDepth(t, 0)-t.getDepth();
-	}
-	public int findMaxDepth(TreeNode t, int max){
-		if(t==null) return max;
-		if(t.getDepth()>max) max = t.getDepth();
-		for(Tree.TreeNode q : t.getChildren())
-		{
-			max = findMaxDepth(q, max);
-		}
-		return max;
 	}
 	public class TreeNode{
 		private TreeNode parent;

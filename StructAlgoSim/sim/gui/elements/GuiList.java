@@ -395,14 +395,13 @@ public class GuiList extends GuiElement implements ActionListener, ItemListener{
 		}
 	}
 	@Override
-	public void itemStateChanged(ItemEvent e) {
+	public void itemStateChanged(ItemEvent e){
 		if(e.getSource() == circular){
 			listPanel.setCircular(!listPanel.isCircular());
 		}
 		else if(e.getSource() == doublyLinked){
 			listPanel.setDoublyLinked(!listPanel.isDoublyLinked());
 		}
-		
 		updateLinks();
 		repaint();
 	}

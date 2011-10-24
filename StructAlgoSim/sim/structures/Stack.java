@@ -19,12 +19,15 @@ public class Stack {
 	}
 	public void push(Object obj){
 		s.add(obj);
+		gui.setAdded((String)obj);
+		gui.startAnimation();
 		gui.repaint();
 	}
 	public Object pop(){
 		if(isEmpty()) return null;
 		Object obj = s.get(s.size()-1);
-		s.remove(obj);
+		gui.setRemoved((String)obj);
+		gui.startAnimation();
 		gui.repaint();
 		return obj;
 	}

@@ -3,6 +3,7 @@ package sim.editor;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.Rectangle;
 
 import javax.swing.BorderFactory;
@@ -17,7 +18,9 @@ import sim.structures.LinkedList;
 import sim.structures.Queue;
 import sim.structures.Stack;
 import sim.structures.Tree;
+import sim.structures.Variable;
 
+@SuppressWarnings("serial")
 public class EditorInfo extends JPanel{
 	InfoPanel panel;
 	InfoType infotype;
@@ -25,9 +28,13 @@ public class EditorInfo extends JPanel{
 	public EditorInfo(){
 		panel = new InfoPanel();
 		panel.changeInfo(InfoType.TREE);
+		setLayout(new GridLayout(1,1));
 		add(panel);
 	}
 	public void setInfoType(InfoType infotype){
+		this.infotype = infotype;
+		this.panel.changeInfo(infotype);
+		validate();
 	}
 	public static enum InfoType{
 		//Structures
@@ -53,7 +60,7 @@ public class EditorInfo extends JPanel{
 		InfoType info;
 		
 		public InfoPanel(){
-			super(new BorderLayout());
+			super(new GridLayout(1,2));
 			info = InfoType.NONE;
 		}
 		public void changeInfo(InfoType infotype){
@@ -66,24 +73,29 @@ public class EditorInfo extends JPanel{
 			text.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
 			JScrollPane textPane = new JScrollPane(text);
-			textPane.setPreferredSize(new Dimension(getWidth()/2, getHeight()));
-			add(textPane, BorderLayout.EAST);
+			add(textPane);
 			text.setLineWrap(true);
-			add(text);
+			text.setWrapStyleWord(true);
+			textPane.setPreferredSize(new Dimension(getWidth()-150,getHeight()));
 			
 			String t;
 			
 			switch(info){
 			case STACK:
-				Stack s = new Stack(new Rectangle(0,0,(int)(GuiSettings.STACKELEMENTWIDTH*(3/2.0)), 200));
+				Stack s = new Stack(new Rectangle(0,0,(int)(GuiSettings.STACKELEMENTWIDTH*(3/2.0)), 150));
 				s.push("value 1");
 				s.push("value 2");
 				s.push("value 3");
 				s.push("value 4");
-				add(s.getGuiElement(), BorderLayout.WEST);
+				add(s.getGuiElement());
 
 				t = 
-						"The stack is wicked cool, yo!"
+						"Om strukturen:\n" +
+						"En stack kan kun ta imot og fjerne elementer fra toppen.\n" +
+						"Metodene som brukes for å gjøre dette er henholdsvis Push og Pop\n" +
+						"\n" +
+						"Om bruk i editor:\n" +
+						"Legges til på ønsket posisjon og linkes med Push og/eller Pop"
 					;
 				text.setText(t);
 				break;
@@ -94,10 +106,10 @@ public class EditorInfo extends JPanel{
 				a.insertAt("value 3", 4);
 				add(a.getGuiElement(), BorderLayout.WEST);
 				t = 
-						"The array is wicked cool, yo!"
+						"Et array består av en liste med objekter som ofte har en gitt størrelsesorden før den tas i bruk." +
+						" Objektene sorteres med en tallindeks og kan leses og skrives fra/til alle indekser."
 					;
 				text.setText(t);
-				add(text);
 				break;
 			case HEAP:
 				break;
@@ -109,7 +121,10 @@ public class EditorInfo extends JPanel{
 				
 				add(ll.getGuiElement(), BorderLayout.WEST);
 				t = 
-						"The linkedlist is wicked cool, yo!"
+						"En linket liste er en liste hvor et objekt peker til det neste objektet i listen." +
+						"En dobbeltlenket liste peker og til objektet før." +
+						"Dersom listen er sirkulær peker det siste objektet til det første." +
+						"Dersom listen og er dobbeltlenket, peker det første objektet og til det siste."
 					;
 				text.setText(t);
 				
@@ -141,6 +156,13 @@ public class EditorInfo extends JPanel{
 				
 				break;
 			case VARIABLE:
+				Variable v = new Variable(new Rectangle(0,0,50,100), "Variable value", false);
+				
+				add(v.getGuiElement());
+				t= 
+						"En standard variabel. Disse kan leses ut til og skrives til."
+						;
+				text.setText(t);
 				break;
 			}
 		}

@@ -21,11 +21,16 @@ public class Queue {
 	
 	public void add(Object o){
 		data.add(o);
+		gui.startAnimation();
+		gui.setAdded((String)o);
+		
 		gui.repaint();
 	}
 	public Object remove(){
 		if(data.size()>0){
-		Object o = data.remove(0);
+		Object o = data.get(0);
+		gui.startAnimation();
+		gui.setRemoved((String)o);
 		gui.repaint();
 		return o;
 		}
