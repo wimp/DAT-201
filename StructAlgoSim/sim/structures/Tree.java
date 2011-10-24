@@ -128,14 +128,13 @@ public class Tree {
 		return currentNode;
 	}
 	private void inOrderElementAt(TreeNode n, int index){
-		for(int i= 0; i<n.getChildren().size()-1; i++){
-					inOrderElementAt(n.getChildren().elementAt(i), index);
-		}		
+		
+		inOrderElementAt(n.getChildren().elementAt(0), index);		
 		currentIndex++;
 		if(index == currentIndex) currentNode = n;
 		
-		if(n.getChildren().size()>0)
-			inOrderElementAt(n.getChildren().elementAt(n.getChildren().size()-1), index);
+		if(n.getChildren().size()>1)
+			inOrderElementAt(n.getChildren().elementAt(1), index);
 	}
 	private void preOrderElementAt(TreeNode n, int index){
 		currentIndex++;

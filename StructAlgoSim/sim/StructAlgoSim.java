@@ -30,12 +30,12 @@ public class StructAlgoSim {
 		frame.setTitle("StructAlgoSim 0.1");
 		frame.setSize(800,600);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setLayout(null);
+		//frame.setLayout(null);
 		//Tree t = new Tree(new Rectangle(100,100, 650,300),false);
 		
 		Stack s = new Stack(new Rectangle(100,100,400, 300));
 
-		EditorInfo info = new EditorInfo(new Rectangle(0,0,400,100));
+		EditorInfo info = new EditorInfo();
 		frame.add(info);
 		Queue q = new Queue(new Rectangle(300,100,300,100));
 		Tree t = new Tree(new Rectangle(100,100, 400, 400), false);

@@ -62,6 +62,7 @@ public class EditorInfo extends JPanel{
 		}
 		private void drawComp(InfoType info){
 			JTextArea text = new JTextArea();
+			text.setEditable(false);
 			text.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
 			JScrollPane textPane = new JScrollPane(text);
