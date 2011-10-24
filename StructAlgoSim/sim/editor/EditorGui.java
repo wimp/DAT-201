@@ -20,6 +20,7 @@ public class EditorGui extends JFrame {
 	EditorListener el = new EditorListener(this);
 	EditorPanel editorPanel;
 	JLabel mouseCoords;
+	protected EditorInfo eInfo;
 	
 	public EditorGui(){
 		// General initialization //
@@ -36,6 +37,7 @@ public class EditorGui extends JFrame {
 		editorPanel.setBackground(Color.lightGray);
 		editorPanel.setLayout(null);
 		mouseCoords = new JLabel("X:   Y:");
+		eInfo = new EditorInfo();
 		JSeparator s = new JSeparator();
 		
 		// Init. items that should be in the top panel //
@@ -157,6 +159,9 @@ public class EditorGui extends JFrame {
 		topPanel.add(centerOfTop,BorderLayout.CENTER);
 		topPanel.add(leftOnTop,BorderLayout.WEST);
 		topPanel.add(rightOnTop,BorderLayout.EAST);
+		
+		// Add elements to the bottom panel //
+		bottomPanel.add(eInfo);
 		
 		// Add elements to the main frame in the gridLayout //
 		add(eastPanel,BorderLayout.EAST);

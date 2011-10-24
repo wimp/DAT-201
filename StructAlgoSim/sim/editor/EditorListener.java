@@ -21,6 +21,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
+import sim.editor.EditorInfo.InfoType;
 import sim.functions.*;
 import sim.functions.MoveChar.Direction;
 import sim.gui.elements.GuiElement;
@@ -609,30 +610,39 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 		switch(Integer.parseInt(e.getActionCommand())){
 		case 1:
 			type = ElementType.STACK;
+			gui.eInfo.setInfoType(InfoType.STACK);
 			break;
 		case 2:
 			type = ElementType.ARRAY;
+			gui.eInfo.setInfoType(InfoType.ARRAY);
 			break;
 		case 3:
 			type = ElementType.LIST;
+			gui.eInfo.setInfoType(InfoType.LINKEDLIST);
 			break;
 		case 4:
 			type = ElementType.ADD;
+			gui.eInfo.setInfoType(InfoType.ADD);
 			break;
 		case 5:
 			type = ElementType.REMOVE;
+			gui.eInfo.setInfoType(InfoType.REMOVE);
 			break;
 		case 6:
 			type = ElementType.INSERT;
+			gui.eInfo.setInfoType(InfoType.INSERT);
 			break;
 		case 7:
 			type = ElementType.PUSH;
+			gui.eInfo.setInfoType(InfoType.PUSH);
 			break;
 		case 8:
 			type = ElementType.POP;
+			gui.eInfo.setInfoType(InfoType.POP);
 			break;
 		case 9:
 			type = ElementType.VARIABLE;
+			gui.eInfo.setInfoType(InfoType.VARIABLE);
 			break;
 		case 10:
 			type = ElementType.LINK;
@@ -651,6 +661,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 			break;
 		case 12:
 			type = ElementType.MOVECHAR;
+			gui.eInfo.setInfoType(InfoType.MOVECHAR);
 			break;
 		case 13:
 			type = ElementType.DELETE;
@@ -666,12 +677,15 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 			break;
 		case 14:
 			type = ElementType.TREE;
+			gui.eInfo.setInfoType(InfoType.TREE);
 			break;
 		case 15:
 			type = ElementType.HEAP;
+			gui.eInfo.setInfoType(InfoType.HEAP);
 			break;
 		case 16:
 			type = ElementType.QUEUE;
+			gui.eInfo.setInfoType(InfoType.QUEUE);
 			break;
 		}
 		gui.editorPanel.validate();
