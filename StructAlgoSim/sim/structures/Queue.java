@@ -24,9 +24,12 @@ public class Queue {
 		gui.repaint();
 	}
 	public Object remove(){
-		Object o = data.remove(data.size()-1);
+		if(data.size()>0){
+		Object o = data.remove(0);
 		gui.repaint();
 		return o;
+		}
+		return null;
 	}
 	
 }
