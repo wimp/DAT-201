@@ -3,6 +3,7 @@ package sim.editor;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.Rectangle;
 
 import javax.swing.BorderFactory;
@@ -18,6 +19,7 @@ import sim.structures.Queue;
 import sim.structures.Stack;
 import sim.structures.Tree;
 
+@SuppressWarnings("serial")
 public class EditorInfo extends JPanel{
 	InfoPanel panel;
 	InfoType infotype;
@@ -25,9 +27,13 @@ public class EditorInfo extends JPanel{
 	public EditorInfo(){
 		panel = new InfoPanel();
 		panel.changeInfo(InfoType.TREE);
+		setLayout(new GridLayout(1,1));
 		add(panel);
 	}
 	public void setInfoType(InfoType infotype){
+		this.infotype = infotype;
+		this.panel.changeInfo(infotype);
+		validate();
 	}
 	public static enum InfoType{
 		//Structures
@@ -53,7 +59,7 @@ public class EditorInfo extends JPanel{
 		InfoType info;
 		
 		public InfoPanel(){
-			super(new BorderLayout());
+			super(new GridLayout(1,2));
 			info = InfoType.NONE;
 		}
 		public void changeInfo(InfoType infotype){
@@ -66,21 +72,20 @@ public class EditorInfo extends JPanel{
 			text.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
 			JScrollPane textPane = new JScrollPane(text);
-			textPane.setPreferredSize(new Dimension(getWidth()/2, getHeight()));
-			add(textPane, BorderLayout.EAST);
+			add(textPane);
 			text.setLineWrap(true);
-			add(text);
+			textPane.setPreferredSize(new Dimension(getWidth()-150,getHeight()));
 			
 			String t;
 			
 			switch(info){
 			case STACK:
-				Stack s = new Stack(new Rectangle(0,0,(int)(GuiSettings.STACKELEMENTWIDTH*(3/2.0)), 200));
+				Stack s = new Stack(new Rectangle(0,0,(int)(GuiSettings.STACKELEMENTWIDTH*(3/2.0)), 150));
 				s.push("value 1");
 				s.push("value 2");
 				s.push("value 3");
 				s.push("value 4");
-				add(s.getGuiElement(), BorderLayout.WEST);
+				add(s.getGuiElement());
 
 				t = 
 						"Om strukturen:\n" +

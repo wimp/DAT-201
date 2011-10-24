@@ -177,6 +177,9 @@ public class EditorGui extends JFrame {
 		add(bottomPanel,BorderLayout.SOUTH);
 		add(editorPanel,BorderLayout.CENTER);
 		
+		eInfo.setBackground(Color.green);
+		eInfo.setPreferredSize(new Dimension(700,200));
+		
 		validate();
 		setVisible(true);
 	}
