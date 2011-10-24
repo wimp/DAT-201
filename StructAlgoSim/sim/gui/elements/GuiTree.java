@@ -245,7 +245,16 @@ public class GuiTree extends GuiElement implements ActionListener{
 			int mc;
 			try{
 				mc = Integer.parseInt(nval.getText());
-
+				if(mc!=2){
+					inorder.setEnabled(false);
+					if(tree.getTraversal() == Traversal.INORDER) 
+						tree.setTraversal(Traversal.PREORDER);
+					preorder.setSelected(true);
+				}
+				else{
+					inorder.setEnabled(true);
+				}
+					
 				tree.setMaxCluster(mc);
 			}
 			catch(NumberFormatException nfe){

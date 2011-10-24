@@ -107,6 +107,9 @@ public class Tree {
 		this.traversal = traversal;
 	}
 	public void insertAt(int index,Object value){
+		if(elementAt(index).getChildren().size()!=maxCluster){
+			elementAt(index).getChildren().add(new TreeNode(value, elementAt(index)));
+		}
 	}
 	public TreeNode elementAt(int index){
 		currentNode = null;

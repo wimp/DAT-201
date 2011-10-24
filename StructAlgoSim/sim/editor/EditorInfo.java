@@ -52,12 +52,10 @@ public class EditorInfo extends JPanel{
 	public class InfoPanel extends JPanel{
 		GuiElement type;
 		InfoType info;
-		Rectangle bounds; 
 		
-		public InfoPanel(InfoType infotype, Rectangle bounds){
+		public InfoPanel(){
 			super(new BorderLayout());
-			setPreferredSize(new Dimension(bounds.width, bounds.height));
-			info = infotype;
+			info = InfoType.NONE;
 		}
 		public void changeInfo(InfoType infotype){
 			removeAll();
