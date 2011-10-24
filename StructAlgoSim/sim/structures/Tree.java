@@ -140,7 +140,7 @@ public class Tree {
 			element.getChildren().add(0, newnode);
 			}
 		else
-			element.insert(newnode);
+			element.insert(newnode.getValue());
 		gui.repaint();
 	}
 	// GET METHODS
