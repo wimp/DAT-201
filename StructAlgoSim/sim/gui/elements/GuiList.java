@@ -50,7 +50,6 @@ public class GuiList extends GuiElement implements ActionListener, ItemListener{
 		links = new Vector<Link>();
 		updateLinks();
 		initGraphics();
-
 	}	
 	private void initGraphics(){
 		listPanel.setPreferredSize(new Dimension(getWidth(), getHeight()));
