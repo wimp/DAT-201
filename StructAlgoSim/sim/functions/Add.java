@@ -104,7 +104,5 @@ public class Add implements ActionListener {
 			}
 		}
 		//l.addFirst(v.getValue());
-		
-
 	}
 }

@@ -4,24 +4,42 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Vector;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.Timer;
+import javax.xml.crypto.Data;
 
 /**
  * The graphical element of the {@link sim.structures.Stack} stack class
  */
 @SuppressWarnings("serial")
-public class GuiStack extends GuiElement {
+public class GuiStack extends GuiElement implements ActionListener{
 // Class variables //
 	StackPanel stackPanel;
+	boolean removed;
+	boolean added;
+	String recent;
 // Getters and setters //
 	
 	public GuiStack(Rectangle bounds,Vector<Object> data){
 		super();
+		
+		animation = new Timer(750,this);
+		
 		setBounds(bounds);
 		initGraphics(data);
+	}
+	public void setAdded(String changed){
+		added = true;
+		recent = changed;
+	}
+	public void setRemoved(String changed){
+		removed = true;
+		recent = changed;
 	}
 	private void initGraphics(Vector<Object> data){
 		stackPanel = new StackPanel(data);
@@ -63,16 +81,46 @@ public class GuiStack extends GuiElement {
 				
 				
 				int v=g.getFontMetrics(getFont()).charsWidth(s.toCharArray(), 0, s.toCharArray().length)+20;
-
+				
 				elementW = v<GuiSettings.STACKELEMENTWIDTH ? GuiSettings.STACKELEMENTWIDTH : v;
-
+				if(added && s == recent){
+					g.fillRoundRect(0, (getHeight()/MAXFRAME)*frame-i*elementH-elementH, elementW, elementH, 5, 5);
+					g.setColor(c);
+					g.drawString(s,10, (getHeight()/MAXFRAME)*frame-i*elementH-elementH/3);
+					g.drawRoundRect(0, (getHeight()/MAXFRAME)*frame-i*elementH-elementH, elementW, elementH, 5, 5);
+				}
+				else if(removed && s == recent){
+					g.fillRoundRect(0, (getHeight()/MAXFRAME)*(MAXFRAME-frame)-i*elementH-elementH, elementW, elementH, 5, 5);
+					g.setColor(c);
+					g.drawString(s,10, (getHeight()/MAXFRAME)*(MAXFRAME-frame)-i*elementH-elementH/3);
+					g.drawRoundRect(0, (getHeight()/MAXFRAME)*(MAXFRAME-frame)-i*elementH-elementH, elementW, elementH, 5, 5);
+				}
+				else{
 				g.fillRoundRect(0, getHeight()-i*elementH-elementH, elementW, elementH, 5, 5);
 				g.setColor(c);
 				g.drawString(s,10, getHeight()-i*elementH-elementH/3);
 				g.drawRoundRect(0, getHeight()-i*elementH-elementH, elementW, elementH, 5, 5);
-				
+				}
 			}
 			//revalidate();
+		}
+		
+	}
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if(e.getSource()==animation){
+			frame++;
+			if(frame > MAXFRAME){
+				frame = 0;
+				animation.stop();
+				added = false;
+				if(removed){
+					stackPanel.getData().remove(recent);
+					removed = false;
+				}
+				repaint();
+			}
+			repaint();
 		}
 	}
 }
