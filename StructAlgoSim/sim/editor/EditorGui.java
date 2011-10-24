@@ -7,13 +7,16 @@ import java.awt.GridLayout;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSeparator;
 import javax.swing.JToggleButton;
 
 @SuppressWarnings("serial")
 public class EditorGui extends JFrame {
 	EditorListener el = new EditorListener(this);
 	JPanel editorPanel;
+	JLabel mouseCoords;
 	
 	public EditorGui(){
 		// General initialization //
@@ -26,8 +29,11 @@ public class EditorGui extends JFrame {
 		JPanel bottomPanel	= new JPanel();
 		editorPanel = new JPanel();
 		editorPanel.addMouseListener(el);
+		editorPanel.addMouseMotionListener(el);
 		editorPanel.setBackground(Color.cyan);
 		editorPanel.setLayout(null);
+		mouseCoords = new JLabel("X:   Y:");
+		JSeparator s = new JSeparator();
 		
 		// Init. items that should be in the top panel //
 		ButtonGroup bg			= new ButtonGroup();
@@ -45,6 +51,8 @@ public class EditorGui extends JFrame {
 		JToggleButton moveChar	= new JToggleButton("Move Char");
 		JToggleButton delete	= new JToggleButton("Delete Element");
 		JToggleButton tree		= new JToggleButton("Tre");
+		JToggleButton heap		= new JToggleButton("Heap");
+		JToggleButton queue		= new JToggleButton("Kø");
 		
 		// Add actionlisteners and set action commands //
 		stack.addActionListener(el);
@@ -75,6 +83,10 @@ public class EditorGui extends JFrame {
 		delete.setActionCommand("13");
 		tree.addActionListener(el);
 		tree.setActionCommand("14");
+		heap.addActionListener(el);
+		heap.setActionCommand("15");
+		queue.addActionListener(el);
+		queue.setActionCommand("16");
 		
 		// Add toggle buttons to the button group //
 		bg.add(stack);
@@ -91,23 +103,32 @@ public class EditorGui extends JFrame {
 		bg.add(select);
 		bg.add(delete);
 		bg.add(tree);
+		bg.add(heap);
+		bg.add(queue);
 		
 		// Add elements to the west panel (data structures and variables) //
-		westPanel.setLayout(new GridLayout(5,1));
+		westPanel.setLayout(new GridLayout(9,1));
 		westPanel.add(stack);
 		westPanel.add(array);
 		westPanel.add(list);
-		westPanel.add(variable);
 		westPanel.add(tree);
+		westPanel.add(heap);
+		westPanel.add(queue);
+		westPanel.add(s);
+		westPanel.add(variable);
+		westPanel.add(s);
 		
 		// Add elements to the east panel (functions etc.) //
-		eastPanel.setLayout(new GridLayout(6,1));
+		eastPanel.setLayout(new GridLayout(9,1));
 		eastPanel.add(add);
 		eastPanel.add(remove);
 		eastPanel.add(insert);
 		eastPanel.add(push);
 		eastPanel.add(pop);
 		eastPanel.add(moveChar);
+		eastPanel.add(s);
+		eastPanel.add(s);
+		eastPanel.add(s);
 		
 		// Add elements to the top panel //
 		topPanel.setLayout(new BorderLayout());
@@ -120,6 +141,7 @@ public class EditorGui extends JFrame {
 		
 		JPanel leftOnTop = new JPanel();
 			leftOnTop.setPreferredSize(new Dimension(250,30));
+			leftOnTop.add(mouseCoords);
 		JPanel rightOnTop = new JPanel();
 			rightOnTop.setPreferredSize(new Dimension(250,30));
 		
