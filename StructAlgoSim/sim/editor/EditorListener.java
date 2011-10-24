@@ -6,17 +6,17 @@ import java.awt.Component;
 import java.awt.Composite;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.KeyEventDispatcher;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.awt.image.BufferedImage;
 import java.util.Vector;
 
-import javax.swing.AbstractButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
@@ -28,33 +28,46 @@ import sim.gui.elements.GuiElement;
 import sim.structures.*;
 
 /**
- * The listener and action handling class for the editor gui. Handles everything that is going on in the editor.
+ * The listener and action handling class for the {@link EditorGui}. 
+ * Handles everything that is going on in the editor and keeps track of elements that are active and the links between them.
  *
  */
-public class EditorListener implements ActionListener, MouseMotionListener, MouseListener {
+public class EditorListener implements ActionListener, MouseMotionListener, MouseListener, KeyEventDispatcher {
 // Class variables //
-	ElementType type;
-	EditorGui gui;
-	Vector<Object> elements = new Vector<Object>();
-	Vector<GuiElement> guiElements = new Vector<GuiElement>();
-	private Object startElement;
-	private Object endElement;
-	private GuiElement startGuiElement;
-	private GlassPanel panel = new GlassPanel();
-	private Vector<Point> links = new Vector<Point>();
-	private Vector<Link> linkys = new Vector<Link>();
-	private Link link;
-	private boolean grid;
+	protected 	ElementType 		type;
+	private 	EditorGui 			gui;
+	private 	Vector<Object> 		elements = new Vector<Object>();
+	private 	Vector<GuiElement> 	guiElements = new Vector<GuiElement>();
+	private 	Object 				startElement;
+	private 	Object 				endElement;
+	protected 	GlassPanel 			panel = new GlassPanel();
+	protected 	Vector<Link> 		linkys = new Vector<Link>();
+	private 	Link 				link;
 
 // Class Methods //
+	/**
+	 * Class constructor. An instance of EditorGui is required as these two classes communicate about events and graphical components
+	 * @param gui
+	 */
 	public EditorListener(EditorGui gui){
 		this.gui = gui;
 	}
 	
-	public void addElementAtPosition(JComponent element){
+	/**
+	 * Adds a JComponent to the active instance of EditorGui's editor panel.
+	 * @param element
+	 */
+	private void addElementAtPosition(JComponent element){
 		gui.editorPanel.add(element);
 	}
 	
+	/**
+	 * A method to get the actual instance of a class from the class enum {@link ElementType}
+	 * This method also adds the given type's class instance and graphical instance in the two internal class variables, {@link elements} and {@link guiElements}
+	 * @param type
+	 * @param bounds
+	 * @return The graphical component of the type given.
+	 */
 	private JComponent getComponentFromEnum(ElementType type, Rectangle bounds) {
 		int index;
 		switch(type){
@@ -166,6 +179,12 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 		return null;
 	}
 	
+	/**
+	 * Checks whether element1 and element2 fits together in the editor gui. E.g. an instance of {@link Add} can't be linked with another instance of {@link Add}
+	 * @param element1
+	 * @param element2
+	 * @return Returns true if the two items can be linked
+	 */
 	private boolean checkCompatibility(Object element1, Object element2){
 		
 		if(element1 instanceof Add){
@@ -288,58 +307,6 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 		return false;
 	}
 	
-	private void addLinks(GuiElement element1, GuiElement element2){
-		int el1MiddleY 			= element1.getY() + (element1.getHeight() / 2);
-		int el2MiddleY 			= element2.getY() + (element2.getHeight() / 2);
-		int middleOfElementsX 	= element2.getX() - ((element2.getX() - (element1.getX() + element1.getWidth())) / 2);
-		int middleOfElementsY	= element2.getY() - ((element2.getY() - (element1.getY() + element1.getHeight())) / 2);
-		int middleOfElementsY2	= element1.getY() - ((element1.getY() - (element2.getY() + element2.getHeight())) / 2);
-		
-		if(element1.getX()+element1.getWidth() < element2.getX()){
-			Point p1 = new Point(element1.getX()+element1.getWidth(),el1MiddleY);
-			Point p2 = new Point(middleOfElementsX,p1.y);
-			Point p3 = new Point(p2.x,el2MiddleY);
-			Point p4 = new Point(element2.getX(),p3.y);
-			
-			links.add(p1);
-			links.add(p2);
-			links.add(p3);
-			links.add(p4);
-		}else if(element1.getX() > element2.getX()+element2.getWidth()){
-			Point p1 = new Point(element2.getX()+element2.getWidth(), el2MiddleY);
-			Point p2 = new Point(middleOfElementsX,p1.y);
-			Point p3 = new Point(p2.x,el1MiddleY);
-			Point p4 = new Point(element1.getX(),p3.y);
-			
-			links.add(p1);
-			links.add(p2);
-			links.add(p3);
-			links.add(p4);
-		}else if((element1.getX() <= element2.getX() || element1.getX()+element1.getWidth() >= element2.getX()+element2.getWidth()) || (element2.getX() <= element1.getX() || element2.getX()+element2.getWidth() >= element1.getX()+element1.getWidth())){
-			if(element1.getY()+element1.getHeight() < element2.getY()){
-				Point p1 = new Point(element1.getX() + (element1.getWidth() / 2),element1.getY()+element1.getHeight());
-				Point p2 = new Point(p1.x,middleOfElementsY);
-				Point p3 = new Point(element2.getX() + (element2.getWidth() / 2),p2.y);
-				Point p4 = new Point(p3.x,element2.getY());
-				
-				links.add(p1);
-				links.add(p2);
-				links.add(p3);
-				links.add(p4);
-			}else if(element2.getY()+element2.getHeight() < element1.getY()){
-				Point p1 = new Point(element2.getX() + (element2.getWidth() / 2),element2.getY()+element2.getHeight());
-				Point p2 = new Point(p1.x,middleOfElementsY2);
-				Point p3 = new Point(element1.getX() + (element1.getWidth() / 2),p2.y);
-				Point p4 = new Point(p3.x,element1.getY());
-				
-				links.add(p1);
-				links.add(p2);
-				links.add(p3);
-				links.add(p4);
-			}
-		}
-	}
-	
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		int x = e.getX();
@@ -396,9 +363,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 					link = new Link();
 					link.from = elements.get(i);
 					link.fromGui = guiElements.get(i);
-					
 					startElement = elements.get(i);
-					startGuiElement = guiElements.get(i);
 					break;
 				}
 			}
@@ -419,7 +384,6 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 					endElement = elements.get(i);
 					
 					if(checkCompatibility(startElement,endElement)){
-						addLinks(startGuiElement, guiElements.get(i));
 						link.to = endElement;
 						link.toGui = guiElements.get(i);
 						link.getDirection();
@@ -583,6 +547,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 		}else if(type == ElementType.DELETE){
 			for(int i=0;i<guiElements.size();i++){
 				if(guiElements.get(i).getBounds().contains(x,y)){
+					panel.c = Color.red;
 					panel.r = new Rectangle(guiElements.get(i).getBounds());
 					panel.repaint();
 					break;
@@ -605,6 +570,8 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 		if(e.getActionCommand().equals("17")){
 			gui.editorPanel.grid = ((JCheckBox) e.getSource()).isSelected() ? true : false;
 			gui.editorPanel.repaint();
+			panel.repaint();
+			gui.validate();
 		}
 		
 		switch(Integer.parseInt(e.getActionCommand())){
@@ -691,8 +658,26 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 		gui.editorPanel.validate();
 	}
 	
-	@SuppressWarnings("serial")
-	private class GlassPanel extends JPanel{
+	@Override
+	public boolean dispatchKeyEvent(KeyEvent e) {
+		if(e.getID() == KeyEvent.KEY_PRESSED){
+			
+		}else if(e.getID() == KeyEvent.KEY_RELEASED){
+			
+		}else if(e.getID() == KeyEvent.KEY_TYPED){
+			
+		}
+		return false;
+	}
+	
+	/**
+	 * An inner class of {@link EditorListener} that adds the ability to layer a "glass pane" on top of the current editor panel.
+	 * This makes it easier to add mouselistener for item linking and deletion as you don't have to add a mouselistener to every single
+	 * item on the editor panel.
+	 * 
+	 */
+	@SuppressWarnings("serial") 
+	class GlassPanel extends JPanel{
 		protected Rectangle r;
 		protected Point p1, p2;
 		protected Color c = Color.green;
@@ -718,46 +703,14 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 				g2d.setColor(c);
 				g2d.drawLine(p1.x, p1.y, p2.x, p2.y);
 			}
-			
-			if(links.size() >=4){
-				g2d.setColor(Color.black);
-				/*for(int i = 0;i < links.size();i+=4){
-					if(links.size() >= i+3){
-						g2d.drawLine(links.get(i).x, links.get(i).y, links.get(i+1).x, links.get(i+1).y);
-						g2d.drawLine(links.get(i+1).x, links.get(i+1).y, links.get(i+2).x, links.get(i+2).y);
-						g2d.drawLine(links.get(i+2).x, links.get(i+2).y, links.get(i+3).x, links.get(i+3).y);
-						
-						g2d.fillOval(links.get(i).x-4, links.get(i).y-4, 8, 8);
-						g2d.fillOval(links.get(i+3).x-4, links.get(i+3).y-4, 8, 8);
-					}
-				}*/
-				
-				for(int i = 0;i<linkys.size();i++){
-					Link l = linkys.get(i);
-					g2d.drawLine(l.p1.x, l.p1.y, l.p2.x, l.p2.y);
-					g2d.drawLine(l.p2.x, l.p2.y, l.p3.x, l.p3.y);
-					g2d.drawLine(l.p3.x, l.p3.y, l.p4.x, l.p4.y);
-					
-					switch(l.direction){
-					case LEFT:
-						break;
-					case RIGHT:
-						break;
-					case DOWN:
-						break;
-					case UP:
-						break;
-					case LEFT_RIGHT:
-						break;
-					case UP_DOWN:
-						break;
-					}
-				}
-				g2d.setColor(c);
-			}
 		}
 	}
 	
+	/**
+	 * An inner class of {@link EditorListener} that contains information about the links between objects in the editor panel.
+	 * Instances of this class are added to the internal class variable {@link linkys} which is used for the drawing of links in the {@link EditorPanel}.
+	 *
+	 */
 	class Link{
 		protected GuiElement 	fromGui;
 		protected GuiElement 	toGui;
@@ -826,7 +779,10 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 		STACK,ARRAY,LIST,ADD,REMOVE,INSERT,PUSH,POP,VARIABLE,LINK,SELECT,MOVECHAR,DELETE,TREE,HEAP,QUEUE
 	}
 	
-	private enum LinkDirection{
+	protected enum LinkDirection{
 		UP,DOWN,LEFT,RIGHT,LEFT_RIGHT,UP_DOWN
 	}
+
+	
+
 }

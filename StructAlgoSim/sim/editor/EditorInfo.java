@@ -82,7 +82,12 @@ public class EditorInfo extends JPanel{
 				add(s.getGuiElement(), BorderLayout.WEST);
 
 				t = 
-						"The stack is wicked cool, yo!"
+						"Om strukturen:\n" +
+						"En stack kan kun ta imot og fjerne elementer fra toppen.\n" +
+						"Metodene som brukes for å gjøre dette er henholdsvis Push og Pop\n" +
+						"\n" +
+						"Om bruk i editor:\n" +
+						"Legges til på ønsket posisjon og linkes med Push og/eller Pop"
 					;
 				text.setText(t);
 				break;

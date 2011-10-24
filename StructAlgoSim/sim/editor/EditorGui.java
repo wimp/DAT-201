@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
+import java.awt.KeyboardFocusManager;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JCheckBox;
@@ -14,6 +15,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.JToggleButton;
+
+import sim.editor.EditorListener.Link;
 
 @SuppressWarnings("serial")
 public class EditorGui extends JFrame {
@@ -31,6 +34,10 @@ public class EditorGui extends JFrame {
 		JPanel westPanel	= new JPanel();
 		JPanel eastPanel	= new JPanel();
 		JPanel bottomPanel	= new JPanel();
+		
+		KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+		manager.addKeyEventDispatcher(el);
+		
 		editorPanel = new EditorPanel();
 		editorPanel.addMouseListener(el);
 		editorPanel.addMouseMotionListener(el);
@@ -187,6 +194,29 @@ public class EditorGui extends JFrame {
 				}
 				for(int i = 20; i < this.getHeight();i+=20){
 					g2d.drawLine(0, i, this.getWidth(), i);
+				}
+			}
+			
+			g2d.setColor(Color.black);
+			for(int i = 0;i<el.linkys.size();i++){
+				Link l = el.linkys.get(i);
+				g2d.drawLine(l.p1.x, l.p1.y, l.p2.x, l.p2.y);
+				g2d.drawLine(l.p2.x, l.p2.y, l.p3.x, l.p3.y);
+				g2d.drawLine(l.p3.x, l.p3.y, l.p4.x, l.p4.y);
+				
+				switch(l.direction){
+				case LEFT:
+					break;
+				case RIGHT:
+					break;
+				case DOWN:
+					break;
+				case UP:
+					break;
+				case LEFT_RIGHT:
+					break;
+				case UP_DOWN:
+					break;
 				}
 			}
 		}
