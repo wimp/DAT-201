@@ -43,25 +43,11 @@ public class Tree {
 	public Tree(Rectangle bounds,boolean animated){
 		root = new TreeNode("root", null);	
 		gui = new GuiTree(bounds, this, animated);
-		
-		addBreadthFirst("1");
-		addBreadthFirst("2");
-		addBreadthFirst("3");
-		addBreadthFirst("4");
-		addBreadthFirst("5");
-		addBreadthFirst("6");
-		addBreadthFirst("7");
-		addBreadthFirst("8");
-		addBreadthFirst("9");
-		addBreadthFirst("10");
-		addBreadthFirst("11");
-		addBreadthFirst("12");
-		addBreadthFirst("13");		
-		addBreadthFirst("14");
 	}
 	protected Tree(){
 		root = new TreeNode("root", null);	
 	}
+	
 	public void rebuildTree(){
 		Vector<TreeNode> nodes = getAllNodes(new Vector<TreeNode>(), root);
 		nodes.remove(root);
@@ -83,18 +69,14 @@ public class Tree {
 		b.setValue(o);
 	}
 	public void addBreadthFirst(String value){
-		breadthFirstInsert().insert(value);
-		gui.repaint();
-	}
-	private TreeNode depthFirstInsert(){
 		Vector<TreeNode> nodeQueue = new Vector<TreeNode>();
 		TreeNode n = root;
 		nodeQueue.addAll(n.getChildren());
 		while(n.getChildren().size()==maxCluster && nodeQueue.size()>0){
 			nodeQueue.addAll(n.getChildren());
-			n = nodeQueue.remove(nodeQueue.size()-1);
+			n = nodeQueue.remove(0);
 		}
-		return n;
+		n.insert(value);
 	}
 	// Get element methods
 	private int currentIndex = 0;
@@ -106,10 +88,29 @@ public class Tree {
 	public void setTraversal(Traversal traversal) {
 		this.traversal = traversal;
 	}
-	public void insertAt(int index,Object value){
-		if(elementAt(index).getChildren().size()!=maxCluster){
-			elementAt(index).getChildren().add(new TreeNode(value, elementAt(index)));
+	public void addChildAt(int index, Object value){
+		TreeNode element = elementAt(index);
+		TreeNode newnode = new TreeNode(value, element);
+
+		if(element.getChildren().size()<maxCluster){
+			element.getChildren().add(newnode);
 		}
+		else addBreadthFirst((String)value);
+		gui.repaint();
+	}
+	public void insertAt(int index,Object value){
+		TreeNode element = elementAt(index);
+		TreeNode newnode = new TreeNode(value, element);
+
+		if(element.getChildren().size()>0){
+			element.getChildren().get(0).setParent(newnode);
+			newnode.getChildren().add(element.getChildren().get(0));
+			element.getChildren().remove(0);
+			element.getChildren().add(0, newnode);
+			}
+		else
+			element.insert(newnode);
+		gui.repaint();
 	}
 	public TreeNode elementAt(int index){
 		currentNode = null;
@@ -128,7 +129,7 @@ public class Tree {
 		return currentNode;
 	}
 	private void inOrderElementAt(TreeNode n, int index){
-		
+		if(n.getChildren().size()>0)
 		inOrderElementAt(n.getChildren().elementAt(0), index);		
 		currentIndex++;
 		if(index == currentIndex) currentNode = n;
@@ -156,16 +157,6 @@ public class Tree {
 		
 		currentIndex++;
 		if(index == currentIndex) currentNode = n;
-	}
-	private TreeNode breadthFirstInsert(){
-		Vector<TreeNode> nodeQueue = new Vector<TreeNode>();
-		TreeNode n = root;
-		nodeQueue.addAll(n.getChildren());
-		while(n.getChildren().size()==maxCluster && nodeQueue.size()>0){
-			nodeQueue.addAll(n.getChildren());
-			n = nodeQueue.remove(0);
-		}
-		return n;
 	}
 	public int findMaxCluster(TreeNode t, int max){
 		

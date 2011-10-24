@@ -182,43 +182,45 @@ public class GuiTree extends GuiElement implements ActionListener{
 					}
 					for(int i=0; i<index.length; i++)
 						in+=index[i]*indent[i+1];
-			return (int)(in*drawNodeWidth);
+			return (int)(in*drawNodeWidth*scaleFactor);
 		}
-		public void drawTree(Graphics2D g2d ,Tree.TreeNode tree){
-			for(Tree.TreeNode q : tree.getChildren())
+		public void drawTree(Graphics2D g2d ,Tree.TreeNode t){
+			scaleFactor = (tree.findMaxDepth(tree.getRoot(), 0)-t.getDepth())/(float)tree.findMaxDepth(tree.getRoot(), 0);
+			System.out.println(scaleFactor);
+			for(Tree.TreeNode q : t.getChildren())
 			{
 				if(q.getChildren().size()>0) drawTree(g2d , q);
 				drawLink(g2d, q, q.getParent());	
 				drawNode(g2d, q, getOffset(q));
-					
 			}
 		}
 		private void drawLink(Graphics2D g2d, Tree.TreeNode n, Tree.TreeNode m){
 			Color c = g2d.getColor();
 			g2d.setColor(c);			
 			if(m!=null && n != null)
-			g2d.drawLine(getOffset(n)+drawNodeHeight/2, drawNodeHeight *2* n.getDepth()+drawNodeHeight,
-					getOffset(m)+drawNodeHeight/2,  drawNodeHeight *2* m.getDepth()+drawNodeHeight+drawNodeHeight/2);
+			g2d.drawLine(getOffset(n)+(int)(drawNodeWidth*scaleFactor)/2, (int)(drawNodeHeight*scaleFactor) *2* n.getDepth()+(int)(drawNodeHeight*scaleFactor),
+					getOffset(m)+(int)(drawNodeWidth*scaleFactor)/2,  (int)(drawNodeHeight*scaleFactor) *2* m.getDepth()+(int)(drawNodeHeight*scaleFactor)+(int)(drawNodeHeight*scaleFactor)/2);
 		}
 		private void drawNode(Graphics2D g2d, Tree.TreeNode n, int offset){
 			Color c = g2d.getColor();
 			g2d.setColor(n.isLeaf() ? GuiSettings.TREENODECOLOR : GuiSettings.TREELEAFCOLOR);
-			g2d.fillOval(offset, drawNodeHeight *2* n.getDepth()+drawNodeHeight,
-					drawNodeWidth, drawNodeHeight);
+			g2d.fillOval(offset, (int)(drawNodeHeight*scaleFactor) *2* n.getDepth()+(int)(drawNodeHeight*scaleFactor),
+					(int)(drawNodeHeight*scaleFactor), (int)(drawNodeHeight*scaleFactor));
 			g2d.setColor(c);			
-			g2d.drawOval(offset, drawNodeHeight *2* n.getDepth()+drawNodeHeight,
-					drawNodeWidth, drawNodeHeight);
-			g2d.drawString((String)n.getValue(), offset, drawNodeHeight*2*n.getDepth()+drawNodeHeight);
+			g2d.drawOval(offset, (int)(drawNodeHeight*scaleFactor) *2* n.getDepth()+(int)(drawNodeHeight*scaleFactor),
+					(int)(drawNodeWidth*scaleFactor), (int)(drawNodeHeight*scaleFactor));
+			g2d.drawString((String)n.getValue(), offset, (drawNodeHeight*scaleFactor)*2*n.getDepth()+(drawNodeHeight*scaleFactor));
 		}
+		private float scaleFactor; 
 		@Override 
 		public void paintComponent(Graphics g){
 			Graphics2D g2d = (Graphics2D)g;
 			g2d.clearRect(0, 0, getWidth(), getHeight());
 			
 			indent = new int[tree.getMaxDepth()+1];
-			setPreferredSize(new Dimension((int)(drawNodeWidth*Math.pow(tree.getMaxCluster(), tree.getMaxDepth())), drawNodeHeight*2*tree.getMaxDepth()));
+			setPreferredSize(new Dimension((int)(drawNodeWidth*Math.pow(tree.getMaxCluster(), tree.getMaxDepth())), drawNodeHeight*3*tree.getMaxDepth()));
 			
-
+			
 			drawTree(g2d, tree.getRoot());
 			drawNode(g2d, tree.getRoot(), getOffset(tree.getRoot()));			
 			revalidate();
