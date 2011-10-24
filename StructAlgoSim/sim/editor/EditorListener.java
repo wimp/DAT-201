@@ -79,7 +79,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 			return insertElement.getGuiElement();
 		case LIST:
 			bounds.width 	= bounds.width < 200 ? 200 : bounds.width;
-			bounds.height 	= bounds.height < 75 ? 75 : bounds.height;
+			bounds.height 	= bounds.height < 90 ? 90 : bounds.height;
 			LinkedList listElement = new LinkedList(bounds);
 			elements.add(listElement);
 			index = elements.lastIndexOf(listElement);
@@ -141,6 +141,22 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 			index = elements.lastIndexOf(treeElement);
 			guiElements.add(index,treeElement.getGuiElement());
 			return treeElement.getGuiElement();
+		case HEAP:
+			bounds.width	= bounds.width < 400 ? 400 : bounds.width;
+			bounds.height	= bounds.height < 400 ? 400 : bounds.height;
+			Heap heapElement = new Heap(bounds,true);
+			elements.add(heapElement);
+			index = elements.lastIndexOf(heapElement);
+			guiElements.add(index,heapElement.getGuiElement());
+			return heapElement.getGuiElement();
+		case QUEUE:
+			bounds.width	= bounds.width < 350 ? 350 : bounds.width;
+			bounds.height	= bounds.height < 60 ? 60 : bounds.height;
+			Queue queueElement = new Queue(bounds);
+			elements.add(queueElement);
+			index = elements.lastIndexOf(queueElement);
+			guiElements.add(index,queueElement.getGuiElement());
+			return queueElement.getGuiElement();
 		}
 		return null;
 	}
@@ -153,6 +169,8 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 			}else if(element2 instanceof LinkedList){
 				return true;
 			}else if(element2 instanceof Tree){
+				return true;
+			}else if(element2 instanceof Queue){
 				return true;
 			}else{
 				return false;
@@ -214,6 +232,8 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 				return true;
 			}else if(element2 instanceof Tree){
 				return true;
+			}else if(element2 instanceof Queue){
+				return true;
 			}else{
 				return false;
 			}
@@ -252,6 +272,12 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 				return true;
 			}else{
 				return false;
+			}
+		}else if(element1 instanceof Queue){
+			if(element2 instanceof Add){
+				return true;
+			}else if(element2 instanceof Remove){
+				return true;
 			}
 		}
 		return false;
@@ -405,6 +431,8 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 							((Add) startElement).setTarget(endElement);
 						}else if(endElement instanceof Tree){
 							((Add) startElement).setTarget(endElement);
+						}else if(endElement instanceof Queue){
+							((Add) startElement).setTarget(endElement);
 						}
 					}else if(startElement instanceof Variable){
 						if(endElement instanceof Add){
@@ -455,6 +483,8 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 							((Remove) startElement).setTarget(endElement);
 						}else if(endElement instanceof Tree){
 							((Remove) startElement).setTarget(endElement);
+						}else if(endElement instanceof Queue){
+							((Remove) startElement).setTarget(endElement);
 						}
 					}else if(startElement instanceof Array){
 						if(endElement instanceof Add){
@@ -483,6 +513,14 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 							((Insert) startElement).setSourceVariable((Variable) endElement);
 						}else if(endElement instanceof Array){
 							((Insert) startElement).setTarget(endElement);
+						}
+					}else if(startElement instanceof Heap){
+						
+					}else if(startElement instanceof Queue){
+						if(endElement instanceof Add){
+							((Add) endElement).setTarget(startElement);
+						}else if(endElement instanceof Remove){
+							((Remove) endElement).setTarget(startElement);
 						}
 					}
 					break;
@@ -520,6 +558,8 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 	public void mouseMoved(MouseEvent e) {
 		int x = e.getX();
 		int y = e.getY();
+		gui.mouseCoords.setText("X: "+x+" Y: "+y);
+		gui.validate();
 		
 		if(type == ElementType.LINK){
 			for(int i=0;i<guiElements.size();i++){
@@ -616,6 +656,12 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 			break;
 		case 14:
 			type = ElementType.TREE;
+			break;
+		case 15:
+			type = ElementType.HEAP;
+			break;
+		case 16:
+			type = ElementType.QUEUE;
 			break;
 		}
 		gui.editorPanel.validate();
@@ -752,7 +798,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 	}
 	
 	public enum ElementType{
-		STACK,ARRAY,LIST,ADD,REMOVE,INSERT,PUSH,POP,VARIABLE,LINK,SELECT,MOVECHAR,DELETE,TREE
+		STACK,ARRAY,LIST,ADD,REMOVE,INSERT,PUSH,POP,VARIABLE,LINK,SELECT,MOVECHAR,DELETE,TREE,HEAP,QUEUE
 	}
 	
 	private enum LinkDirection{
