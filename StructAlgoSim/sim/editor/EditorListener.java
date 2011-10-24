@@ -145,7 +145,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 		return null;
 	}
 	
-	private boolean checkCompatability(Object element1, Object element2){
+	private boolean checkCompatibility(Object element1, Object element2){
 		
 		if(element1 instanceof Add){
 			if(element2 instanceof Variable){
@@ -387,7 +387,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 				if(guiElements.get(i).getBounds().contains(x, y)){
 					endElement = elements.get(i);
 					
-					if(checkCompatability(startElement,endElement)){
+					if(checkCompatibility(startElement,endElement)){
 						addLinks(startGuiElement, guiElements.get(i));
 						link.to = endElement;
 						link.toGui = guiElements.get(i);
@@ -503,7 +503,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 		if(type == ElementType.LINK){
 			for(int i=0;i<guiElements.size();i++){
 				if(guiElements.get(i).getBounds().contains(x, y)){
-					panel.c = checkCompatability(startElement, elements.get(i)) ? Color.green : Color.red;
+					panel.c = checkCompatibility(startElement, elements.get(i)) ? Color.green : Color.red;
 					panel.r = new Rectangle(guiElements.get(i).getBounds());
 					break;
 				}else{
@@ -526,7 +526,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 				if(guiElements.get(i).getBounds().contains(x, y)){
 					panel.r = new Rectangle(guiElements.get(i).getBounds());
 					if(startElement != null)
-						panel.c = checkCompatability(startElement, elements.get(i)) ? Color.GREEN : Color.RED;
+						panel.c = checkCompatibility(startElement, elements.get(i)) ? Color.GREEN : Color.RED;
 					panel.repaint();
 					break;
 				}else{
@@ -716,8 +716,8 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 				p3 = new Point(middleOfElements,toY + (toHeight / 2));
 				p4 = new Point(toX,p3.y);
 				
-				if(checkCompatability(from, to))
-					direction = checkCompatability(to, from) ? LinkDirection.LEFT_RIGHT : LinkDirection.RIGHT;
+				if(checkCompatibility(from, to))
+					direction = checkCompatibility(to, from) ? LinkDirection.LEFT_RIGHT : LinkDirection.RIGHT;
 			}else if(fromX > toX+toWidth){ // 1st element is to the right of 2nd element
 				int middleOfElements = fromX - ((fromX - (toX + toWidth)) / 2);
 				p1 = new Point(toX+toWidth,toY + (toHeight / 2));
@@ -725,8 +725,8 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 				p3 = new Point(middleOfElements,fromY + (fromHeight / 2));
 				p4 = new Point(fromX,p3.y);
 				
-				if(checkCompatability(from, to))
-					direction = checkCompatability(to, from) ? LinkDirection.LEFT_RIGHT : LinkDirection.LEFT;
+				if(checkCompatibility(from, to))
+					direction = checkCompatibility(to, from) ? LinkDirection.LEFT_RIGHT : LinkDirection.LEFT;
 			}else{ // The elements are above or below each other
 				if(fromY+fromHeight < toY){ // 1st element is above 2nd element
 					int middleOfElements = toY - ((toY - (fromY + fromHeight)) / 2);
@@ -735,8 +735,8 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 					p3 = new Point(toX + (toWidth / 2), middleOfElements);
 					p4 = new Point(p3.x,toY);
 					
-					if(checkCompatability(from, to))
-						direction = checkCompatability(to, from) ? LinkDirection.UP_DOWN : LinkDirection.DOWN;
+					if(checkCompatibility(from, to))
+						direction = checkCompatibility(to, from) ? LinkDirection.UP_DOWN : LinkDirection.DOWN;
 				}else if(fromY > toY+toHeight){ // 1st element is below 2nd element
 					int middleOfElements = fromY - ((fromY - (toY + toHeight)) / 2);
 					p1 = new Point(toX + (toWidth / 2), toY+toHeight);
@@ -744,8 +744,8 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 					p3 = new Point(fromX + (fromWidth / 2), middleOfElements);
 					p4 = new Point(p3.x,fromY);
 					
-					if(checkCompatability(from, to))
-						direction = checkCompatability(to, from) ? LinkDirection.UP_DOWN : LinkDirection.UP;
+					if(checkCompatibility(from, to))
+						direction = checkCompatibility(to, from) ? LinkDirection.UP_DOWN : LinkDirection.UP;
 				}
 			}
 		}
