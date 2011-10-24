@@ -2,6 +2,7 @@ package sim.editor;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 
 import javax.swing.ButtonGroup;
@@ -22,6 +23,7 @@ public class EditorGui extends JFrame {
 		JPanel topPanel 	= new JPanel();
 		JPanel westPanel	= new JPanel();
 		JPanel eastPanel	= new JPanel();
+		JPanel bottomPanel	= new JPanel();
 		editorPanel = new JPanel();
 		editorPanel.addMouseListener(el);
 		editorPanel.setBackground(Color.cyan);
@@ -91,7 +93,7 @@ public class EditorGui extends JFrame {
 		bg.add(tree);
 		
 		// Add elements to the west panel (data structures and variables) //
-		westPanel.setLayout(new GridLayout(1,5));
+		westPanel.setLayout(new GridLayout(5,1));
 		westPanel.add(stack);
 		westPanel.add(array);
 		westPanel.add(list);
@@ -99,7 +101,7 @@ public class EditorGui extends JFrame {
 		westPanel.add(tree);
 		
 		// Add elements to the east panel (functions etc.) //
-		eastPanel.setLayout(new GridLayout(1,6));
+		eastPanel.setLayout(new GridLayout(6,1));
 		eastPanel.add(add);
 		eastPanel.add(remove);
 		eastPanel.add(insert);
@@ -108,15 +110,28 @@ public class EditorGui extends JFrame {
 		eastPanel.add(moveChar);
 		
 		// Add elements to the top panel //
-		topPanel.setLayout(new GridLayout(2,1));
-		topPanel.add(link);
-		topPanel.add(select);
-		topPanel.add(delete);
+		topPanel.setLayout(new BorderLayout());
+		
+		JPanel centerOfTop = new JPanel();
+		centerOfTop.setLayout(new GridLayout(1,3));
+			centerOfTop.add(link);
+			centerOfTop.add(select);
+			centerOfTop.add(delete);
+		
+		JPanel leftOnTop = new JPanel();
+			leftOnTop.setPreferredSize(new Dimension(250,30));
+		JPanel rightOnTop = new JPanel();
+			rightOnTop.setPreferredSize(new Dimension(250,30));
+		
+		topPanel.add(centerOfTop,BorderLayout.CENTER);
+		topPanel.add(leftOnTop,BorderLayout.WEST);
+		topPanel.add(rightOnTop,BorderLayout.EAST);
 		
 		// Add elements to the main frame in the gridLayout //
 		add(eastPanel,BorderLayout.EAST);
 		add(westPanel,BorderLayout.WEST);
 		add(topPanel,BorderLayout.NORTH);
+		add(bottomPanel,BorderLayout.SOUTH);
 		add(editorPanel,BorderLayout.CENTER);
 		
 		validate();
