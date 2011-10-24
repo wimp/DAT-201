@@ -126,11 +126,11 @@ public class GuiList extends GuiElement implements ActionListener, ItemListener{
 			
 			int[] linkY = 
 				{ 
-						( height/4+drawNodeHeight/2)+(direction*(drawNodeHeight/2)),
-						(int)(( height/4+drawNodeHeight/2)+f*drawNodeHeight+d*drawNodeHeight),	
-						(int)(( height/4+drawNodeHeight/2)+f*drawNodeHeight+d*drawNodeHeight),	
-						( height/4)+(drawNodeHeight/2),	
-						( height/4+(drawNodeHeight/2))	
+						( height/2+drawNodeHeight/2)+(direction*(drawNodeHeight/2)),
+						(int)(( height/2+drawNodeHeight/2)+f*drawNodeHeight+d*drawNodeHeight),	
+						(int)(( height/2+drawNodeHeight/2)+f*drawNodeHeight+d*drawNodeHeight),	
+						( height/2)+(drawNodeHeight/2),	
+						( height/2+(drawNodeHeight/2))	
 			};
 			
 			f = (direction < 0) ? 5/4f : -1/4f;
@@ -143,9 +143,9 @@ public class GuiList extends GuiElement implements ActionListener, ItemListener{
 				};		
 			int[] arrowY = 
 				{ 
-						(int)( height/4+(1/4.0)*drawNodeHeight),	
-						 height/4+drawNodeHeight/2,
-						(int)( height/4+(3/4.0)*drawNodeHeight),	
+						(int)( height/2+(1/4.0)*drawNodeHeight),	
+						 height/2+drawNodeHeight/2,
+						(int)( height/2+(3/4.0)*drawNodeHeight),	
 				};
 				g2d.drawPolyline(linkX, linkY, linkX.length);
 				g2d.fillPolygon(arrowX, arrowY, arrowX.length);
@@ -181,10 +181,10 @@ public class GuiList extends GuiElement implements ActionListener, ItemListener{
 			else if(data.indexOf(n)==0) g2d.setColor(GuiSettings.LISTHEADCOLOR);
 			else g2d.setColor(GuiSettings.LISTNODECOLOR);
 			
-			g2d.fillOval((2*indexOfNode)*drawNodeWidth,  height/4, drawNodeWidth, drawNodeHeight);
+			g2d.fillOval((2*indexOfNode)*drawNodeWidth,  height/2, drawNodeWidth, drawNodeHeight);
 			g2d.setColor(c);
-			g2d.drawOval((2*indexOfNode)*drawNodeWidth,  height/4, drawNodeWidth, drawNodeHeight);
-			g2d.drawString((String)n.getValue(), (2*indexOfNode)*drawNodeWidth, height/4+drawNodeHeight/2);
+			g2d.drawOval((2*indexOfNode)*drawNodeWidth,  height/2, drawNodeWidth, drawNodeHeight);
+			g2d.drawString((String)n.getValue(), (2*indexOfNode)*drawNodeWidth, height/2+drawNodeHeight/2);
 			g2d.setColor(c);
 		}
 		private void addAnimation(Node n){
@@ -358,13 +358,13 @@ public class GuiList extends GuiElement implements ActionListener, ItemListener{
 			setPreferredSize(new Dimension(drawNodeWidth*(data.size()+1)*2, getHeight()));
 			
 			for(Node n : data){
-			drawNode(g2d, n);
-			if(n.isAdded()) addAnimation(n);
-			if(n.isRemoved()) removeAnimation(n);
+				drawNode(g2d, n);
+				if(n.isAdded()) addAnimation(n);
+				if(n.isRemoved()) removeAnimation(n);
 			}
 			for(Link l : links){
-					l.drawLink(g2d);
-				}
+				l.drawLink(g2d);
+			}
 			listPanel.revalidate();
 		}
 	}

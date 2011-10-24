@@ -97,12 +97,12 @@ public class EditorInfo extends JPanel{
 			case HEAP:
 				break;
 			case LINKEDLIST:
-				LinkedList ll = new LinkedList(new Rectangle(0,0,200, 75));
+				LinkedList ll = new LinkedList(new Rectangle(0,0,100, 75));
 				ll.addFirst("value 1");
 				ll.addFirst("value 2");
 				ll.addFirst("value 2");
 				
-				add(ll.getGuiElement());
+				add(ll.getGuiElement(), BorderLayout.WEST);
 				String at = 
 						"The linkedlist is wicked cool, yo!"
 					;
