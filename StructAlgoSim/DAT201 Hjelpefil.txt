@@ -12,7 +12,8 @@ Funksjon som kun hører til stack.
 Kan linkes med: Stack, Variable
 
 Array:
-Et array består av en liste med objekter som ofte har en gitt størrelsesorden før den tas i bruk. Objektene sorteres med en tallindeks og kan leses og skrives fra/til alle indekser.
+Et array består av en liste med objekter som ofte har en gitt størrelsesorden før den tas i bruk. 
+Objektene sorteres med en tallindeks og kan leses og skrives fra/til alle indekser.
 
 Linked List:
 En linket liste er en liste hvor et objekt peker til det neste objektet i listen. En dobbeltlenket liste peker og til objektet før.

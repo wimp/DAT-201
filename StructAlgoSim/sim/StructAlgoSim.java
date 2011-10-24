@@ -35,7 +35,7 @@ public class StructAlgoSim {
 		
 		Stack s = new Stack(new Rectangle(100,100,400, 300));
 
-		EditorInfo info = new EditorInfo(new Rectangle(0,0,400,200));
+		EditorInfo info = new EditorInfo(new Rectangle(0,0,400,100));
 		frame.add(info);
 		Queue q = new Queue(new Rectangle(300,100,300,100));
 		Tree t = new Tree(new Rectangle(100,100, 400, 400), false);
