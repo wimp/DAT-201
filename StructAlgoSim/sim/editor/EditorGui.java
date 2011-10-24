@@ -20,6 +20,8 @@ public class EditorGui extends JFrame {
 		setSize(900, 400);
 		setLayout(new BorderLayout());
 		JPanel topPanel 	= new JPanel();
+		JPanel westPanel	= new JPanel();
+		JPanel eastPanel	= new JPanel();
 		editorPanel = new JPanel();
 		editorPanel.addMouseListener(el);
 		editorPanel.setBackground(Color.cyan);
@@ -88,24 +90,32 @@ public class EditorGui extends JFrame {
 		bg.add(delete);
 		bg.add(tree);
 		
+		// Add elements to the west panel (data structures and variables) //
+		westPanel.setLayout(new GridLayout(1,5));
+		westPanel.add(stack);
+		westPanel.add(array);
+		westPanel.add(list);
+		westPanel.add(variable);
+		westPanel.add(tree);
+		
+		// Add elements to the east panel (functions etc.) //
+		eastPanel.setLayout(new GridLayout(1,6));
+		eastPanel.add(add);
+		eastPanel.add(remove);
+		eastPanel.add(insert);
+		eastPanel.add(push);
+		eastPanel.add(pop);
+		eastPanel.add(moveChar);
+		
 		// Add elements to the top panel //
 		topPanel.setLayout(new GridLayout(2,1));
-		topPanel.add(stack);
-		topPanel.add(array);
-		topPanel.add(list);
-		topPanel.add(tree);
-		topPanel.add(add);
-		topPanel.add(remove);
-		topPanel.add(insert);
-		topPanel.add(push);
-		topPanel.add(pop);
-		topPanel.add(variable);
-		topPanel.add(moveChar);
 		topPanel.add(link);
 		topPanel.add(select);
 		topPanel.add(delete);
 		
 		// Add elements to the main frame in the gridLayout //
+		add(eastPanel,BorderLayout.EAST);
+		add(westPanel,BorderLayout.WEST);
 		add(topPanel,BorderLayout.NORTH);
 		add(editorPanel,BorderLayout.CENTER);
 		
