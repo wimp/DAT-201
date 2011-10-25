@@ -22,6 +22,7 @@ public class Insert implements ActionListener {
 	Variable i;
 	GuiFunction gui;
 	boolean insertAfterElement;
+	String buttonText = "Insert Before";
 	
 // Getters and setters //
 	public GuiElement getGuiElement(){
@@ -54,12 +55,13 @@ public class Insert implements ActionListener {
 
 	// Class constructor //
 	public Insert(Rectangle bounds, boolean insertAfterElement) {
-		gui = new GuiFunction(bounds,"Insert Before");
-		gui.getButton().addActionListener(this);
 		this.l = null;
 		this.v = null;
 		this.i = null;
 		this.insertAfterElement = insertAfterElement;
+		buttonText = insertAfterElement ? "Insert Before" : "Insert After";
+		gui = new GuiFunction(bounds,buttonText);
+		gui.getButton().addActionListener(this);
 	}
 	/**
 	 * The class constructor. Initializes the graphical element - {@link GuiFunction}
@@ -70,28 +72,31 @@ public class Insert implements ActionListener {
 	 * @param insertAfterElement- Whether the element at i should be added after (true) or before (false).
 	 */
 	public Insert(Rectangle bounds, LinkedList l, Variable v, Variable i, boolean insertAfterElement) {
-		gui = new GuiFunction(bounds,"Insert Before");
-		gui.getButton().addActionListener(this);
 		this.l = l;
 		this.v = v;
 		this.i = i;
 		this.insertAfterElement = insertAfterElement;
+		buttonText = insertAfterElement ? "Insert After" : "Insert Before";
+		gui = new GuiFunction(bounds,buttonText);
+		gui.getButton().addActionListener(this);
 	}
 	public Insert(Rectangle bounds, Array l, Variable v, Variable i, boolean insertAfterElement) {
-		gui = new GuiFunction(bounds,"Insert Before");
-		gui.getButton().addActionListener(this);
 		this.l = l;
 		this.v = v;
 		this.i = i;
 		this.insertAfterElement = insertAfterElement;
+		buttonText = insertAfterElement ? "Insert After" : "Insert Before";
+		gui = new GuiFunction(bounds,buttonText);
+		gui.getButton().addActionListener(this);
 	}
 	public Insert(Rectangle bounds, Tree l, Variable v, Variable i, boolean insertAfterElement) {
-		gui = new GuiFunction(bounds,"Insert Before");
-		gui.getButton().addActionListener(this);
 		this.l = l;
 		this.v = v;
 		this.i = i;
 		this.insertAfterElement = insertAfterElement;
+		buttonText = insertAfterElement ? "Insert After" : "Insert Before";
+		gui = new GuiFunction(bounds,buttonText);
+		gui.getButton().addActionListener(this);
 	}
 	
 // Action Listener implementation //

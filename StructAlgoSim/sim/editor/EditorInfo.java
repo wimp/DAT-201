@@ -121,10 +121,15 @@ public class EditorInfo extends JPanel{
 				
 				add(ll.getGuiElement(), BorderLayout.WEST);
 				t = 
-						"En linket liste er en liste hvor et objekt peker til det neste objektet i listen." +
-						"En dobbeltlenket liste peker og til objektet før." +
-						"Dersom listen er sirkulær peker det siste objektet til det første." +
-						"Dersom listen og er dobbeltlenket, peker det første objektet og til det siste."
+						"Om strukturen:\n" +
+						"En lenket liste består av en rekke elementer som en lenket sammen, enten enkelt eller dobbelt." +
+						"I første tilfelle peker elementene til sin neste nabo i listen, men de i det andre tilfellet peker" +
+						"både til neste og forrige nabo. Lister kan også være sirkulære. Da peker siste element i listen på det" +
+						"første elementet i listen.\n" +
+						"\n" +
+						"Om bruk i editoren:\n" +
+						"Plasser på ønsket posisjon (husk at elementet er ganske stort) og velg hvordan listen skal være lenket." +
+						"Liste kan lenkes med Insert og Remove"
 					;
 				text.setText(t);
 				
@@ -155,7 +160,15 @@ public class EditorInfo extends JPanel{
 				
 				add(tr.getGuiElement(), BorderLayout.WEST);
 				t = 
-						"The queue is wicked cool, yo!"
+						"Om strukturen:\n" +
+						"Et tre består av en rot med ett eller flere underelementer som igjen kan være røtter som inneholder" +
+						"underelementer. I et binærtre kan røttene kun ha to underelementer, mens i et N-ary tre kan røttene ha N" +
+						"underelementer. På mange måter er treet et spesialtilfelle av lenket liste, men skilles fra lenket liste ved" +
+						"at det er mye mer effektivt å traversere.\n" +
+						"\n" +
+						"Om bruk i editoren:\n" +
+						"Plassér elementet på ønsket posisjon (husk at du trenger stor plass) og velg om treet skal være binært eller N-ary." +
+						"Kan lenkes med Insert og Remove."
 					;
 				text.setText(t);
 				
