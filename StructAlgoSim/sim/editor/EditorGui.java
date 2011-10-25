@@ -237,8 +237,10 @@ public class EditorGui extends JFrame {
 	}
 
 	protected class OptionsPanel extends JPanel{
-		JTextField textOption 	= new JTextField();
+		JTextField 	textOption 	= new JTextField();
 		ButtonGroup groupOption = new ButtonGroup();
+		JCheckBox 	check1		= new JCheckBox();
+		JCheckBox 	check2		= new JCheckBox();
 		
 		public OptionsPanel(){
 			
@@ -263,6 +265,18 @@ public class EditorGui extends JFrame {
 				groupOption.add(selFalse);
 				add(selTrue);
 				add(selFalse);
+				break;
+			case INSERT:
+				setLayout(new GridLayout(3,1));
+				add(new JLabel("Where to insert"));
+				JRadioButton selBefore 	= new JRadioButton("Before");
+				selBefore.setActionCommand("0");
+				JRadioButton selAfter	= new JRadioButton("After");
+				selBefore.setActionCommand("1");
+				groupOption.add(selBefore);
+				groupOption.add(selAfter);
+				add(selBefore);
+				add(selAfter);
 				break;
 			default:
 				

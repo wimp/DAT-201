@@ -8,5 +8,7 @@ public class AlgoGui {
 		new Heapsort();
 		//new EditorGui();
 		//new EditorPlayer(null);
+		//new EditorGui();
+//		new EditorPlayer(null);
 	}
 }

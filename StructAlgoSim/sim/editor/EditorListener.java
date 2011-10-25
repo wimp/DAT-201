@@ -82,6 +82,8 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 	 */
 	private JComponent getComponentFromEnum(ElementType type, Rectangle bounds) {
 		int index;
+		boolean e, f;
+		ButtonModel b;
 		switch(type){
 		case ADD:
 			bounds.width 	= bounds.width < 70 ? 70 : bounds.width;
@@ -92,17 +94,26 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 			guiElements.add(index,addElement.getGuiElement());
 			return addElement.getGuiElement();
 		case ARRAY:
+			String s = gui.optionsPanel.textOption.getText();
+			int i = 6;
+			try{
+				i = Integer.parseInt(s);
+			}catch(NumberFormatException x){
+				i = 6;
+			}
 			bounds.width 	= bounds.width < 70 ? 70 : bounds.width;
 			bounds.height 	= bounds.height < 150 ? 150 : bounds.height;
-			Array arrayElement = new Array(bounds,8);
+			Array arrayElement = new Array(bounds,i);
 			elements.add(arrayElement);
 			index = elements.lastIndexOf(arrayElement);
 			guiElements.add(index,arrayElement.getGuiElement());
 			return arrayElement.getGuiElement();
 		case INSERT:
+			b 	= gui.optionsPanel.groupOption.getSelection();
+			e	= b.getActionCommand().equals("1") ? false : true;
 			bounds.width 	= bounds.width < 150 ? 150 : bounds.width;
 			bounds.height 	= bounds.height < 30 ? 30 : bounds.height;
-			Insert insertElement = new Insert(bounds, false);
+			Insert insertElement = new Insert(bounds, e);
 			elements.add(insertElement);
 			index = elements.lastIndexOf(insertElement);
 			guiElements.add(index,insertElement.getGuiElement());
@@ -148,8 +159,8 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 			guiElements.add(index,stackElement.getGuiElement());
 			return stackElement.getGuiElement();
 		case VARIABLE:
-			ButtonModel b = gui.optionsPanel.groupOption.getSelection();
-			boolean e = b.getActionCommand().equals("1") ? true : false;
+			b = gui.optionsPanel.groupOption.getSelection();
+			e = b.getActionCommand().equals("1") ? true : false;
 			bounds.width 	= bounds.width < 50 ? 50 : bounds.width;
 			bounds.height 	= bounds.height < 30 ? 30 : bounds.height;
 			Variable variableElement = new Variable(bounds,"test",e);

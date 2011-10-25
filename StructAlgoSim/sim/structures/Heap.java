@@ -43,28 +43,11 @@ public class Heap extends Tree{
 				values.add(t.getValue().toString());
 			}
 			setRoot(null);
-			buildHeap(values);
+			rebuildTree();
 			
 			return value;
 		}
 		return null;
-	}
-	public Vector<TreeNode> heapSort(){
-		Vector<TreeNode> sorted = new Vector<TreeNode>();
-		while(getRoot().getChildren().size()>0){
-			maxHeapifyTree(getRoot());
-			sorted.add(getRoot());
-			
-			Vector<String> values = new Vector<String>();
-			for(TreeNode t : getAllNodes(new Vector<TreeNode>() , getRoot())){
-				if(t!=null && t!=getRoot())
-				values.add(t.getValue().toString());
-			}
-			buildHeap(values);
-		}
-		sorted.add(getRoot());
-		rebuildTree();
-		return sorted;
 	}
 	/**
 	 * Calls reArrangeHeap to make a MinHeap.

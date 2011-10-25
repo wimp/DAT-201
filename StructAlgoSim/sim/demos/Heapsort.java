@@ -34,12 +34,15 @@ public class Heapsort {
 
 	Tree t = new Tree(new Rectangle(200,100, 475, 300), true);
 	Variable v = new Variable(new Rectangle(25,10, 70, 25), "output", true);
+	Variable i = new Variable(new Rectangle(200,10, 70, 25), "input", true);
+	Remove r = new Remove(new Rectangle(95, 10, 75,75), t, v, i);
 	Stack s = new Stack(new Rectangle(100, 100, 100, 200));	
 	
 	//frame.add(h.		getGuiElement());
 	frame.add(v.		getGuiElement());
 	frame.add(t.		getGuiElement());
 	frame.add(s.		getGuiElement());
+	frame.add(r.		getGuiElement());
 	frame.validate();
 	frame.setVisible(true);
 }
