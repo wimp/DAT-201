@@ -264,6 +264,16 @@ public class EditorGui extends JFrame {
 				add(selTrue);
 				add(selFalse);
 				break;
+			case INSERT:
+				setLayout(new GridLayout(3,1));
+				add(new JLabel("Where to insert"));
+				JRadioButton selBefore 	= new JRadioButton("Before");
+				selBefore.setActionCommand("0");
+				JRadioButton selAfter	= new JRadioButton("After");
+				selBefore.setActionCommand("1");
+				groupOption.add(selBefore);
+				groupOption.add(selAfter);
+				break;
 			default:
 				
 				break;	

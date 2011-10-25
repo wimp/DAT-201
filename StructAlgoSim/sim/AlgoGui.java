@@ -9,8 +9,8 @@ public class AlgoGui {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		//new EditorGui();
-		new EditorPlayer(null);
+		new EditorGui();
+//		new EditorPlayer(null);
 	}
 
 }
