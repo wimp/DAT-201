@@ -4,10 +4,13 @@ import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JOptionPane;
+
 import sim.gui.elements.GuiElement;
 import sim.gui.elements.GuiFunction;
 import sim.structures.Array;
 import sim.structures.LinkedList;
+import sim.structures.Queue;
 import sim.structures.Tree;
 import sim.structures.Variable;
 
@@ -16,19 +19,19 @@ import sim.structures.Variable;
  * @author 
  */
 public class Insert implements ActionListener {
-// Class variables //
+	// Class variables //
 	Object l;
 	Variable v;
 	Variable i;
 	GuiFunction gui;
 	boolean insertAfterElement;
 	String buttonText = "Insert Before";
-	
-// Getters and setters //
+
+	// Getters and setters //
 	public GuiElement getGuiElement(){
 		return gui;
 	}
-	
+
 	public Object getTarget() {
 		return l;
 	}
@@ -98,22 +101,42 @@ public class Insert implements ActionListener {
 		gui = new GuiFunction(bounds,buttonText);
 		gui.getButton().addActionListener(this);
 	}
-	
-// Action Listener implementation //
+
+	// Action Listener implementation //
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(l instanceof Array){
+		if(v!=null){
+			if(l instanceof Array){
 				((Array) l).insertAt(v.getValue(),Integer.parseInt(i.getValue()));
-		}else if(l instanceof LinkedList){
-			if(insertAfterElement)
-				((LinkedList) l).insertAt(Integer.parseInt(i.getValue())+1,v.getValue());
-			else
-				((LinkedList) l).insertAt(Integer.parseInt(i.getValue()),v.getValue());
-		}else if(l instanceof Tree){
-				((Tree) l).insertAt(Integer.parseInt(i.getValue()),v.getValue());
+			}else if(l instanceof LinkedList){
+				if(insertAfterElement)
+					((LinkedList) l).insertAt(Integer.parseInt(i.getValue())+1,v.getValue());
+				else
+					((LinkedList) l).insertAt(Integer.parseInt(i.getValue()),v.getValue());
+			}else if(l instanceof Tree){
+				if(i!=null)
+					try{
+						((Tree) l).addChildAt(Integer.parseInt(i.getValue()),v.getValue());
+					}
+				catch(NumberFormatException n){
+				}
+				else {
+					JOptionPane.showMessageDialog(null,
+							"You need to connect an index variable to add to a tree.",
+							"Warning",
+							JOptionPane.WARNING_MESSAGE);
+				}
+			}
+			else if(l instanceof Queue){
+				((Queue) l).add(v.getValue());
+			}
 		}
-		//l.addFirst(v.getValue());
-		
-
+		else{
+			JOptionPane.showMessageDialog(null,
+					"You need to connect a varible.",
+					"Warning",
+					JOptionPane.WARNING_MESSAGE);
+		}
 	}
+	//l.addFirst(v.getValue());
 }

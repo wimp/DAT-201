@@ -120,11 +120,31 @@ public class Tree {
 		gui.repaint();
 	}
 	public String removeAt(int index){
+	
 		TreeNode element = elementAt(index);
-		element.getParent().getChildren().addAll(element.getChildren());
-		element.getParent().getChildren().remove(element);
-		gui.repaint();
-		return element.getValue().toString();
+
+		if(element!= null){
+			String s = element.getValue().toString();
+			
+			if(element.getChildren().size()==1){
+				TreeNode child = element.getChildren().firstElement();
+				if(element.getParent()!=null){
+					element.getParent().getChildren().remove(element);
+					element.getParent().getChildren().add(child);
+				}
+			}
+			else if(element.getChildren().size()>1){
+				Traversal t = traversal;
+				traversal = Traversal.INORDER;
+				element.setValue(elementAt(0).getValue().toString());
+				elementAt(0).getParent().getChildren().remove(elementAt(0));
+				traversal = t;
+			}
+			gui.repaint();
+			return s;
+		}
+		else return null;
+		
 	}
 	public void insertAt(int index,Object value){
 		TreeNode n = root;
@@ -195,6 +215,7 @@ public class Tree {
 		return currentNode;
 	}
 	private void breadthFirstElementAt(int index){
+		if(getRoot()!=null) return;
 		currentNode = getRoot();
 		Vector<TreeNode> added = new Vector<TreeNode>();
 		Vector<TreeNode> toBeAdded = new Vector<TreeNode>();

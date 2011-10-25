@@ -26,24 +26,18 @@ public class Remove implements ActionListener {
 	public GuiElement getGuiElement(){
 		return gui;
 	}
-	
 	public Object getTarget() {
 		return l;
 	}
-
 	public void setTarget(Object l) {
 		this.l = l;
 	}
-
 	public Variable getSourceVariable() {
 		return v;
 	}
-
 	public void setSourceVariable(Variable v) {
 		this.v = v;
 	}
-
-
 	public Variable getIndexVariable() {
 		return i;
 	}
@@ -89,40 +83,42 @@ public class Remove implements ActionListener {
 		this.v=v;
 		this.i= i == null ? new Variable(new Rectangle(0,0,0,0),"0",false) : i;
 	}
-	public Remove(Rectangle bounds, Array l, Variable v, Variable i) {
-		gui = new GuiFunction(bounds,"Remove");
-		gui.getButton().addActionListener(this);
-		this.l=l;
-		this.v=v;
-		this.i= i == null ? new Variable(new Rectangle(0,0,0,0),"0",false) : i;
-	}
 	
 // Action Listener implementation //
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(l instanceof Array){
-			String s = ((Array) l).removeItem(Integer.parseInt(i.getValue())).toString();
+		Object o = null;
+		if(l instanceof Queue){
+		o = ((Queue) l).remove();
+		}
+		if(o!=null){
+			String s = o.toString();
+			if(v!=null)
 			v.setValue(s);
-		}else if(l instanceof LinkedList){
-			Object o = ((LinkedList) l).removeElementAt(Integer.parseInt(i.getValue()));
+		}
+		int index = 0;
+		
+		if(i!=null){
+		try{
+			index = Integer.parseInt(i.getValue());
+		}
+		catch(NumberFormatException nf){
+			return;
+		}
+		if(l instanceof LinkedList){
+			o = ((LinkedList) l).removeElementAt(index);
 			if(o!=null){
 				String s = o.toString();
-				v.setValue(s);
-			}
-		}else if(l instanceof Queue){
-			Object o = ((Queue) l).remove();
-			if(o!=null){
-				String s = o.toString();
-				if(v!=null)
 				v.setValue(s);
 			}
 		}else if(l instanceof Tree){
-			Object o = ((Tree) l).removeAt(Integer.parseInt(i.getValue()));
+			o = ((Tree) l).removeAt(index);
 			if(o!=null){
 				String s = o.toString();
 				if(v!=null)
 				v.setValue(s);
 			}
 		}
+	}
 	}
 }
