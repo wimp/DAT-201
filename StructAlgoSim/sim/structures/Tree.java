@@ -11,7 +11,8 @@ public class Tree {
 	public enum Traversal{
 		PREORDER,
 		INORDER,
-		POSTORDER
+		POSTORDER,
+		BREADTHFIRST
 	}
 	private int maxCluster = 2;
 	private TreeNode root; 
@@ -70,12 +71,15 @@ public class Tree {
 	protected Tree(){
 		root = null;	
 	}
+	/**
+	 * Rebuilds the tree by adding breadth-first.
+	 * @param values The values to build the tree from.
+	 */
 	public void rebuildTree(){
 		if(root == null) return;
 		Vector<TreeNode> nodes = getAllNodes(new Vector<TreeNode>(), root);
 		nodes.remove(root);
-		root = new TreeNode("root", null);
-		//nodes.remove(root);
+		setRoot(new TreeNode(nodes.remove(0), null));
 		for(TreeNode n : nodes)
 			addBreadthFirst(n.getValue().toString());
 	}
@@ -184,8 +188,23 @@ public class Tree {
 		case POSTORDER:
 			postOrderElementAt(root, index);
 		break;
+		case BREADTHFIRST:
+			breadthFirstElementAt(index);
+			break;
 		}
 		return currentNode;
+	}
+	private void breadthFirstElementAt(int index){
+		currentNode = getRoot();
+		Vector<TreeNode> added = new Vector<TreeNode>();
+		Vector<TreeNode> toBeAdded = new Vector<TreeNode>();
+		while(toBeAdded.size()>0){
+			toBeAdded.remove(currentNode);
+			toBeAdded.addAll(currentNode.getChildren());
+			added.add(currentNode);
+			currentNode = toBeAdded.firstElement();
+		}
+		currentNode = added.elementAt(index);
 	}
 	private void inOrderElementAt(TreeNode n, int index){
 		if(n.getChildren().size()>0)

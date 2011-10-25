@@ -7,6 +7,7 @@ import javax.swing.JFrame;
 import sim.functions.Remove;
 import sim.structures.Heap;
 import sim.structures.Stack;
+import sim.structures.Tree;
 import sim.structures.Variable;
 
 public class Heapsort {
@@ -16,7 +17,6 @@ public class Heapsort {
 	frame.setSize(700,600);
 	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	frame.setLayout(null);
-	
 	
 	Heap h = new Heap(new Rectangle(200,100, 475, 300), true);
 	h.addBreadthFirst("6");
@@ -31,14 +31,14 @@ public class Heapsort {
 	h.addBreadthFirst("8");
 	h.addBreadthFirst("11");
 	h.addBreadthFirst("10");
-	
-	Variable v = new Variable(new Rectangle(100,100, 70, 25), "output", true);
-	Variable i = new Variable(new Rectangle(400,100, 70, 25), "0", false);
-	Remove r = new Remove(new Rectangle(0, 100, 75,75),h, v, i);
+
+	Tree t = new Tree(new Rectangle(200,100, 475, 300), true);
+	Variable v = new Variable(new Rectangle(25,10, 70, 25), "output", true);
 	Stack s = new Stack(new Rectangle(100, 100, 100, 200));	
 	
-	frame.add(h.		getGuiElement());
+	//frame.add(h.		getGuiElement());
 	frame.add(v.		getGuiElement());
+	frame.add(t.		getGuiElement());
 	frame.add(s.		getGuiElement());
 	frame.validate();
 	frame.setVisible(true);

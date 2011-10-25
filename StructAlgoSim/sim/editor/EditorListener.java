@@ -669,7 +669,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 			gui.eInfo.setInfoType(InfoType.QUEUE);
 			break;
 		case 18:
-			
+			new EditorPlayer(gui.editorPanel);
 			break;
 		}
 		gui.optionsPanel.setOptionsType(type);

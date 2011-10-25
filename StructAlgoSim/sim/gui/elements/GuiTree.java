@@ -38,6 +38,7 @@ public class GuiTree extends GuiElement implements ActionListener{
 	JRadioButton inorder;
 	JRadioButton preorder;
 	JRadioButton postorder;
+	JRadioButton breadthfirst;
 	
 	
 	//HEAP
@@ -77,7 +78,7 @@ public class GuiTree extends GuiElement implements ActionListener{
 		listScroller.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		listScroller.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 		listScroller.setPreferredSize(new Dimension(getWidth(), getHeight()));
-		JPanel check = new JPanel(new GridLayout(1,8));
+		JPanel check = new JPanel(new GridLayout(2,4));
 		nval = new JTextField("N-value");
 		nval.setEditable(false);
 		nval.addActionListener(this);
@@ -92,6 +93,7 @@ public class GuiTree extends GuiElement implements ActionListener{
 		check.add(bin);
 		check.add(nary);
 		check.add(nval);
+		check.add(new JLabel(""));
 
 		preorder = new JRadioButton("PreOrder");
 		preorder.addActionListener(this);
@@ -99,16 +101,19 @@ public class GuiTree extends GuiElement implements ActionListener{
 		inorder.addActionListener(this);
 		postorder = new JRadioButton("PostOrder");
 		postorder.addActionListener(this);
+		breadthfirst = new JRadioButton("BreadthFirst");
+		breadthfirst.addActionListener(this);
 		trg = new ButtonGroup();
 		trg.add(preorder);
 		trg.add(inorder);
 		trg.add(postorder);
+		trg.add(breadthfirst);
 		
 		check.add(preorder);
 		check.add(inorder);
 		check.add(postorder);
+		check.add(breadthfirst);
 		
-		check.add(new JLabel("      "));
 		
 		this.add(check, BorderLayout.NORTH);
 		this.add(listScroller, BorderLayout.CENTER);
@@ -234,6 +239,9 @@ public class GuiTree extends GuiElement implements ActionListener{
 		}
 		else if(e.getSource()==postorder){
 			tree.setTraversal(Traversal.POSTORDER);
+		}
+		else if(e.getSource()==breadthfirst){
+			tree.setTraversal(Traversal.BREADTHFIRST);
 		}
 		if(!isheap)
 		if(e.getSource()==nary){

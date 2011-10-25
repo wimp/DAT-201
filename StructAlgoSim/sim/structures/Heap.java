@@ -35,15 +35,17 @@ public class Heap extends Tree{
 	}
 	public String removeRoot(){
 		if(getRoot() != null){
-			if(getRoot().getChildren().size()>0){
-			for(int i = 1; i<getRoot().getChildren().size(); i++){
-				getRoot().getChildren().get(i).setParent(getRoot().getChildren().elementAt(0));
+			String value = getRoot().getValue().toString();
+			
+			Vector<String> values = new Vector<String>();
+			for(TreeNode t : getAllNodes(new Vector<TreeNode>() , getRoot())){
+				if(t!=null && t!=getRoot())
+				values.add(t.getValue().toString());
 			}
-			getRoot().getChildren().get(0).setParent(null);
-			setRoot(getRoot().getChildren().get(0));
-			return getRoot().getValue().toString();
-			}
-			else setRoot(null);
+			setRoot(null);
+			buildHeap(values);
+			
+			return value;
 		}
 		return null;
 	}
@@ -51,7 +53,6 @@ public class Heap extends Tree{
 		Vector<TreeNode> sorted = new Vector<TreeNode>();
 		while(getRoot().getChildren().size()>0){
 			maxHeapifyTree(getRoot());
-			
 			sorted.add(getRoot());
 			
 			Vector<String> values = new Vector<String>();
@@ -62,22 +63,8 @@ public class Heap extends Tree{
 			buildHeap(values);
 		}
 		sorted.add(getRoot());
-		Vector<String> values = new Vector<String>();
-		for(TreeNode n: sorted) 
-			values.add(n.getValue().toString());
-		
-		buildHeap(values);
+		rebuildTree();
 		return sorted;
-	}
-	/**
-	 * Rebuilds the heap by adding breadth-first.
-	 * @param values The values to build the heap from.
-	 */
-	public void buildHeap(Vector<String> values){
-		if(values.size()==0) return;
-		setRoot(new TreeNode(values.remove(0), null));
-		for(String s : values)
-			addBreadthFirst(s);
 	}
 	/**
 	 * Calls reArrangeHeap to make a MinHeap.
@@ -103,6 +90,7 @@ public class Heap extends Tree{
 	 * Swaps nodes until the specified conditions are satisfied, 
 	 * this results in either a max-heap or a min-heap sorted by
 	 * the CompareKey class variable key.
+	 * 
 	 * @param n The root node of the tree to be heapified.
 	 * @param max True will result in a max-heap, false in a min-heap.
 	 */
