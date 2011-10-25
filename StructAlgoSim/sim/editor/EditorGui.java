@@ -14,9 +14,12 @@ import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JSeparator;
+import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 
+import sim.editor.EditorListener.ElementType;
 import sim.editor.EditorListener.Link;
 
 @SuppressWarnings("serial")
@@ -24,7 +27,7 @@ public class EditorGui extends JFrame {
 	EditorListener el = new EditorListener(this);
 	EditorPanel editorPanel;
 	JLabel mouseCoords;
-	JPanel optionsPanel;
+	OptionsPanel optionsPanel = new OptionsPanel();
 	protected EditorInfo eInfo;
 	
 	public EditorGui(){
@@ -48,6 +51,7 @@ public class EditorGui extends JFrame {
 		mouseCoords = new JLabel("X:   Y:");
 		eInfo = new EditorInfo();
 		JSeparator s = new JSeparator();
+		optionsPanel.setLayout(new GridLayout(2,1));
 		
 		// Init. items that should be in the top panel //
 		ButtonGroup bg			= new ButtonGroup();
@@ -107,6 +111,7 @@ public class EditorGui extends JFrame {
 		grid.setActionCommand("17");
 		animation.addActionListener(el);
 		animation.setActionCommand("18");
+		
 		// Add toggle buttons to the button group //
 		bg.add(stack);
 		bg.add(array);
@@ -228,6 +233,42 @@ public class EditorGui extends JFrame {
 					break;
 				}
 			}
+		}
+	}
+
+	protected class OptionsPanel extends JPanel{
+		JTextField textOption 	= new JTextField();
+		ButtonGroup groupOption = new ButtonGroup();
+		
+		public OptionsPanel(){
+			
+		}
+		
+		public void setOptionsType(ElementType type){
+			removeAll();
+			switch(type){
+			case ARRAY:
+				setLayout(new GridLayout(2,1));
+				add(new JLabel("Number of Elements"));
+				add(textOption);
+				break;
+			case VARIABLE:
+				setLayout(new GridLayout(3,1));
+				add(new JLabel("Editable"));
+				JRadioButton selTrue = new JRadioButton("Yes");
+				selTrue.setActionCommand("1");
+				JRadioButton selFalse = new JRadioButton("No");
+				selFalse.setActionCommand("0");
+				groupOption.add(selTrue);
+				groupOption.add(selFalse);
+				add(selTrue);
+				add(selFalse);
+				break;
+			default:
+				
+				break;	
+			}
+			validate();
 		}
 	}
 }

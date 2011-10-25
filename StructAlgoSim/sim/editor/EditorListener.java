@@ -2,7 +2,6 @@ package sim.editor;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Composite;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -17,17 +16,28 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.util.Vector;
 
+import javax.swing.ButtonModel;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
-import javax.swing.JDialog;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import sim.editor.EditorGui.EditorPanel;
 import sim.editor.EditorInfo.InfoType;
-import sim.functions.*;
+import sim.functions.Add;
+import sim.functions.Insert;
+import sim.functions.MoveChar;
 import sim.functions.MoveChar.Direction;
+import sim.functions.Pop;
+import sim.functions.Push;
+import sim.functions.Remove;
 import sim.gui.elements.GuiElement;
-import sim.structures.*;
+import sim.structures.Array;
+import sim.structures.Heap;
+import sim.structures.LinkedList;
+import sim.structures.Queue;
+import sim.structures.Stack;
+import sim.structures.Tree;
+import sim.structures.Variable;
 
 /**
  * The listener and action handling class for the {@link EditorGui}. 
@@ -36,7 +46,7 @@ import sim.structures.*;
  */
 public class EditorListener implements ActionListener, MouseMotionListener, MouseListener, KeyEventDispatcher {
 // Class variables //
-	protected 	ElementType 		type;
+	protected 	ElementType 		type = ElementType.NONE;
 	private 	EditorGui 			gui;
 	private 	Vector<Object> 		elements = new Vector<Object>();
 	private 	Vector<GuiElement> 	guiElements = new Vector<GuiElement>();
@@ -138,8 +148,8 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 			guiElements.add(index,stackElement.getGuiElement());
 			return stackElement.getGuiElement();
 		case VARIABLE:
-			int n = JOptionPane.showOptionDialog(gui, "Skal variabelen kunne endres?", "Variabel", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, new Object[]{"Ja","Nei"}, null);
-			boolean e = n == 0 ? true : false;
+			ButtonModel b = gui.optionsPanel.groupOption.getSelection();
+			boolean e = b.getActionCommand().equals("1") ? true : false;
 			bounds.width 	= bounds.width < 50 ? 50 : bounds.width;
 			bounds.height 	= bounds.height < 30 ? 30 : bounds.height;
 			Variable variableElement = new Variable(bounds,"test",e);
@@ -579,10 +589,13 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 		case 1:
 			type = ElementType.STACK;
 			gui.eInfo.setInfoType(InfoType.STACK);
+			
 			break;
 		case 2:
 			type = ElementType.ARRAY;
 			gui.eInfo.setInfoType(InfoType.ARRAY);
+			
+			
 			break;
 		case 3:
 			type = ElementType.LIST;
@@ -655,8 +668,14 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 			type = ElementType.QUEUE;
 			gui.eInfo.setInfoType(InfoType.QUEUE);
 			break;
+		case 18:
+			
+			break;
 		}
+		gui.optionsPanel.setOptionsType(type);
 		gui.editorPanel.validate();
+		gui.repaint();
+		gui.validate();
 	}
 	
 	@Override
@@ -777,7 +796,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 	}
 	
 	public enum ElementType{
-		STACK,ARRAY,LIST,ADD,REMOVE,INSERT,PUSH,POP,VARIABLE,LINK,SELECT,MOVECHAR,DELETE,TREE,HEAP,QUEUE
+		STACK,ARRAY,LIST,ADD,REMOVE,INSERT,PUSH,POP,VARIABLE,LINK,SELECT,MOVECHAR,DELETE,TREE,HEAP,QUEUE,NONE
 	}
 	
 	protected enum LinkDirection{
