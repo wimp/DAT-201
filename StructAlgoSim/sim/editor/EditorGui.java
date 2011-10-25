@@ -24,6 +24,7 @@ public class EditorGui extends JFrame {
 	EditorListener el = new EditorListener(this);
 	EditorPanel editorPanel;
 	JLabel mouseCoords;
+	JPanel optionsPanel;
 	protected EditorInfo eInfo;
 	
 	public EditorGui(){
@@ -132,19 +133,20 @@ public class EditorGui extends JFrame {
 		bg.add(queue);
 		
 		// Add elements to the west panel (data structures and variables) //
-		westPanel.setLayout(new GridLayout(9,1));
+		westPanel.setLayout(new GridLayout(10,1));
 		westPanel.add(stack);
 		westPanel.add(array);
 		westPanel.add(list);
 		westPanel.add(tree);
 		westPanel.add(heap);
 		westPanel.add(queue);
-		westPanel.add(s);
+		westPanel.add(new JSeparator());
 		westPanel.add(variable);
-		westPanel.add(s);
+		westPanel.add(new JSeparator());
+		westPanel.add(optionsPanel);
 		
 		// Add elements to the east panel (functions etc.) //
-		eastPanel.setLayout(new GridLayout(9,1));
+		eastPanel.setLayout(new GridLayout(10,1));
 		eastPanel.add(add);
 		eastPanel.add(remove);
 		eastPanel.add(insert);
