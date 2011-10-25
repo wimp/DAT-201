@@ -1,7 +1,6 @@
 package sim.gui.elements;
 
 import java.awt.GridLayout;
-import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
 import javax.swing.Timer;
