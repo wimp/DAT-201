@@ -66,10 +66,8 @@ public class EditorGui extends JFrame {
 		JToggleButton tree		= new JToggleButton("Tree");
 		JToggleButton heap		= new JToggleButton("Heap");
 		JToggleButton queue		= new JToggleButton("Queue");
-		JButton record			= new JButton("Record");
-		JButton play			= new JButton("Play");
-		JButton stop 			= new JButton("Stop");
 		JCheckBox grid			= new JCheckBox("Grid");
+		JButton animation		= new JButton("Animation");
 		
 		// Add actionlisteners and set action commands //
 		stack.addActionListener(el);
@@ -106,13 +104,8 @@ public class EditorGui extends JFrame {
 		queue.setActionCommand("16");
 		grid.addActionListener(el);
 		grid.setActionCommand("17");
-		record.addActionListener(el);
-		record.setActionCommand("18");
-		play.addActionListener(el);
-		play.setActionCommand("19");
-		stop.addActionListener(el);
-		stop.setActionCommand("20");
-		
+		animation.addActionListener(el);
+		animation.setActionCommand("18");
 		// Add toggle buttons to the button group //
 		bg.add(stack);
 		bg.add(array);
@@ -169,15 +162,11 @@ public class EditorGui extends JFrame {
 			leftOnTop.setLayout(new GridLayout(1,2));
 			leftOnTop.add(mouseCoords);
 			leftOnTop.add(grid);
-		JPanel rightOnTop = new JPanel(new GridLayout(2,3));
+		JPanel rightOnTop = new JPanel(new GridLayout(1,3));
 			rightOnTop.setPreferredSize(new Dimension(250,30));
 			rightOnTop.add(new JLabel(""));
-			rightOnTop.add(new JLabel("Animation:"));
+			rightOnTop.add(animation);
 			rightOnTop.add(new JLabel(""));
-			rightOnTop.add(record);
-			rightOnTop.add(play);
-			
-			rightOnTop.add(stop);
 		topPanel.add(centerOfTop,BorderLayout.CENTER);
 		topPanel.add(leftOnTop,BorderLayout.WEST);
 		topPanel.add(rightOnTop,BorderLayout.EAST);
