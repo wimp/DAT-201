@@ -82,7 +82,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 	 */
 	private JComponent getComponentFromEnum(ElementType type, Rectangle bounds) {
 		int index;
-		boolean e;
+		boolean e, f;
 		ButtonModel b;
 		switch(type){
 		case ADD:

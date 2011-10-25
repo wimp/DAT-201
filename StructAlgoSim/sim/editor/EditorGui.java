@@ -237,8 +237,10 @@ public class EditorGui extends JFrame {
 	}
 
 	protected class OptionsPanel extends JPanel{
-		JTextField textOption 	= new JTextField();
+		JTextField 	textOption 	= new JTextField();
 		ButtonGroup groupOption = new ButtonGroup();
+		JCheckBox 	check1		= new JCheckBox();
+		JCheckBox 	check2		= new JCheckBox();
 		
 		public OptionsPanel(){
 			
@@ -273,6 +275,8 @@ public class EditorGui extends JFrame {
 				selBefore.setActionCommand("1");
 				groupOption.add(selBefore);
 				groupOption.add(selAfter);
+				add(selBefore);
+				add(selAfter);
 				break;
 			default:
 				
