@@ -30,9 +30,9 @@ public final class GuiSettings {
 	public static final int STACKELEMENTHEIGHT = LISTNODEHEIGHT;
 	
 	//Queue
-	public static final Color QUEUETOPCOLOR = LISTHEADCOLOR;
-	public static final Color QUEUEENDCOLOR = LISTHEADCOLOR;
-	public static final Color QUEUEELEMENTCOLOR = LISTNODECOLOR;
+	public static final Color QUEUETOPCOLOR = Color.GREEN;
+	public static final Color QUEUEENDCOLOR = Color.RED;
+	public static final Color QUEUEELEMENTCOLOR = Color.YELLOW;
 	public static final int QUEUEELEMENTWIDTH = STACKELEMENTHEIGHT;
 	public static final int QUEUEELEMENTHEIGHT = STACKELEMENTWIDTH;
 	

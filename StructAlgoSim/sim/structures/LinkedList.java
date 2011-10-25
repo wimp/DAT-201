@@ -8,10 +8,7 @@ import sim.gui.elements.GuiList;
 import sim.structures.elements.Node;
 
 /**
- * A class representing a linked list. 
- * The attributes, doubly or singly linked and circular or non-circular 
- * are set in the constructor.
- *
+ * A class representing a linked list. Its visual component is the GuiList.
  */
 public class LinkedList {
 	private GuiList gui;
@@ -23,8 +20,7 @@ public class LinkedList {
 	/**
 	 * Constructor. 
 	 * @param bounds The size of the graphical element.
-	 * @param doublyLinked Determines whether nodes will link both forwards and backwards.
-	 * @param circular Determines if the last node will link to the first of the list (and vice verse if the list if doubly-linked)
+	 * @param animated Determines whether insertion and removal will be animated.
 	 */
 	public LinkedList(Rectangle bounds, boolean animated){
 
@@ -57,6 +53,10 @@ public class LinkedList {
 	public void addLast(Object value){
 		insertAt(v.size()-1, value);
 	}
+	/**
+	 * Removes an element at a specified index in the list.
+	 * @param index The index of the element to be removed.
+	 */
 	public Object removeElementAt(int index){
 		if(index > 0 && index < v.size()){
 		v.elementAt(index).setRemoved(true);
@@ -66,12 +66,16 @@ public class LinkedList {
 		}
 		else return null;
 	}
-	public Node elementAt(int value){
-		return v.elementAt(value);
+	/**
+	 * Gets an element at a specified index in the list.
+	 * @param index The index of the element to be removed.
+	 */
+	public String elementAt(int index){
+		return v.elementAt(index).getValue().toString();
 	}
 	/**
 	 * Adds a new node before a node in the list.
-	 * @param element The element that the new node will be placed before.
+	 * @param index The index of the element that the new node will be placed before.
 	 * @param value The object (most likely a string of text) that this node is to contain.
 	 */
 	public void insertAt( int index, Object value){
@@ -94,8 +98,6 @@ public class LinkedList {
 			n.setNext(v.elementAt(0));
 			
 			v.add(n);
-			
-
 		}
 		gui.repaint();
 		gui.getAnimation().start();

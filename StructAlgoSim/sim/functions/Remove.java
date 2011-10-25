@@ -9,6 +9,7 @@ import sim.gui.elements.GuiFunction;
 import sim.structures.Array;
 import sim.structures.LinkedList;
 import sim.structures.Queue;
+import sim.structures.Tree;
 import sim.structures.Variable;
 
 /**
@@ -81,6 +82,13 @@ public class Remove implements ActionListener {
 		this.v=v;
 		this.i= i == null ? new Variable(new Rectangle(0,0,0,0),"0",false) : i;
 	}
+	public Remove(Rectangle bounds, Tree l, Variable v, Variable i) {
+		gui = new GuiFunction(bounds,"Remove");
+		gui.getButton().addActionListener(this);
+		this.l=l;
+		this.v=v;
+		this.i= i == null ? new Variable(new Rectangle(0,0,0,0),"0",false) : i;
+	}
 	public Remove(Rectangle bounds, Array l, Variable v, Variable i) {
 		gui = new GuiFunction(bounds,"Remove");
 		gui.getButton().addActionListener(this);
@@ -105,6 +113,14 @@ public class Remove implements ActionListener {
 			Object o = ((Queue) l).remove();
 			if(o!=null){
 				String s = o.toString();
+				if(v!=null)
+				v.setValue(s);
+			}
+		}else if(l instanceof Tree){
+			Object o = ((Tree) l).removeAt(Integer.parseInt(i.getValue()));
+			if(o!=null){
+				String s = o.toString();
+				if(v!=null)
 				v.setValue(s);
 			}
 		}

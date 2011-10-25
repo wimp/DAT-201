@@ -6,7 +6,7 @@ import sim.gui.elements.GuiVariable;
 
 public class Variable {
 
-	GuiVariable gui;
+	private GuiVariable gui;
 	
 	public boolean isEditable;
 	

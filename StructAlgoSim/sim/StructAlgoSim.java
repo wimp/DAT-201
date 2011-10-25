@@ -4,8 +4,7 @@ import java.awt.Rectangle;
 
 import javax.swing.JFrame;
 
-import sim.editor.EditorInfo;
-import sim.editor.EditorInfo.InfoPanel;
+import sim.demos.Heapsort;
 import sim.functions.Add;
 import sim.functions.Insert;
 import sim.functions.Pop;
@@ -24,7 +23,7 @@ public class StructAlgoSim {
 	 */
 	public static void main(String[] args) {
 	//	RailwayPostfix rsim = new RailwayPostfix();
-	//	new EditorGui();
+		new Heapsort();
 		
 
 		JFrame frame = new JFrame();
@@ -50,10 +49,10 @@ public class StructAlgoSim {
 		Remove r = new Remove(new Rectangle(375,10, 75,75),q, v);
 		Insert i = new Insert(new Rectangle(400, 10, 75,75), t,v, in, false);
 		
-		//frame.add(s.getGuiElement());
+		frame.add(s.getGuiElement());
 
-		//frame.add(push.getGuiElement());
-		//frame.add(pop.getGuiElement());
+		frame.add(push.getGuiElement());
+		frame.add(pop.getGuiElement());
 		//frame.add(l.getGuiElement());
 		frame.add(v.getGuiElement());
 		frame.add(a.getGuiElement());

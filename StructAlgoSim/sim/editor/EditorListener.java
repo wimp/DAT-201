@@ -405,7 +405,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 						}
 					}else if(startElement instanceof Variable){
 						if(endElement instanceof Add){
-							((Add) endElement).setSourceVariable((Variable) startElement);
+							((Add) endElement).setIndexVariable((Variable) startElement);
 						}else if(endElement instanceof Remove){
 							((Remove) endElement).setIndexVariable((Variable) startElement);
 						}else if(endElement instanceof Insert){

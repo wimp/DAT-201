@@ -8,20 +8,25 @@ import sim.gui.elements.GuiTree;
 
 public class Tree {
 
-	/**
-	 * @param args
-	 */
 	public enum Traversal{
 		PREORDER,
 		INORDER,
 		POSTORDER
 	}
+	private int maxCluster = 2;
+	private TreeNode root; 
+	private GuiTree gui;
 
-	int maxCluster = 2;
-	TreeNode root; 
-	GuiTree gui;
+	private Traversal traversal = Traversal.INORDER;
 	
 	//GETTERS AND SETTERS
+
+	public Traversal getTraversal() {
+		return traversal;
+	}
+	public void setTraversal(Traversal traversal) {
+		this.traversal = traversal;
+	}
 	public int getMaxDepth() {
 		return findMaxDepth(root, 0);
 	}
@@ -54,18 +59,20 @@ public class Tree {
 	public GuiTree getGuiElement() {
 		return gui;
 	}
+	public void setGuiElement(GuiTree gui) {
+		this.gui = gui;
+	}
 
 //CONSTRUCTORS
 	public Tree(Rectangle bounds,boolean animated){
-		root = new TreeNode("root", null);	
+		root = null;	
 		gui = new GuiTree(bounds, this, animated);
 	}
 	protected Tree(){
-		root = new TreeNode("root", null);	
+		root = null;	
 	}
-
-
 	public void rebuildTree(){
+		if(root == null) return;
 		Vector<TreeNode> nodes = getAllNodes(new Vector<TreeNode>(), root);
 		nodes.remove(root);
 		root = new TreeNode("root", null);
@@ -73,13 +80,6 @@ public class Tree {
 		for(TreeNode n : nodes)
 			addBreadthFirst(n.getValue().toString());
 	}
-	public Vector<TreeNode> getAllNodes(Vector<TreeNode> nodes, TreeNode n){
-		nodes.add(n);
-		for(TreeNode t : n.getChildren())
-			getAllNodes(nodes, t);
-		return nodes;
-	}
-	
 	public void swapNodes(TreeNode a, TreeNode b){
 		Object o = a.getValue().toString();
 		a.setValue(b.getValue().toString());
@@ -89,6 +89,11 @@ public class Tree {
 	public void addBreadthFirst(String value){
 		Vector<TreeNode> nodeQueue = new Vector<TreeNode>();
 		TreeNode n = root;
+		if(n == null){
+			root = new TreeNode(value, null);
+			gui.repaint();
+			return;
+		}
 		nodeQueue.addAll(n.getChildren());
 		while(n.getChildren().size()==maxCluster && nodeQueue.size()>0){
 			nodeQueue.addAll(n.getChildren());
@@ -97,43 +102,79 @@ public class Tree {
 		n.insert(value);
 	}
 	public void addChildAt(int index, Object value){
+		TreeNode n = root;
+		if(n == null){
+			root = new TreeNode(value, null);
+			gui.repaint();
+			return;
+		}
 		TreeNode element = elementAt(index);
+		if(element == null) return;
 		TreeNode newnode = new TreeNode(value, element);
-//FAEN TA GIT
 		if(element.getChildren().size()<maxCluster){
 			element.getChildren().add(newnode);
 		}
-		else addBreadthFirst((String)value);
 		gui.repaint();
 	}
-	public void insertAt(int index,Object value){
+	public String removeAt(int index){
 		TreeNode element = elementAt(index);
+		element.getParent().getChildren().addAll(element.getChildren());
+		element.getParent().getChildren().remove(element);
+		gui.repaint();
+		return element.getValue().toString();
+	}
+	public void insertAt(int index,Object value){
+		TreeNode n = root;
+		if(n == null){
+			root = new TreeNode(value, null);
+			gui.repaint();
+			return;
+		}
+		TreeNode element = elementAt(index);
+		if(element == null) return;
 		TreeNode newnode = new TreeNode(value, element);
-
+		
 		if(element.getChildren().size()>0){
 			element.getChildren().get(0).setParent(newnode);
 			newnode.getChildren().add(element.getChildren().get(0));
 			element.getChildren().remove(0);
 			element.getChildren().add(0, newnode);
 			}
-		else
-			element.insert(newnode.getValue());
 		gui.repaint();
 	}
 	// GET METHODS
 	private int currentIndex = 0;
 	private TreeNode currentNode = null;
-	private Traversal traversal = Traversal.INORDER;
-	
-	public Traversal getTraversal() {
-		return traversal;
-	}
-	public void setTraversal(Traversal traversal) {
-		this.traversal = traversal;
+
+	public Vector<TreeNode> getAllNodes(Vector<TreeNode> nodes, TreeNode n){
+		if(n==null) return null;
+		switch(traversal){
+		case INORDER:
+			if(n.getChildren().size()>0)
+				getAllNodes(nodes, n.getChildren().get(0));
+				nodes.add(n);
+			if(n.getChildren().size()>1)
+				getAllNodes(nodes, n.getChildren().get(1));
+			break;
+		case PREORDER:
+			nodes.add(n);
+			for(TreeNode t : n.getChildren())
+				getAllNodes(nodes, t);
+			break;
+		case POSTORDER:
+			for(TreeNode t : n.getChildren())
+				getAllNodes(nodes, t);
+			nodes.add(n);
+			break;
+			
+		}
+		return nodes;
 	}
 	public TreeNode elementAt(int index){
 		currentNode = null;
 		currentIndex = 0;
+		TreeNode n = root;
+		if(root != null)
 		switch(traversal){
 		case INORDER:
 			inOrderElementAt(root, index);

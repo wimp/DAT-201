@@ -40,6 +40,7 @@ public class Derivation extends DemoFrame {
 			}
 		}
 		
+<<<<<<< HEAD
 		int i = 1; 		
 		while(!opStack.isEmpty()){
 			//Operator
@@ -53,6 +54,22 @@ public class Derivation extends DemoFrame {
 //				tree.addChildAt(i, i + " " +valStack.pop());
 //			i++;
 //			i++;
+=======
+		int i = 0; 
+		
+//		for(int j = 1;j<11;j++){
+//		//tree.insertAt(j, "insert "+j);
+//			tree.addChildAt(j, "prime "+j);
+//			tree.addChildAt(j, "second "+j);
+//		}
+		while(!opStack.isEmpty()){
+			tree.insertAt(i, i + " " +opStack.pop());
+			i++;
+			if(!valStack.isEmpty())
+				tree.addChildAt(i, i + " " +valStack.pop());
+			if(!valStack.isEmpty())
+				tree.addChildAt(i, i + " " +valStack.pop());
+>>>>>>> d214ad5d7bb86c829f49413dc5326d318a526b62
 		}	
 		
 		add(tree.getGuiElement());

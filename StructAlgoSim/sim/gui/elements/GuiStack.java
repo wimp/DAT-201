@@ -28,7 +28,7 @@ public class GuiStack extends GuiElement implements ActionListener{
 	public GuiStack(Rectangle bounds,Vector<Object> data){
 		super();
 		
-		animation = new Timer(750,this);
+		animation = new Timer(400,this);
 		
 		setBounds(bounds);
 		initGraphics(data);
@@ -70,12 +70,13 @@ public class GuiStack extends GuiElement implements ActionListener{
 			int elementH = GuiSettings.STACKELEMENTHEIGHT;
 			int elementW = getWidth();//GuiSettings.STACKELEMENTWIDTH;
 			g.clearRect(0, 0, getWidth(), getHeight());
+			Color c = g.getColor();
 			if(elementH*data.size()>getHeight())
 				setPreferredSize(new Dimension(getWidth(), elementH*data.size()));
 			for(int i = 0; i<data.size(); i++){
 				String s = (String)data.get(i);
 				
-				Color c = g.getColor();
+				if(s == recent) continue;
 				
 				g.setColor(i==data.size()-1 ?  GuiSettings.STACKTOPCOLOR : GuiSettings.STACKELEMENTCOLOR);
 				
@@ -83,24 +84,32 @@ public class GuiStack extends GuiElement implements ActionListener{
 				int v=g.getFontMetrics(getFont()).charsWidth(s.toCharArray(), 0, s.toCharArray().length)+20;
 				
 				elementW = v<GuiSettings.STACKELEMENTWIDTH ? GuiSettings.STACKELEMENTWIDTH : v;
-				if(added && s == recent){
-					g.fillRoundRect(0, (getHeight()/MAXFRAME)*frame-i*elementH-elementH, elementW, elementH, 5, 5);
-					g.setColor(c);
-					g.drawString(s,10, (getHeight()/MAXFRAME)*frame-i*elementH-elementH/3);
-					g.drawRoundRect(0, (getHeight()/MAXFRAME)*frame-i*elementH-elementH, elementW, elementH, 5, 5);
-				}
-				else if(removed && s == recent){
-					g.fillRoundRect(0, (getHeight()/MAXFRAME)*(MAXFRAME-frame)-i*elementH-elementH, elementW, elementH, 5, 5);
-					g.setColor(c);
-					g.drawString(s,10, (getHeight()/MAXFRAME)*(MAXFRAME-frame)-i*elementH-elementH/3);
-					g.drawRoundRect(0, (getHeight()/MAXFRAME)*(MAXFRAME-frame)-i*elementH-elementH, elementW, elementH, 5, 5);
-				}
-				else{
+				
 				g.fillRoundRect(0, getHeight()-i*elementH-elementH, elementW, elementH, 5, 5);
 				g.setColor(c);
 				g.drawString(s,10, getHeight()-i*elementH-elementH/3);
 				g.drawRoundRect(0, getHeight()-i*elementH-elementH, elementW, elementH, 5, 5);
 				}
+			if(recent!=null){
+			int v=g.getFontMetrics(getFont()).charsWidth(recent.toCharArray(), 0, recent.toCharArray().length)+20;
+			
+			elementW = v<GuiSettings.STACKELEMENTWIDTH ? GuiSettings.STACKELEMENTWIDTH : v;
+			
+			if(added){
+				g.setColor(GuiSettings.STACKTOPCOLOR);
+				g.fillRoundRect(0, (getHeight()/MAXFRAME)*frame-data.size()*elementH-elementH, elementW, elementH, 5, 5);
+
+				g.setColor(c);
+				g.drawString(recent,10, (getHeight()/MAXFRAME)*frame-data.size()*elementH-elementH/3);
+				g.drawRoundRect(0, (getHeight()/MAXFRAME)*frame-data.size()*elementH-elementH, elementW, elementH, 5, 5);
+			}
+			else if(removed){
+				g.setColor(GuiSettings.STACKTOPCOLOR);
+				g.fillRoundRect(0, (getHeight()/MAXFRAME)*(MAXFRAME-frame)-data.size()*elementH-elementH, elementW, elementH, 5, 5);
+				g.drawString(recent,10, (getHeight()/MAXFRAME)*(MAXFRAME-frame)-data.size()*elementH-elementH/3);
+				g.setColor(c);
+				g.drawRoundRect(0, (getHeight()/MAXFRAME)*(MAXFRAME-frame)-data.size()*elementH-elementH, elementW, elementH, 5, 5);
+			}
 			}
 			//revalidate();
 		}
@@ -118,6 +127,7 @@ public class GuiStack extends GuiElement implements ActionListener{
 					stackPanel.getData().remove(recent);
 					removed = false;
 				}
+				recent = null;
 				repaint();
 			}
 			repaint();

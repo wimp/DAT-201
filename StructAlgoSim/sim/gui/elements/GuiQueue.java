@@ -14,139 +14,193 @@ import javax.swing.Timer;
 
 public class GuiQueue extends GuiElement implements ActionListener{
 	// Class variables //
-		QueuePanel queuePanel;
-		boolean removed;
-		boolean added;
-		String recent;
+	QueuePanel queuePanel;
+	boolean removed;
+	boolean added;
+	String recent;
 	// Getters and setters //
-		public void setAdded(String changed){
-			added = true;
-			recent = changed;
-		}
-		public void setRemoved(String changed){
-			removed = true;
-			recent = changed;
-		}
-		public GuiQueue(Rectangle bounds,Vector<Object> data){
-			super();
+	public void setAdded(String changed){
+		added = true;
+		recent = changed;
+	}
+	public void setRemoved(String changed){
+		removed = true;
+		recent = changed;
+	}
+	public GuiQueue(Rectangle bounds,Vector<Object> data){
+		super();
 
-			animation = new Timer(300,this);
-			setBounds(bounds);
-			initGraphics(data);
-		}
-		private void initGraphics(Vector<Object> data){
-			queuePanel = new QueuePanel(data);
-			JScrollPane listScroller = new JScrollPane(queuePanel);
-			listScroller.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-			listScroller.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+		animation = new Timer(300,this);
+		setBounds(bounds);
+		initGraphics(data);
+	}
+	private void initGraphics(Vector<Object> data){
+		queuePanel = new QueuePanel(data);
+		JScrollPane listScroller = new JScrollPane(queuePanel);
+		listScroller.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		listScroller.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
 
-			queuePanel.setPreferredSize(new Dimension(getWidth(), getHeight()));
-			listScroller.setPreferredSize(new Dimension(getWidth(), getHeight()));
-			this.add(listScroller);
-		}
+		queuePanel.setPreferredSize(new Dimension(getWidth(), getHeight()));
+		listScroller.setPreferredSize(new Dimension(getWidth(), getHeight()));
+		this.add(listScroller);
+	}
 
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			if(e.getSource()==animation){
-				frame++;
-				if(frame > MAXFRAME){
-					frame = 0;
-					animation.stop();
-					added = false;
-					if(removed){
-						queuePanel.getData().remove(recent);
-						removed = false;
-					}
-					repaint();
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if(e.getSource()==animation){
+			frame++;
+			if(frame > MAXFRAME){
+				frame = 0;
+				animation.stop();
+				added = false;
+				if(removed){
+					queuePanel.getData().remove(recent);
+					removed = false;
 				}
 				repaint();
 			}
+			repaint();
 		}
+	}
+
+	private class QueuePanel extends JPanel{
+		Vector<Object> data;
+		int xoffset = GuiSettings.QUEUEELEMENTWIDTH*2;
+		int yoffset = GuiSettings.QUEUEELEMENTHEIGHT/4;
 		
-		private class QueuePanel extends JPanel{
-		Vector<Object> data;	
 		public Vector<Object> getData() {
-				return data;
-			}
-			public void setData(Vector<Object> data) {
-				this.data = data;
-			}
-			public QueuePanel(Vector<Object> data){
-				this.data = data;
-			}
-			@Override
-			public void paintComponent(Graphics g){
-				int elementH = GuiSettings.QUEUEELEMENTHEIGHT;
-				int elementW = GuiSettings.QUEUEELEMENTWIDTH;
-				
-				g.clearRect(0, 0, getWidth(), getHeight());
-				
-				if(elementH*data.size()>getHeight())
-					setPreferredSize(new Dimension(elementW*data.size(),getHeight()));
-				
-				for(int i = 0; i<data.size(); i++){
-					String s = (String)data.get(i);
-					
-					Color c = g.getColor();
-					
-					if(i ==data.size()-1) 
-						g.setColor(GuiSettings.QUEUETOPCOLOR);
-					else if(i==0)
-						g.setColor(GuiSettings.QUEUEENDCOLOR);
-					else 
-						g.setColor(GuiSettings.QUEUEELEMENTCOLOR);
-					 
-					int v=g.getFontMetrics(getFont()).getHeight()-g.getFontMetrics(getFont()).getHeight()/4;
-					elementH = v*s.length()<GuiSettings.QUEUEELEMENTHEIGHT ? GuiSettings.QUEUEELEMENTHEIGHT : v*s.length();
-					
-					if(removed && s == recent){
-						g.fillRoundRect((getWidth()/MAXFRAME)*frame-elementW*i,0, elementW, elementH, 5, 5);
-						g.setColor(c);
-						g.drawRoundRect((getWidth()/MAXFRAME)*frame-elementW*i,0, elementW, elementH, 5, 5);
-						  v=g.getFontMetrics(getFont()).getHeight()-g.getFontMetrics(getFont()).getHeight()/4;
-						  int j = 0;
-						  int k = s.length();
-						  while(j < k+1) {
-						    if (j == k) 
-						       g.drawString(s.substring(j),(getWidth()/MAXFRAME)*frame-i*elementW+5, 10+(j*v));
-						    else
-						       g.drawString(s.substring(j,j+1),(getWidth()/MAXFRAME)*frame-i*elementW+5, 10+(j*v));
-						    j++;
-						  }
-					}
-					else if(added && s == recent){
-						g.fillRoundRect(((getWidth()-elementW*i)/MAXFRAME)*(MAXFRAME-frame)+elementW*i,0, elementW, elementH, 5, 5);
-						g.setColor(c);
-						g.drawRoundRect(((getWidth()-elementW*i)/MAXFRAME)*(MAXFRAME-frame)+elementW*i,0, elementW, elementH, 5, 5);
-						  v=g.getFontMetrics(getFont()).getHeight()-g.getFontMetrics(getFont()).getHeight()/4;
-						  int j = 0;
-						  int k = s.length();
-						  while(j < k+1) {
-						    if (j == k) 
-						       g.drawString(s.substring(j),((getWidth()-elementW*i)/MAXFRAME)*(MAXFRAME-frame)+i*elementW+5, 10+(j*v));
-						    else
-						       g.drawString(s.substring(j,j+1),((getWidth()-elementW*i)/MAXFRAME)*(MAXFRAME-frame)+i*elementW+5, 10+(j*v));
-						    j++;
-						  }
-					}
-					else{
-					g.fillRoundRect(elementW*i,0, elementW, elementH, 5, 5);
-					g.setColor(c);
-					g.drawRoundRect(elementW*i,0, elementW, elementH, 5, 5);
-					  v=g.getFontMetrics(getFont()).getHeight()-g.getFontMetrics(getFont()).getHeight()/4;
-					  int j = 0;
-					  int k = s.length();
-					  while(j < k+1) {
-					    if (j == k) 
-					       g.drawString(s.substring(j),i*elementW+5, 10+(j*v));
-					    else
-					       g.drawString(s.substring(j,j+1),i*elementW+5, 10+(j*v));
-					    j++;
-					  }
-					}
-					
-				}
-				revalidate();
-			}
+			return data;
 		}
+		public void setData(Vector<Object> data) {
+			this.data = data;
+		}
+		public QueuePanel(Vector<Object> data){
+			this.data = data;
+		}
+		@Override
+		public void paintComponent(Graphics g){
+			int elementH = GuiSettings.QUEUEELEMENTHEIGHT;
+			int elementW = GuiSettings.QUEUEELEMENTWIDTH;
+
+			g.clearRect(0, 0, getWidth(), getHeight());
+
+			if(elementH*data.size()>getHeight())
+				setPreferredSize(new Dimension(elementW*data.size()+xoffset*2,getHeight()));
+
+			
+			String f = "FRONT";
+			String b = "BACK";
+
+			Color c = g.getColor();
+			
+			int[] fx = new int[3];
+			int[] fy = new int[3];
+			fx[0] = xoffset-20;
+			fx[1] = xoffset-elementW-20;
+			fx[2] = xoffset-20;
+			fy[0] = yoffset;
+			fy[1] = yoffset+elementH/2;
+			fy[2] = yoffset+elementH;
+			
+			int[] bx = new int[3];
+			int[] by = new int[3];
+			bx[0] = data.size()*elementW+2*elementW+40;
+			bx[1] = data.size()*elementW+elementW+40;
+			bx[2] = data.size()*elementW+2*elementW+40;
+			by[0] = yoffset;
+			by[1] = yoffset+elementH/2;
+			by[2] = yoffset+elementH;
+			
+			g.setColor(GuiSettings.QUEUETOPCOLOR);
+			g.fillPolygon(fx, fy, fx.length);
+			g.setColor(GuiSettings.QUEUEENDCOLOR);
+			g.fillPolygon(bx, by, fx.length);
+			g.setColor(c);
+			g.drawPolygon(fx, fy, fx.length);
+			g.drawPolygon(bx, by, bx.length);
+			
+			for(int i = 0; i<data.size(); i++){
+				String s = (String)data.get(i);
+				
+
+				int v=g.getFontMetrics(getFont()).getHeight()-g.getFontMetrics(getFont()).getHeight()/4;
+				elementH = v*s.length()<GuiSettings.QUEUEELEMENTHEIGHT ? GuiSettings.QUEUEELEMENTHEIGHT : v*s.length();
+
+				v=g.getFontMetrics(getFont()).getHeight()-g.getFontMetrics(getFont()).getHeight()/4;
+				int j = 0;
+				int k = f.length();
+				while(j < k+1) {
+					if (j == k) 
+						g.drawString(f.substring(j),xoffset-elementW, yoffset+10+(j*v));
+					else
+						g.drawString(f.substring(j,j+1),xoffset-elementW, yoffset+10+(j*v));
+					j++;
+				}
+				j = 0;
+				k = b.length();
+				while(j < k+1) {
+					if (j == k) 
+						g.drawString(b.substring(j),data.size()*elementW+2*elementW+30, yoffset+10+(j*v));
+					else
+						g.drawString(b.substring(j,j+1),data.size()*elementW+2*elementW+30, yoffset+10+(j*v));
+					j++;
+				}
+
+				if(i ==data.size()-1) 
+					g.setColor(GuiSettings.QUEUEENDCOLOR);
+				else if(i==0)
+					g.setColor(GuiSettings.QUEUETOPCOLOR);
+				else 
+					g.setColor(GuiSettings.QUEUEELEMENTCOLOR);
+
+				if(removed && s == recent){
+					g.fillRoundRect(xoffset-(xoffset/MAXFRAME)*frame,yoffset, elementW, elementH, 5, 5);
+					g.setColor(c);
+					g.drawRoundRect(xoffset-(xoffset/MAXFRAME)*frame,yoffset, elementW, elementH, 5, 5);
+					v=g.getFontMetrics(getFont()).getHeight()-g.getFontMetrics(getFont()).getHeight()/4;
+					j = 0;
+					k = s.length();
+					while(j < k+1) {
+						if (j == k) 
+							g.drawString(s.substring(j),xoffset-(xoffset/MAXFRAME)*frame+5, yoffset+10+(j*v));
+						else
+							g.drawString(s.substring(j,j+1),xoffset-(xoffset/MAXFRAME)*frame+5, yoffset+10+(j*v));
+						j++;
+					}
+				}
+				else if(added && s == recent){
+					g.fillRoundRect(((getWidth()-elementW*i)/MAXFRAME)*(MAXFRAME-frame)+elementW*i+xoffset,yoffset, elementW, elementH, 5, 5);
+					g.setColor(c);
+					g.drawRoundRect(((getWidth()-elementW*i)/MAXFRAME)*(MAXFRAME-frame)+elementW*i+xoffset,yoffset, elementW, elementH, 5, 5);
+					v=g.getFontMetrics(getFont()).getHeight()-g.getFontMetrics(getFont()).getHeight()/4;
+					j = 0;
+					k = s.length();
+					while(j < k+1) {
+						if (j == k) 
+							g.drawString(s.substring(j),((getWidth()-elementW*i)/MAXFRAME)*(MAXFRAME-frame)+i*elementW+5+xoffset, yoffset+10+(j*v));
+						else
+							g.drawString(s.substring(j,j+1),((getWidth()-elementW*i)/MAXFRAME)*(MAXFRAME-frame)+i*elementW+5+xoffset, yoffset+10+(j*v));
+						j++;
+					}
+				}
+				else{
+					g.fillRoundRect(elementW*i+xoffset,yoffset, elementW, elementH, 5, 5);
+					g.setColor(c);
+					g.drawRoundRect(elementW*i+xoffset,yoffset, elementW, elementH, 5, 5);
+					v=g.getFontMetrics(getFont()).getHeight()-g.getFontMetrics(getFont()).getHeight()/4;
+					j = 0;
+					k = s.length();
+					while(j < k+1) {
+						if (j == k) 
+							g.drawString(s.substring(j),i*elementW+5+xoffset, yoffset+10+(j*v));
+						else
+							g.drawString(s.substring(j,j+1),i*elementW+5+xoffset, yoffset+10+(j*v));
+						j++;
+					}
+				}
+
+			}
+			revalidate();
+		}
+	}
 }

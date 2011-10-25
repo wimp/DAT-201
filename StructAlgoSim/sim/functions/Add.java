@@ -4,6 +4,8 @@ import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JOptionPane;
+
 import sim.gui.elements.GuiElement;
 import sim.gui.elements.GuiFunction;
 import sim.structures.Array;
@@ -98,10 +100,25 @@ public class Add implements ActionListener {
 			if(l instanceof LinkedList){
 			((LinkedList) l).addLast(v.getValue());
 			}else if(l instanceof Tree){
+			if(i!=null)
+			try{
 			((Tree) l).addChildAt(Integer.parseInt(i.getValue()),v.getValue());
+			}
+			catch(NumberFormatException n){
+			}
+			else JOptionPane.showMessageDialog(null,
+				    "You need to connect an index variable to add to a tree.",
+				    "Warning",
+				    JOptionPane.WARNING_MESSAGE);
 			}else if(l instanceof Queue){
 			((Queue) l).add(v.getValue());
 			}
+		}
+		else{
+			JOptionPane.showMessageDialog(null,
+				    "You need to connect a varible.",
+				    "Warning",
+				    JOptionPane.WARNING_MESSAGE);
 		}
 		//l.addFirst(v.getValue());
 	}
