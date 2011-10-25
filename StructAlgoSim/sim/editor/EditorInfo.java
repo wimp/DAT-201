@@ -137,7 +137,12 @@ public class EditorInfo extends JPanel{
 				
 				add(q.getGuiElement(), BorderLayout.WEST);
 				t = 
-						"The queue is wicked cool, yo!"
+						"Om Strukturen:\n" +
+						"En kø er et spesialtilfelle av Stack hvor man kun kan sette inn elementer i slutten av strukturen" +
+						"og kun kan ta ut elementer fra begynnelsen av strukturen.\n" +
+						"\n" +
+						"Om bruk i editoren:\n" +
+						"Køen kan lenkes med Push og Pop for å , henholdsvis, legge til og fjerne elementer."
 					;
 				text.setText(t);
 				
@@ -160,7 +165,14 @@ public class EditorInfo extends JPanel{
 				
 				add(v.getGuiElement());
 				t= 
-						"En standard variabel. Disse kan leses ut til og skrives til."
+						"Om strukturen:\n" +
+						"En variabel kan skrives og leses verdier fra og brukes til å ta vare på" +
+						"verdier mellom metodekall og beregninger.\n" +
+						"\n" +
+						"Om bruk i editoren:\n" +
+						"En variabel kan lenkes med de fleste funksjonene i editoren. Noen av disse er retningsbestemt, noe som vil si" +
+						"at dersom du lager en lenke fra variabelen til funksjonen så betyr det noe annet enn om du lager en lenke fra" +
+						"funksjonen til variabelen. Det står informasjon om hva som gjelder på de forskjellige funksjonene."
 						;
 				text.setText(t);
 				break;
