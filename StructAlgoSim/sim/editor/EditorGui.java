@@ -248,6 +248,11 @@ public class EditorGui extends JFrame {
 		
 		public void setOptionsType(ElementType type){
 			removeAll();
+
+			// Remove all buttons from the button group //
+			groupOption = null;
+			groupOption = new ButtonGroup();
+			
 			switch(type){
 			case ARRAY:
 				setLayout(new GridLayout(2,1));
@@ -261,6 +266,7 @@ public class EditorGui extends JFrame {
 				selTrue.setActionCommand("1");
 				JRadioButton selFalse = new JRadioButton("No");
 				selFalse.setActionCommand("0");
+				selTrue.setSelected(true);
 				groupOption.add(selTrue);
 				groupOption.add(selFalse);
 				add(selTrue);
@@ -272,7 +278,8 @@ public class EditorGui extends JFrame {
 				JRadioButton selBefore 	= new JRadioButton("Before");
 				selBefore.setActionCommand("0");
 				JRadioButton selAfter	= new JRadioButton("After");
-				selBefore.setActionCommand("1");
+				selAfter.setActionCommand("1");
+				selBefore.setSelected(true);
 				groupOption.add(selBefore);
 				groupOption.add(selAfter);
 				add(selBefore);

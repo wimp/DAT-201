@@ -82,7 +82,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 	 */
 	private JComponent getComponentFromEnum(ElementType type, Rectangle bounds) {
 		int index;
-		boolean e, f;
+		boolean e;
 		ButtonModel b;
 		switch(type){
 		case ADD:
@@ -119,8 +119,8 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 			guiElements.add(index,insertElement.getGuiElement());
 			return insertElement.getGuiElement();
 		case LIST:
-			bounds.width 	= bounds.width < 200 ? 200 : bounds.width;
-			bounds.height 	= bounds.height < 90 ? 90 : bounds.height;
+			bounds.width 	= bounds.width < 290 ? 290 : bounds.width;
+			bounds.height 	= bounds.height < 140 ? 140 : bounds.height;
 			LinkedList listElement = new LinkedList(bounds);
 			elements.add(listElement);
 			index = elements.lastIndexOf(listElement);
@@ -813,7 +813,5 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 	protected enum LinkDirection{
 		UP,DOWN,LEFT,RIGHT,LEFT_RIGHT,UP_DOWN
 	}
-
-	
 
 }

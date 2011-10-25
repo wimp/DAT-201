@@ -1,7 +1,7 @@
 package sim;
 
 import sim.editor.EditorGui;
-import sim.editor.EditorPlayer;
+//import sim.editor.EditorPlayer;
 
 public class AlgoGui {
 
