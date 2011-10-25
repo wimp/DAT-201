@@ -19,6 +19,8 @@ import java.util.Vector;
 
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import sim.editor.EditorInfo.InfoType;
@@ -136,9 +138,11 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 			guiElements.add(index,stackElement.getGuiElement());
 			return stackElement.getGuiElement();
 		case VARIABLE:
+			int n = JOptionPane.showOptionDialog(gui, "Skal variabelen kunne endres?", "Variabel", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, new Object[]{"Ja","Nei"}, null);
+			boolean e = n == 0 ? true : false;
 			bounds.width 	= bounds.width < 50 ? 50 : bounds.width;
 			bounds.height 	= bounds.height < 30 ? 30 : bounds.height;
-			Variable variableElement = new Variable(bounds,"test",true);
+			Variable variableElement = new Variable(bounds,"test",e);
 			elements.add(variableElement);
 			index = elements.lastIndexOf(variableElement);
 			guiElements.add(index,variableElement.getGuiElement());
@@ -334,9 +338,6 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 		}
 		if(type != ElementType.LINK){
 			JComponent c = getComponentFromEnum(type, new Rectangle(e.getX(),e.getY(),10,10));
-			for(Component co : c.getComponents()){
-				co.addMouseListener(this);
-			}
 			addElementAtPosition(c);
 		}
 		gui.validate();
