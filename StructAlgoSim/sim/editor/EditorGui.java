@@ -106,6 +106,7 @@ public class EditorGui extends JFrame {
 		grid.setActionCommand("17");
 		animation.addActionListener(el);
 		animation.setActionCommand("18");
+		
 		// Add toggle buttons to the button group //
 		bg.add(stack);
 		bg.add(array);
