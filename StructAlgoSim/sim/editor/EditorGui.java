@@ -9,6 +9,7 @@ import java.awt.GridLayout;
 import java.awt.KeyboardFocusManager;
 
 import javax.swing.ButtonGroup;
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -62,10 +63,13 @@ public class EditorGui extends JFrame {
 		JToggleButton select	= new JToggleButton("Select and Push");
 		JToggleButton moveChar	= new JToggleButton("Move Char");
 		JToggleButton delete	= new JToggleButton("Delete Element");
-		JToggleButton tree		= new JToggleButton("Tre");
+		JToggleButton tree		= new JToggleButton("Tree");
 		JToggleButton heap		= new JToggleButton("Heap");
-		JToggleButton queue		= new JToggleButton("Kø");
-		JCheckBox grid			= new JCheckBox("Rutenett");
+		JToggleButton queue		= new JToggleButton("Queue");
+		JButton record			= new JButton("Record");
+		JButton play			= new JButton("Play");
+		JButton stop 			= new JButton("Stop");
+		JCheckBox grid			= new JCheckBox("Grid");
 		
 		// Add actionlisteners and set action commands //
 		stack.addActionListener(el);
@@ -102,7 +106,12 @@ public class EditorGui extends JFrame {
 		queue.setActionCommand("16");
 		grid.addActionListener(el);
 		grid.setActionCommand("17");
-		
+		record.addActionListener(el);
+		record.setActionCommand("18");
+		play.addActionListener(el);
+		play.setActionCommand("19");
+		stop.addActionListener(el);
+		stop.setActionCommand("20");
 		
 		// Add toggle buttons to the button group //
 		bg.add(stack);
@@ -160,9 +169,15 @@ public class EditorGui extends JFrame {
 			leftOnTop.setLayout(new GridLayout(1,2));
 			leftOnTop.add(mouseCoords);
 			leftOnTop.add(grid);
-		JPanel rightOnTop = new JPanel();
+		JPanel rightOnTop = new JPanel(new GridLayout(2,3));
 			rightOnTop.setPreferredSize(new Dimension(250,30));
-		
+			rightOnTop.add(new JLabel(""));
+			rightOnTop.add(new JLabel("Animation:"));
+			rightOnTop.add(new JLabel(""));
+			rightOnTop.add(record);
+			rightOnTop.add(play);
+			
+			rightOnTop.add(stop);
 		topPanel.add(centerOfTop,BorderLayout.CENTER);
 		topPanel.add(leftOnTop,BorderLayout.WEST);
 		topPanel.add(rightOnTop,BorderLayout.EAST);

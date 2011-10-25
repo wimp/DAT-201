@@ -20,7 +20,6 @@ public class Tree {
 	private Traversal traversal = Traversal.INORDER;
 	
 	//GETTERS AND SETTERS
-
 	public Traversal getTraversal() {
 		return traversal;
 	}

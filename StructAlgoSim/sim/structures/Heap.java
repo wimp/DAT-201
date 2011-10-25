@@ -33,6 +33,20 @@ public class Heap extends Tree{
 		setMaxCluster(2);
 		setGuiElement(new GuiTree(bounds, this, animated));
 	}
+	public String removeRoot(){
+		if(getRoot() != null){
+			if(getRoot().getChildren().size()>0){
+			for(int i = 1; i<getRoot().getChildren().size(); i++){
+				getRoot().getChildren().get(i).setParent(getRoot().getChildren().elementAt(0));
+			}
+			getRoot().getChildren().get(0).setParent(null);
+			setRoot(getRoot().getChildren().get(0));
+			return getRoot().getValue().toString();
+			}
+			else setRoot(null);
+		}
+		return null;
+	}
 	public Vector<TreeNode> heapSort(){
 		Vector<TreeNode> sorted = new Vector<TreeNode>();
 		while(getRoot().getChildren().size()>0){
