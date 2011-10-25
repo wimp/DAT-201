@@ -21,10 +21,10 @@ public class Derivation extends DemoFrame {
 		operators.add("+"); operatorPrio.add(1);
 		operators.add("-"); operatorPrio.add(1);
 		
-		postfixS = "4 x * 2 x ^ *";
+		postfixS = "2 3 x 4 ^ * +";
 		
 		Tree tree = new Tree(new Rectangle(0,0,1000,500),true);
-		tree.setTraversal(Traversal.INORDER);
+		tree.setTraversal(Traversal.POSTORDER);
 		Stack opStack = new Stack(new Rectangle(200,200,300,300));
 		Stack valStack = new Stack(new Rectangle(400,400,300,300));		
 		
@@ -40,21 +40,19 @@ public class Derivation extends DemoFrame {
 			}
 		}
 		
-		int i = 1; 
-		
-//		for(int j = 1;j<11;j++){
-//		//tree.insertAt(j, "insert "+j);
-//			tree.addChildAt(j, "prime "+j);
-//			tree.addChildAt(j, "second "+j);
-//		}
+		int i = 1; 		
 		while(!opStack.isEmpty()){
-			tree.insertAt(i, i + " " +opStack.pop());
+			//Operator
+			tree.insertAt(i, opStack.pop());
 			i++;
-			if(!valStack.isEmpty())
-				tree.addChildAt(i, i + " " +valStack.pop());
-			if(!valStack.isEmpty())
-				tree.addChildAt(i, i + " " +valStack.pop());
-			i++;
+//			//Operand 1
+//			if(!valStack.isEmpty())
+//				tree.addChildAt(i, i + " " +valStack.pop());
+//			//Operand 2
+//			if(!valStack.isEmpty())
+//				tree.addChildAt(i, i + " " +valStack.pop());
+//			i++;
+//			i++;
 		}	
 		
 		add(tree.getGuiElement());
@@ -64,12 +62,12 @@ public class Derivation extends DemoFrame {
 	}
 	private String getFirstInPostFix(String postfix){
 		String[] arr = postfix.split(" ");
-		System.out.println(postfixS.indexOf(" "));
+//		System.out.println(postfixS.indexOf(" "));
 		if(postfixS.contains(" "))
 			postfixS = postfixS.substring(postfixS.indexOf(" ")+1);
 		else
 			postfixS = "";
-		System.out.println(postfixS);
+//		System.out.println(postfixS);
 		return arr[0];
 	}
 }
