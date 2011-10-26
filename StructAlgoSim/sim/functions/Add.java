@@ -19,17 +19,17 @@ import sim.structures.Variable;
  * @author 
  */
 public class Add implements ActionListener {
-// Class variables //
+	// Class variables //
 	Object l;
 	Variable v;
 	Variable i;
 	GuiFunction gui;
-	
-// Getters and setters //
+
+	// Getters and setters //
 	public GuiElement getGuiElement(){
 		return gui;
 	}
-	
+
 	public Object getTarget() {
 		return l;
 	}
@@ -53,8 +53,8 @@ public class Add implements ActionListener {
 		this.i = i;
 	}
 
-	
-// Class constructor //
+
+	// Class constructor //
 
 	public Add(Rectangle bounds) {
 		gui = new GuiFunction(bounds,"Add");
@@ -93,32 +93,34 @@ public class Add implements ActionListener {
 		this.l=l;
 		this.v=v;
 	}
-// Action Listener implementation //
+	// Action Listener implementation //
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(v != null){
 			if(l instanceof LinkedList){
-			((LinkedList) l).addLast(v.getValue());
+				((LinkedList) l).addLast(v.getValue());
 			}else if(l instanceof Tree){
-			if(i!=null)
-			try{
-			((Tree) l).addChildAt(Integer.parseInt(i.getValue()),v.getValue());
-			}
-			catch(NumberFormatException n){
-			}
-			else JOptionPane.showMessageDialog(null,
-				    "You need to connect an index variable to add to a tree.",
-				    "Warning",
-				    JOptionPane.WARNING_MESSAGE);
+				if(i!=null)
+					try{
+						((Tree) l).addChildAt(Integer.parseInt(i.getValue()),v.getValue());
+					}
+				catch(NumberFormatException n){
+				}
+				else JOptionPane.showMessageDialog(null,
+						"You need to connect an index variable to add to a tree.",
+						"Warning",
+						JOptionPane.WARNING_MESSAGE);
 			}else if(l instanceof Queue){
-			((Queue) l).add(v.getValue());
+				((Queue) l).add(v.getValue());
+			}else if(l instanceof Array){
+				((Array) l).insertAt(v.getValue(), Integer.parseInt(i.getValue()));
 			}
 		}
 		else{
 			JOptionPane.showMessageDialog(null,
-				    "You need to connect a varible.",
-				    "Warning",
-				    JOptionPane.WARNING_MESSAGE);
+					"You need to connect a varible.",
+					"Warning",
+					JOptionPane.WARNING_MESSAGE);
 		}
 		//l.addFirst(v.getValue());
 	}

@@ -100,10 +100,11 @@ public class EditorInfo extends JPanel{
 				text.setText(t);
 				break;
 			case ARRAY:
-				Array a = new Array(new Rectangle(0,0, 100, 100), 5);
-				a.insertAt("value 1", 1);
-				a.insertAt("value 2", 0);
-				a.insertAt("value 3", 4);
+				Array a = new Array(new Rectangle(0,0, 100, 100), 5, 2);
+				a.insertAt("value 1", 0, 1);
+				a.insertAt("value 2", 1, 1);
+				a.insertAt("value 3", 2);
+				a.insertAt("yoyoyo", 4, 1);
 				add(a.getGuiElement(), BorderLayout.WEST);
 				t = 
 						"Et array består av en liste med objekter som ofte har en gitt størrelsesorden før den tas i bruk." +
