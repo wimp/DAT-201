@@ -136,9 +136,12 @@ public class Tree {
 			else if(element.getChildren().size()>1){
 				Traversal t = traversal;
 				traversal = Traversal.INORDER;
-				element.setValue(elementAt(0).getValue().toString());
-				elementAt(0).getParent().getChildren().remove(elementAt(0));
+				element.setValue(element.getChildren().elementAt(0).getValue().toString());
+				element.getChildren().elementAt(0).getParent().getChildren().remove(element.getChildren().elementAt(0));
 				traversal = t;
+			}
+			else{
+				element.getParent().getChildren().remove(element);
 			}
 			gui.repaint();
 			return s;
