@@ -7,11 +7,19 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.Vector;
 
+import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.Timer;
@@ -37,9 +45,21 @@ public class EditorPlayer implements ActionListener, ChangeListener {
 	JButton stepforward;
 	JSlider fps;
 	JLabel recordInfo;
-	
+	JMenuBar menu;
+	JMenu file;
+	JMenuItem save;
 	Timer animTimer;
-	
+	private void initMenu(){
+		file = new JMenu("File");
+		save = new JMenuItem("Save");
+		save.addActionListener(this);
+		file.add(save);
+		
+		menu = new JMenuBar();
+		menu.add(file);
+
+		playerFrame.setJMenuBar(menu);
+	}
 	public EditorPlayer(JPanel editorPanel){
 		this.editorPanel = editorPanel;
 		
@@ -55,7 +75,8 @@ public class EditorPlayer implements ActionListener, ChangeListener {
 		}
 		else
 			playerFrame.setSize(500, 500);
-			
+
+		initMenu();
 		JPanel buttonPanel = new JPanel(new GridLayout(2,6));
 		buttonPanel.setPreferredSize(new Dimension(playerFrame.getWidth(), playerFrame.getHeight()/3));
 
@@ -96,7 +117,7 @@ public class EditorPlayer implements ActionListener, ChangeListener {
 		buttonPanel.add(new JLabel(""));
 		buttonPanel.add(new JLabel(""));
 
-		playerFrame.add(buttonPanel, BorderLayout.NORTH);
+		playerFrame.add(buttonPanel, BorderLayout.SOUTH);
 		
 		drawPanel = new AnimationPanel();
 		
@@ -108,8 +129,11 @@ public class EditorPlayer implements ActionListener, ChangeListener {
 	}
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		if(arg0.getSource() == record){
+		if(arg0.getSource() == save) {
+		}
+		else if(arg0.getSource() == record){
 			drawPanel.setImages(new Vector<BufferedImage>());
+			drawPanel.setFiles(new Vector<File>());
 			animTimer = new Timer(1000/framesPerSecond, this);
 			animTimer.start();
 			recording = true;
@@ -154,9 +178,9 @@ public class EditorPlayer implements ActionListener, ChangeListener {
 			if(recording){
 				BufferedImage bi = new BufferedImage((int)editorPanel.getSize().getWidth(), (int)editorPanel.getSize().getHeight(), BufferedImage.TYPE_USHORT_555_RGB);
 				editorPanel.paintAll(bi.getGraphics());
-				System.out.println(drawPanel.getImages().capacity());
-				drawPanel.getImages().add(bi);
-				recordInfo.setText("RECORDING! Frame #"+ drawPanel.getImages().size());
+				drawPanel.saveFile(bi);
+				//drawPanel.getImages().add(bi);
+				recordInfo.setText("RECORDING! Frame #"+ drawPanel.getFiles().size());
 				drawPanel.step();
 				if(drawPanel.getImages().size()==MAX_FRAMES){
 					animTimer.stop();
@@ -169,7 +193,7 @@ public class EditorPlayer implements ActionListener, ChangeListener {
 				drawPanel.step();
 				recordInfo.setText("PLAYING!  Frame #"+ drawPanel.getCurrentIndex());
 
-				if(drawPanel.getFrame() == drawPanel.getImages().size()){
+				if(drawPanel.getFrame() == drawPanel.getFiles().size()){
 
 					recordInfo.setText("STOPPED!");
 					animTimer.stop();
@@ -202,28 +226,58 @@ public class EditorPlayer implements ActionListener, ChangeListener {
 		}
 		public void step(){
 			currentIndex++;
-			if(currentIndex>=images.size())
+			if(currentIndex>=files.size())
 				currentIndex = 0;
 		}
 		public void stepBack(){
 			currentIndex--;
 			if(currentIndex<0)
-				currentIndex = images.size()-1;
+				currentIndex = files.size()-1;
 		}
 		public int getFrame(){
 			return currentIndex;
 		}
 		public void stopAnimation(){
-			currentIndex = 0;			
+			currentIndex = 0;
 		}
 		public void startAnimation(){
-			currentIndex = 0;			
+			currentIndex = 0;
+		}
+		private Vector<File> files = new Vector<File>();
+		public Vector<File> getFiles() {
+			return files;
+		}
+		public void setFiles(Vector<File> files) {
+			this.files = files;
+		}
+		private void saveFile(BufferedImage bi){	
+			try {
+				File temp = File.createTempFile("animtemp"+currentIndex,"");
+				temp.deleteOnExit();     
+				ImageIO.write(bi,"jpg",temp);
+				
+				files.add(temp);
+				
+			} catch (IOException ex) {
+				ex.printStackTrace();
+			}
+		}
+		private BufferedImage loadFile(File file){
+			try {
+				return ImageIO.read(file);
+			} catch (IOException ex) {
+				ex.printStackTrace();
+			}
+			return null;
 		}
 		@Override
 		public void paintComponent(Graphics g){
 			g.fillRect(0, 0, getWidth(), getHeight());
-			if(images.size()>currentIndex)
-			g.drawImage(images.get(currentIndex), 0,0,null);
+			if(files.size()>currentIndex && currentIndex>=0){
+			BufferedImage bi = loadFile(files.get(currentIndex));
+			if(bi != null)
+				g.drawImage(bi, 0,0,null);
+			}
 		}
 		
 	}
