@@ -32,6 +32,7 @@ public class EditorGui extends JFrame {
 	
 	public EditorGui(){
 		// General initialization //
+		setTitle("EditorGui");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(900, 600);
 		setLayout(new BorderLayout());

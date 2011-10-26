@@ -70,6 +70,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 	 * @param element
 	 */
 	private void addElementAtPosition(JComponent element){
+		if(element!=null)
 		gui.editorPanel.add(element);
 	}
 	

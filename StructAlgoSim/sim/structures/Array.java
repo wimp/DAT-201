@@ -38,7 +38,6 @@ public class Array {
 		this.size = size;
 		}
 	}
-	
 	/**
 	 * Create a new instance of Array() that is two dimensional with the first array being of sizeA and the second array being of sizeB
 	 * @param bounds
