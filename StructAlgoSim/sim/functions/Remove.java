@@ -6,7 +6,6 @@ import java.awt.event.ActionListener;
 
 import sim.gui.elements.GuiElement;
 import sim.gui.elements.GuiFunction;
-import sim.structures.Array;
 import sim.structures.LinkedList;
 import sim.structures.Queue;
 import sim.structures.Tree;

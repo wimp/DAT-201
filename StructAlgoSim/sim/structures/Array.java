@@ -11,11 +11,11 @@ import sim.gui.elements.GuiArray;
  */
 public class Array {
 // Class variables //
-	private Vector<Object> v;
 	private  GuiArray gui;
-	private int size;
-	private int sizeB;
-	private final int MAXSIZE = 100;
+	private Object[][] array;
+	private int sizeX;
+	private int sizeY;
+	private static int MAX_SIZE = 100;
 	
 // Getters and setters //
 	public GuiArray getGuiElement(){
@@ -24,19 +24,12 @@ public class Array {
 
 // Class constructors //
 	/**
-	 * Create a new instance of Array() that is one dimensional with the size of @size
+	 * Create a new instance of Array() that is one dimensional with the size of {@link size}
 	 * @param bounds
 	 * @param size
 	 */
-	public Array(Rectangle bounds, int size){
-		if(size < MAXSIZE){
-		v = new Vector<Object>();
-		for(int x = 0;x < size;x++){
-			v.add(x, "");
-		}
-		gui = new GuiArray(bounds,v);
-		this.size = size;
-		}
+	public Array(Rectangle bounds, int sizeY){
+		this(bounds,sizeY,1);
 	}
 	
 	/**
@@ -45,42 +38,79 @@ public class Array {
 	 * @param sizeA
 	 * @param sizeB
 	 */
-	public Array(Rectangle bounds, int sizeA, int sizeB){
-		if(sizeA < MAXSIZE && sizeB<MAXSIZE){
-		v = new Vector<Object>();
-		for(int i = 0;i < sizeA;i++){
-			Vector<Object> v1 = new Vector<Object>(sizeB);
-			for(int x = 0;x < sizeB;x++){
-				v1.add(x, "");
-			}
-			v.add(i, new Vector<Object>(sizeB));
-		}
-			gui = new GuiArray(bounds,v);
+	public Array(Rectangle bounds, int sizeY, int sizeX){
+		if(sizeY < MAX_SIZE && sizeX < MAX_SIZE){
+			array = new Object[sizeY][sizeX];
+			this.sizeY = sizeY;
+			this.sizeX = sizeX;
+			gui = new GuiArray(bounds, array);
 		}
 	}
-	public void insertAt(Object itemToAdd, int index){
-		if(v.size() < size){
-			v.set(index,itemToAdd);
-			gui.setData(v);
-			gui.validate();
-			gui.repaint();
-		}else return;
+	
+	/**
+	 * Inserts the given Object in a one-dimensional array at indexY
+	 * @param itemToAdd
+	 * @param indexY
+	 */
+	public void insertAt(Object itemToAdd, int indexY){
+		insertAt(itemToAdd, indexY, 0);
+		gui.repaint();
 	}
-	public Object valueAt(int index){
-			return v.get(index);
-	}
-	public Object removeItem(int index){
-		try{
-			Object val = v.set(index, "");
-			gui.setData(v);
-			gui.validate();
-			gui.repaint();
-			return val;
-		}catch(NullPointerException e){
-			return null;
-		}catch(IndexOutOfBoundsException e){
-			return null;
-		}
+	
+	/**
+	 * Inserts the given Object in a two-dimensional array at indexX
+	 * @param itemToAdd
+	 * @param indexY
+	 * @param indexX
+	 */
+	public void insertAt(Object itemToAdd, int indexY, int indexX){
+		array[indexY][indexX] = itemToAdd;
+		gui.repaint();
+		/*
+		boolean intelligent = true, stupid = false;
 		
+		if(!intelligent && stupid){
+		// Alternative syntax: xD
+			for(int i = 0;i < sizeY;i++){
+				if(i == indexY){
+					for(int j = 0;j < sizeX;j++){
+						if(j == indexX){
+							array[i][j] = itemToAdd;
+							return;
+						}
+					}
+				}
+			}
+		}else return;*/
+	}
+	
+	/**
+	 * Method to get the value of a one-dimensional array at indexY
+	 * @param indexY
+	 * @return The Object at indexY
+	 */
+	public Object valueAt(int indexY){
+		return valueAt(indexY, 0);
+	}
+	
+	/**
+	 * Method to get the value of a two-dimensional array at indexY,indexX
+	 * @param indexY
+	 * @param indexX
+	 * @return The Object at array[indexY][indexX]
+	 */
+	public Object valueAt(int indexY, int indexX){
+		return array[indexY][indexX];
+	}
+	
+	public Object removeItem(int indexY){
+		return removeItem(indexY,0);
+	}
+
+	private Object removeItem(int indexY, int indexX) {
+		String item = array[indexY][indexX].toString();
+		array[indexY][indexX] = null;
+		gui.repaint();
+		return item;
 	}
 }

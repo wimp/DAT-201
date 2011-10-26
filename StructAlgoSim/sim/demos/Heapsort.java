@@ -4,7 +4,6 @@ import java.awt.Rectangle;
 
 import javax.swing.JFrame;
 
-import sim.functions.Add;
 import sim.functions.Insert;
 import sim.functions.Remove;
 import sim.structures.Heap;
