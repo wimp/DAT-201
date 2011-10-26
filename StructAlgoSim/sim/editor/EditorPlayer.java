@@ -9,12 +9,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
-<<<<<<< HEAD
-=======
-//import java.io.FileOutputStream;
-import java.io.IOException;
-//import java.io.ObjectOutputStream;
->>>>>>> 33f696a24b0f6e4730f351a459ca57cc7857e266
 import java.util.Vector;
 
 import javax.swing.JButton;
