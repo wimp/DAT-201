@@ -14,12 +14,19 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.util.Vector;
 
 import javax.swing.ButtonModel;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
+import javax.swing.JFileChooser;
 import javax.swing.JPanel;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import sim.editor.EditorGui.EditorPanel;
 import sim.editor.EditorInfo.InfoType;
@@ -681,6 +688,137 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 			break;
 		case 18:
 			new EditorPlayer(gui.editorPanel);
+			break;
+		case 19:
+			JFileChooser fc = new JFileChooser();
+			FileNameExtensionFilter filter = new FileNameExtensionFilter("AlgoSim files", "ags");
+			fc.setFileFilter(filter);
+			int dir = fc.showSaveDialog(gui);
+			if(dir == JFileChooser.APPROVE_OPTION){
+				File f = fc.getSelectedFile();
+				String path = f.getPath()+".ags";
+				
+				try{
+					System.out.println(path);
+					FileWriter fio = new FileWriter(path);
+					BufferedWriter out = new BufferedWriter(fio);
+					for(int i = 0;i < elements.size();i++){
+						Object element = elements.get(i);
+						GuiElement guiElement = guiElements.get(i);
+						out.write(i+";"+guiElement.getX()+":"+guiElement.getY()+":"+guiElement.getWidth()+":"+guiElement.getHeight());
+						out.write(";"+elements.get(i).getClass().getSimpleName()+";");
+						
+						if(element instanceof Stack){
+							out.write("null");
+						}else if(element instanceof Array){
+							out.write("null");
+						}else if(element instanceof Add){
+							String t = Integer.toString(elements.indexOf(((Add) element).getTarget()));
+							String sv = Integer.toString(elements.indexOf(((Add) element).getSourceVariable()));
+							String iv = Integer.toString(elements.indexOf(((Add) element).getIndexVariable()));
+
+							out.write(t+":"+sv+":"+iv);
+							out.flush();
+						}else if(element instanceof Remove){
+							String t = Integer.toString(elements.indexOf(((Remove) element).getTarget()));
+							String sv = Integer.toString(elements.indexOf(((Remove) element).getSourceVariable()));
+							String iv = Integer.toString(elements.indexOf(((Remove) element).getIndexVariable()));
+							
+							out.write(t+":"+sv+":"+iv);
+							out.flush();
+						}else if(element instanceof Insert){
+							String t = Integer.toString(elements.indexOf(((Insert) element).getTarget()));
+							String sv = Integer.toString(elements.indexOf(((Insert) element).getSourceVariable()));
+							String iv = Integer.toString(elements.indexOf(((Insert) element).getIndexVariable()));
+
+							out.write(t+":"+sv+":"+iv);
+							out.flush();
+						}else if(element instanceof Push){
+							String t = Integer.toString(elements.indexOf(((Push) element).getTarget()));
+							String sv = Integer.toString(elements.indexOf(((Push) element).getSourceVariable()));
+							
+							out.write(t+":"+sv);
+							out.flush();
+						}else if(element instanceof Pop){
+							String t = Integer.toString(elements.indexOf(((Pop) element).getTarget()));
+							String sv = Integer.toString(elements.indexOf(((Pop) element).getSourceVariable()));
+							
+							out.write(t+":"+sv);
+						}else if(element instanceof MoveChar){
+							String inV = Integer.toString(elements.indexOf(((MoveChar) element).getInput()));
+							String outV = Integer.toString(elements.indexOf(((MoveChar) element).getOutput()));
+							
+							out.write(inV+":"+outV);
+							out.flush();
+						}else if(element instanceof Variable){
+							String edit = ((Variable) element).isEditable ? "true" : "false";
+							String value = ((Variable) element).getValue();
+							
+							out.write(edit+":"+value);
+							out.flush();
+						}else if(element instanceof LinkedList){
+							out.write("null");
+						}else if(element instanceof Tree){
+							out.write("null");
+						}else if(element instanceof Heap){
+							out.write("null");
+						}
+						out.flush();
+						
+						out.write(System.getProperty("line.separator"));
+					}
+					out.close();
+				} catch (Exception e1){
+					e1.printStackTrace();
+				}
+			}
+			break;
+		case 20:
+			JFileChooser load = new JFileChooser();
+			FileNameExtensionFilter openFilter = new FileNameExtensionFilter("AlgoSim files", "ags");
+			load.setMultiSelectionEnabled(false);
+			load.setFileFilter(openFilter);
+			int l = load.showOpenDialog(gui);
+			if(l == JFileChooser.APPROVE_OPTION){
+				File openFile = load.getSelectedFile();
+				try{
+					FileReader fr = new FileReader(openFile);
+					BufferedReader r = new BufferedReader(fr);
+					String line = r.readLine();
+					
+					while(line != null){
+						String[] s = line.split(";");
+						int id;
+						for(int i = 0;i<s.length;i++){
+							switch(i){
+							case 0:
+								// Sets the id
+								id = Integer.parseInt(s[i]);
+								break;
+							case 1:
+								// Sets the bounds of the object
+								break;
+							case 2:
+								// Sets the object
+								break;
+							}
+							System.out.println(s[i]);
+						}
+						/*for(String parts : s){
+							String[] subParts = parts.split(":");
+							for(String subPart : subParts){
+								System.out.println(subPart);
+							}
+							System.out.println();
+						}*/
+						System.out.println();
+						System.out.println();
+						line = r.readLine();
+					}
+				}catch(Exception e1){
+					e1.printStackTrace();
+				}
+			}
 			break;
 		}
 		gui.optionsPanel.setOptionsType(type);

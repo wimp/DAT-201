@@ -3,7 +3,6 @@ package sim.structures;
 import java.awt.Rectangle;
 import java.util.Vector;
 
-import sim.gui.elements.GuiElement;
 import sim.gui.elements.GuiList;
 import sim.structures.elements.Node;
 
