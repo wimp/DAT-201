@@ -50,8 +50,8 @@ public class GuiArray extends GuiElement {
 
 		@Override
 		public void paintComponent(Graphics g){
-			int elementH = GuiSettings.STACKELEMENTHEIGHT;
-			int elementW = getWidth()/data[0].length;//GuiSettings.STACKELEMENTWIDTH;
+			int elementH = GuiSettings.ARRAYELEMENTHEIGHT;
+			int elementW = getWidth()/data[0].length;
 			g.clearRect(0, 0, getWidth(), getHeight());
 			if(elementH*data.length>getHeight())
 				setPreferredSize(new Dimension(getWidth(), elementH*data.length));
@@ -69,13 +69,18 @@ public class GuiArray extends GuiElement {
 		String s = (String)o;
 
 		Color c = g.getColor();
-
-		g.setColor( GuiSettings.STACKTOPCOLOR);
+		
+		if(o ==null) 
+			g.setColor( GuiSettings.ARRAYEMPTYCOLOR);
+		else 
+			g.setColor( GuiSettings.ARRAYELEMENTCOLOR);
 		
 		g.fillRoundRect(offset+elementW*x,y*elementH, elementW, elementH, 5, 5);
 		g.setColor(c);
+		
 		if(s!=null)
-		g.drawString(s,offset+elementW*x+10,y*elementH);
+		g.drawString(s,offset+elementW*x+10,y*elementH+elementH-elementH/3);
+		
 		g.drawRoundRect(offset+elementW*x,y*elementH, elementW, elementH, 5, 5);
 		
 

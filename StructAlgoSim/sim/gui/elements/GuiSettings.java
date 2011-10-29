@@ -23,9 +23,13 @@ public final class GuiSettings {
 	public static final int TREENODEHEIGHT = LISTNODEHEIGHT;
 	
 	//Array
+	public static final Color ARRAYELEMENTCOLOR = LISTHEADCOLOR;
+	public static final Color ARRAYEMPTYCOLOR = LISTNODECOLOR;
+	public static final int ARRAYELEMENTHEIGHT = LISTNODEHEIGHT;
 	
 	//Stack
 	public static final Color STACKTOPCOLOR = LISTHEADCOLOR;
+	public static final Color STACKADDEDCOLOR = LISTADDEDCOLOR;
 	public static final Color STACKELEMENTCOLOR = LISTNODECOLOR;
 	public static final int STACKELEMENTWIDTH = 50;
 	public static final int STACKELEMENTHEIGHT = LISTNODEHEIGHT;

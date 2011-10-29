@@ -18,8 +18,10 @@ public abstract class GuiElement extends JPanel{
 		return animation;
 	}
 	public void startAnimation() {
-		if(animation != null)
+		if(animation != null){
 		animation.start();
+		frame = 0;
+		}
 	}
 	int frame;
 	final int MAXFRAME = 6;
