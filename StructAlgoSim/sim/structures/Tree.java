@@ -104,6 +104,8 @@ public class Tree {
 			n = nodeQueue.remove(0);
 		}
 		n.insert(value);
+		setIndexes();
+		gui.repaint();
 	}
 	public void addChildAt(int index, Object value){
 		TreeNode n = root;
@@ -118,6 +120,7 @@ public class Tree {
 		if(element.getChildren().size()<maxCluster){
 			element.getChildren().add(newnode);
 		}
+		setIndexes();
 		gui.repaint();
 	}
 	public String removeAt(int index){
@@ -152,6 +155,7 @@ public class Tree {
 				else
 				setRoot(null);
 			}
+			setIndexes();
 			gui.repaint();
 			return s;
 		}

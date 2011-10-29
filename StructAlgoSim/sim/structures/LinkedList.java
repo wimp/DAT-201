@@ -78,7 +78,7 @@ public class LinkedList {
 	 * @param value The object (most likely a string of text) that this node is to contain.
 	 */
 	public void insertAt( int index, Object value){
-		if(index>0 && v.size()>=2){
+		if(index>0 && v.size()>2){
 		Node n = new Node(value);
 		v.elementAt(index).getPrevious().setNext(n);
 		n.setPrevious(v.elementAt(index).getPrevious());

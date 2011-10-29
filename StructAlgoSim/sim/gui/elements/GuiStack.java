@@ -18,18 +18,18 @@ import javax.xml.crypto.Data;
  */
 @SuppressWarnings("serial")
 public class GuiStack extends GuiElement implements ActionListener{
-// Class variables //
+	// Class variables //
 	StackPanel stackPanel;
 	boolean removed;
 	boolean added;
 	String recent;
-// Getters and setters //
-	
+	// Getters and setters //
+
 	public GuiStack(Rectangle bounds,Vector<Object> data){
 		super();
-		
+
 		animation = new Timer(400,this);
-		
+
 		setBounds(bounds);
 		initGraphics(data);
 	}
@@ -47,15 +47,15 @@ public class GuiStack extends GuiElement implements ActionListener{
 		listScroller.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		listScroller.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 
-		stackPanel.setPreferredSize(new Dimension(getWidth(), getHeight()));
+		stackPanel.setPreferredSize(new Dimension(getWidth(), getHeight()-5));
 		listScroller.setPreferredSize(new Dimension(getWidth(), getHeight()));
 		this.add(listScroller);
 	}
 	private class StackPanel extends JPanel{
 
-	Vector<Object> data;
-	
-	public Vector<Object> getData() {
+		Vector<Object> data;
+
+		public Vector<Object> getData() {
 			return data;
 		}
 		public void setData(Vector<Object> data) {
@@ -64,7 +64,7 @@ public class GuiStack extends GuiElement implements ActionListener{
 		public StackPanel(Vector<Object> data){
 			this.data = data;
 		}
-		
+
 		@Override
 		public void paintComponent(Graphics g){
 			int elementH = GuiSettings.STACKELEMENTHEIGHT;
@@ -75,45 +75,45 @@ public class GuiStack extends GuiElement implements ActionListener{
 				setPreferredSize(new Dimension(getWidth(), elementH*data.size()));
 			for(int i = 0; i<data.size(); i++){
 				String s = (String)data.get(i);
-				
+
 				if(s == recent) continue;
-				
+
 				g.setColor(i==data.size()-1 ?  GuiSettings.STACKTOPCOLOR : GuiSettings.STACKELEMENTCOLOR);
-				
-				
+
+
 				int v=g.getFontMetrics(getFont()).charsWidth(s.toCharArray(), 0, s.toCharArray().length)+20;
-				
+
 				elementW = v<GuiSettings.STACKELEMENTWIDTH ? GuiSettings.STACKELEMENTWIDTH : v;
-				
+
 				g.fillRoundRect(0, getHeight()-i*elementH-elementH, elementW, elementH, 5, 5);
 				g.setColor(c);
 				g.drawString(s,10, getHeight()-i*elementH-elementH/3);
 				g.drawRoundRect(0, getHeight()-i*elementH-elementH, elementW, elementH, 5, 5);
-				}
+			}
 			if(recent!=null){
-			int v=g.getFontMetrics(getFont()).charsWidth(recent.toCharArray(), 0, recent.toCharArray().length)+20;
-			
-			elementW = v<GuiSettings.STACKELEMENTWIDTH ? GuiSettings.STACKELEMENTWIDTH : v;
-			
-			if(added){
-				g.setColor(GuiSettings.STACKTOPCOLOR);
-				g.fillRoundRect(0, (getHeight()/MAXFRAME)*frame-data.size()*elementH-elementH, elementW, elementH, 5, 5);
+				int v=g.getFontMetrics(getFont()).charsWidth(recent.toCharArray(), 0, recent.toCharArray().length)+20;
 
-				g.setColor(c);
-				g.drawString(recent,10, (getHeight()/MAXFRAME)*frame-data.size()*elementH-elementH/3);
-				g.drawRoundRect(0, (getHeight()/MAXFRAME)*frame-data.size()*elementH-elementH, elementW, elementH, 5, 5);
+				elementW = v<GuiSettings.STACKELEMENTWIDTH ? GuiSettings.STACKELEMENTWIDTH : v;
+
+				if(added){
+					g.setColor(GuiSettings.STACKTOPCOLOR);
+					g.fillRoundRect(0, (getHeight()/MAXFRAME)*frame-data.size()*elementH-elementH, elementW, elementH, 5, 5);
+
+					g.setColor(c);
+					g.drawString(recent,10, (getHeight()/MAXFRAME)*frame-data.size()*elementH-elementH/3);
+					g.drawRoundRect(0, (getHeight()/MAXFRAME)*frame-data.size()*elementH-elementH, elementW, elementH, 5, 5);
+				}
+				else if(removed){
+					g.setColor(GuiSettings.STACKTOPCOLOR);
+					g.fillRoundRect(0, (getHeight()/MAXFRAME)*(MAXFRAME-frame)-data.size()*elementH-elementH, elementW, elementH, 5, 5);
+					g.drawString(recent,10, (getHeight()/MAXFRAME)*(MAXFRAME-frame)-data.size()*elementH-elementH/3);
+					g.setColor(c);
+					g.drawRoundRect(0, (getHeight()/MAXFRAME)*(MAXFRAME-frame)-data.size()*elementH-elementH, elementW, elementH, 5, 5);
+				}
 			}
-			else if(removed){
-				g.setColor(GuiSettings.STACKTOPCOLOR);
-				g.fillRoundRect(0, (getHeight()/MAXFRAME)*(MAXFRAME-frame)-data.size()*elementH-elementH, elementW, elementH, 5, 5);
-				g.drawString(recent,10, (getHeight()/MAXFRAME)*(MAXFRAME-frame)-data.size()*elementH-elementH/3);
-				g.setColor(c);
-				g.drawRoundRect(0, (getHeight()/MAXFRAME)*(MAXFRAME-frame)-data.size()*elementH-elementH, elementW, elementH, 5, 5);
-			}
-			}
-			//revalidate();
+			revalidate();
 		}
-		
+
 	}
 	@Override
 	public void actionPerformed(ActionEvent e) {

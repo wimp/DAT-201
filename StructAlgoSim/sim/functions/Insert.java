@@ -106,29 +106,34 @@ public class Insert implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(v!=null){
-			if(l instanceof Array){
-				((Array) l).insertAt(v.getValue(),Integer.parseInt(i.getValue()));
-			}else if(l instanceof LinkedList){
-				if(insertAfterElement)
-					((LinkedList) l).insertAt(Integer.parseInt(i.getValue())+1,v.getValue());
-				else
-					((LinkedList) l).insertAt(Integer.parseInt(i.getValue()),v.getValue());
-			}else if(l instanceof Tree){
-				if(i!=null)
+			if(i!=null){
+				if(l instanceof Array){
+					((Array) l).insertAt(v.getValue(),Integer.parseInt(i.getValue()));
+				}else if(l instanceof LinkedList){
+					try{
+						if(insertAfterElement)
+							((LinkedList) l).insertAt(Integer.parseInt(i.getValue())+1,v.getValue());
+						else
+							((LinkedList) l).insertAt(Integer.parseInt(i.getValue()),v.getValue());
+					}
+					catch(NumberFormatException n){
+					}
+				}else if(l instanceof Tree){
 					try{
 						((Tree) l).addChildAt(Integer.parseInt(i.getValue()),v.getValue());
 					}
-				catch(NumberFormatException n){
+					catch(NumberFormatException n){
+					}
 				}
-				else {
-					JOptionPane.showMessageDialog(null,
-							"You need to connect an index variable to add to a tree.",
-							"Warning",
-							JOptionPane.WARNING_MESSAGE);
+				else if(l instanceof Queue){
+					((Queue) l).add(v.getValue());
 				}
 			}
-			else if(l instanceof Queue){
-				((Queue) l).add(v.getValue());
+			else {
+				JOptionPane.showMessageDialog(null,
+						"You need to connect an index variable to insert.",
+						"Warning",
+						JOptionPane.WARNING_MESSAGE);
 			}
 		}
 		else{
