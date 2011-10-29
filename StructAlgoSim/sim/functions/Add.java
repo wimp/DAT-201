@@ -68,12 +68,6 @@ public class Add implements ActionListener {
 	 * @param l 		- The structure on which to perform the add()-action
 	 * @param v 		- The output variable
 	 */
-	public Add(Rectangle bounds, Array l, Variable v) {
-		gui = new GuiFunction(bounds,"Add");
-		gui.getButton().addActionListener(this);
-		this.l=l;
-		this.v=v;
-	}
 	public Add(Rectangle bounds, LinkedList l, Variable v) {
 		gui = new GuiFunction(bounds,"Add");
 		gui.getButton().addActionListener(this);

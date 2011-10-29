@@ -66,7 +66,6 @@ public class Push implements ActionListener{
 		if(l instanceof Stack)
 		{
 		((Stack)l).push((Object)v.getValue());
-		v.setValue("");
 	}
 	}
 }

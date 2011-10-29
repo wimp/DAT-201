@@ -4,7 +4,6 @@ import java.awt.Rectangle;
 import java.util.Vector;
 
 import sim.gui.elements.GuiTree;
-import sim.structures.Tree.TreeNode;
 /**
  * A class representing an heap. Its visual component is the GuiTree.
  */
