@@ -13,8 +13,12 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
@@ -34,12 +38,25 @@ public class EditorGui extends JFrame {
 		// General initialization //
 		setTitle("EditorGui");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setSize(900, 600);
+		setSize(950, 600);
 		setLayout(new BorderLayout());
 		JPanel topPanel 	= new JPanel();
 		JPanel westPanel	= new JPanel();
 		JPanel eastPanel	= new JPanel();
 		JPanel bottomPanel	= new JPanel();
+		
+		JMenuBar menuBar = new JMenuBar();
+		
+		JMenu menu = new JMenu("File");
+		menuBar.add(menu);
+		
+		JMenuItem save = new JMenuItem("Save");
+		JMenuItem load = new JMenuItem("Load");
+		
+		menu.add(save);
+		menu.add(load);
+		
+		setJMenuBar(menuBar);
 		
 		KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
 		manager.addKeyEventDispatcher(el);
@@ -49,6 +66,11 @@ public class EditorGui extends JFrame {
 		editorPanel.addMouseMotionListener(el);
 		editorPanel.setBackground(Color.lightGray);
 		editorPanel.setLayout(null);
+		editorPanel.setPreferredSize(new Dimension(1200,1200));
+		
+		JScrollPane scroll	= new JScrollPane(editorPanel);
+		scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);		
+		
 		mouseCoords = new JLabel("X:   Y:");
 		eInfo = new EditorInfo();
 		JSeparator s = new JSeparator();
@@ -112,6 +134,10 @@ public class EditorGui extends JFrame {
 		grid.setActionCommand("17");
 		animation.addActionListener(el);
 		animation.setActionCommand("18");
+		save.addActionListener(el);
+		save.setActionCommand("19");
+		load.addActionListener(el);
+		load.setActionCommand("20");
 		
 		// Add toggle buttons to the button group //
 		bg.add(stack);
@@ -187,7 +213,8 @@ public class EditorGui extends JFrame {
 		add(westPanel,BorderLayout.WEST);
 		add(topPanel,BorderLayout.NORTH);
 		add(bottomPanel,BorderLayout.SOUTH);
-		add(editorPanel,BorderLayout.CENTER);
+		add(scroll,BorderLayout.CENTER);
+//		add(editorPanel,BorderLayout.CENTER);
 		
 		eInfo.setBackground(Color.green);
 		eInfo.setPreferredSize(new Dimension(700,200));
