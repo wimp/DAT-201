@@ -17,7 +17,8 @@ public final class GuiSettings {
 	public static final Color TREEADDEDCOLOR = LISTADDEDCOLOR;
 	public static final Color TREEREMOVEDCOLOR = LISTREMOVEDCOLOR;
 	public static final Color TREEROOTCOLOR = LISTHEADCOLOR;
-	public static final Color TREELEAFCOLOR = LISTLASTCOLOR;	
+	public static final Color TREELEAFCOLOR = LISTLASTCOLOR;
+	public static final Color TREECONTENTCOLOR = Color.LIGHT_GRAY;
 	public static final int TREENODEWIDTH = LISTNODEWIDTH;
 	public static final int TREENODEHEIGHT = LISTNODEHEIGHT;
 	

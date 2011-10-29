@@ -73,7 +73,6 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 		if(element!=null)
 		gui.editorPanel.add(element);
 	}
-	
 	/**
 	 * A method to get the actual instance of a class from the class enum {@link ElementType}
 	 * This method also adds the given type's class instance and graphical instance in the two internal class variables, {@link elements} and {@link guiElements}

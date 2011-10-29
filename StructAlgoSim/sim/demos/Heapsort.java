@@ -25,7 +25,7 @@ public class Heapsort {
 	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	frame.setLayout(null);
 	
-	Heap h = new Heap(new Rectangle(200,100, 475, 300), true);
+	Heap h = new Heap(new Rectangle(200,100, 475, 500), true);
 	h.addBreadthFirst("6");
 	h.addBreadthFirst("13");
 	h.addBreadthFirst("4");
@@ -39,15 +39,15 @@ public class Heapsort {
 	h.addBreadthFirst("11");
 	h.addBreadthFirst("10");
 
-	Tree t = new Tree(new Rectangle(200,100, 475, 300), true);
+	//Tree t = new Tree(new Rectangle(200,100, 475, 300), true);
 	Variable v = new Variable(new Rectangle(25,10, 70, 25), "output", true);
 	Variable i = new Variable(new Rectangle(300,10, 70, 25), "input", true);
-	Insert a = new Insert(new Rectangle(200, 10, 75, 75), t, v, i, true);
-	Remove r = new Remove(new Rectangle(95, 10, 75,75), t, v, i);
+	Insert a = new Insert(new Rectangle(200, 10, 75, 75), h, v, i, true);
+	Remove r = new Remove(new Rectangle(95, 10, 75,75), h, v, i);
 	Stack s = new Stack(new Rectangle(100, 100, 100, 200));	
 	
 	frame.add(v.		getGuiElement());
-	frame.add(t.		getGuiElement());
+	frame.add(h.		getGuiElement());
 	frame.add(s.		getGuiElement());
 	frame.add(r.		getGuiElement());
 	frame.add(i. 		getGuiElement());

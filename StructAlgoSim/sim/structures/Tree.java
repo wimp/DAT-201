@@ -26,6 +26,7 @@ public class Tree {
 	}
 	public void setTraversal(Traversal traversal) {
 		this.traversal = traversal;
+		setIndexes();
 	}
 	public int getMaxDepth() {
 		return findMaxDepth(root, 0);
@@ -62,7 +63,6 @@ public class Tree {
 	public void setGuiElement(GuiTree gui) {
 		this.gui = gui;
 	}
-
 //CONSTRUCTORS
 	public Tree(Rectangle bounds,boolean animated){
 		root = null;	
@@ -78,10 +78,11 @@ public class Tree {
 	public void rebuildTree(){
 		if(root == null) return;
 		Vector<TreeNode> nodes = getAllNodes(new Vector<TreeNode>(), root);
-		nodes.remove(root);
-		setRoot(new TreeNode(nodes.remove(0), null));
+		setRoot(new TreeNode(nodes.remove(0).getValue().toString(), null));
 		for(TreeNode n : nodes)
 			addBreadthFirst(n.getValue().toString());
+			
+		setIndexes();
 	}
 	public void swapNodes(TreeNode a, TreeNode b){
 		Object o = a.getValue().toString();
@@ -120,7 +121,8 @@ public class Tree {
 		gui.repaint();
 	}
 	public String removeAt(int index){
-	
+		
+		setIndexes();
 		TreeNode element = elementAt(index);
 
 		if(element!= null){
@@ -136,12 +138,19 @@ public class Tree {
 			else if(element.getChildren().size()>1){
 				Traversal t = traversal;
 				traversal = Traversal.INORDER;
-				element.setValue(element.getChildren().elementAt(0).getValue().toString());
-				element.getChildren().elementAt(0).getParent().getChildren().remove(element.getChildren().elementAt(0));
+				TreeNode n = element.getChildren().firstElement();
+				while(n.getChildren().size()>0){
+					n = n.getChildren().firstElement();
+				}
+				element.setValue(n.getValue().toString());
+				n.getParent().getChildren().remove(n);
 				traversal = t;
 			}
 			else{
+				if(element.getParent()!= null)
 				element.getParent().getChildren().remove(element);
+				else
+				setRoot(null);
 			}
 			gui.repaint();
 			return s;
@@ -150,6 +159,9 @@ public class Tree {
 		
 	}
 	public void insertAt(int index,Object value){
+
+		setIndexes();
+		
 		TreeNode n = root;
 		if(n == null){
 			root = new TreeNode(value, null);
@@ -168,6 +180,16 @@ public class Tree {
 			}
 		gui.repaint();
 	}
+	private void setIndexes(){
+		Vector<TreeNode> nodes = getAllNodes(new Vector<TreeNode>(), root);
+		if(nodes != null){
+		int size = nodes.size();
+		for(int i= 0; i<size; i++){
+			if(elementAt(i)!=null)
+				elementAt(i).setCurrentIndex(i);
+		}
+		}
+	}
 	// GET METHODS
 	private int currentIndex = 0;
 	private TreeNode currentNode = null;
@@ -178,21 +200,33 @@ public class Tree {
 		case INORDER:
 			if(n.getChildren().size()>0)
 				getAllNodes(nodes, n.getChildren().get(0));
+			
 				nodes.add(n);
+				
 			if(n.getChildren().size()>1)
 				getAllNodes(nodes, n.getChildren().get(1));
 			break;
 		case PREORDER:
 			nodes.add(n);
+			
 			for(TreeNode t : n.getChildren())
 				getAllNodes(nodes, t);
 			break;
 		case POSTORDER:
 			for(TreeNode t : n.getChildren())
 				getAllNodes(nodes, t);
+					
 			nodes.add(n);
+		case BREADTHFIRST:
+			nodes.add(n);
+			Vector<TreeNode> tobeadded = new Vector<TreeNode>();
+			tobeadded.addAll(n.getChildren());
+			while(tobeadded.size()>0){
+				nodes.add(tobeadded.firstElement());
+				tobeadded.addAll(tobeadded.firstElement().getChildren());
+				tobeadded.remove(tobeadded.firstElement());
+			}
 			break;
-			
 		}
 		return nodes;
 	}
@@ -218,31 +252,32 @@ public class Tree {
 		return currentNode;
 	}
 	private void breadthFirstElementAt(int index){
-		if(getRoot()!=null) return;
+		if(getRoot()==null) return;
 		currentNode = getRoot();
 		Vector<TreeNode> added = new Vector<TreeNode>();
-		Vector<TreeNode> toBeAdded = new Vector<TreeNode>();
-		while(toBeAdded.size()>0){
-			toBeAdded.remove(currentNode);
-			toBeAdded.addAll(currentNode.getChildren());
-			added.add(currentNode);
-			currentNode = toBeAdded.firstElement();
+		Vector<TreeNode> tobeadded = new Vector<TreeNode>();
+		added.add(currentNode);
+		tobeadded.addAll(currentNode.getChildren());
+		while(tobeadded.size()>0){
+			added.add(tobeadded.firstElement());
+			tobeadded.addAll(tobeadded.firstElement().getChildren());
+			tobeadded.remove(tobeadded.firstElement());
 		}
 		currentNode = added.elementAt(index);
 	}
 	private void inOrderElementAt(TreeNode n, int index){
 		if(n.getChildren().size()>0)
 		inOrderElementAt(n.getChildren().elementAt(0), index);		
-		currentIndex++;
-		if(index == currentIndex) currentNode = n;
 		
+		if(index == currentIndex) currentNode = n;
+		currentIndex++;
 		if(n.getChildren().size()>1)
 			inOrderElementAt(n.getChildren().elementAt(1), index);
 	}
 	private void preOrderElementAt(TreeNode n, int index){
-		currentIndex++;
-		if(index == currentIndex) currentNode = n;
 		
+		if(index == currentIndex) currentNode = n;
+		currentIndex++;
 		for(int i= 0; i<n.getChildren().size()-1; i++){
 					preOrderElementAt(n.getChildren().elementAt(i), index);
 		}		
@@ -257,11 +292,13 @@ public class Tree {
 		if(n.getChildren().size()>0)
 			postOrderElementAt(n.getChildren().elementAt(n.getChildren().size()-1), index);
 		
-		currentIndex++;
+		
 		if(index == currentIndex) currentNode = n;
+		currentIndex++;
 	}
 	public class TreeNode{
 		private TreeNode parent;
+		private int currentIndex;
 		private boolean added;
 		private boolean removed;
 		public boolean isAdded() {
@@ -269,6 +306,12 @@ public class Tree {
 		}
 		public void setAdded(boolean added) {
 			this.added = added;
+		}
+		public int getCurrentIndex() {
+			return currentIndex;
+		}
+		public void setCurrentIndex(int currentIndex) {
+			this.currentIndex = currentIndex;
 		}
 		public boolean isRemoved() {
 			return removed;
