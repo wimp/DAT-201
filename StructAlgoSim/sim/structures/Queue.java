@@ -42,7 +42,7 @@ public class Queue {
 	 */
 	public Object remove(){
 		if(data.size()>0){
-		Object o = data.get(0);
+		Object o = data.remove(0);
 		gui.startAnimation();
 		gui.setRemoved((String)o);
 		gui.repaint();

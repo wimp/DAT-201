@@ -2,21 +2,24 @@ package sim.structures;
 
 import java.awt.Rectangle;
 
+import javax.swing.JTextArea;
+
 import sim.gui.elements.GuiElement;
 import sim.gui.elements.GuiInfo;
 
 public class InfoPanel {
-	GuiElement gui;
+	GuiInfo gui;
 	
-	public GuiElement getGuiElement() {
+	public GuiInfo getGuiElement() {
 		return gui;
 	}
 
-	public void setGuiElement(GuiElement gui) {
+	public void setGuiElement(GuiInfo gui) {
 		this.gui = gui;
 	}
 
-	public InfoPanel(Rectangle bounds, String text){
+	public InfoPanel(Rectangle bounds, String text, boolean editable){
 		gui = new GuiInfo(bounds, text);
+		gui.getTextArea().setEditable(editable);
 	}
 }

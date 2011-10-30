@@ -9,6 +9,13 @@ public class GuiInfo extends GuiElement {
 	
 	JTextArea text;
 	
+	public JTextArea getTextArea() {
+		return text;
+	}
+	public void setTextArea(JTextArea text) {
+		this.text = text;
+	}
+
 	public GuiInfo(Rectangle bounds, String text){
 		this.setBounds(bounds);
 		this.text = new JTextArea(text);

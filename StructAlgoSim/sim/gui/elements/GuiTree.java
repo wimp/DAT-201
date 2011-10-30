@@ -30,6 +30,11 @@ import sim.structures.Tree;
 @SuppressWarnings("serial")
 public class GuiTree extends GuiElement implements ActionListener, MouseMotionListener{
 	boolean isheap;
+	private Point mousePos = new Point(0,0);
+	private boolean show;
+	public void showValues(boolean b){
+		show = b;
+	}
 	Tree tree;
 	TreePanel treePanel;
 
@@ -375,13 +380,11 @@ public class GuiTree extends GuiElement implements ActionListener, MouseMotionLi
 			if(e.getSource() == max){
 				if(tree.getRoot() !=null)
 				{
-					((Heap)tree).maxHeapifyTree(tree.getRoot());
 					((Heap)tree).setMax(true);
 				}
 			}
 			else if(e.getSource() == min){
 				if(tree.getRoot() !=null){
-					((Heap)tree).minHeapifyTree(tree.getRoot());
 					((Heap)tree).setMax(false);
 				}
 			}
@@ -397,8 +400,6 @@ public class GuiTree extends GuiElement implements ActionListener, MouseMotionLi
 		repaint();
 		validate();
 	}
-	private Point mousePos = new Point(0,0);
-	private boolean show;
 	@Override
 	public void mouseDragged(MouseEvent e) {
 	}

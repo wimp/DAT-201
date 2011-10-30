@@ -4,13 +4,12 @@ import java.awt.Rectangle;
 
 import javax.swing.JFrame;
 
-import sim.functions.Insert;
-import sim.functions.Push;
+import sim.functions.Add;
 import sim.functions.Remove;
 import sim.structures.Heap;
 import sim.structures.InfoPanel;
-import sim.structures.Stack;
-import sim.structures.Tree;
+import sim.structures.Queue;
+import sim.structures.Heap.CompareKey;
 import sim.structures.Tree.Traversal;
 import sim.structures.Variable;
 
@@ -24,12 +23,14 @@ public class Heapsort {
 	public Heapsort(){
 	JFrame frame = new JFrame();
 	frame.setTitle("StructAlgoSim 0.1 - Heapsort");
-	frame.setSize(700,600);
+	frame.setSize(800,550);
 	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	frame.setLayout(null);
 	
-	Heap h = new Heap(new Rectangle(200,100, 475, 500), true);
+	Heap h = new Heap(new Rectangle(400,50, 380, 465), true);
+	h.getGuiElement().showValues(true);
 	h.setTraversal(Traversal.BREADTHFIRST);
+	h.setSortKey(CompareKey.ALPHABETICAL);
 //	h.addBreadthFirst("6");
 //	h.addBreadthFirst("13");
 //	h.addBreadthFirst("4");
@@ -42,26 +43,24 @@ public class Heapsort {
 //	h.addBreadthFirst("8");
 //	h.addBreadthFirst("11");
 //	h.addBreadthFirst("10");
-
-	h.addBreadthFirst("Rune");
-	h.addBreadthFirst("Jan-Vidar");
-	h.addBreadthFirst("Gandalf");
-	h.addBreadthFirst("Frodo");
+	
+	h.addBreadthFirst("Hi");
+	h.addBreadthFirst("Elg");
+	h.addBreadthFirst("Alge");
+	h.addBreadthFirst("Pizza");
+	h.addBreadthFirst("Sitron");
+	h.addBreadthFirst("Oligark");
 	h.addBreadthFirst("Red Bull");
-	h.addBreadthFirst("Lommebok");
-	h.addBreadthFirst("Orc");
-	h.addBreadthFirst("Uruk-hai");
-	h.addBreadthFirst("Extra");
-	h.addBreadthFirst("Mus");
-	h.addBreadthFirst("Imsdal");
-	h.addBreadthFirst("Rihanna");
+	h.addBreadthFirst("Traverser");
+	
+	h.setMax(false);
 	
 	//Tree t = new Tree(new Rectangle(200,100, 475, 300), true);
-	Variable v = new Variable(new Rectangle(25,10, 70, 25), "output", true);
+	Variable v = new Variable(new Rectangle(225,310, 90, 25), "output", true);
 	Variable i = new Variable(new Rectangle(300,10, 70, 25), "0", false);
-	Remove r = new Remove(new Rectangle(95, 10, 75,75), h, v, i);
-	Stack s = new Stack(new Rectangle(100, 100, 100, 200));	
-	Push p = new Push(new Rectangle(10, 100, 75,75), v, s);
+	Remove r = new Remove(new Rectangle(220, 275, 100,25), h, v, i);
+	Queue q = new Queue(new Rectangle(20, 340, 350, 175));	
+	Add p = new Add(new Rectangle(100, 275, 100,25), q,v);
 	
 	String info = 
 			"This is a demonstration of the heapsort algorithm." +
@@ -69,21 +68,31 @@ public class Heapsort {
 			"A max heap satisfies the condition of each node having only " +
 			"smaller or equal nodes in its subtree. For a min-heap each node " +
 			"has only larger values as its descendants." +
-			System.getProperty("line.separator") +
-			"This property assures that the root will always be either the largest or the smallest value in the heap." +
-			" Heapsort uses this property to sort the elements by removing the root and placing it in in a queue, rearranging the heap and repeating this " +
+			System.getProperty("line.separator") +System.getProperty("line.separator")+
+			"This property assures that the root will always be either the largest or the " +
+			"smallest value in the heap." +
+			" Heapsort uses this property to sort the elements by removing the root and placing" +
+			" it in in a queue, rearranging the heap and repeating this " +
 			"until the heap is empty. This will result in a sorted queue." +
-			System.getProperty("line.separator")+
-			"";
+			System.getProperty("line.separator")+System.getProperty("line.separator")+
+			"How to use this demo:" +System.getProperty("line.separator")+
+			"Use the heap settings to specify max/min and the sorting-key which is set to " +
+			"alphabetical by default (changing the traversal is not" +
+			" recommended as this demo uses a hidden index set to 0 to remove the root)." +
+			"Then press 'remove' to get the first value, then 'add' to put it in the queue, and repeat until" +
+			" the heap is empty." +System.getProperty("line.separator")+
+			"P.S. Try sorting a min-heap by length for a little surprise. =)";
 	
-	InfoPanel in = new InfoPanel(new Rectangle(10, 300, 150,200),info);
+	InfoPanel in = new InfoPanel(new Rectangle(10, 50, 380,200),info, false);
+	InfoPanel title = new InfoPanel(new Rectangle(50, 10, 100,25),"HEAPSORT", false);
 	
 	frame.add(v.		getGuiElement());
 	frame.add(h.		getGuiElement());
-	frame.add(s.		getGuiElement());
+	frame.add(q.		getGuiElement());
 	frame.add(p.		getGuiElement());
 	frame.add(r.		getGuiElement());
 	frame.add(in.		getGuiElement());
+	frame.add(title.	getGuiElement());
 	frame.validate();
 	frame.setVisible(true);
 }

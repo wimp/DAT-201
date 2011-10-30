@@ -22,12 +22,14 @@ public class Heap extends Tree{
 	}
 	public void setMax(boolean max) {
 		this.max = max;
+		heapify();
 	}
 	public CompareKey getSortKey() {
 		return key;
 	}
 	public void setSortKey(CompareKey key) {
 		this.key = key;
+		heapify();
 	}
 	/**
 	 * Constructor.
@@ -55,6 +57,10 @@ public class Heap extends Tree{
 		}
 		return null;
 	}
+	public void heapify(){
+		if(max) maxHeapifyTree(getRoot());
+		else minHeapifyTree(getRoot());
+	}
 	@Override 
 	public String removeAt(int index){
 		String n = super.removeAt(index);
@@ -66,7 +72,7 @@ public class Heap extends Tree{
 	 * Calls reArrangeHeap to make a MinHeap.
 	 * @param t The root node of the tree to be heapified.
 	 */
-	public void minHeapifyTree(TreeNode t){
+	private void minHeapifyTree(TreeNode t){
 		if(t == null) return;
 		reArrangeHeap(t,false);
 		for(TreeNode n : t.getChildren())
@@ -76,14 +82,13 @@ public class Heap extends Tree{
 	 * Calls reArrangeHeap to make a MaxHeap.
 	 * @param t The root node of the tree to be heapified.
 	 */
-	public void maxHeapifyTree(TreeNode t){
+	private void maxHeapifyTree(TreeNode t){
 		if(t == null) return;
 		reArrangeHeap(t, true);
 		for(TreeNode n : t.getChildren()){
 			maxHeapifyTree(n);
 		}
 	}
-
 	/**
 	 * Swaps nodes until the specified conditions are satisfied, 
 	 * this results in either a max-heap or a min-heap sorted by

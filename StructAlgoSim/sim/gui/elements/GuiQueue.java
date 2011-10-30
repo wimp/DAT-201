@@ -40,7 +40,7 @@ public class GuiQueue extends GuiElement implements ActionListener{
 		listScroller.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		listScroller.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
 
-		queuePanel.setPreferredSize(new Dimension(getWidth(), getHeight()));
+		queuePanel.setPreferredSize(new Dimension(getWidth()-10, getHeight()));
 		listScroller.setPreferredSize(new Dimension(getWidth(), getHeight()));
 		this.add(listScroller);
 	}
@@ -54,7 +54,6 @@ public class GuiQueue extends GuiElement implements ActionListener{
 				animation.stop();
 				added = false;
 				if(removed){
-					queuePanel.getData().remove(recent);
 					removed = false;
 				}
 				repaint();
@@ -118,33 +117,52 @@ public class GuiQueue extends GuiElement implements ActionListener{
 			g.setColor(c);
 			g.drawPolygon(fx, fy, fx.length);
 			g.drawPolygon(bx, by, bx.length);
+
+			int j = 0;
+			int k = f.length();
 			
+
+			int v=g.getFontMetrics(getFont()).getHeight()-g.getFontMetrics(getFont()).getHeight()/4;
+
+			v=g.getFontMetrics(getFont()).getHeight()-g.getFontMetrics(getFont()).getHeight()/4;
+			while(j < k+1) {
+				if (j == k) 
+					g.drawString(f.substring(j),xoffset-elementW, yoffset+10+(j*v));
+				else
+					g.drawString(f.substring(j,j+1),xoffset-elementW, yoffset+10+(j*v));
+				j++;
+			}
+			j = 0;
+			k = b.length();
+			while(j < k+1) {
+				if (j == k) 
+					g.drawString(b.substring(j),data.size()*elementW+2*elementW+30, yoffset+10+(j*v));
+				else
+					g.drawString(b.substring(j,j+1),data.size()*elementW+2*elementW+30, yoffset+10+(j*v));
+				j++;
+			}
+			
+			if(removed){
+				g.setColor(GuiSettings.QUEUEELEMENTCOLOR);
+
+				g.fillRoundRect(xoffset-(xoffset/MAXFRAME)*frame-elementW,yoffset, elementW, elementH, 5, 5);
+				g.setColor(c);
+				g.drawRoundRect(xoffset-(xoffset/MAXFRAME)*frame-elementW,yoffset, elementW, elementH, 5, 5);
+				v=g.getFontMetrics(getFont()).getHeight()-g.getFontMetrics(getFont()).getHeight()/4;
+				j = 0;
+				k = recent.length();
+				while(j < k+1) {
+					if (j == k) 
+						g.drawString(recent.substring(j),xoffset-(xoffset/MAXFRAME)*frame+5-elementW, yoffset+10+(j*v));
+					else
+						g.drawString(recent.substring(j,j+1),xoffset-(xoffset/MAXFRAME)*frame+5-elementW, yoffset+10+(j*v));
+					j++;
+				}
+			}
 			for(int i = 0; i<data.size(); i++){
 				String s = (String)data.get(i);
-				
-
-				int v=g.getFontMetrics(getFont()).getHeight()-g.getFontMetrics(getFont()).getHeight()/4;
 				elementH = v*s.length()<GuiSettings.QUEUEELEMENTHEIGHT ? GuiSettings.QUEUEELEMENTHEIGHT : v*s.length();
 
-				v=g.getFontMetrics(getFont()).getHeight()-g.getFontMetrics(getFont()).getHeight()/4;
-				int j = 0;
-				int k = f.length();
-				while(j < k+1) {
-					if (j == k) 
-						g.drawString(f.substring(j),xoffset-elementW, yoffset+10+(j*v));
-					else
-						g.drawString(f.substring(j,j+1),xoffset-elementW, yoffset+10+(j*v));
-					j++;
-				}
-				j = 0;
-				k = b.length();
-				while(j < k+1) {
-					if (j == k) 
-						g.drawString(b.substring(j),data.size()*elementW+2*elementW+30, yoffset+10+(j*v));
-					else
-						g.drawString(b.substring(j,j+1),data.size()*elementW+2*elementW+30, yoffset+10+(j*v));
-					j++;
-				}
 
 				if(i ==data.size()-1) 
 					g.setColor(GuiSettings.QUEUEENDCOLOR);
@@ -153,22 +171,7 @@ public class GuiQueue extends GuiElement implements ActionListener{
 				else 
 					g.setColor(GuiSettings.QUEUEELEMENTCOLOR);
 
-				if(removed && s == recent){
-					g.fillRoundRect(xoffset-(xoffset/MAXFRAME)*frame,yoffset, elementW, elementH, 5, 5);
-					g.setColor(c);
-					g.drawRoundRect(xoffset-(xoffset/MAXFRAME)*frame,yoffset, elementW, elementH, 5, 5);
-					v=g.getFontMetrics(getFont()).getHeight()-g.getFontMetrics(getFont()).getHeight()/4;
-					j = 0;
-					k = s.length();
-					while(j < k+1) {
-						if (j == k) 
-							g.drawString(s.substring(j),xoffset-(xoffset/MAXFRAME)*frame+5, yoffset+10+(j*v));
-						else
-							g.drawString(s.substring(j,j+1),xoffset-(xoffset/MAXFRAME)*frame+5, yoffset+10+(j*v));
-						j++;
-					}
-				}
-				else if(added && s == recent){
+				if(added && s == recent){
 					g.fillRoundRect(((getWidth()-elementW*i)/MAXFRAME)*(MAXFRAME-frame)+elementW*i+xoffset,yoffset, elementW, elementH, 5, 5);
 					g.setColor(c);
 					g.drawRoundRect(((getWidth()-elementW*i)/MAXFRAME)*(MAXFRAME-frame)+elementW*i+xoffset,yoffset, elementW, elementH, 5, 5);
