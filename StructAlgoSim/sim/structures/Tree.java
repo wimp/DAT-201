@@ -137,6 +137,10 @@ public class Tree {
 					element.getParent().getChildren().remove(element);
 					element.getParent().getChildren().add(child);
 				}
+				else{
+					child.setParent(null);
+					setRoot(child);
+				}
 			}
 			else if(element.getChildren().size()>1){
 				Traversal t = traversal;

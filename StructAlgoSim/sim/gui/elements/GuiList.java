@@ -47,7 +47,7 @@ public class GuiList extends GuiElement implements ActionListener, ItemListener{
 		this.data = data;
 		this.setLayout(new BorderLayout());
 		setBounds(bounds);		
-		height = bounds.height;
+		height = drawNodeHeight * 4;
 		listPanel = new ListPanel(false, false);		
 		links = new Vector<Link>();
 		updateLinks();
@@ -57,7 +57,7 @@ public class GuiList extends GuiElement implements ActionListener, ItemListener{
 		listPanel.setPreferredSize(new Dimension(getWidth(), height));
 		listScroller = new JScrollPane(listPanel);
 		listScroller.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		listScroller.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+		listScroller.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
 		listScroller.setPreferredSize(new Dimension(getWidth(), getHeight()));
 		
 		circular = new JCheckBox("Circular");
@@ -126,11 +126,11 @@ public class GuiList extends GuiElement implements ActionListener, ItemListener{
 			
 			int[] linkY = 
 				{ 
-						( height/2+drawNodeHeight/2)+(direction*(drawNodeHeight/2)),
-						(int)(( height/2+drawNodeHeight/2)+f*drawNodeHeight+d*drawNodeHeight),	
-						(int)(( height/2+drawNodeHeight/2)+f*drawNodeHeight+d*drawNodeHeight),	
-						( height/2)+(drawNodeHeight/2),	
-						( height/2+(drawNodeHeight/2))	
+						(height/2)+(direction*(drawNodeHeight/2)),
+						(int)(( height/2)+f*drawNodeHeight+d*drawNodeHeight),	
+						(int)(( height/2)+f*drawNodeHeight+d*drawNodeHeight),	
+						height/2,	
+						height/2	
 			};
 			
 			f = (direction < 0) ? 5/4f : -1/4f;
@@ -143,9 +143,9 @@ public class GuiList extends GuiElement implements ActionListener, ItemListener{
 				};		
 			int[] arrowY = 
 				{ 
-						(int)( height/2+(1/4.0)*drawNodeHeight),	
-						 height/2+drawNodeHeight/2,
-						(int)( height/2+(3/4.0)*drawNodeHeight),	
+						(int)(height/2-(1/4.0)*drawNodeHeight),	
+						 height/2,
+						(int)(height/2+(1/4.0)*drawNodeHeight),	
 				};
 				g2d.drawPolyline(linkX, linkY, linkX.length);
 				g2d.fillPolygon(arrowX, arrowY, arrowX.length);
@@ -165,7 +165,6 @@ public class GuiList extends GuiElement implements ActionListener, ItemListener{
 		public void setCircular(boolean circular) {
 			this.circular = circular;
 		}
-
 		public boolean isDoublyLinked() {
 			return doublyLinked;
 		}		
@@ -181,10 +180,10 @@ public class GuiList extends GuiElement implements ActionListener, ItemListener{
 			else if(data.indexOf(n)==0) g2d.setColor(GuiSettings.LISTHEADCOLOR);
 			else g2d.setColor(GuiSettings.LISTNODECOLOR);
 			
-			g2d.fillOval((2*indexOfNode)*drawNodeWidth,  height/2, drawNodeWidth, drawNodeHeight);
+			g2d.fillOval((2*indexOfNode)*drawNodeWidth,  height/2-drawNodeHeight/2, drawNodeWidth, drawNodeHeight);
 			g2d.setColor(c);
-			g2d.drawOval((2*indexOfNode)*drawNodeWidth,  height/2, drawNodeWidth, drawNodeHeight);
-			g2d.drawString((String)n.getValue(), (2*indexOfNode)*drawNodeWidth, height/2+drawNodeHeight/2);
+			g2d.drawOval((2*indexOfNode)*drawNodeWidth,  height/2-drawNodeHeight/2, drawNodeWidth, drawNodeHeight);
+			g2d.drawString((String)n.getValue(), (2*indexOfNode)*drawNodeWidth, height/2);
 			g2d.setColor(c);
 		}
 		private void addAnimation(Node n){
