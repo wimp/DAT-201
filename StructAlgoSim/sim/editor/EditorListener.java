@@ -167,7 +167,8 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 			return stackElement.getGuiElement();
 		case VARIABLE:
 			b = gui.optionsPanel.groupOption.getSelection();
-			e = b.getActionCommand().equals("1") ? true : false;
+			e = b == null ? true : b.getActionCommand().equals("1") ? true : false;
+//			e = b.getActionCommand().equals("1") ? true : false;
 			bounds.width 	= bounds.width < 50 ? 50 : bounds.width;
 			bounds.height 	= bounds.height < 30 ? 30 : bounds.height;
 			Variable variableElement = new Variable(bounds,"test",e);
@@ -201,7 +202,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 			return heapElement.getGuiElement();
 		case QUEUE:
 			bounds.width	= bounds.width < 350 ? 350 : bounds.width;
-			bounds.height	= bounds.height < 60 ? 60 : bounds.height;
+			bounds.height	= bounds.height < 90 ? 90 : bounds.height;
 			Queue queueElement = new Queue(bounds);
 			elements.add(queueElement);
 			index = elements.lastIndexOf(queueElement);
@@ -589,6 +590,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 		}
 	}
 
+	@SuppressWarnings("unused")
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		gui.editorPanel.remove(panel);
@@ -751,10 +753,9 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 							out.write(inV+":"+outV);
 							out.flush();
 						}else if(element instanceof Variable){
-							String edit = ((Variable) element).isEditable ? "true" : "false";
-							String value = ((Variable) element).getValue();
+							String edit = ((Variable) element).isEditable ? "1" : "0";
 							
-							out.write(edit+":"+value);
+							out.write(edit);
 							out.flush();
 						}else if(element instanceof LinkedList){
 							out.write("null");
@@ -784,11 +785,22 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 				try{
 					FileReader fr = new FileReader(openFile);
 					BufferedReader r = new BufferedReader(fr);
+
+					int numLines = 0;
+					while(r.readLine() != null)
+						numLines++;
+					r.close();
+					
+					fr = new FileReader(openFile);
+					r = new BufferedReader(fr);
 					String line = r.readLine();
+					int currentLine = 0;
+					int[][] link = new int[numLines][3];
 					
 					while(line != null){
 						String[] s = line.split(";");
-						int id;
+						int id = -1;
+						Rectangle bounds = new Rectangle();
 						for(int i = 0;i<s.length;i++){
 							switch(i){
 							case 0:
@@ -797,23 +809,93 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 								break;
 							case 1:
 								// Sets the bounds of the object
+								String[] boundStrings = s[i].split(":");
+								bounds = new Rectangle(
+											Integer.parseInt(boundStrings[0]),
+											Integer.parseInt(boundStrings[1]),
+											Integer.parseInt(boundStrings[2]),
+											Integer.parseInt(boundStrings[3])
+										);
 								break;
 							case 2:
 								// Sets the object
+								if(s[i].equals("Stack")){
+									JComponent c = getComponentFromEnum(ElementType.STACK, bounds);
+									addElementAtPosition(c);
+								}else if(s[i].equals("Array")){
+									JComponent c = getComponentFromEnum(ElementType.ARRAY, bounds);
+									addElementAtPosition(c);
+								}else if(s[i].equals("LinkedList")){
+									JComponent c = getComponentFromEnum(ElementType.LIST, bounds);
+									addElementAtPosition(c);
+								}else if(s[i].equals("Tree")){
+									JComponent c = getComponentFromEnum(ElementType.TREE, bounds);
+									addElementAtPosition(c);
+								}else if(s[i].equals("Heap")){
+									JComponent c = getComponentFromEnum(ElementType.HEAP, bounds);
+									addElementAtPosition(c);
+								}else if(s[i].equals("Queue")){
+									JComponent c = getComponentFromEnum(ElementType.QUEUE, bounds);
+									addElementAtPosition(c);
+								}else if(s[i].equals("Variable")){
+									JComponent c = getComponentFromEnum(ElementType.VARIABLE, bounds);
+									addElementAtPosition(c);
+								}else if(s[i].equals("Add")){
+									JComponent c = getComponentFromEnum(ElementType.ADD, bounds);
+									addElementAtPosition(c);
+								}else if(s[i].equals("Remove")){
+									JComponent c = getComponentFromEnum(ElementType.REMOVE, bounds);
+									addElementAtPosition(c);
+								}else if(s[i].equals("Insert")){
+									JComponent c = getComponentFromEnum(ElementType.INSERT, bounds);
+									addElementAtPosition(c);
+								}else if(s[i].equals("Push")){
+									JComponent c = getComponentFromEnum(ElementType.PUSH, bounds);
+									addElementAtPosition(c);
+								}else if(s[i].equals("Pop")){
+									JComponent c = getComponentFromEnum(ElementType.POP, bounds);
+									addElementAtPosition(c);
+								}
+									
+								break;
+							case 3:
+								// Attributes
+								String[] attributes = s[i].split(":");
+								for(int j = 0; j < attributes.length;j++){
+									if(attributes[j].equals("null"))
+										attributes[j] = "-1";
+									link[currentLine][j] = Integer.parseInt(attributes[j]);
+								}
 								break;
 							}
-							System.out.println(s[i]);
 						}
-						/*for(String parts : s){
-							String[] subParts = parts.split(":");
-							for(String subPart : subParts){
-								System.out.println(subPart);
-							}
-							System.out.println();
-						}*/
-						System.out.println();
-						System.out.println();
 						line = r.readLine();
+						currentLine++;
+					}
+					
+					for(int i = 0;i < link.length;i++){
+						Object element = elements.get(i);
+						for(int j = 0;j < link[i].length;j++){
+							
+							if(link[i][j] != -1){
+								if(element instanceof Push){
+									switch(j){
+									case 0:
+										((Push) element).setTarget(elements.get(link[i][j]));
+										break;
+									case 1:
+										((Push) element).setSourceVariable((Variable) elements.get(link[i][j]));
+										break;
+									}
+								}else if(element instanceof Variable){
+									switch(j){
+									case 0:
+										
+										break;
+									}
+								}
+							}
+						}
 					}
 				}catch(Exception e1){
 					e1.printStackTrace();
