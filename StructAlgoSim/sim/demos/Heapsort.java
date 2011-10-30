@@ -67,7 +67,14 @@ public class Heapsort {
 			"This is a demonstration of the heapsort algorithm." +
 			"It uses a heap which is built as either a max or a min-heap. " +
 			"A max heap satisfies the condition of each node having only " +
-			"smaller or equal nodes in its subtree. For a min-heap this is reversed.";
+			"smaller or equal nodes in its subtree. For a min-heap each node " +
+			"has only larger values as its descendants." +
+			System.getProperty("line.separator") +
+			"This property assures that the root will always be either the largest or the smallest value in the heap." +
+			" Heapsort uses this property to sort the elements by removing the root and placing it in in a queue, rearranging the heap and repeating this " +
+			"until the heap is empty. This will result in a sorted queue." +
+			System.getProperty("line.separator")+
+			"";
 	
 	InfoPanel in = new InfoPanel(new Rectangle(10, 300, 150,200),info);
 	
