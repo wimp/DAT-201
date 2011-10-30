@@ -34,10 +34,12 @@ public class GuiArray extends GuiElement {
 		listScroller.setPreferredSize(new Dimension(getWidth(), getHeight()));
 		this.add(listScroller);
 	}
+	@SuppressWarnings("unused")
 	private class ArrayPanel extends JPanel{
 
 		Object[][] data;
 
+		
 		public Object[][] getData() {
 			return data;
 		}

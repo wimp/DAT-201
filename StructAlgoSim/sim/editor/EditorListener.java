@@ -759,17 +759,10 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 							String sv = Integer.toString(elements.indexOf(((Pop) element).getSourceVariable()));
 
 							out.write(t+":"+sv);
-						}else if(element instanceof MoveChar){
-							String inV = Integer.toString(elements.indexOf(((MoveChar) element).getInput()));
-							String outV = Integer.toString(elements.indexOf(((MoveChar) element).getOutput()));
-
-							out.write(inV+":"+outV);
-							out.flush();
 						}else if(element instanceof Variable){
-							String edit = ((Variable) element).isEditable ? "true" : "false";
-							String value = ((Variable) element).getValue();
+							String edit = ((Variable) element).isEditable ? "1" : "0";
 
-							out.write(edit+":"+value);
+							out.write(edit);
 							out.flush();
 						}else if(element instanceof LinkedList){
 							out.write("null");
@@ -777,6 +770,18 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 							out.write("null");
 						}else if(element instanceof Heap){
 							out.write("null");
+						}else if(element instanceof Get){
+							String t = Integer.toString(elements.indexOf(((Get) element).getTarget()));
+							String sv = Integer.toString(elements.indexOf(((Get) element).getSourceVariable()));
+							String iv = Integer.toString(elements.indexOf(((Get) element).getIndexVariable()));
+							
+							out.write(t+":"+sv+":"+iv);
+						}else if(element instanceof Set){
+							String t = Integer.toString(elements.indexOf(((Set) element).getTarget()));
+							String sv = Integer.toString(elements.indexOf(((Set) element).getSourceVariable()));
+							String iv = Integer.toString(elements.indexOf(((Set) element).getIndexVariable()));
+							
+							out.write(t+":"+sv+":"+iv);
 						}
 						out.flush();
 
@@ -868,6 +873,12 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 								}else if(s[i].equals("Pop")){
 									JComponent c = getComponentFromEnum(ElementType.POP, bounds);
 									addElementAtPosition(c);
+								}else if(s[i].equals("Get")){
+									JComponent c = getComponentFromEnum(ElementType.GET, bounds);
+									addElementAtPosition(c);
+								}else if(s[i].equals("Set")){
+									JComponent c = getComponentFromEnum(ElementType.SET, bounds);
+									addElementAtPosition(c);
 								}
 
 								break;
@@ -885,12 +896,26 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 						line = r.readLine();
 						currentLine++;
 					}
-
+					
+					// Handling the links between the objects in the gui.
 					for(int i = 0;i < link.length;i++){
 						Object element = elements.get(i);
+						Link li = new Link();
+						li.from = element;
+						li.fromGui = guiElements.get(i);
 						for(int j = 0;j < link[i].length;j++){
 
 							if(link[i][j] != -1){
+								if(!elements.get(link[i][j]).equals(element) && checkCompatibility(element,elements.get(link[i][j]))){
+									li.to = elements.get(link[i][j]);
+									li.toGui = guiElements.get(link[i][j]);
+									li.getDirection();
+									linkys.add(li);
+									li = new Link();
+									li.from = element;
+									li.fromGui = guiElements.get(i);
+								}
+								
 								if(element instanceof Push){
 									switch(j){
 									case 0:
@@ -900,10 +925,71 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 										((Push) element).setSourceVariable((Variable) elements.get(link[i][j]));
 										break;
 									}
-								}else if(element instanceof Variable){
+								}else if(element instanceof Remove){
 									switch(j){
 									case 0:
-
+										((Remove) element).setTarget(elements.get(link[i][j]));
+										break;
+									case 1:
+										((Remove) element).setSourceVariable((Variable) elements.get(link[i][j]));
+										break;
+									case 2:
+										((Remove) element).setIndexVariable((Variable) elements.get(link[i][j]));
+										break;
+									}
+								}else if(element instanceof Insert){
+									switch(j){
+									case 0:
+										((Insert) element).setTarget(elements.get(link[i][j]));
+										break;
+									case 1:
+										((Insert) element).setSourceVariable((Variable) elements.get(link[i][j]));
+										break;
+									case 2:
+										((Insert) element).setIndexVariable((Variable) elements.get(link[i][j]));
+									}
+								}else if(element instanceof Add){
+									switch(j){
+									case 0:
+										((Add) element).setTarget(elements.get(link[i][j]));
+										break;
+									case 1:
+										((Add) element).setSourceVariable((Variable) elements.get(link[i][j]));
+										break;
+									case 2:
+										((Add) element).setIndexVariable((Variable) elements.get(link[i][j]));
+									}
+								}else if(element instanceof Pop){
+									switch(j){
+									case 0:
+										((Pop) element).setTarget(elements.get(link[i][j]));
+										break;
+									case 1:
+										((Pop) element).setSourceVariable((Variable) elements.get(link[i][j]));
+										break;
+									}
+								}else if(element instanceof Get){
+									switch(j){
+									case 0:
+										((Get) element).setTarget(elements.get(link[i][j]));
+										break;
+									case 1:
+										((Get) element).setSourceVariable((Variable) elements.get(link[i][j]));
+										break;
+									case 2:
+										((Get) element).setIndexVariable((Variable) elements.get(link[i][j]));
+										break;
+									}
+								}else if(element instanceof Set){
+									switch(j){
+									case 0:
+										((Set) element).setTarget(elements.get(link[i][j]));
+										break;
+									case 1:
+										((Set) element).setSourceVariable((Variable) elements.get(link[i][j]));
+										break;
+									case 2:
+										((Set) element).setIndexVariable((Variable) elements.get(link[i][j]));
 										break;
 									}
 								}

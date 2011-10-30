@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.Timer;
 
+@SuppressWarnings("serial")
 public class GuiQueue extends GuiElement implements ActionListener{
 	// Class variables //
 	QueuePanel queuePanel;
@@ -62,7 +63,7 @@ public class GuiQueue extends GuiElement implements ActionListener{
 			repaint();
 		}
 	}
-
+	@SuppressWarnings("unused")
 	private class QueuePanel extends JPanel{
 		Vector<Object> data;
 		int xoffset = GuiSettings.QUEUEELEMENTWIDTH*2;
@@ -71,6 +72,7 @@ public class GuiQueue extends GuiElement implements ActionListener{
 		public Vector<Object> getData() {
 			return data;
 		}
+		
 		public void setData(Vector<Object> data) {
 			this.data = data;
 		}

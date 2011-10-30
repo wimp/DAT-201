@@ -5,6 +5,7 @@ import java.awt.Rectangle;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
+@SuppressWarnings("serial")
 public class GuiInfo extends GuiElement {
 	
 	JTextArea text;
