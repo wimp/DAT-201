@@ -69,7 +69,7 @@ public class Heapsort {
 			"A max heap satisfies the condition of each node having only " +
 			"smaller or equal nodes in its subtree. For a min-heap this is reversed.";
 	
-	InfoPanel in = new InfoPanel(new Rectangle(10, 300, 100,200),info);
+	InfoPanel in = new InfoPanel(new Rectangle(10, 300, 150,200),info);
 	
 	frame.add(v.		getGuiElement());
 	frame.add(h.		getGuiElement());
