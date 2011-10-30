@@ -31,23 +31,18 @@ public class Insert implements ActionListener {
 	public GuiElement getGuiElement(){
 		return gui;
 	}
-
 	public Object getTarget() {
 		return l;
 	}
-
 	public void setTarget(Object l) {
 		this.l = l;
 	}
-
 	public Variable getSourceVariable() {
 		return v;
 	}
-
 	public void setSourceVariable(Variable v) {
 		this.v = v;
 	}
-
 	public Variable getIndexVariable() {
 		return i;
 	}

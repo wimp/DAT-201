@@ -21,7 +21,6 @@ public class Array {
 	public GuiArray getGuiElement(){
 		return gui;
 	}
-
 // Class constructors //
 	/**
 	 * Create a new instance of Array() that is one dimensional with the size of {@link size}
@@ -45,7 +44,6 @@ public class Array {
 			gui = new GuiArray(bounds, array);
 		}
 	}
-	
 	/**
 	 * Inserts the given Object in a one-dimensional array at indexY
 	 * @param itemToAdd
@@ -55,7 +53,6 @@ public class Array {
 		insertAt(itemToAdd, indexY, 0);
 		gui.repaint();
 	}
-	
 	/**
 	 * Inserts the given Object in a two-dimensional array at indexX
 	 * @param itemToAdd
@@ -82,7 +79,6 @@ public class Array {
 			}
 		}else return;*/
 	}
-	
 	/**
 	 * Method to get the value of a one-dimensional array at indexY
 	 * @param indexY
@@ -91,7 +87,6 @@ public class Array {
 	public Object valueAt(int indexY){
 		return valueAt(indexY, 0);
 	}
-	
 	/**
 	 * Method to get the value of a two-dimensional array at indexY,indexX
 	 * @param indexY
@@ -101,11 +96,9 @@ public class Array {
 	public Object valueAt(int indexY, int indexX){
 		return array[indexY][indexX];
 	}
-	
 	public Object removeItem(int indexY){
 		return removeItem(indexY,0);
 	}
-
 	private Object removeItem(int indexY, int indexX) {
 		String item = array[indexY][indexX].toString();
 		array[indexY][indexX] = null;

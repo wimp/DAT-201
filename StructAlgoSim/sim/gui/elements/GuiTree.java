@@ -374,11 +374,16 @@ public class GuiTree extends GuiElement implements ActionListener, MouseMotionLi
 		if(isheap) 
 			if(e.getSource() == max){
 				if(tree.getRoot() !=null)
+				{
 					((Heap)tree).maxHeapifyTree(tree.getRoot());
+					((Heap)tree).setMax(true);
+				}
 			}
 			else if(e.getSource() == min){
-				if(tree.getRoot() !=null)
-					((Heap)tree).minHeapifyTree(tree.getRoot());			
+				if(tree.getRoot() !=null){
+					((Heap)tree).minHeapifyTree(tree.getRoot());
+					((Heap)tree).setMax(false);
+				}
 			}
 			else if(e.getSource() == alpha){
 				((Heap)tree).setSortKey(CompareKey.ALPHABETICAL);

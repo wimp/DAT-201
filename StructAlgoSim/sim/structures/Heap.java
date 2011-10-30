@@ -4,19 +4,25 @@ import java.awt.Rectangle;
 import java.util.Vector;
 
 import sim.gui.elements.GuiTree;
-import sim.structures.Tree.TreeNode;
 /**
  * A class representing an heap. Its visual component is the GuiTree.
  */
 public class Heap extends Tree{
-	
+
 	public enum CompareKey{
 		ALPHABETICAL,
 		NUMERICAL,
 		STRLEN
 	}
 	private CompareKey key = CompareKey.NUMERICAL;
-	
+
+	private boolean max = true;
+	public boolean isMax() {
+		return max;
+	}
+	public void setMax(boolean max) {
+		this.max = max;
+	}
 	public CompareKey getSortKey() {
 		return key;
 	}
@@ -36,24 +42,32 @@ public class Heap extends Tree{
 	public String removeRoot(){
 		if(getRoot() != null){
 			String value = getRoot().getValue().toString();
-			
+
 			Vector<String> values = new Vector<String>();
 			for(TreeNode t : getAllNodes(new Vector<TreeNode>() , getRoot())){
 				if(t!=null && t!=getRoot())
-				values.add(t.getValue().toString());
+					values.add(t.getValue().toString());
 			}
 			setRoot(null);
 			rebuildTree();
-			
+
 			return value;
 		}
 		return null;
+	}
+	@Override 
+	public String removeAt(int index){
+		String n = super.removeAt(index);
+		if(max) maxHeapifyTree(getRoot());
+		else minHeapifyTree(getRoot());
+		return n;
 	}
 	/**
 	 * Calls reArrangeHeap to make a MinHeap.
 	 * @param t The root node of the tree to be heapified.
 	 */
 	public void minHeapifyTree(TreeNode t){
+		if(t == null) return;
 		reArrangeHeap(t,false);
 		for(TreeNode n : t.getChildren())
 			minHeapifyTree(n);
@@ -63,6 +77,7 @@ public class Heap extends Tree{
 	 * @param t The root node of the tree to be heapified.
 	 */
 	public void maxHeapifyTree(TreeNode t){
+		if(t == null) return;
 		reArrangeHeap(t, true);
 		for(TreeNode n : t.getChildren()){
 			maxHeapifyTree(n);
@@ -83,12 +98,12 @@ public class Heap extends Tree{
 			TreeNode parent = n.getParent();
 			String a = n.getValue().toString();
 			String b = parent.getValue().toString();
-			
+
 			switch(key){
 			case ALPHABETICAL:
 				for(int i = 0; i<a.length(); i++){
 					if(b.length()-1<i) break;
-					
+
 					if(max){
 						if((int)a.charAt(i)<=(int)b.charAt(i)){
 							swap = false;
@@ -102,7 +117,7 @@ public class Heap extends Tree{
 						else if((int)a.charAt(i)<(int)b.charAt(i)) break;
 					}
 				}
-			break;
+				break;
 			case NUMERICAL:
 				try{
 					if(!max){
@@ -115,7 +130,7 @@ public class Heap extends Tree{
 				catch(NumberFormatException e){
 					swap = false;
 				}
-			break;
+				break;
 			case STRLEN:
 				if(!max){
 					if(a.length()>=b.length()) swap = false;
@@ -123,11 +138,11 @@ public class Heap extends Tree{
 				else{ 
 					if(a.length()<=b.length()) swap = false;
 				}
-			break;
+				break;
 			}
-			
+
 			if(swap) swapNodes(n, parent);
-			
+
 			n = parent;
 		}
 	}
