@@ -11,7 +11,6 @@ import java.util.Vector;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.Timer;
-import javax.xml.crypto.Data;
 
 /**
  * The graphical element of the {@link sim.structures.Stack} stack class
@@ -51,10 +50,12 @@ public class GuiStack extends GuiElement implements ActionListener{
 		listScroller.setPreferredSize(new Dimension(getWidth(), getHeight()));
 		this.add(listScroller);
 	}
+	@SuppressWarnings("unused")
 	private class StackPanel extends JPanel{
 
 		Vector<Object> data;
 
+		
 		public Vector<Object> getData() {
 			return data;
 		}

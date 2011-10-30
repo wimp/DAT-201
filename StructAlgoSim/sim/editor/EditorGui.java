@@ -251,7 +251,7 @@ public class EditorGui extends JFrame {
 				g2d.drawLine(l.p2.x, l.p2.y, l.p3.x, l.p3.y);
 				g2d.drawLine(l.p3.x, l.p3.y, l.p4.x, l.p4.y);
 				
-				switch(l.direction){
+				/*switch(l.direction){
 				case LEFT:
 					break;
 				case RIGHT:
@@ -264,7 +264,7 @@ public class EditorGui extends JFrame {
 					break;
 				case UP_DOWN:
 					break;
-				}
+				}*/
 			}
 		}
 	}
