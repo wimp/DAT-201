@@ -24,7 +24,7 @@ public abstract class GuiElement extends JPanel{
 		}
 	}
 	int frame;
-	final int MAXFRAME = 6;
+	final int MAXFRAME = 7;
 // Class constructor //
 	/**
 	 * Class constructor - sets the instance of the class to visible.

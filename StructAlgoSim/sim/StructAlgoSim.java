@@ -42,7 +42,6 @@ public class StructAlgoSim {
 		Pop pop=new Pop(new Rectangle(125,50,75,50), s, v);
 		Add a=new Add(new Rectangle(300,10, 75,75),q, v);
 		Remove r=new Remove(new Rectangle(375,10, 75,75),q, v);
-		Insert i=new Insert(new Rectangle(400, 10, 75,75), t,v, in, false);
 		
 		frame.add(s.getGuiElement());
 
