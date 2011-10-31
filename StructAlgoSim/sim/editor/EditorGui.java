@@ -107,6 +107,7 @@ public class EditorGui extends JFrame {
 		JToggleButton queue		= new JToggleButton("Queue");
 		JCheckBox grid			= new JCheckBox("Grid");
 		JButton resize			= new JButton("Resize");
+		JToggleButton resizeMode= new JToggleButton("Resize Element");
 		
 		
 		
@@ -157,6 +158,8 @@ public class EditorGui extends JFrame {
 		resize.setActionCommand("22");
 		newFile.addActionListener(el);
 		newFile.setActionCommand("23");
+		resizeMode.addActionListener(el);
+		resizeMode.setActionCommand("24");
 		
 		// Add toggle buttons to the button group //
 		bg.add(stack);
@@ -176,6 +179,7 @@ public class EditorGui extends JFrame {
 		bg.add(queue);
 		bg.add(get);
 		bg.add(set);
+		bg.add(resizeMode);
 
 		// Add elements to the west panel (data structures and variables) //
 		westPanel.setLayout(new GridLayout(11,1));
@@ -210,9 +214,10 @@ public class EditorGui extends JFrame {
 		topPanel.setLayout(new BorderLayout());
 		
 		JPanel centerOfTop = new JPanel();
-		centerOfTop.setLayout(new GridLayout(1,3));
+		centerOfTop.setLayout(new GridLayout(1,4));
 			centerOfTop.add(link);
 			centerOfTop.add(select);
+			centerOfTop.add(resizeMode);
 			centerOfTop.add(delete);
 		
 		JPanel leftOnTop = new JPanel();
@@ -269,11 +274,14 @@ public class EditorGui extends JFrame {
 			}
 			
 			g2d.setColor(Color.black);
+			
 			for(int i = 0;i<el.linkys.size();i++){
 				Link l = el.linkys.get(i);
-				g2d.drawLine(l.p1.x, l.p1.y, l.p2.x, l.p2.y);
-				g2d.drawLine(l.p2.x, l.p2.y, l.p3.x, l.p3.y);
-				g2d.drawLine(l.p3.x, l.p3.y, l.p4.x, l.p4.y);
+				if(l != null && l.p1 != null){
+					g2d.drawLine(l.p1.x, l.p1.y, l.p2.x, l.p2.y);
+					g2d.drawLine(l.p2.x, l.p2.y, l.p3.x, l.p3.y);
+					g2d.drawLine(l.p3.x, l.p3.y, l.p4.x, l.p4.y);
+				}
 				
 				/*switch(l.direction){
 				case LEFT:

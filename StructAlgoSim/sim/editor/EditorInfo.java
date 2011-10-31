@@ -11,6 +11,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
+import sim.functions.Add;
 import sim.gui.elements.GuiElement;
 import sim.gui.elements.GuiSettings;
 import sim.structures.Array;
@@ -48,10 +49,11 @@ public class EditorInfo extends JPanel{
 		//Functions
 		ADD,
 		INSERT,
-		MOVECHAR,
 		POP,
 		PUSH,
 		REMOVE,
+		GET,
+		SET,
 		//Default
 		NONE	
 	}
@@ -107,8 +109,15 @@ public class EditorInfo extends JPanel{
 				a.insertAt("yoyoyo", 4, 1);
 				add(a.getGuiElement(), BorderLayout.WEST);
 				t = 
-						"Et array består av en liste med objekter som ofte har en gitt størrelsesorden før den tas i bruk." +
-						" Objektene sorteres med en tallindeks og kan leses og skrives fra/til alle indekser."
+						"Structure information:\n" +
+						"An array has a fixed size and a fixed amount of dimensions. To access the data in an array, one simply points" +
+						"to the indices of the position in a given dimension. Arrays are good for random access, but the fact that they have" +
+						"a fixed size implements a few problem if the data one wants to store has variable size as that would require a " +
+						"remake of the array with new sizes.\n" +
+						"\n" +
+						"Editor use:\n" +
+						"Place in the desired position, then select one- or two-dimensional as well as size of the two dimensions." +
+						"The array can be linked with Set and Get. If you want to delete an element, simply set the value blank."
 					;
 				text.setText(t);
 				break;
@@ -122,14 +131,15 @@ public class EditorInfo extends JPanel{
 				add(ll.getGuiElement(), BorderLayout.WEST);
 				t = 
 						"Structure information:\n" +
-						"En lenket liste består av en rekke elementer som en lenket sammen, enten enkelt eller dobbelt." +
-						"I første tilfelle peker elementene til sin neste nabo i listen, men de i det andre tilfellet peker" +
-						"både til neste og forrige nabo. Lister kan også være sirkulære. Da peker siste element i listen på det" +
-						"første elementet i listen.\n" +
+						"A linked list consist of a number of elements that are connected to each other, either singularily or doubly." +
+						"In the first case every element always links to their next neighbor in the list, while in the second case" +
+						"the elements will point the link to both their next and to their previous neighbor. Linked lists can also" +
+						"be circular. In this case the last element points to the first element in the list, and if the list is doubly" +
+						"linked, the first element will point to the last element in the list.\n" +
 						"\n" +
 						"Editor use:\n" +
-						"Plasser på ønsket posisjon (husk at elementet er ganske stort) og velg hvordan listen skal være lenket." +
-						"Liste kan lenkes med Insert og Remove"
+						"Place in the desired position and use the controls on the element to choose between single or doubly linked as well" +
+						"as circular or non-circular. The linked list can be linked with Insert, Add and Remove"
 					;
 				text.setText(t);
 				
@@ -143,11 +153,12 @@ public class EditorInfo extends JPanel{
 				add(q.getGuiElement(), BorderLayout.WEST);
 				t = 
 						"Structure information:\n" +
-						"En kø er et spesialtilfelle av Stack hvor man kun kan sette inn elementer i slutten av strukturen" +
-						"og kun kan ta ut elementer fra begynnelsen av strukturen.\n" +
+						"A queue is a special case of a stack that only allows items to be added at the top and removed at the bottom." +
+						"This comes to use when you want to sort items from old to new for example, as you only can get the oldest item" +
+						"out of the queue at any time.\n" +
 						"\n" +
 						"Editor use:\n" +
-						"Køen kan lenkes med Push og Pop for å , henholdsvis, legge til og fjerne elementer."
+						"Place in desired position and link with Add and Remove to, believe it or not, add or remove items from the queue."
 					;
 				text.setText(t);
 				
@@ -161,34 +172,48 @@ public class EditorInfo extends JPanel{
 				add(tr.getGuiElement(), BorderLayout.WEST);
 				t = 
 						"Structure information:\n" +
-						"Et tre består av en rot med ett eller flere underelementer som igjen kan være røtter som inneholder" +
-						"underelementer. I et binærtre kan røttene kun ha to underelementer, mens i et N-ary tre kan røttene ha N" +
-						"underelementer. På mange måter er treet et spesialtilfelle av lenket liste, men skilles fra lenket liste ved" +
-						"at det er mye mer effektivt å traversere.\n" +
+						"A tree consists of a root with one or more sub-elements that further can be parents to new" +
+						"sub-elements. In a binary tree the parents can only have two sub-elements, while in an N-ary tree the parents" +
+						"can have N number of sub-elements. I many ways the tree is a special case of a linked list, but diverges from" +
+						"the linked list in that it is, in some cases, much more efficient to traverse and operate on.\n"+
 						"\n" +
 						"Editor use:\n" +
-						"Plassér elementet på ønsket posisjon (husk at du trenger stor plass) og velg om treet skal være binært eller N-ary." +
-						"Kan lenkes med Insert og Remove."
+						"Place in desired position and use the controls on the element to change how the tree is built. Can be linked with" +
+						"Add, Remove, Insert, Get or Set"
 					;
 				text.setText(t);
 				
 				break;
 			case VARIABLE:
-				Variable v = new Variable(new Rectangle(0,0,50,100), "Variable value", false);
+				Variable v = new Variable(new Rectangle(50,50,50,100), "Variable value", true);
 				
 				add(v.getGuiElement());
 				t= 
 						"Structure information:\n" +
-						"En variabel kan skrives og leses verdier fra og brukes til å ta vare på" +
-						"verdier mellom metodekall og beregninger.\n" +
+						"A variable is used to pass values to and from functions and structures.\n" +
 						"\n" +
 						"Editor use:\n" +
-						"En variabel kan lenkes med de fleste funksjonene i editoren. Noen av disse er retningsbestemt, noe som vil si" +
-						"at dersom du lager en lenke fra variabelen til funksjonen så betyr det noe annet enn om du lager en lenke fra" +
-						"funksjonen til variabelen. Det står informasjon om hva som gjelder på de forskjellige funksjonene."
+						"Place in desired position after choosing whether it should be editable or not. Can be linked with all" +
+						"the functions. Read information about specific use when selecting a function."
 						;
 				text.setText(t);
 				break;
+			case ADD:
+				Add add = new Add(new Rectangle(50,50,80,30));
+				add(add.getGuiElement());
+				t = 
+						"Function information:\n" +
+						"Add adds an element to a given index or at the default end- or starting point of a structure.\n" +
+						"\n" +
+						"Editor use:\n" +
+						"Place at desired position and link with a variable to be able to select whether that variable should be" +
+						"the index at which to add the value, or if it should be the value to add. If Add is only linked to a value-" +
+						"variable it attempts to add the value given at the end or beginning of the structure it is linked with. Can be linked" +
+						"with: Queue, Linked List, Tree, Heap or Variable."
+						;
+				text.setText(t);
+				break;
+			
 			}
 		}
 	}

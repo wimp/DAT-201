@@ -58,6 +58,10 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 	protected 	GlassPanel 			panel = new GlassPanel();
 	protected 	Vector<Link> 		linkys = new Vector<Link>();
 	private 	Link 				link;
+	private Point resizeStartPoint = new Point();
+	private Point resizeEndPoint = new Point();
+	private Point resizeTempPoint = new Point();
+	private int resizeElementIndex = -1;
 
 	// Class Methods //
 	/**
@@ -469,7 +473,10 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 	public void mousePressed(MouseEvent e) {
 		int x = e.getX();
 		int y = e.getY();
-
+		resizeStartPoint.x = x;
+		resizeStartPoint.y = y;
+		resizeTempPoint.x = x;
+		resizeTempPoint.y = y;
 		if(type == ElementType.LINK){
 			for(int i=0;i<guiElements.size();i++){
 				if(guiElements.get(i).getBounds().contains(x, y)){
@@ -481,6 +488,12 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 				}
 			}
 			panel.p1 = new Point(e.getX(),e.getY());
+		}else if(type == ElementType.RESIZE){
+			for(int i = 0;i < guiElements.size();i++){
+				if(guiElements.get(i).getBounds().contains(x, y)){
+					resizeElementIndex = i;
+				}
+			}
 		}
 	}
 
@@ -563,144 +576,160 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 							}else{
 								return;
 							}
-						}else if(endElement instanceof Set){
-							Object[] options = {"Input", "Index", "Cancel"};
-							int sel = JOptionPane.showOptionDialog(((Set) endElement).getGuiElement(), "What type of variable is this?", "Typeo of variable", JOptionPane.YES_NO_CANCEL_OPTION	, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-							if(sel == 0){
-								((Set) endElement).setSourceVariable((Variable) startElement);
-							}else if(sel == 1){
-								((Set) endElement).setIndexVariable((Variable) startElement);
-							}
 						}
-					}else if(startElement instanceof Stack){
-						if(endElement instanceof Push){
-							((Push) endElement).setTarget(startElement);
-						}else if(endElement instanceof Pop){
-							((Pop) endElement).setTarget(startElement);
-						}
-					}else if(startElement instanceof Push){
-						if(endElement instanceof Stack){
-							((Push) startElement).setTarget(endElement);
-						}else if(endElement instanceof Variable){
-							((Push) startElement).setSourceVariable((Variable) endElement);
-						}
-					}else if(startElement instanceof Pop){
-						if(endElement instanceof Stack){
-							((Pop) startElement).setTarget(endElement);
-						}else if(endElement instanceof Variable){
-							((Pop) startElement).setSourceVariable((Variable) endElement);
-						}
-					}else if(startElement instanceof LinkedList){
-						if(endElement instanceof Set){
-							((Set) endElement).setTarget(startElement);
-						}else if(endElement instanceof Get){
-							((Get) endElement).setTarget(startElement);
-						}else if(endElement instanceof Remove){
-							((Remove) endElement).setTarget(startElement);
-						}else if(endElement instanceof Insert){
-							((Insert) endElement).setTarget(startElement);
-						}else if(endElement instanceof Add){
-							((Add) endElement).setTarget(startElement);
-						}
-					}else if(startElement instanceof Remove){
-						if(endElement instanceof Variable){
-							Object[] options = {"Ouput", "Index", "Cancel"};
-							int sel = JOptionPane.showOptionDialog(((Variable) endElement).getGuiElement(), "What type of variable is this?", "Type of variable", JOptionPane.YES_NO_CANCEL_OPTION	, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-							if(sel == 0){
-								((Remove) startElement).setSourceVariable((Variable) endElement);
-							}else if(sel == 1){
-								((Remove) startElement).setIndexVariable((Variable) endElement);
-							}
-						}else if(endElement instanceof LinkedList){
-							((Remove) startElement).setTarget(endElement);
-						}else if(endElement instanceof Tree){
-							((Remove) startElement).setTarget(endElement);
-						}else if(endElement instanceof Queue){
-							((Remove) startElement).setTarget(endElement);
-						}
-					}else if(startElement instanceof Get){
-						if(endElement instanceof Variable){
-							Object[] options = {"Input", "Output", "Index"};
-							Object sel = JOptionPane.showInputDialog(((Variable) endElement).getGuiElement(), "What type of variable is this?", "Type of variable", JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-							if(sel== null) return;
-							if(sel.equals("Input")){
-								((Get) startElement).setSourceVariable((Variable) endElement);
-							}else if(sel.equals("Output")){
-								((Get) startElement).setTarget(endElement);
-							}else if(sel.equals("Index")){
-								((Get) startElement).setIndexVariable((Variable) endElement);
-							}else{
-								return;
-							}
-						}else if(endElement instanceof LinkedList){
-							((Get) startElement).setTarget(endElement);
-						}else if(endElement instanceof Tree){
-							((Get) startElement).setTarget(endElement);
-						}else if(endElement instanceof Array){
-							((Get) startElement).setTarget(endElement);
-						}
-					}else if(startElement instanceof Set){
-						if(endElement instanceof Variable){
-							Object[] options = {"Input", "Index", "Cancel"};
-							int sel = JOptionPane.showOptionDialog(((Variable) endElement).getGuiElement(), "What type of variable is this?", "Type of variable", JOptionPane.YES_NO_CANCEL_OPTION	, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-							if(sel == 0){
-								((Set) startElement).setSourceVariable((Variable) endElement);
-							}else if(sel == 1){
-								((Set) startElement).setIndexVariable((Variable) endElement);
-							}
-						}else if(endElement instanceof LinkedList){
-							((Set) startElement).setTarget(endElement);
-						}else if(endElement instanceof Tree){
-							((Set) startElement).setTarget(endElement);
-						}else if(endElement instanceof Queue){
-							((Set) startElement).setTarget(endElement);
-						}else if(endElement instanceof Array){
-							((Set) startElement).setTarget(endElement);
-						}
-					}else if(startElement instanceof Array){
-						if(endElement instanceof Set){
-							((Set) endElement).setTarget(startElement);
-						}else if(endElement instanceof Get){
-							((Get) endElement).setTarget(startElement);
-						}else if(endElement instanceof Insert){
-							((Insert) endElement).setTarget(startElement);
-						}
-					}else if(startElement instanceof Tree){
-						if(endElement instanceof Set){
-							((Set) endElement).setTarget(startElement);
-						}else if(endElement instanceof Get){
-							((Get) endElement).setTarget(startElement);
-						}else if(endElement instanceof Insert){
-							((Insert) endElement).setTarget(startElement);
-						}else if(endElement instanceof Add){
-							((Add) endElement).setTarget(startElement);
-						}else if(endElement instanceof Remove){
-							((Remove) endElement).setTarget(startElement);
-						}
-					}else if(startElement instanceof Insert){
-						if(endElement instanceof Tree){
-							((Insert) startElement).setTarget(endElement);
-						}else if(endElement instanceof LinkedList){
-							((Insert) startElement).setTarget(endElement);
-						}else if(endElement instanceof Variable){
-							Object[] options = {"Input", "Index", "Cancel"};
-							int sel = JOptionPane.showOptionDialog(((Variable) endElement).getGuiElement(), "What type of variable is this?", "Type of variable", JOptionPane.YES_NO_CANCEL_OPTION	, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-							if(sel == 0){
-								((Insert) startElement).setSourceVariable((Variable) endElement);
-							}else if(sel == 1){
-								((Insert) startElement).setIndexVariable((Variable) endElement);
-							}
-						}
-					}else if(startElement instanceof Queue){
-						if(endElement instanceof Add){
-							((Add) endElement).setTarget(startElement);
-						}else if(endElement instanceof Remove){
-							((Remove) endElement).setTarget(startElement);
+					}else if(endElement instanceof Set){
+						Object[] options = {"Input", "Index", "Cancel"};
+						int sel = JOptionPane.showOptionDialog(((Set) endElement).getGuiElement(), "What type of variable is this?", "Typeo of variable", JOptionPane.YES_NO_CANCEL_OPTION	, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+						if(sel == 0){
+							((Set) endElement).setSourceVariable((Variable) startElement);
+						}else if(sel == 1){
+							((Set) endElement).setIndexVariable((Variable) startElement);
 						}
 					}
-					break;
+				}else if(startElement instanceof Stack){
+					if(endElement instanceof Push){
+						((Push) endElement).setTarget(startElement);
+					}else if(endElement instanceof Pop){
+						((Pop) endElement).setTarget(startElement);
+					}
+				}else if(startElement instanceof Push){
+					if(endElement instanceof Stack){
+						((Push) startElement).setTarget(endElement);
+					}else if(endElement instanceof Variable){
+						((Push) startElement).setSourceVariable((Variable) endElement);
+					}
+				}else if(startElement instanceof Pop){
+					if(endElement instanceof Stack){
+						((Pop) startElement).setTarget(endElement);
+					}else if(endElement instanceof Variable){
+						((Pop) startElement).setSourceVariable((Variable) endElement);
+					}
+				}else if(startElement instanceof LinkedList){
+					if(endElement instanceof Set){
+						((Set) endElement).setTarget(startElement);
+					}else if(endElement instanceof Get){
+						((Get) endElement).setTarget(startElement);
+					}else if(endElement instanceof Remove){
+						((Remove) endElement).setTarget(startElement);
+					}else if(endElement instanceof Insert){
+						((Insert) endElement).setTarget(startElement);
+					}else if(endElement instanceof Add){
+						((Add) endElement).setTarget(startElement);
+					}
+				}else if(startElement instanceof Remove){
+					if(endElement instanceof Variable){
+						Object[] options = {"Ouput", "Index", "Cancel"};
+						int sel = JOptionPane.showOptionDialog(((Variable) endElement).getGuiElement(), "What type of variable is this?", "Type of variable", JOptionPane.YES_NO_CANCEL_OPTION	, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+						if(sel == 0){
+							((Remove) startElement).setSourceVariable((Variable) endElement);
+						}else if(sel == 1){
+							((Remove) startElement).setIndexVariable((Variable) endElement);
+						}
+					}else if(endElement instanceof LinkedList){
+						((Remove) startElement).setTarget(endElement);
+					}else if(endElement instanceof Tree){
+						((Remove) startElement).setTarget(endElement);
+					}else if(endElement instanceof Queue){
+						((Remove) startElement).setTarget(endElement);
+					}
+				}else if(startElement instanceof Get){
+					if(endElement instanceof Variable){
+						Object[] options = {"Input", "Output", "Index"};
+						Object sel = JOptionPane.showInputDialog(((Variable) endElement).getGuiElement(), "What type of variable is this?", "Type of variable", JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+						if(sel== null) return;
+						if(sel.equals("Input")){
+							((Get) startElement).setSourceVariable((Variable) endElement);
+						}else if(sel.equals("Output")){
+							((Get) startElement).setTarget(endElement);
+						}else if(sel.equals("Index")){
+							((Get) startElement).setIndexVariable((Variable) endElement);
+						}else{
+							return;
+						}
+					}else if(endElement instanceof LinkedList){
+						((Get) startElement).setTarget(endElement);
+					}else if(endElement instanceof Tree){
+						((Get) startElement).setTarget(endElement);
+					}else if(endElement instanceof Array){
+						((Get) startElement).setTarget(endElement);
+					}
+				}else if(startElement instanceof Set){
+					if(endElement instanceof Variable){
+						Object[] options = {"Input", "Index", "Cancel"};
+						int sel = JOptionPane.showOptionDialog(((Variable) endElement).getGuiElement(), "What type of variable is this?", "Type of variable", JOptionPane.YES_NO_CANCEL_OPTION	, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+						if(sel == 0){
+							((Set) startElement).setSourceVariable((Variable) endElement);
+						}else if(sel == 1){
+							((Set) startElement).setIndexVariable((Variable) endElement);
+						}
+					}else if(endElement instanceof LinkedList){
+						((Set) startElement).setTarget(endElement);
+					}else if(endElement instanceof Tree){
+						((Set) startElement).setTarget(endElement);
+					}else if(endElement instanceof Queue){
+						((Set) startElement).setTarget(endElement);
+					}else if(endElement instanceof Array){
+						((Set) startElement).setTarget(endElement);
+					}
+				}else if(startElement instanceof Array){
+					if(endElement instanceof Set){
+						((Set) endElement).setTarget(startElement);
+					}else if(endElement instanceof Get){
+						((Get) endElement).setTarget(startElement);
+					}else if(endElement instanceof Insert){
+						((Insert) endElement).setTarget(startElement);
+					}
+				}else if(startElement instanceof Tree){
+					if(endElement instanceof Set){
+						((Set) endElement).setTarget(startElement);
+					}else if(endElement instanceof Get){
+						((Get) endElement).setTarget(startElement);
+					}else if(endElement instanceof Insert){
+						((Insert) endElement).setTarget(startElement);
+					}else if(endElement instanceof Add){
+						((Add) endElement).setTarget(startElement);
+					}else if(endElement instanceof Remove){
+						((Remove) endElement).setTarget(startElement);
+					}
+				}else if(startElement instanceof Insert){
+					if(endElement instanceof Tree){
+						((Insert) startElement).setTarget(endElement);
+					}else if(endElement instanceof LinkedList){
+						((Insert) startElement).setTarget(endElement);
+					}else if(endElement instanceof Variable){
+						Object[] options = {"Input", "Index", "Cancel"};
+						int sel = JOptionPane.showOptionDialog(((Variable) endElement).getGuiElement(), "What type of variable is this?", "Type of variable", JOptionPane.YES_NO_CANCEL_OPTION	, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+						if(sel == 0){
+							((Insert) startElement).setSourceVariable((Variable) endElement);
+						}else if(sel == 1){
+							((Insert) startElement).setIndexVariable((Variable) endElement);
+						}
+					}
+				}else if(startElement instanceof Queue){
+					if(endElement instanceof Add){
+						((Add) endElement).setTarget(startElement);
+					}else if(endElement instanceof Remove){
+						((Remove) endElement).setTarget(startElement);
+					}
 				}
+				break;
 			}
+		}else if(type == ElementType.RESIZE && resizeElementIndex != -1){
+			resizeEndPoint = new Point(x,y);
+			int oldWidth = guiElements.get(resizeElementIndex).getWidth();
+			int newWidth = oldWidth + (resizeEndPoint.x - resizeStartPoint.x);
+			int oldHeight = guiElements.get(resizeElementIndex).getHeight();
+			int oldX = guiElements.get(resizeElementIndex).getX();
+			int oldY = guiElements.get(resizeElementIndex).getY();
+			int newHeight = oldHeight + (resizeEndPoint.y - resizeStartPoint.y);
+			newWidth = newWidth > 10 ? newWidth : 10;
+			newHeight = newHeight > 10 ? newHeight : 10;
+
+			guiElements.get(resizeElementIndex).setBounds(oldX, oldY, newWidth, newHeight);
+			resizeElementIndex = -1;
+			panel.repaint();
+			panel.validate();
+			gui.validate();
 		}
 		panel.repaint();
 
@@ -726,6 +755,14 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 			}
 			panel.p2 = new Point(e.getX(),e.getY());
 			panel.repaint();
+		}else if(type == ElementType.RESIZE && resizeElementIndex != -1){
+			resizeEndPoint.x = x;
+			resizeEndPoint.y = y;
+			panel.r.width = (panel.r.width + (resizeEndPoint.x - resizeTempPoint.x)) > 10 ? (panel.r.width + (resizeEndPoint.x - resizeTempPoint.x)) : 10;
+			panel.r.height = (panel.r.height + (resizeEndPoint.y - resizeTempPoint.y)) > 10 ? (panel.r.height + (resizeEndPoint.y - resizeTempPoint.y)) : 10;
+			panel.repaint();
+			resizeTempPoint.x = x;
+			resizeTempPoint.y = y;
 		}
 	}
 
@@ -754,6 +791,19 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 			for(int i=0;i<guiElements.size();i++){
 				if(guiElements.get(i).getBounds().contains(x,y)){
 					panel.c = Color.red;
+					panel.r = new Rectangle(guiElements.get(i).getBounds());
+					panel.repaint();
+					break;
+				}else{
+					panel.r = null;
+					panel.c = Color.green;
+					panel.repaint();
+				}
+			}
+		}else if(type == ElementType.RESIZE){
+			for(int i=0;i<guiElements.size();i++){
+				if(guiElements.get(i).getBounds().contains(x,y)){
+					panel.c = Color.orange;
 					panel.r = new Rectangle(guiElements.get(i).getBounds());
 					panel.repaint();
 					break;
@@ -1189,6 +1239,19 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 			// NEW FILE
 			clearEditor();
 			break;
+		case 24:
+			// RESIZE MODE
+			type = ElementType.RESIZE;
+
+			panel.setOpaque(false);
+			panel.setSize(gui.editorPanel.getSize());
+			panel.addMouseListener(this);
+			panel.addMouseMotionListener(this);
+
+			gui.editorPanel.add(panel);
+			gui.editorPanel.setComponentZOrder(panel, 0);
+			gui.editorPanel.validate();
+			break;
 		}
 		gui.optionsPanel.setOptionsType(type);
 		gui.editorPanel.revalidate();
@@ -1314,7 +1377,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 	}
 
 	public enum ElementType{
-		STACK,ARRAY,LIST,ADD,REMOVE,INSERT,PUSH,POP,VARIABLE,LINK,SELECT,GET, SET,DELETE,TREE,HEAP,QUEUE,NONE
+		STACK,ARRAY,LIST,ADD,REMOVE,INSERT,PUSH,POP,VARIABLE,LINK,SELECT,GET, SET,DELETE,TREE,HEAP,QUEUE,NONE,RESIZE
 	}
 
 	protected enum LinkDirection{
