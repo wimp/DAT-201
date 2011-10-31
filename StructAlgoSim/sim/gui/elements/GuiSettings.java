@@ -7,7 +7,7 @@ public final class GuiSettings {
 	//LinkedList
 	public static final Color LISTNODECOLOR = Color.CYAN;
 	public static final Color LISTADDEDCOLOR = Color.GREEN;
-	public static final Color LISTREMOVEDCOLOR = Color.GREEN;
+	public static final Color LISTREMOVEDCOLOR = Color.RED;
 	public static final Color LISTHEADCOLOR = Color.YELLOW;
 	public static final Color LISTLASTCOLOR = Color.MAGENTA;
 	public static final int LISTNODEWIDTH = 30;

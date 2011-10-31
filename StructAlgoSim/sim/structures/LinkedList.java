@@ -24,7 +24,7 @@ public class LinkedList {
 	 */
 	public LinkedList(Rectangle bounds, boolean animated){
 
-		dummy = new Node("dummy");
+		dummy = new Node("dummy", 0);
 
 		dummy.setNext(dummy);
 		dummy.setPrevious(dummy);
@@ -44,7 +44,7 @@ public class LinkedList {
 	 * @param value The object (most likely a string of text) that this node is to contain.
 	 */
 	public void addFirst(Object value){
-		insertAt(1, value,false );
+		insertAt(0, value,false );
 	}
 	/**
 	 * Adds a new node to the end of the list.
@@ -59,10 +59,14 @@ public class LinkedList {
 	 */
 	public Object removeElementAt(int index){
 		if(index > 0 && index < v.size()){
-			v.elementAt(index).setRemoved(true);
+			gui.stopAnimation();
 			gui.repaint();
+			gui.setRemoved(v.elementAt(index));
+			Object s = v.elementAt(index).getValue();
+			v.set(index, null);
+			
 			gui.startAnimation();
-			return v.elementAt(index).getValue();
+			return s;
 		}
 		else return null;
 	}
@@ -79,40 +83,59 @@ public class LinkedList {
 	 * @param value The object (most likely a string of text) that this node is to contain.
 	 */
 	public void insertAt( int index, Object value, boolean after){
+
+		gui.stopAnimation();
 		if(index <0) 
 			index = v.size()-1;
-
+		
+		Node n = null;
+		Node indexNode = null;
+		
 		if(index>=0 && index<v.size()){
-
-			Node n = new Node(value);
-			if(after){
-
-				v.elementAt(index).getNext().setPrevious(n);
-				n.setNext(v.elementAt(index).getNext());
-
-				v.elementAt(index).setNext(n);
-				n.setPrevious(v.elementAt(index));
-			}
-			else {
-
-				v.elementAt(index).getPrevious().setNext(n);
-				n.setPrevious(v.elementAt(index).getPrevious());
-
-				v.elementAt(index).setPrevious(n);
-				n.setNext(v.elementAt(index));
+			
+			for(Node in : v){
+				if(in.getIndex()==index) indexNode = in;
 			}
 			
-			if(after && index == v.size()-1)
+			if(after){
+				n = new Node(value, index+1);
+				indexNode.getNext().setPrevious(n);
+				n.setNext(indexNode.getNext());
+
+				indexNode.setNext(n);
+				n.setPrevious(indexNode);
+			}
+			else {
+				n = new Node(value, index);
+				indexNode.getPrevious().setNext(n);
+				n.setPrevious(indexNode.getPrevious());
+
+				indexNode.setPrevious(n);
+				n.setNext(indexNode);
+			}
+			
+			if(after && index == v.size()-1){
+				n.setIndex(v.size());
 				v.add(n);
+			}
 			else if(!after && index == 0)
+			{
+				n.setIndex(v.size());
 				v.add(n);
+			}
 			else if(after)
 				v.insertElementAt(n, index+1);
 			else
 				v.insertElementAt(n, index);
 		}
+		for(Node node : v){
+			if(node!=null)
+			node.setIndex(v.indexOf(node));
+		}
 		gui.repaint();
-		gui.getAnimation().start();
+		gui.startAnimation();
+		
+		if(n!=null)
+			n.setAdded(true);
 	}
-
 }
