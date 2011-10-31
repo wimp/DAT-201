@@ -27,7 +27,7 @@ public class EditorInfo extends JPanel{
 
 	public EditorInfo(){
 		panel = new InfoPanel();
-		panel.changeInfo(InfoType.TREE);
+		panel.changeInfo(InfoType.LINKEDLIST);
 		setLayout(new GridLayout(1,1));
 		add(panel);
 	}
@@ -90,12 +90,12 @@ public class EditorInfo extends JPanel{
 				add(s.getGuiElement());
 
 				t = 
-						"Om strukturen:\n" +
-						"En stack kan kun ta imot og fjerne elementer fra toppen.\n" +
-						"Metodene som brukes for å gjøre dette er henholdsvis Push og Pop\n" +
+						"Structure information:\n" +
+						"The elements in a stack can only be accessed from one end, the top.\n" +
+						"The methods to add or remove elements are Push and Pop, respectively.\n" +
 						"\n" +
-						"Om bruk i editor:\n" +
-						"Legges til på ønsket posisjon og linkes med Push og/eller Pop"
+						"Editor use:\n" +
+						"Place in the desired position and link with a Pop and/or a Push function."
 					;
 				text.setText(t);
 				break;
@@ -122,13 +122,13 @@ public class EditorInfo extends JPanel{
 				
 				add(ll.getGuiElement(), BorderLayout.WEST);
 				t = 
-						"Om strukturen:\n" +
+						"Structure information:\n" +
 						"En lenket liste består av en rekke elementer som en lenket sammen, enten enkelt eller dobbelt." +
 						"I første tilfelle peker elementene til sin neste nabo i listen, men de i det andre tilfellet peker" +
 						"både til neste og forrige nabo. Lister kan også være sirkulære. Da peker siste element i listen på det" +
 						"første elementet i listen.\n" +
 						"\n" +
-						"Om bruk i editoren:\n" +
+						"Editor use:\n" +
 						"Plasser på ønsket posisjon (husk at elementet er ganske stort) og velg hvordan listen skal være lenket." +
 						"Liste kan lenkes med Insert og Remove"
 					;
@@ -143,11 +143,11 @@ public class EditorInfo extends JPanel{
 				
 				add(q.getGuiElement(), BorderLayout.WEST);
 				t = 
-						"Om Strukturen:\n" +
+						"Structure information:\n" +
 						"En kø er et spesialtilfelle av Stack hvor man kun kan sette inn elementer i slutten av strukturen" +
 						"og kun kan ta ut elementer fra begynnelsen av strukturen.\n" +
 						"\n" +
-						"Om bruk i editoren:\n" +
+						"Editor use:\n" +
 						"Køen kan lenkes med Push og Pop for å , henholdsvis, legge til og fjerne elementer."
 					;
 				text.setText(t);
@@ -161,13 +161,13 @@ public class EditorInfo extends JPanel{
 				
 				add(tr.getGuiElement(), BorderLayout.WEST);
 				t = 
-						"Om strukturen:\n" +
+						"Structure information:\n" +
 						"Et tre består av en rot med ett eller flere underelementer som igjen kan være røtter som inneholder" +
 						"underelementer. I et binærtre kan røttene kun ha to underelementer, mens i et N-ary tre kan røttene ha N" +
 						"underelementer. På mange måter er treet et spesialtilfelle av lenket liste, men skilles fra lenket liste ved" +
 						"at det er mye mer effektivt å traversere.\n" +
 						"\n" +
-						"Om bruk i editoren:\n" +
+						"Editor use:\n" +
 						"Plassér elementet på ønsket posisjon (husk at du trenger stor plass) og velg om treet skal være binært eller N-ary." +
 						"Kan lenkes med Insert og Remove."
 					;
@@ -179,11 +179,11 @@ public class EditorInfo extends JPanel{
 				
 				add(v.getGuiElement());
 				t= 
-						"Om strukturen:\n" +
+						"Structure information:\n" +
 						"En variabel kan skrives og leses verdier fra og brukes til å ta vare på" +
 						"verdier mellom metodekall og beregninger.\n" +
 						"\n" +
-						"Om bruk i editoren:\n" +
+						"Editor use:\n" +
 						"En variabel kan lenkes med de fleste funksjonene i editoren. Noen av disse er retningsbestemt, noe som vil si" +
 						"at dersom du lager en lenke fra variabelen til funksjonen så betyr det noe annet enn om du lager en lenke fra" +
 						"funksjonen til variabelen. Det står informasjon om hva som gjelder på de forskjellige funksjonene."

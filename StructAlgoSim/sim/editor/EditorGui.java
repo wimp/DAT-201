@@ -31,6 +31,9 @@ public class EditorGui extends JFrame {
 	EditorListener el = new EditorListener(this);
 	EditorPanel editorPanel;
 	JLabel mouseCoords;
+	JTextField width = new JTextField("Width");
+	JTextField height = new JTextField("Height");
+	
 	OptionsPanel optionsPanel = new OptionsPanel();
 	protected EditorInfo eInfo;
 	
@@ -40,19 +43,24 @@ public class EditorGui extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(950, 600);
 		setLayout(new BorderLayout());
-		JPanel topPanel 	= new JPanel();
-		JPanel westPanel	= new JPanel();
-		JPanel eastPanel	= new JPanel();
-		JPanel bottomPanel	= new JPanel();
+		JPanel topPanel 		= new JPanel();
+		JPanel westPanel		= new JPanel();
+		JPanel eastPanel		= new JPanel();
+		JPanel bottomPanel		= new JPanel(new BorderLayout());
+		JPanel bottomInfoPanel 	= new JPanel();
 		
 		JMenuBar menuBar = new JMenuBar();
 		
 		JMenu menu = new JMenu("File");
+		JMenu tools = new JMenu("Tools");
 		menuBar.add(menu);
+		menuBar.add(tools);
 		
+		JMenuItem anim = new JMenuItem("Animation Player");
 		JMenuItem save = new JMenuItem("Save");
 		JMenuItem load = new JMenuItem("Load");
 		
+		tools.add(anim);
 		menu.add(save);
 		menu.add(load);
 		
@@ -96,7 +104,9 @@ public class EditorGui extends JFrame {
 		JToggleButton heap		= new JToggleButton("Heap");
 		JToggleButton queue		= new JToggleButton("Queue");
 		JCheckBox grid			= new JCheckBox("Grid");
-		JButton animation		= new JButton("Animation");
+		JButton resize			= new JButton("Resize");
+		
+		
 		
 		// Add actionlisteners and set action commands //
 		stack.addActionListener(el);
@@ -131,8 +141,8 @@ public class EditorGui extends JFrame {
 		queue.setActionCommand("15");
 		grid.addActionListener(el);
 		grid.setActionCommand("16");
-		animation.addActionListener(el);
-		animation.setActionCommand("17");
+		anim.addActionListener(el);
+		anim.setActionCommand("17");
 		save.addActionListener(el);
 		save.setActionCommand("18");
 		load.addActionListener(el);
@@ -141,6 +151,8 @@ public class EditorGui extends JFrame {
 		set.setActionCommand("20");
 		get.addActionListener(el);
 		get.setActionCommand("21");
+		resize.addActionListener(el);
+		resize.setActionCommand("22");
 		
 		// Add toggle buttons to the button group //
 		bg.add(stack);
@@ -160,9 +172,10 @@ public class EditorGui extends JFrame {
 		bg.add(queue);
 		bg.add(get);
 		bg.add(set);
-		
+
 		// Add elements to the west panel (data structures and variables) //
-		westPanel.setLayout(new GridLayout(10,1));
+		westPanel.setLayout(new GridLayout(11,1));
+		westPanel.add(new JLabel("Structures:"));
 		westPanel.add(list);
 		westPanel.add(queue);
 		westPanel.add(stack);
@@ -177,8 +190,9 @@ public class EditorGui extends JFrame {
 		westPanel.add(optionsPanel);
 		
 		// Add elements to the east panel (functions etc.) //
-		eastPanel.setLayout(new GridLayout(10,1));
+		eastPanel.setLayout(new GridLayout(11,1));
 		
+		eastPanel.add(new JLabel("Functions:"));
 		eastPanel.add(remove);
 		eastPanel.add(insert);
 		eastPanel.add(push);
@@ -199,19 +213,25 @@ public class EditorGui extends JFrame {
 		
 		JPanel leftOnTop = new JPanel();
 			leftOnTop.setPreferredSize(new Dimension(250,30));
-			leftOnTop.setLayout(new GridLayout(1,2));
-			leftOnTop.add(mouseCoords);
-			leftOnTop.add(grid);
-		JPanel rightOnTop = new JPanel(new GridLayout(1,3));
+			leftOnTop.setLayout(new GridLayout(1,1));
+			
+			leftOnTop.add(width);
+			leftOnTop.add(height);
+			leftOnTop.add(resize);
+			
+		JPanel rightOnTop = new JPanel(new GridLayout(1,2));
 			rightOnTop.setPreferredSize(new Dimension(250,30));
-			rightOnTop.add(new JLabel(""));
-			rightOnTop.add(animation);
+			rightOnTop.add(grid);
+			
 		topPanel.add(centerOfTop,BorderLayout.CENTER);
 		topPanel.add(leftOnTop,BorderLayout.WEST);
 		topPanel.add(rightOnTop,BorderLayout.EAST);
 		
 		// Add elements to the bottom panel //
-		bottomPanel.add(eInfo);
+
+		bottomInfoPanel.add(mouseCoords, BorderLayout.WEST);
+		bottomPanel.add(eInfo, BorderLayout.NORTH);
+		bottomPanel.add(bottomInfoPanel, BorderLayout.SOUTH);
 		
 		// Add elements to the main frame in the gridLayout //
 		add(eastPanel,BorderLayout.EAST);

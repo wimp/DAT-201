@@ -7,11 +7,22 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Vector;
 
+import javax.imageio.ImageIO;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -24,19 +35,18 @@ import javax.swing.JSlider;
 import javax.swing.Timer;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
-public class EditorPlayer implements ActionListener, ChangeListener {
+public class EditorPlayer implements ActionListener, ChangeListener, WindowListener {
 
 	static final int FPS_MIN = 1;
 	static final int FPS_MAX = 4;
 	static final int FPS_INIT = 2;    //initial frames per second
-	static final int MAX_FRAMES = 200;
-	static final int MAX_WIDTH = 500;
-	static final int MAX_HEIGHT = 500;
-	private int imageWidth = 400;
-	private int imageHeight = 400;
-	private long imageByteSize = imageWidth*imageHeight*4;
-	
+	static final int MAX_FRAMES = 2000;
+	static final int MAX_TEMP_FRAMES = 5;
+	static final int MAX_WIDTH = 1000;
+	static final int MAX_HEIGHT = 1000;
+
 	private int framesPerSecond;
 	private boolean recording;
 	JPanel editorPanel;
@@ -45,7 +55,6 @@ public class EditorPlayer implements ActionListener, ChangeListener {
 	JButton record;
 	JButton play;
 	JButton stop;
-	JButton delete;
 	JButton pause;
 	JButton stepback;
 	JButton stepforward;
@@ -53,13 +62,14 @@ public class EditorPlayer implements ActionListener, ChangeListener {
 	JLabel recordInfo;
 	JMenuBar menu;
 	JMenu file;
-	JMenuItem save;
+	JMenuItem open;
+	
 	Timer animTimer;
 	private void initMenu(){
 		file = new JMenu("File");
-		save = new JMenuItem("Save");
-		save.addActionListener(this);
-		file.add(save);
+		open = new JMenuItem("Open");
+		open.addActionListener(this);
+		file.add(open);
 
 		menu = new JMenuBar();
 		menu.add(file);
@@ -74,7 +84,7 @@ public class EditorPlayer implements ActionListener, ChangeListener {
 		playerFrame.setLayout(new BorderLayout());
 		if(editorPanel != null){
 			if(editorPanel.getWidth()>0 && editorPanel.getHeight()>0){
-				playerFrame.setSize(editorPanel.getWidth(), editorPanel.getHeight());
+				playerFrame.setSize(700, 600);
 			}	
 			else
 				playerFrame.setSize(500, 700);
@@ -84,11 +94,10 @@ public class EditorPlayer implements ActionListener, ChangeListener {
 
 		initMenu();
 		JPanel buttonPanel = new JPanel(new GridLayout(1,6));
-		buttonPanel.setPreferredSize(new Dimension(playerFrame.getWidth(), playerFrame.getHeight()/6));
+		buttonPanel.setPreferredSize(new Dimension(playerFrame.getWidth(), playerFrame.getHeight()/10));
 
 		record			= new JButton("Record");
 		play			= new JButton("Play");
-		delete			= new JButton("Delete");
 		stop 			= new JButton("Stop");
 		pause			= new JButton("Pause");
 		stepback		= new JButton("<-Step");
@@ -98,7 +107,6 @@ public class EditorPlayer implements ActionListener, ChangeListener {
 
 		record.			addActionListener(this);
 		play.			addActionListener(this);
-		delete.			addActionListener(this);
 		stop.			addActionListener(this);
 		pause.			addActionListener(this);
 		stepback.		addActionListener(this);
@@ -106,16 +114,15 @@ public class EditorPlayer implements ActionListener, ChangeListener {
 
 		buttonPanel.add(record);
 		buttonPanel.add(play);
-		buttonPanel.add(delete);
 		buttonPanel.add(stepback);
 		buttonPanel.add(pause);
 		buttonPanel.add(stepforward);
 		buttonPanel.add(stop);
-		
-		JPanel fpsPanel = new JPanel(new GridLayout(3,1));
 
-		fpsPanel.setPreferredSize(new Dimension(playerFrame.getWidth()/6, playerFrame.getHeight()/5));
-		
+		JPanel fpsPanel = new JPanel(new GridLayout(1,3));
+
+		fpsPanel.setPreferredSize(new Dimension(playerFrame.getWidth(), playerFrame.getHeight()/10));
+
 		fps = new JSlider(JSlider.HORIZONTAL,
 				FPS_MIN, FPS_MAX, FPS_INIT);
 		fps.addChangeListener(this);
@@ -127,49 +134,161 @@ public class EditorPlayer implements ActionListener, ChangeListener {
 		fpsPanel.add(fps);
 		fpsPanel.add(recordInfo);
 		
-		playerFrame.add(fpsPanel, BorderLayout.EAST);
-		playerFrame.add(buttonPanel, BorderLayout.SOUTH);
+		JPanel controlPanel = new JPanel(new BorderLayout());
+		
+		controlPanel.add(fpsPanel, BorderLayout.NORTH);
+		controlPanel.add(buttonPanel, BorderLayout.SOUTH);
 
 		drawPanel = new AnimationPanel();
 		
+		playerFrame.add(controlPanel, BorderLayout.SOUTH);
+		
 		JScrollPane drawScrollPane = new JScrollPane(drawPanel);
 		playerFrame.add(drawScrollPane, BorderLayout.CENTER);
-		
+
 		playerFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		playerFrame.setVisible(true);
 	}
+	private File animationFile = null;
+	ObjectOutputStream oos;
+	FileOutputStream fos;
+	int framesInFile = 0;
+
+	private void saveToTempFile(BufferedImage img){
+		byte[] raw = imageToByteArray(img);
+		if(raw != null) { 
+			try {
+
+				oos.writeObject(raw);
+
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	private BufferedImage getImageFromFile(int currentIndex){
+		int count = 0; ;
+		try{
+			ObjectInputStream ois = new ObjectInputStream(new FileInputStream(animationFile));
+
+			Object obj = null;
+
+			while ((obj = ois.readObject()) != null) {
+				count ++;
+				if (obj instanceof byte[]  && count == currentIndex) {
+					InputStream in = new ByteArrayInputStream((byte[])obj);
+					ois.close();
+					return ImageIO.read(in);
+				}
+
+			}
+		}catch(Exception e){
+			framesInFile = count;	
+		}
+		return null;
+	}
+	private byte[] imageToByteArray(BufferedImage img){
+		ByteArrayOutputStream baos = new ByteArrayOutputStream( 1000 );
+
+		try{
+			ImageIO.write(img, "jpeg",baos );
+			baos.flush();
+			byte[] array = baos.toByteArray();
+
+			baos.close();
+
+			return array;
+
+		}catch(Exception e){
+			return null;
+		}
+	}
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		if(arg0.getSource() == save) {
+		if(arg0.getSource() == open) {
+			JFileChooser load = new JFileChooser();
+			FileNameExtensionFilter openFilter = new FileNameExtensionFilter("AlgoSim animation files", "agsa");
+			load.setMultiSelectionEnabled(false);
+			load.setFileFilter(openFilter);
+			
+			int rval = load.showOpenDialog(null);
+			
+			if(rval == JFileChooser.APPROVE_OPTION && load.getSelectedFile().exists()){
+				animationFile = load.getSelectedFile();
+			}
+			else if(rval == JFileChooser.CANCEL_OPTION) return;	
+			
+			
 		}
 		else if(arg0.getSource() == record){
 
-			drawPanel.setFiles(new Vector<File>());
-			drawPanel.setImages(new Vector<BufferedImage>());
-			animTimer = new Timer(1000/framesPerSecond, this);
-			animTimer.start();
-			recording = true;
+				JFileChooser jfc = new JFileChooser();
+				FileNameExtensionFilter tempFilter = new FileNameExtensionFilter("AlgoSim animation files", "agsa");
+				jfc.setMultiSelectionEnabled(false);
+				jfc.setFileFilter(tempFilter);
+		
+				int rval = jfc.showSaveDialog(null);
+				
+				if(rval == JFileChooser.APPROVE_OPTION && jfc.getSelectedFile().exists()){
+					if(JOptionPane.showConfirmDialog(null, "Existing file will be overwritted. Continue?", "Overwrite",JOptionPane.WARNING_MESSAGE)
+							== JFileChooser.CANCEL_OPTION) return;
+					if(!jfc.getSelectedFile().delete()){
+						JOptionPane.showMessageDialog(null, "Could not overwrite file.", "Stopped",JOptionPane.ERROR_MESSAGE);
+						return;
+					}
+				}
+				else if(rval == JFileChooser.CANCEL_OPTION) return;	
+				if(!jfc.getSelectedFile().getAbsolutePath().endsWith(".agsa"))
+					animationFile = new File(jfc.getSelectedFile().getAbsolutePath()+".agsa");
+				else
+					animationFile = jfc.getSelectedFile();
+				
+				
+				try{
+					fos = new FileOutputStream(animationFile, true);
+					oos = new ObjectOutputStream(fos);
+				}catch(Exception e){
+					JOptionPane.showMessageDialog(null, "Could not open file.", "Stopped",JOptionPane.ERROR_MESSAGE);
+
+					return;
+				}
+				
+			if(animationFile != null){
+
+				record.setEnabled(false);
+				play.setEnabled(false);
+				pause.setEnabled(false);
+				stepback.setEnabled(false);
+				stepforward.setEnabled(false);
+				
+				animTimer = new Timer(1000/framesPerSecond, this);
+				animTimer.start();
+				recording = true;
+			}
 		}
 		else if(arg0.getSource() == play){
+			
+			record.setEnabled(false);
+			play.setEnabled(false);
+			pause.setEnabled(true);
+			stepback.setEnabled(true);
+			stepforward.setEnabled(true);
+			
 			if(animTimer == null){
+
 				drawPanel.startAnimation();
 				animTimer = new Timer(1000/framesPerSecond, this);
 			}
 			animTimer.start();
 		}
-		else if(arg0.getSource() == delete){
-			if(drawPanel.getCurrentIndex()<drawPanel.getImages().size() && drawPanel.getCurrentIndex()>=0){
-				drawPanel.getImages().remove(drawPanel.getCurrentIndex());
-			}
-			if(animTimer != null){
-				if(animTimer.isRunning())
-					recordInfo.setText("PLAYING!  Frame #"+ drawPanel.getCurrentIndex());
-				else
-					recordInfo.setText("PAUSED!  Frame #"+ drawPanel.getCurrentIndex());
-			}
-			recordInfo.setText("STOPPED!");
-		}
 		else if(arg0.getSource() == pause){
+
+			record.setEnabled(false);
+			play.setEnabled(true);
+			pause.setEnabled(false);
+			stepback.setEnabled(true);
+			stepforward.setEnabled(true);
+			
 			if(animTimer != null)
 				if(animTimer.isRunning()) animTimer.stop();
 
@@ -192,63 +311,73 @@ public class EditorPlayer implements ActionListener, ChangeListener {
 
 		}
 		else if(arg0.getSource() == stop){
-			animTimer.stop();
-			animTimer = null;
-			recording = false;
 
-			recordInfo.setText("STOPPED!");
+			record.setEnabled(true);
+			play.setEnabled(true);
+			pause.setEnabled(false);
+			stepback.setEnabled(true);
+			stepforward.setEnabled(true);
+			
+			if(animTimer!=null){
+				animTimer.stop();
+				animTimer = null;
+				recording = false;
+				try{
+					if (oos != null) oos.close ();
+				}catch (Exception e){
+					e.printStackTrace();
+				}
+				recordInfo.setText("STOPPED!");
+			}
 		}
 		else if(arg0.getSource()== animTimer){
 			if(recording){
-				imageWidth = (int)editorPanel.getSize().getWidth()>MAX_WIDTH ? MAX_WIDTH :(int)editorPanel.getSize().getWidth();
-				imageHeight = (int)editorPanel.getSize().getHeight()>MAX_HEIGHT ? MAX_HEIGHT :(int)editorPanel.getSize().getHeight();
-				
-				int scaleWidth = (int)(imageWidth*(4/4f));
-				int scaleHeight = (int)(imageHeight*(4/4f));
-				
-				imageByteSize = scaleWidth * scaleHeight * 4;
-				
-				long heapFreeSize = Runtime.getRuntime().freeMemory();
+//				imageWidth = (int)editorPanel.getSize().getWidth()>MAX_WIDTH ? MAX_WIDTH :(int)editorPanel.getSize().getWidth();
+//				imageHeight = (int)editorPanel.getSize().getHeight()>MAX_HEIGHT ? MAX_HEIGHT :(int)editorPanel.getSize().getHeight();
 
-				if(heapFreeSize - imageByteSize <0 || drawPanel.getCurrentIndex()==MAX_FRAMES){
+				
+				if(drawPanel.getCurrentIndex()==MAX_FRAMES){
 
 					animTimer.stop();
 					recording = false;
 					drawPanel.stopAnimation();
 					recordInfo.setText("STOPPED!");
-
+					try{
+						if (oos != null) oos.close ();
+					}catch (Exception e){
+						e.printStackTrace();
+					}
 					drawPanel.revalidate();
 					
-					if(heapFreeSize-imageByteSize < 0)
-						JOptionPane.showMessageDialog(null, "Out of memory, heap is full.", "Stopped",JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(null, "The total number of frames allowed has been exceeded.", "Stopped",JOptionPane.ERROR_MESSAGE);
 					return;
 				}
 				BufferedImage bi = new BufferedImage(
 						(int)editorPanel.getSize().getWidth(), 
 						(int)editorPanel.getSize().getHeight(), 
 						BufferedImage.TYPE_USHORT_555_RGB);
+
 				
 				editorPanel.paintAll(bi.getGraphics());
-				
-				Image img = bi.getScaledInstance(scaleWidth, scaleHeight, BufferedImage.SCALE_SMOOTH);
-				
-				BufferedImage scaled = new BufferedImage(img.getWidth(null), img.getHeight(null),BufferedImage.TYPE_USHORT_555_RGB);
-				
-				scaled.getGraphics().drawImage(img,  0,0,null);
-				drawPanel.getImages().add(scaled);
+
+//				int scaleWidth = (int)(imageWidth*(4/4f));
+//				int scaleHeight = (int)(imageHeight*(4/4f));
+//				Image img = bi.getScaledInstance(scaleWidth, scaleHeight, BufferedImage.SCALE_SMOOTH);
+//
+//				BufferedImage scaled = new BufferedImage(img.getWidth(null), img.getHeight(null),BufferedImage.TYPE_USHORT_555_RGB);
+//
+//				scaled.getGraphics().drawImage(img,  0,0,null);
+
+				saveToTempFile(bi);
+				framesInFile++;
 				recordInfo.setText("RECORDING! Frame #"+ drawPanel.getCurrentIndex()+ " of " + MAX_FRAMES);
 				drawPanel.step();
-				}
+			}
 			else{
-				drawPanel.step();
+
 				recordInfo.setText("PLAYING!  Frame #"+ drawPanel.getCurrentIndex());
-
-				if(drawPanel.getFrame() == drawPanel.getFiles().size()){
-
-					recordInfo.setText("STOPPED!");
-					animTimer.stop();
-					drawPanel.stopAnimation();
-				}
+				
+				drawPanel.step();
 
 			}
 		}
@@ -258,34 +387,28 @@ public class EditorPlayer implements ActionListener, ChangeListener {
 	@Override
 	public void stateChanged(ChangeEvent arg0) {
 		framesPerSecond = fps.getValue();
+		if(animTimer != null)
+			animTimer.setDelay(1000/framesPerSecond);
 
 	}
 	@SuppressWarnings("serial")
 	class AnimationPanel extends JPanel{
-		private Vector<BufferedImage> images;
 
 		private int currentIndex;
 		public int getCurrentIndex() {
 			return currentIndex;
 		}
-		public Vector<BufferedImage> getImages() {
-			return images;
-		}
-		public void setImages(Vector<BufferedImage> images) {
-			this.images = images;
-		}
 		public AnimationPanel(){
-			images = new Vector<BufferedImage>();
 		}
 		public void step(){
 			currentIndex++;
-			if(currentIndex>=images.size())
+			if(currentIndex >= framesInFile)
 				currentIndex = 0;
 		}
 		public void stepBack(){
 			currentIndex--;
 			if(currentIndex<0)
-				currentIndex = images.size()-1;
+				currentIndex = framesInFile;
 		}
 		public int getFrame(){
 			return currentIndex;
@@ -296,50 +419,56 @@ public class EditorPlayer implements ActionListener, ChangeListener {
 		public void startAnimation(){
 			currentIndex = 0;
 		}
-		private Vector<File> files = new Vector<File>();
-		public Vector<File> getFiles() {
-			return files;
-		}
-		public void setFiles(Vector<File> files) {
-			this.files = files;
-		}
-		/*		private void saveFile(BufferedImage bi){	
-			try {
-				File temp = File.createTempFile("animtemp"+currentIndex,"");
-				temp.deleteOnExit();     
-				ImageIO.write(bi,"jpg",temp);
-				files.add(temp);
-
-			} catch (IOException ex) {
-				ex.printStackTrace();
-			}
-		}
-		private BufferedImage loadFile(File file){
-			try {
-				return ImageIO.read(file);
-			} catch (IOException ex) {
-				ex.printStackTrace();
-			}
-			return null;
-		}*/
 		@Override
 		public void paintComponent(Graphics g){
 			g.fillRect(0, 0, getWidth(), getHeight());
-			if(currentIndex>=0 && images.size()>0){
-				BufferedImage bi = images.get(currentIndex);
+			
+			BufferedImage bi = null;
 
-				Image img = bi.getScaledInstance(getWidth(), (int)((bi.getHeight())*((getWidth()/2)/(float)bi.getWidth())), BufferedImage.SCALE_SMOOTH);
-				
-				BufferedImage scaled = new BufferedImage(img.getWidth(null), img.getHeight(null),BufferedImage.TYPE_USHORT_555_RGB);
-				
-				scaled.getGraphics().drawImage(img,  0,0,null);
+			if(currentIndex>=0 && animationFile != null)
+				bi = getImageFromFile(currentIndex);
+
+			if(bi != null){
+				//Image img = bi.getScaledInstance(getWidth(), (int)((bi.getHeight())*((getWidth()/2)/(float)bi.getWidth())), BufferedImage.SCALE_SMOOTH);
+
+				//BufferedImage scaled = new BufferedImage(img.getWidth(null), img.getHeight(null),BufferedImage.TYPE_USHORT_555_RGB);
+
+				//scaled.getGraphics().drawImage(img,  0,0,null);
 
 				if(bi != null)
-					g.drawImage(scaled, 0,0,null);
-				
+					g.drawImage(bi, 0,0,null);
+
 				setPreferredSize(new Dimension(getWidth(), (int)(bi.getHeight()*(getWidth()/(float)bi.getWidth()))));
 			}
+			revalidate();
 		}
 
+	}
+	@Override
+	public void windowActivated(WindowEvent arg0) {
+	}
+	@Override
+	public void windowClosed(WindowEvent arg0) {
+	}
+	@Override
+	public void windowClosing(WindowEvent arg0) {
+		try{
+			if (oos != null) oos.close ();
+		}catch (Exception e){
+			e.printStackTrace();
+		}
+	}
+	@Override
+	public void windowDeactivated(WindowEvent arg0) {
+	}
+	@Override
+	public void windowDeiconified(WindowEvent arg0) {
+	}
+	@Override
+	public void windowIconified(WindowEvent arg0) {
+	}
+	@Override
+	public void windowOpened(WindowEvent arg0) {
+		
 	}
 }

@@ -3,6 +3,7 @@ package sim.editor;
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Composite;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.KeyEventDispatcher;
@@ -172,7 +173,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 			//			e = b.getActionCommand().equals("1") ? true : false;
 			bounds.width 	= bounds.width < 50 ? 50 : bounds.width;
 			bounds.height 	= bounds.height < 30 ? 30 : bounds.height;
-			Variable variableElement = new Variable(bounds,"test",e);
+			Variable variableElement = new Variable(bounds,"",e);
 			elements.add(variableElement);
 			index = elements.lastIndexOf(variableElement);
 			guiElements.add(index,variableElement.getGuiElement());
@@ -774,13 +775,13 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 							String t = Integer.toString(elements.indexOf(((Get) element).getTarget()));
 							String sv = Integer.toString(elements.indexOf(((Get) element).getSourceVariable()));
 							String iv = Integer.toString(elements.indexOf(((Get) element).getIndexVariable()));
-							
+
 							out.write(t+":"+sv+":"+iv);
 						}else if(element instanceof Set){
 							String t = Integer.toString(elements.indexOf(((Set) element).getTarget()));
 							String sv = Integer.toString(elements.indexOf(((Set) element).getSourceVariable()));
 							String iv = Integer.toString(elements.indexOf(((Set) element).getIndexVariable()));
-							
+
 							out.write(t+":"+sv+":"+iv);
 						}
 						out.flush();
@@ -792,6 +793,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 					e1.printStackTrace();
 				}
 			}
+			break;
 		case 19:
 			JFileChooser load = new JFileChooser();
 			FileNameExtensionFilter openFilter = new FileNameExtensionFilter("AlgoSim files", "ags");
@@ -833,7 +835,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 										Integer.parseInt(boundStrings[1]),
 										Integer.parseInt(boundStrings[2]),
 										Integer.parseInt(boundStrings[3])
-										);
+								);
 								break;
 							case 2:
 								// Sets the object
@@ -896,7 +898,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 						line = r.readLine();
 						currentLine++;
 					}
-					
+
 					// Handling the links between the objects in the gui.
 					for(int i = 0;i < link.length;i++){
 						Object element = elements.get(i);
@@ -915,7 +917,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 									li.from = element;
 									li.fromGui = guiElements.get(i);
 								}
-								
+
 								if(element instanceof Push){
 									switch(j){
 									case 0:
@@ -1002,9 +1004,23 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 
 			}
 			break;
+		case 20:
+			//SET
+			break;
+		case 21:
+			//GET
+			break;
+		case 22:
+			//RESIZE
+			try{
+				gui.editorPanel.setPreferredSize(new Dimension(Integer.parseInt(gui.width.getText()),Integer.parseInt(gui.height.getText())));
+			}
+			catch(NumberFormatException nfe){
+			}
+			break;
 		}
 		gui.optionsPanel.setOptionsType(type);
-		gui.editorPanel.validate();
+		gui.editorPanel.revalidate();
 		gui.repaint();
 		gui.validate();
 	}
