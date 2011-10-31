@@ -48,7 +48,7 @@ import sim.structures.*;
  *
  */
 public class EditorListener implements ActionListener, MouseMotionListener, MouseListener, KeyEventDispatcher {
-// Class variables //
+	// Class variables //
 	protected 	ElementType 		type = ElementType.NONE;
 	private 	EditorGui 			gui;
 	private 	Vector<Object> 		elements = new Vector<Object>();
@@ -59,7 +59,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 	protected 	Vector<Link> 		linkys = new Vector<Link>();
 	private 	Link 				link;
 
-// Class Methods //
+	// Class Methods //
 	/**
 	 * Class constructor. An instance of EditorGui is required as these two classes communicate about events and graphical components
 	 * @param gui
@@ -76,7 +76,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 		if(element!=null)
 			gui.editorPanel.add(element);
 	}
-	
+
 	/**
 	 * A method to get the actual instance of a class from the class enum {@link ElementType}
 	 * This method also adds the given type's class instance and graphical instance in the two internal class variables, {@link elements} and {@link guiElements}
@@ -100,7 +100,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 		case ARRAY:
 			JPanel p = new JPanel(new BorderLayout());
 			p.add(new JLabel("Array dimension and size"),BorderLayout.NORTH);
-			
+
 			ButtonGroup bg1 = new ButtonGroup();
 			JRadioButton dim1 = new JRadioButton("1");
 			dim1.setActionCommand("1");
@@ -129,7 +129,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 			JOptionPane.showMessageDialog(gui, p);
 			int y = 6;
 			int x = 1;
-			
+
 			try{
 				y = Integer.parseInt(tf1.getText());
 				x = Integer.parseInt(tf2.getText());
@@ -137,7 +137,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 				y = 6;
 				x = 6;
 			}
-			
+
 			Array arrayElement;
 			bounds.width 	= bounds.width < 80 ? (x < 3 ? 80 * x : 160) : bounds.width;
 			bounds.height 	= bounds.height < 180 ? 180 : bounds.height;
@@ -146,7 +146,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 			}else{
 				arrayElement = new Array(bounds,y);
 			}
-			
+
 			elements.add(arrayElement);
 			index = elements.lastIndexOf(arrayElement);
 			guiElements.add(index,arrayElement.getGuiElement());
@@ -239,7 +239,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 		case SET:
 			bounds.width	= bounds.width < 120 ? 120 : bounds.width;
 			bounds.height	= bounds.height < 30 ? 30 : bounds.height;
-			Set setElement 	= new Set(bounds);
+			Set setElement 	= new Set(bounds,false);
 			elements.add(setElement);
 			index 			= elements.lastIndexOf(setElement);
 			guiElements.add(index,setElement.getGuiElement());
@@ -247,9 +247,9 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 		case GET:
 			bounds.width	= bounds.width < 120 ? 120 : bounds.width;
 			bounds.height	= bounds.height < 30 ? 30 : bounds.height;
-			Get getElement 	= new Get(bounds);
+			Get getElement 	= new Get(bounds, false);
 			int getChar 	= JOptionPane.showConfirmDialog(gui, "Should the function get one character at a time?", "Get function",JOptionPane.YES_NO_CANCEL_OPTION);
-			
+
 			if(getChar == 0){
 				getElement.setSingleChar(true);
 			}else if(getChar == 1){
@@ -257,7 +257,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 			}else{
 				return null;
 			}
-			
+
 			elements.add(getElement);
 			index			= elements.lastIndexOf(getElement);
 			guiElements.add(index,getElement.getGuiElement());
@@ -265,7 +265,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Clears all objects in the editor panel and removes them from {@link EditorListener}'s internal pointers.
 	 */
@@ -440,7 +440,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 				}
 				guiElements.remove(elementIndex);
 				elements.remove(elementIndex);
-				
+
 				panel.r = null;
 				gui.editorPanel.validate();
 			}
@@ -524,7 +524,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 					}else if(startElement instanceof Variable){
 						if(endElement instanceof Add){
 							Object[] options = {"Input", "Index", "Cancel"};
-							int sel = JOptionPane.showOptionDialog(gui, "What type of variable is this?", "Typeo of variable", JOptionPane.YES_NO_CANCEL_OPTION	, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+							int sel = JOptionPane.showOptionDialog(((Add) endElement).getGuiElement(), "What type of variable is this?", "Typeo of variable", JOptionPane.YES_NO_CANCEL_OPTION	, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 							if(sel == 0){
 								((Add) endElement).setSourceVariable((Variable) startElement);
 							}else if(sel == 1){
@@ -532,7 +532,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 							}
 						}else if(endElement instanceof Remove){
 							Object[] options = {"Output", "Index", "Cancel"};
-							int sel = JOptionPane.showOptionDialog(gui, "What type of variable is this?", "Typeo of variable", JOptionPane.YES_NO_CANCEL_OPTION	, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+							int sel = JOptionPane.showOptionDialog(((Remove) endElement).getGuiElement(), "What type of variable is this?", "Typeo of variable", JOptionPane.YES_NO_CANCEL_OPTION	, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 							if(sel == 0){
 								((Remove) endElement).setSourceVariable((Variable) startElement);
 							}else if(sel == 1){
@@ -540,7 +540,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 							}
 						}else if(endElement instanceof Insert){
 							Object[] options = {"Input", "Index", "Cancel"};
-							int sel = JOptionPane.showOptionDialog(gui, "What type of variable is this?", "Typeo of variable", JOptionPane.YES_NO_CANCEL_OPTION	, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+							int sel = JOptionPane.showOptionDialog(((Insert) endElement).getGuiElement(), "What type of variable is this?", "Typeo of variable", JOptionPane.YES_NO_CANCEL_OPTION	, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 							if(sel == 0){
 								((Insert) endElement).setSourceVariable((Variable) startElement);
 							}else if(sel == 1){
@@ -552,8 +552,8 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 							((Pop) endElement).setSourceVariable((Variable) startElement);
 						}else if(endElement instanceof Get){
 							Object[] options = {"Input", "Output", "Index"};
-							Object sel = JOptionPane.showInputDialog(gui, "What type of variable is this?", "Typeo of variable", JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-							System.out.println(sel);
+							Object sel = JOptionPane.showInputDialog(((Get) endElement).getGuiElement(), "What type of variable is this?", "Typeo of variable", JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+							if(sel== null) return;
 							if(sel.equals("Input")){
 								((Get) endElement).setSourceVariable((Variable) startElement);
 							}else if(sel.equals("Output")){
@@ -565,7 +565,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 							}
 						}else if(endElement instanceof Set){
 							Object[] options = {"Input", "Index", "Cancel"};
-							int sel = JOptionPane.showOptionDialog(gui, "What type of variable is this?", "Typeo of variable", JOptionPane.YES_NO_CANCEL_OPTION	, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+							int sel = JOptionPane.showOptionDialog(((Set) endElement).getGuiElement(), "What type of variable is this?", "Typeo of variable", JOptionPane.YES_NO_CANCEL_OPTION	, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 							if(sel == 0){
 								((Set) endElement).setSourceVariable((Variable) startElement);
 							}else if(sel == 1){
@@ -605,7 +605,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 					}else if(startElement instanceof Remove){
 						if(endElement instanceof Variable){
 							Object[] options = {"Ouput", "Index", "Cancel"};
-							int sel = JOptionPane.showOptionDialog(gui, "What type of variable is this?", "Type of variable", JOptionPane.YES_NO_CANCEL_OPTION	, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+							int sel = JOptionPane.showOptionDialog(((Variable) endElement).getGuiElement(), "What type of variable is this?", "Type of variable", JOptionPane.YES_NO_CANCEL_OPTION	, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 							if(sel == 0){
 								((Remove) startElement).setSourceVariable((Variable) endElement);
 							}else if(sel == 1){
@@ -621,7 +621,8 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 					}else if(startElement instanceof Get){
 						if(endElement instanceof Variable){
 							Object[] options = {"Input", "Output", "Index"};
-							Object sel = JOptionPane.showInputDialog(gui, "What type of variable is this?", "Type of variable", JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+							Object sel = JOptionPane.showInputDialog(((Variable) endElement).getGuiElement(), "What type of variable is this?", "Type of variable", JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+							if(sel== null) return;
 							if(sel.equals("Input")){
 								((Get) startElement).setSourceVariable((Variable) endElement);
 							}else if(sel.equals("Output")){
@@ -641,7 +642,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 					}else if(startElement instanceof Set){
 						if(endElement instanceof Variable){
 							Object[] options = {"Input", "Index", "Cancel"};
-							int sel = JOptionPane.showOptionDialog(gui, "What type of variable is this?", "Type of variable", JOptionPane.YES_NO_CANCEL_OPTION	, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+							int sel = JOptionPane.showOptionDialog(((Variable) endElement).getGuiElement(), "What type of variable is this?", "Type of variable", JOptionPane.YES_NO_CANCEL_OPTION	, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 							if(sel == 0){
 								((Set) startElement).setSourceVariable((Variable) endElement);
 							}else if(sel == 1){
@@ -683,7 +684,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 							((Insert) startElement).setTarget(endElement);
 						}else if(endElement instanceof Variable){
 							Object[] options = {"Input", "Index", "Cancel"};
-							int sel = JOptionPane.showOptionDialog(gui, "What type of variable is this?", "Type of variable", JOptionPane.YES_NO_CANCEL_OPTION	, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+							int sel = JOptionPane.showOptionDialog(((Variable) endElement).getGuiElement(), "What type of variable is this?", "Type of variable", JOptionPane.YES_NO_CANCEL_OPTION	, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 							if(sel == 0){
 								((Insert) startElement).setSourceVariable((Variable) endElement);
 							}else if(sel == 1){
@@ -997,7 +998,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 										Integer.parseInt(boundStrings[1]),
 										Integer.parseInt(boundStrings[2]),
 										Integer.parseInt(boundStrings[3])
-								);
+										);
 								break;
 							case 2:
 								// Sets the object

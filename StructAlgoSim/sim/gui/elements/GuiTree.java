@@ -87,7 +87,7 @@ public class GuiTree extends GuiElement implements ActionListener, MouseMotionLi
 		listScroller.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		listScroller.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 		listScroller.setPreferredSize(new Dimension(getWidth(), getHeight()));
-		listScroller.addMouseMotionListener(this);
+		treePanel.addMouseMotionListener(this);
 
 		JPanel check = new JPanel(new GridLayout(3,5));
 		nval = new JTextField("N-value");

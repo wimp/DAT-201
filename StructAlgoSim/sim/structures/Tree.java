@@ -134,8 +134,8 @@ public class Tree {
 			if(element.getChildren().size()==1){
 				TreeNode child = element.getChildren().firstElement();
 				if(element.getParent()!=null){
-					element.getParent().getChildren().remove(element);
-					element.getParent().getChildren().add(child);
+					element.getParent().getChildren().set(element.getParent().getChildren().indexOf(element),child);
+					child.setParent(element.getParent());
 				}
 				else{
 					child.setParent(null);
@@ -166,7 +166,7 @@ public class Tree {
 		else return null;
 		
 	}
-	public void insertAt(int index,Object value){
+	public void insertAt(int index,Object value, boolean after){
 
 		setIndexes();
 		
@@ -178,14 +178,24 @@ public class Tree {
 		}
 		TreeNode element = elementAt(index);
 		if(element == null) return;
+		
+		if(after){
 		TreeNode newnode = new TreeNode(value, element);
 		
-		if(element.getChildren().size()>0){
-			element.getChildren().get(0).setParent(newnode);
-			newnode.getChildren().add(element.getChildren().get(0));
-			element.getChildren().remove(0);
-			element.getChildren().add(0, newnode);
+		if(element.getChildren().size()==maxCluster) return;
+		else element.getChildren().add(newnode);
 		}
+		else{
+			TreeNode newnode = new TreeNode(value, element.getParent());
+			if(element == root) 
+				setRoot(newnode);
+			else if(element.getParent() != null){
+					element.getParent().getChildren().set(element.getParent().getChildren().indexOf(element), newnode);
+			}
+			element.setParent(newnode);
+			newnode.getChildren().add(element);
+		}
+		setIndexes();
 		gui.repaint();
 	}
 	private void setIndexes(){
@@ -241,7 +251,6 @@ public class Tree {
 	public TreeNode elementAt(int index){
 		currentNode = null;
 		currentIndex = 0;
-		TreeNode n = root;
 		if(root != null)
 		switch(traversal){
 		case INORDER:

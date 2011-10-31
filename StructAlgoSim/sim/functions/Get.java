@@ -48,12 +48,13 @@ public class Get implements ActionListener{
 		this.singleChar = singleChar;
 	}
 	
-	public Get(Rectangle bounds){
+	public Get(Rectangle bounds, boolean singleChar){
 	//TODO add direction here
 		gui = new GuiFunction(bounds,"Get");
 		gui.getButton().addActionListener(this);
 		this.v = null;
 		this.l = null;
+		this.singleChar=singleChar;
 	}
 	/**
 	 * Constructor.
@@ -63,24 +64,27 @@ public class Get implements ActionListener{
 	 * @param input = input var
 	 * @param output = output var
 	 */
-	public Get(Rectangle bounds, Array l, Variable v) {
+	public Get(Rectangle bounds, Array l, Variable v, boolean singleChar) {
 		gui = new GuiFunction(bounds,"Get");
 		gui.getButton().addActionListener(this);
 		this.l=l;
 		this.v=v;
+		this.singleChar=singleChar;
 	}
-	public Get(Rectangle bounds, LinkedList l, Variable v) {
+	public Get(Rectangle bounds, LinkedList l, Variable v, boolean singleChar) {
 		gui = new GuiFunction(bounds,"Get");
 		gui.getButton().addActionListener(this);
 		this.l=l;
 		this.v=v;
+		this.singleChar=singleChar;
 	}
-	public Get(Rectangle bounds, Tree l, Variable v, Variable i) {
+	public Get(Rectangle bounds, Tree l, Variable v, Variable i, boolean singleChar) {
 		gui = new GuiFunction(bounds,"Get");
 		gui.getButton().addActionListener(this);
 		this.l=l;
 		this.i=i;
 		this.v=v;
+		this.singleChar=singleChar;
 	}
 	/**
 	 * Will remove the first char from the input string and append it to the output string. 
@@ -88,13 +92,18 @@ public class Get implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(i != null && v != null){
-			if(l instanceof Variable && singleChar){
+			if(l instanceof Variable){
+				if(singleChar){
 				String val = v.getValue();
 				String ch = val.substring(0, 1);
 				v.setValue(val.substring(1));
 				String tarVal = ((Variable) l).getValue();
 				tarVal += ch;
 				((Variable) l).setValue(tarVal);
+				}
+				else {
+					v.setValue(((Variable) l).getValue());
+				}
 			}else if(l instanceof Array){
 				if(i.getValue().indexOf(",") > 0){
 					String[] index = i.getValue().split(",");

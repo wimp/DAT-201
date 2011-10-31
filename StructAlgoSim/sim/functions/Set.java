@@ -17,6 +17,7 @@ public class Set implements ActionListener{
 	Variable v;
 	Variable i;
 	Object l;
+	boolean singleChar;
 	
 	GuiFunction gui;
 	public GuiElement getGuiElement(){
@@ -40,13 +41,20 @@ public class Set implements ActionListener{
 	public void setIndexVariable(Variable i) {
 		this.i = i;
 	}
-	
-	public Set(Rectangle bounds){
-	//TODO add direction here
+	public boolean getSingleChar(){
+		return singleChar;
+	}
+	public void setSingleChar(boolean singleChar){
+		this.singleChar = singleChar;
+	}
+
+	public Set(Rectangle bounds, boolean singleChar){
+		//TODO add direction here
 		gui = new GuiFunction(bounds,"Set");
 		gui.getButton().addActionListener(this);
 		this.v = null;
 		this.l = null;
+		this.singleChar=singleChar;
 	}
 	/**
 	 * Constructor.
@@ -56,24 +64,27 @@ public class Set implements ActionListener{
 	 * @param input = input var
 	 * @param output = output var
 	 */
-	public Set(Rectangle bounds, Array l, Variable v, Variable i) {
+	public Set(Rectangle bounds, Array l, Variable v, Variable i, boolean singleChar) {
 		gui = new GuiFunction(bounds,"Set");
 		gui.getButton().addActionListener(this);
 		this.l=l;
 		this.v=v;
+		this.singleChar=singleChar;
 	}
-	public Set(Rectangle bounds, LinkedList l, Variable v, Variable i) {
+	public Set(Rectangle bounds, LinkedList l, Variable v, Variable i, boolean singleChar) {
 		gui = new GuiFunction(bounds,"Set");
 		gui.getButton().addActionListener(this);
 		this.l=l;
 		this.v=v;
+		this.singleChar=singleChar;
 	}
-	public Set(Rectangle bounds, Tree l, Variable v, Variable i) {
+	public Set(Rectangle bounds, Tree l, Variable v, Variable i, boolean singleChar) {
 		gui = new GuiFunction(bounds,"Set");
 		gui.getButton().addActionListener(this);
 		this.l=l;
 		this.i=i;
 		this.v=v;
+		this.singleChar=singleChar;
 	}
 	/**
 	 * Will remove the first char from the input string and append it to the output string. 
@@ -81,30 +92,43 @@ public class Set implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(i != null && v != null){
-			if(l instanceof Array){
-				if(i.getValue().indexOf(",") > 0){
-					String[] index = i.getValue().split(",");
-					try{
-						int indexY = Integer.parseInt(index[0]);
-						int indexX = Integer.parseInt(index[1]);
-					
-						if(((Array) l).getDimensions() == 2){
-							((Array) l).insertAt(v.getValue(), indexY, indexX);
-						}else{
-							((Array) l).insertAt(v.getValue(), indexY);
-						}
-					}catch(Exception nfe){
-						JOptionPane.showMessageDialog(gui, "Illegal character: you can only enter numbers separated by a comma (,)");
-					}
-				}else{
-					try{
-						int indexY = Integer.parseInt(i.getValue());
-						((Array) l).insertAt(v.getValue(), indexY);
-					}catch(Exception nfe){
-						JOptionPane.showMessageDialog(gui, "Illegal character: you can only enter numbers separated by a comma (,)");
-					}
+			if(l instanceof Variable){
+				if(singleChar){
+					String val = v.getValue();
+					String ch = val.substring(0, 1);
+					v.setValue(val.substring(1));
+					String tarVal = ((Variable) l).getValue();
+					tarVal += ch;
+					((Variable) l).setValue(tarVal);
+				}
+				else {
+					v.setValue(((Variable) l).getValue());
 				}
 			}
+			else if(l instanceof Array){
+					if(i.getValue().indexOf(",") > 0){
+						String[] index = i.getValue().split(",");
+						try{
+							int indexY = Integer.parseInt(index[0]);
+							int indexX = Integer.parseInt(index[1]);
+
+							if(((Array) l).getDimensions() == 2){
+								((Array) l).insertAt(v.getValue(), indexY, indexX);
+							}else{
+								((Array) l).insertAt(v.getValue(), indexY);
+							}
+						}catch(Exception nfe){
+							JOptionPane.showMessageDialog(gui, "Illegal character: you can only enter numbers separated by a comma (,)");
+						}
+					}else{
+						try{
+							int indexY = Integer.parseInt(i.getValue());
+							((Array) l).insertAt(v.getValue(), indexY);
+						}catch(Exception nfe){
+							JOptionPane.showMessageDialog(gui, "Illegal character: you can only enter numbers separated by a comma (,)");
+						}
+					}
+				}
 		}
 	}
 }

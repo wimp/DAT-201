@@ -102,9 +102,7 @@ public class Insert implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if(v!=null){
 			if(i!=null){
-				if(l instanceof Array){
-					((Array) l).insertAt(v.getValue(),Integer.parseInt(i.getValue()));
-				}else if(l instanceof LinkedList){
+				if(l instanceof LinkedList){
 					try{
 						if(insertAfterElement)
 							((LinkedList) l).insertAt(Integer.parseInt(i.getValue()),v.getValue(), true);
@@ -115,13 +113,10 @@ public class Insert implements ActionListener {
 					}
 				}else if(l instanceof Tree){
 					try{
-						((Tree) l).addChildAt(Integer.parseInt(i.getValue()),v.getValue());
+						((Tree) l).insertAt(Integer.parseInt(i.getValue()),v.getValue(), insertAfterElement);
 					}
 					catch(NumberFormatException n){
 					}
-				}
-				else if(l instanceof Queue){
-					((Queue) l).add(v.getValue());
 				}
 			}
 			else {
