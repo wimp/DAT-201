@@ -4,6 +4,8 @@ import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JOptionPane;
+
 import sim.gui.elements.GuiElement;
 import sim.gui.elements.GuiFunction;
 import sim.structures.Array;
@@ -86,14 +88,37 @@ public class Get implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(i != null && v != null){
-			
-		}else if(v != null && l instanceof Variable && singleChar){
-			String val = v.getValue();
-			String ch = val.substring(0, 1);
-			v.setValue(val.substring(1));
-			String tarVal = ((Variable) l).getValue();
-			tarVal += ch;
-			((Variable) l).setValue(tarVal);
+			if(l instanceof Variable && singleChar){
+				String val = v.getValue();
+				String ch = val.substring(0, 1);
+				v.setValue(val.substring(1));
+				String tarVal = ((Variable) l).getValue();
+				tarVal += ch;
+				((Variable) l).setValue(tarVal);
+			}else if(l instanceof Array){
+				if(i.getValue().indexOf(",") > 0){
+					String[] index = i.getValue().split(",");
+					try{
+						int indexY = Integer.parseInt(index[0]);
+						int indexX = Integer.parseInt(index[1]);
+						
+						if(((Array) l).getDimensions() == 2){
+							v.setValue((String) ((Array) l).valueAt(indexY,indexX));
+						}else{
+							v.setValue((String) ((Array) l).valueAt(indexY));
+						}
+					}catch(Exception nfe){
+						JOptionPane.showConfirmDialog(gui, "Illegal character: you can only enter numbers separated by a comma (,)");
+					}
+				}else{
+					try{
+						int indexY = Integer.parseInt(i.getValue());
+						v.setValue((String) ((Array) l).valueAt(indexY));
+					}catch(Exception nfe){
+						JOptionPane.showConfirmDialog(gui, "Illegal character: you can only enter numbers separated by a comma (,)");
+					}
+				}
+			}
 		}
 	}
 }

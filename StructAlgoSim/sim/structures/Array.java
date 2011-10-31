@@ -1,7 +1,6 @@
 package sim.structures;
 
 import java.awt.Rectangle;
-import java.util.Vector;
 
 import sim.gui.elements.GuiArray;
 
@@ -16,10 +15,15 @@ public class Array {
 	private int sizeX;
 	private int sizeY;
 	private static int MAX_SIZE = 100;
+	private int dimensions;
 	
 // Getters and setters //
 	public GuiArray getGuiElement(){
 		return gui;
+	}
+	
+	public int getDimensions(){
+		return dimensions;
 	}
 // Class constructors //
 	/**
@@ -43,6 +47,8 @@ public class Array {
 			this.sizeX = sizeX;
 			gui = new GuiArray(bounds, array);
 		}
+		
+		dimensions = sizeX > 0 ? 2 : 1;
 	}
 	/**
 	 * Inserts the given Object in a one-dimensional array at indexY
@@ -60,8 +66,10 @@ public class Array {
 	 * @param indexX
 	 */
 	public void insertAt(Object itemToAdd, int indexY, int indexX){
-		array[indexY][indexX] = itemToAdd;
-		gui.repaint();
+		if(indexY < sizeY && indexX < sizeX){
+			array[indexY][indexX] = itemToAdd;
+			gui.repaint();
+		}
 		/*
 		boolean intelligent = true, stupid = false;
 		

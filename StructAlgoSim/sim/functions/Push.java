@@ -63,9 +63,8 @@ public class Push implements ActionListener{
 // Implementation of the actionListener //
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(l instanceof Stack)
-		{
-		((Stack)l).push((Object)v.getValue());
-	}
+		if(l instanceof Stack && v != null){
+			((Stack)l).push((Object)v.getValue());
+		}
 	}
 }

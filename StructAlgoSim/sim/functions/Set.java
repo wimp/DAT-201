@@ -4,7 +4,8 @@ import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import sim.functions.MoveChar.Direction;
+import javax.swing.JOptionPane;
+
 import sim.gui.elements.GuiElement;
 import sim.gui.elements.GuiFunction;
 import sim.structures.Array;
@@ -80,7 +81,30 @@ public class Set implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(i != null && v != null){
-			
+			if(l instanceof Array){
+				if(i.getValue().indexOf(",") > 0){
+					String[] index = i.getValue().split(",");
+					try{
+						int indexY = Integer.parseInt(index[0]);
+						int indexX = Integer.parseInt(index[1]);
+					
+						if(((Array) l).getDimensions() == 2){
+							((Array) l).insertAt(v.getValue(), indexY, indexX);
+						}else{
+							((Array) l).insertAt(v.getValue(), indexY);
+						}
+					}catch(Exception nfe){
+						JOptionPane.showMessageDialog(gui, "Illegal character: you can only enter numbers separated by a comma (,)");
+					}
+				}else{
+					try{
+						int indexY = Integer.parseInt(i.getValue());
+						((Array) l).insertAt(v.getValue(), indexY);
+					}catch(Exception nfe){
+						JOptionPane.showMessageDialog(gui, "Illegal character: you can only enter numbers separated by a comma (,)");
+					}
+				}
+			}
 		}
 	}
 }

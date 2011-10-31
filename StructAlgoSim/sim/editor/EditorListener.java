@@ -90,7 +90,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 		ButtonModel b;
 		switch(type){
 		case ADD:
-			bounds.width 	= bounds.width < 70 ? 70 : bounds.width;
+			bounds.width 	= bounds.width < 80 ? 80 : bounds.width;
 			bounds.height 	= bounds.height < 30 ? 30 : bounds.height;
 			Add addElement = new Add(bounds);
 			elements.add(addElement);
@@ -128,7 +128,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 			p.add(dimPanel,BorderLayout.CENTER);
 			JOptionPane.showMessageDialog(gui, p);
 			int y = 6;
-			int x = 6;
+			int x = 1;
 			
 			try{
 				y = Integer.parseInt(tf1.getText());
@@ -139,8 +139,8 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 			}
 			
 			Array arrayElement;
-			bounds.width 	= bounds.width < 70 ? 70 : bounds.width;
-			bounds.height 	= bounds.height < 150 ? 150 : bounds.height;
+			bounds.width 	= bounds.width < 80 ? (x < 3 ? 80 * x : 160) : bounds.width;
+			bounds.height 	= bounds.height < 180 ? 180 : bounds.height;
 			if(bg1.getSelection().getActionCommand().equals("2")){
 				arrayElement = new Array(bounds,y,x);
 			}else{
@@ -170,7 +170,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 			guiElements.add(index,listElement.getGuiElement());
 			return listElement.getGuiElement();
 		case POP:
-			bounds.width 	= bounds.width < 70 ? 70 : bounds.width;
+			bounds.width 	= bounds.width < 80 ? 80 : bounds.width;
 			bounds.height 	= bounds.height < 30 ? 30 : bounds.height;
 			Pop popElement = new Pop(bounds);
 			elements.add(popElement);
@@ -178,7 +178,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 			guiElements.add(index,popElement.getGuiElement());
 			return popElement.getGuiElement();
 		case PUSH:
-			bounds.width 	= bounds.width < 70 ? 70 : bounds.width;
+			bounds.width 	= bounds.width < 80 ? 80 : bounds.width;
 			bounds.height 	= bounds.height < 30 ? 30 : bounds.height;
 			Push pushElement = new Push(bounds);
 			elements.add(pushElement);
@@ -186,7 +186,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 			guiElements.add(pushElement.getGuiElement());
 			return pushElement.getGuiElement();
 		case REMOVE:
-			bounds.width 	= bounds.width < 100 ? 100 : bounds.width;
+			bounds.width 	= bounds.width < 120 ? 120 : bounds.width;
 			bounds.height 	= bounds.height < 30 ? 30 : bounds.height;
 			Remove removeElement = new Remove(bounds);
 			elements.add(removeElement);
@@ -194,7 +194,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 			guiElements.add(index,removeElement.getGuiElement());
 			return removeElement.getGuiElement();
 		case STACK:
-			bounds.width 	= bounds.width < 70 ? 70 : bounds.width;
+			bounds.width 	= bounds.width < 80 ? 80 : bounds.width;
 			bounds.height 	= bounds.height < 150 ? 150 : bounds.height;
 			Stack stackElement = new Stack(bounds);
 			elements.add(stackElement);
@@ -205,7 +205,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 			b = gui.optionsPanel.groupOption.getSelection();
 			e = b == null ? true : b.getActionCommand().equals("1") ? true : false;
 			//			e = b.getActionCommand().equals("1") ? true : false;
-			bounds.width 	= bounds.width < 50 ? 50 : bounds.width;
+			bounds.width 	= bounds.width < 80 ? 80 : bounds.width;
 			bounds.height 	= bounds.height < 30 ? 30 : bounds.height;
 			Variable variableElement = new Variable(bounds,"",e);
 			elements.add(variableElement);
@@ -264,6 +264,18 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 			return getElement.getGuiElement();
 		}
 		return null;
+	}
+	
+	/**
+	 * Clears all objects in the editor panel and removes them from {@link EditorListener}'s internal pointers.
+	 */
+	public void clearEditor(){
+		linkys.clear();
+		elements.clear();
+		guiElements.clear();
+		gui.editorPanel.removeAll();
+		gui.repaint();
+		gui.validate();
 	}
 
 	/**
@@ -379,8 +391,9 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 				return true;
 			}else if(element2 instanceof Set){
 				return true;
-			}
-			else if(element2 instanceof Insert){
+			}else if(element2 instanceof Remove){
+				return true;
+			}else if(element2 instanceof Insert){
 				return true;
 			}else if(element2 instanceof Add){
 				return true;
@@ -640,6 +653,8 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 							((Set) startElement).setTarget(endElement);
 						}else if(endElement instanceof Queue){
 							((Set) startElement).setTarget(endElement);
+						}else if(endElement instanceof Array){
+							((Set) startElement).setTarget(endElement);
 						}
 					}else if(startElement instanceof Array){
 						if(endElement instanceof Set){
@@ -654,11 +669,12 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 							((Set) endElement).setTarget(startElement);
 						}else if(endElement instanceof Get){
 							((Get) endElement).setTarget(startElement);
-						}
-						else if(endElement instanceof Insert){
+						}else if(endElement instanceof Insert){
 							((Insert) endElement).setTarget(startElement);
 						}else if(endElement instanceof Add){
 							((Add) endElement).setTarget(startElement);
+						}else if(endElement instanceof Remove){
+							((Remove) endElement).setTarget(startElement);
 						}
 					}else if(startElement instanceof Insert){
 						if(endElement instanceof Tree){
@@ -856,7 +872,8 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 			int dir = fc.showSaveDialog(gui);
 			if(dir == JFileChooser.APPROVE_OPTION){
 				File f = fc.getSelectedFile();
-				String path = f.getPath()+".ags";
+				String path = f.getPath();
+				path = path.endsWith(".ags") ? path : path + ".ags";
 
 				try{
 					FileWriter fio = new FileWriter(path);
@@ -939,6 +956,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 			break;
 		case 19:
 			// LOAD
+			clearEditor();
 			JFileChooser load = new JFileChooser();
 			FileNameExtensionFilter openFilter = new FileNameExtensionFilter("AlgoSim files", "ags");
 			load.setMultiSelectionEnabled(false);
@@ -1168,10 +1186,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 			break;
 		case 23:
 			// NEW FILE
-			linkys.clear();
-			elements.clear();
-			guiElements.clear();
-			gui.editorPanel.removeAll();
+			clearEditor();
 			break;
 		}
 		gui.optionsPanel.setOptionsType(type);
