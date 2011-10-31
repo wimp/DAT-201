@@ -104,6 +104,26 @@ public class Set implements ActionListener{
 				else {
 					v.setValue(((Variable) l).getValue());
 				}
+			}else if(l instanceof Tree){
+
+				try{
+						int index = Integer.parseInt(i.getValue());
+						((Tree)l).set(index, v.getValue());
+						
+				}catch(NumberFormatException nfe){
+					JOptionPane.showConfirmDialog(gui, "Illegal character: you can only enter numbers.");
+				}
+			}else if(l instanceof LinkedList){
+
+				try{
+					int index = Integer.parseInt(i.getValue());
+					String s = ((LinkedList)l).get(index);
+					if(s!=null)
+						v.setValue(s);
+
+				}catch(NumberFormatException nfe){
+					JOptionPane.showConfirmDialog(gui, "Illegal character: you can only enter numbers.");
+				}
 			}
 			else if(l instanceof Array){
 					if(i.getValue().indexOf(",") > 0){

@@ -32,6 +32,10 @@ public class GuiList extends GuiElement implements ActionListener, ItemListener 
 	private Vector<Node> data;
 	private Vector<Link> links;
 	private ListPanel listPanel;
+	public ListPanel getListPanel() {
+		return listPanel;
+	}
+
 	private JCheckBox circular;
 	private JCheckBox doublyLinked;
 	private JScrollPane listScroller;
@@ -50,7 +54,24 @@ public class GuiList extends GuiElement implements ActionListener, ItemListener 
 	public void setRemoved(Node removed) {
 		this.removed = removed;
 	}
+	public boolean isCircular() {
+		return listPanel==null ? false : listPanel.isCircular();
+	}
 
+	public void setCircular(boolean circular) {
+		if(this.circular!=null) 	this.circular.setSelected(circular);
+		if(listPanel != null) listPanel.setCircular(circular);	
+		}
+
+	public boolean isDoublyLinked() {
+		
+		return listPanel==null ? false : listPanel.isDoublyLinked();
+	}
+
+	public void setDoublyLinked(boolean doublyLinked) {
+		if(this.doublyLinked!=null) this.doublyLinked.setSelected(doublyLinked);
+		listPanel.setDoublyLinked(doublyLinked);
+	}
 	public GuiList(Rectangle bounds, Vector<Node> data, boolean animated) {
 		super();
 		if (animated)
@@ -70,9 +91,7 @@ public class GuiList extends GuiElement implements ActionListener, ItemListener 
 	@Override
 	public void startAnimation() {
 		super.startAnimation();
-
 	}
-
 	public void stopAnimation() {
 		animation.stop();
 		

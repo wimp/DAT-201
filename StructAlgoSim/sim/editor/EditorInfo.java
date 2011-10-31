@@ -106,7 +106,7 @@ public class EditorInfo extends JPanel{
 				a.insertAt("value 1", 0, 1);
 				a.insertAt("value 2", 1, 1);
 				a.insertAt("value 3", 2);
-				a.insertAt("yoyoyo", 4, 1);
+				a.insertAt("value 4", 4, 1);
 				add(a.getGuiElement(), BorderLayout.WEST);
 				t = 
 						"Structure information:\n" +
@@ -125,8 +125,12 @@ public class EditorInfo extends JPanel{
 				break;
 			case LINKEDLIST:
 				LinkedList ll = new LinkedList(new Rectangle(0,0,100, 75));
+				ll.getGuiElement().setCircular(true);
+				ll.getGuiElement().setDoublyLinked(true);
 				ll.addFirst("value 1");
 				ll.addFirst("value 2");
+				ll.addFirst("value 3");
+				
 				
 				add(ll.getGuiElement(), BorderLayout.WEST);
 				t = 

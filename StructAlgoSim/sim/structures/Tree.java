@@ -54,6 +54,17 @@ public class Tree {
 	public TreeNode getRoot() {
 		return root;
 	}
+	public String get(int index){
+		String s = (String)elementAt(index).getValue();
+		return s;
+	}
+	public void set(int index, Object value){
+		TreeNode n = elementAt(index);
+		if(n!=null)
+			n.setValue(value);
+		
+		gui.repaint();
+	}
 	public void setRoot(TreeNode root) {
 		this.root = root;
 	}

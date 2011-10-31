@@ -11,29 +11,31 @@ import sim.gui.elements.GuiFunction;
 import sim.structures.Array;
 import sim.structures.LinkedList;
 import sim.structures.Tree;
+import sim.structures.Tree.TreeNode;
 import sim.structures.Variable;
 
 public class Get implements ActionListener{
-	Variable v;
-	Variable i;
-	Object l;
-	boolean singleChar;
 	
+	Variable i;
+	Object source;
+	Object target;
+	boolean singleChar;
+
 	GuiFunction gui;
 	public GuiElement getGuiElement(){
 		return gui;
 	}
 	public Object getTarget() {
-		return l;
+		return target;
 	}
 	public void setTarget(Object l) {
-		this.l = l;
+		this.target = l;
 	}
-	public Variable getSourceVariable() {
-		return v;
+	public Object getSource() {
+		return source;
 	}
-	public void setSourceVariable(Variable v) {
-		this.v = v;
+	public void setSource(Object o) {
+		this.source= o;
 	}
 	public Variable getIndexVariable() {
 		return i;
@@ -47,13 +49,13 @@ public class Get implements ActionListener{
 	public void setSingleChar(boolean singleChar){
 		this.singleChar = singleChar;
 	}
-	
+
 	public Get(Rectangle bounds, boolean singleChar){
-	//TODO add direction here
+		//TODO add direction here
 		gui = new GuiFunction(bounds,"Get");
 		gui.getButton().addActionListener(this);
-		this.v = null;
-		this.l = null;
+		this.source = null;
+		this.target = null;
 		this.singleChar=singleChar;
 	}
 	/**
@@ -64,26 +66,26 @@ public class Get implements ActionListener{
 	 * @param input = input var
 	 * @param output = output var
 	 */
-	public Get(Rectangle bounds, Array l, Variable v, boolean singleChar) {
+	public Get(Rectangle bounds, Array l,Object o, boolean singleChar) {
 		gui = new GuiFunction(bounds,"Get");
 		gui.getButton().addActionListener(this);
-		this.l=l;
-		this.v=v;
+		this.target=l;
+		this.source=o;
 		this.singleChar=singleChar;
 	}
-	public Get(Rectangle bounds, LinkedList l, Variable v, boolean singleChar) {
+	public Get(Rectangle bounds, LinkedList l,Object o, boolean singleChar) {
 		gui = new GuiFunction(bounds,"Get");
 		gui.getButton().addActionListener(this);
-		this.l=l;
-		this.v=v;
+		this.target=l;
+		this.source=o;
 		this.singleChar=singleChar;
 	}
-	public Get(Rectangle bounds, Tree l, Variable v, Variable i, boolean singleChar) {
+	public Get(Rectangle bounds, Tree l,Object o, Variable i, boolean singleChar) {
 		gui = new GuiFunction(bounds,"Get");
 		gui.getButton().addActionListener(this);
-		this.l=l;
+		this.target=l;
 		this.i=i;
-		this.v=v;
+		this.source=o;
 		this.singleChar=singleChar;
 	}
 	/**
@@ -91,30 +93,50 @@ public class Get implements ActionListener{
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(i != null && v != null){
-			if(l instanceof Variable){
+		if(i != null && source != null){
+			if(target instanceof Variable && source instanceof Variable){
 				if(singleChar){
-				String val = v.getValue();
-				String ch = val.substring(0, 1);
-				v.setValue(val.substring(1));
-				String tarVal = ((Variable) l).getValue();
-				tarVal += ch;
-				((Variable) l).setValue(tarVal);
+					String val = ((Variable)source).getValue();
+					String ch = val.substring(0, 1);
+					((Variable)source).setValue(val.substring(1));
+					String tarVal = ((Variable) target).getValue();
+					tarVal += ch;
+					((Variable) target).setValue(tarVal);
 				}
 				else {
-					v.setValue(((Variable) l).getValue());
+					((Variable) target).setValue(((Variable)source).getValue());
 				}
-			}else if(l instanceof Array){
+			}else if(source instanceof Tree && target instanceof Variable){
+				try{
+						int index = Integer.parseInt(i.getValue());
+						String s = ((Tree)source).get(index);
+						if(s!=null)
+							((Variable)target).setValue(s);
+				}catch(NumberFormatException nfe){
+					JOptionPane.showConfirmDialog(gui, "Illegal character: you can only enter numbers.");
+				}
+			}else if(source instanceof LinkedList && target instanceof Variable){
+
+				try{
+					int index = Integer.parseInt(i.getValue());
+					String s = ((LinkedList)source).get(index);
+					if(s!=null)
+						((Variable)target).setValue(s);
+
+				}catch(NumberFormatException nfe){
+					JOptionPane.showConfirmDialog(gui, "Illegal character: you can only enter numbers.");
+				}
+			}else if(source instanceof Array && target instanceof Variable){
 				if(i.getValue().indexOf(",") > 0){
 					String[] index = i.getValue().split(",");
 					try{
 						int indexY = Integer.parseInt(index[0]);
 						int indexX = Integer.parseInt(index[1]);
-						
-						if(((Array) l).getDimensions() == 2){
-							v.setValue((String) ((Array) l).valueAt(indexY,indexX));
+
+						if(((Array) source).getDimensions() == 2){
+							((Variable)target).setValue((String) ((Array) source).valueAt(indexY,indexX));
 						}else{
-							v.setValue((String) ((Array) l).valueAt(indexY));
+							((Variable)target).setValue((String) ((Array) source).valueAt(indexY));
 						}
 					}catch(Exception nfe){
 						JOptionPane.showConfirmDialog(gui, "Illegal character: you can only enter numbers separated by a comma (,)");
@@ -122,7 +144,7 @@ public class Get implements ActionListener{
 				}else{
 					try{
 						int indexY = Integer.parseInt(i.getValue());
-						v.setValue((String) ((Array) l).valueAt(indexY));
+						((Variable)target).setValue((String) ((Array) source).valueAt(indexY));
 					}catch(Exception nfe){
 						JOptionPane.showConfirmDialog(gui, "Illegal character: you can only enter numbers separated by a comma (,)");
 					}

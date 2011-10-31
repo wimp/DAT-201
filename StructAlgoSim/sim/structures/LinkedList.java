@@ -74,8 +74,11 @@ public class LinkedList {
 	 * Gets an element at a specified index in the list.
 	 * @param index The index of the element to be removed.
 	 */
-	public String elementAt(int index){
-		return v.elementAt(index).getValue().toString();
+	public String get(int index){
+		for(Node n : v) 
+			if(n!=null) 
+				if(n.getIndex()==index) return n.getValue().toString();
+		return null;
 	}
 	/**
 	 * Adds a new node before a node in the list.
