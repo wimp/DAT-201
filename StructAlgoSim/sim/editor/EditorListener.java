@@ -120,7 +120,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 			return arrayElement.getGuiElement();
 		case INSERT:
 			b 	= gui.optionsPanel.groupOption.getSelection();
-			e	= b.getActionCommand().equals("1") ? false : true;
+			e	= b.getActionCommand().equals("1") ? true : false;
 			bounds.width 	= bounds.width < 150 ? 150 : bounds.width;
 			bounds.height 	= bounds.height < 30 ? 30 : bounds.height;
 			Insert insertElement = new Insert(bounds, e);

@@ -189,7 +189,10 @@ public class GuiList extends GuiElement implements ActionListener, ItemListener{
 		private void addAnimation(Node n){
 			switch(frame){
 			case 1:
-				 if(data.size()==3 && listPanel.isCircular()&& links.size()>2) links.remove(2);
+				break;
+			case 2:
+				 if(data.size()==3 && listPanel.isCircular()&& links.size()>2) 
+					 links.remove(2);
 				 else for(int i = 0; i<links.size(); i++){
 					 if(links.get(i).b == n.getPrevious() && links.get(i).a == n.getNext()){
 						 links.remove(links.get(i));
@@ -198,7 +201,7 @@ public class GuiList extends GuiElement implements ActionListener, ItemListener{
 					 }
 				 }
 				 break;
-			case 2:
+			case 3:
 				if(data.size()==3 && listPanel.isCircular() && links.size()>1) links.remove(1);
 				else for(int i = 0; i<links.size(); i++){
 					 if(links.get(i).b == n.getNext() && links.get(i).a == n.getPrevious()){
@@ -208,7 +211,7 @@ public class GuiList extends GuiElement implements ActionListener, ItemListener{
 					 }
 				 }
 				 break;
-			case 3:
+			case 4:
 				if(listPanel.isCircular() || data.indexOf(n)-data.indexOf(n.getNext()) <0)
 				{
 					if(data.indexOf(n)-data.indexOf(n.getNext()) >0)
@@ -224,7 +227,7 @@ public class GuiList extends GuiElement implements ActionListener, ItemListener{
 				}
 				}
 				break;
-			case 4:
+			case 5:
 				if(listPanel.isDoublyLinked() && (listPanel.isCircular() || data.indexOf(n)-data.indexOf(n.getPrevious()) >1))
 					if(data.indexOf(n)-data.indexOf(n.getPrevious()) <1)
 					{
@@ -239,7 +242,7 @@ public class GuiList extends GuiElement implements ActionListener, ItemListener{
 						links.add(l);
 					}
 				break;
-			case 5:
+			case 6:
 				if(listPanel.isCircular() || data.indexOf(n.getNext())-data.indexOf(n) <0)
 				{
 					if(data.indexOf(n.getNext())-data.indexOf(n) >0)
@@ -260,7 +263,7 @@ public class GuiList extends GuiElement implements ActionListener, ItemListener{
 					}
 					}
 				break;
-			case 6:
+			case 7:
 				if(listPanel.isDoublyLinked() && (listPanel.isCircular() || data.indexOf(n.getPrevious())-data.indexOf(n) >1))
 					if(data.indexOf(n.getPrevious())-data.indexOf(n) <1)
 					{
@@ -364,7 +367,7 @@ public class GuiList extends GuiElement implements ActionListener, ItemListener{
 			for(Link l : links){
 				l.drawLink(g2d);
 			}
-			listPanel.validate();
+			listPanel.revalidate();
 		}
 	}
 	@Override

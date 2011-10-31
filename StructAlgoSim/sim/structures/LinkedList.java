@@ -12,7 +12,8 @@ import sim.structures.elements.Node;
 public class LinkedList {
 	private GuiList gui;
 	private Vector<Node> v = new Vector<Node>();
-	
+	private Node dummy;
+
 	public GuiList getGuiElement(){
 		return gui;
 	}
@@ -23,8 +24,8 @@ public class LinkedList {
 	 */
 	public LinkedList(Rectangle bounds, boolean animated){
 
-		Node dummy = new Node("dummy");
-		
+		dummy = new Node("dummy");
+
 		dummy.setNext(dummy);
 		dummy.setPrevious(dummy);
 		dummy.setAdded(false);
@@ -43,14 +44,14 @@ public class LinkedList {
 	 * @param value The object (most likely a string of text) that this node is to contain.
 	 */
 	public void addFirst(Object value){
-		insertAt(1, value);
+		insertAt(1, value,false );
 	}
 	/**
 	 * Adds a new node to the end of the list.
 	 * @param value The object (most likely a string of text) that this node is to contain.
 	 */
 	public void addLast(Object value){
-		insertAt(v.size()-1, value);
+		insertAt(v.size()-1, value, true);
 	}
 	/**
 	 * Removes an element at a specified index in the list.
@@ -58,10 +59,10 @@ public class LinkedList {
 	 */
 	public Object removeElementAt(int index){
 		if(index > 0 && index < v.size()){
-		v.elementAt(index).setRemoved(true);
-		gui.repaint();
-		gui.startAnimation();
-		return v.elementAt(index).getValue();
+			v.elementAt(index).setRemoved(true);
+			gui.repaint();
+			gui.startAnimation();
+			return v.elementAt(index).getValue();
 		}
 		else return null;
 	}
@@ -77,26 +78,38 @@ public class LinkedList {
 	 * @param index The index of the element that the new node will be placed before.
 	 * @param value The object (most likely a string of text) that this node is to contain.
 	 */
-	public void insertAt( int index, Object value){
-		if(index>0 && v.size()>2){
-		Node n = new Node(value);
-		v.elementAt(index).getPrevious().setNext(n);
-		n.setPrevious(v.elementAt(index).getPrevious());
-		
-		v.elementAt(index).setPrevious(n);
-		n.setNext(v.elementAt(index));
-		
-		v.insertElementAt(n, index);
-		}
-		else {
+	public void insertAt( int index, Object value, boolean after){
+		if(index <0) 
+			index = v.size()-1;
+
+		if(index>=0 && index<v.size()){
+
 			Node n = new Node(value);
-			v.elementAt(0).getPrevious().setNext(n);
-			n.setPrevious(v.elementAt(0).getPrevious());
+			if(after){
+
+				v.elementAt(index).getNext().setPrevious(n);
+				n.setNext(v.elementAt(index).getNext());
+
+				v.elementAt(index).setNext(n);
+				n.setPrevious(v.elementAt(index));
+			}
+			else {
+
+				v.elementAt(index).getPrevious().setNext(n);
+				n.setPrevious(v.elementAt(index).getPrevious());
+
+				v.elementAt(index).setPrevious(n);
+				n.setNext(v.elementAt(index));
+			}
 			
-			v.elementAt(0).setPrevious(n);
-			n.setNext(v.elementAt(0));
-			
-			v.add(n);
+			if(after && index == v.size()-1)
+				v.add(n);
+			else if(!after && index == 0)
+				v.add(n);
+			else if(after)
+				v.insertElementAt(n, index+1);
+			else
+				v.insertElementAt(n, index);
 		}
 		gui.repaint();
 		gui.getAnimation().start();

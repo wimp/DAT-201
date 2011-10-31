@@ -118,7 +118,6 @@ public class EditorInfo extends JPanel{
 				LinkedList ll = new LinkedList(new Rectangle(0,0,100, 75));
 				ll.addFirst("value 1");
 				ll.addFirst("value 2");
-				ll.addFirst("value 3");
 				
 				add(ll.getGuiElement(), BorderLayout.WEST);
 				t = 

@@ -57,7 +57,7 @@ public class Insert implements ActionListener {
 		this.v = null;
 		this.i = null;
 		this.insertAfterElement = insertAfterElement;
-		buttonText = insertAfterElement ? "Insert Before" : "Insert After";
+		buttonText = insertAfterElement ? "Insert After" : "Insert Before";
 		gui = new GuiFunction(bounds,buttonText);
 		gui.getButton().addActionListener(this);
 	}
@@ -107,9 +107,9 @@ public class Insert implements ActionListener {
 				}else if(l instanceof LinkedList){
 					try{
 						if(insertAfterElement)
-							((LinkedList) l).insertAt(Integer.parseInt(i.getValue())+1,v.getValue());
+							((LinkedList) l).insertAt(Integer.parseInt(i.getValue()),v.getValue(), true);
 						else
-							((LinkedList) l).insertAt(Integer.parseInt(i.getValue()),v.getValue());
+							((LinkedList) l).insertAt(Integer.parseInt(i.getValue()),v.getValue(), false);
 					}
 					catch(NumberFormatException n){
 					}
