@@ -54,7 +54,7 @@ import sim.structures.Variable;
  *
  */
 public class EditorListener implements ActionListener, MouseMotionListener, MouseListener, KeyEventDispatcher {
-	// Class variables //
+// Class variables //
 	protected 	ElementType 		type = ElementType.NONE;
 	private 	EditorGui 			gui;
 	private 	Vector<Object> 		elements = new Vector<Object>();
@@ -65,7 +65,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 	protected 	Vector<Link> 		linkys = new Vector<Link>();
 	private 	Link 				link;
 
-	// Class Methods //
+// Class Methods //
 	/**
 	 * Class constructor. An instance of EditorGui is required as these two classes communicate about events and graphical components
 	 * @param gui
@@ -1018,6 +1018,15 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 			}
 			catch(NumberFormatException nfe){
 			}
+			break;
+		case 23:
+			// NEW FILE
+			linkys.clear();
+			elements.clear();
+			guiElements.clear();
+			gui.editorPanel.removeAll();
+			gui.repaint();
+			gui.validate();
 			break;
 		}
 		gui.optionsPanel.setOptionsType(type);

@@ -51,18 +51,20 @@ public class EditorGui extends JFrame {
 		
 		JMenuBar menuBar = new JMenuBar();
 		
-		JMenu menu = new JMenu("File");
-		JMenu tools = new JMenu("Tools");
-		menuBar.add(menu);
+		JMenu fileMenu 	= new JMenu("File");
+		JMenu tools 	= new JMenu("Tools");
+		menuBar.add(fileMenu);
 		menuBar.add(tools);
 		
-		JMenuItem anim = new JMenuItem("Animation Player");
-		JMenuItem save = new JMenuItem("Save");
-		JMenuItem load = new JMenuItem("Load");
+		JMenuItem anim 		= new JMenuItem("Animation Player");
+		JMenuItem save 		= new JMenuItem("Save");
+		JMenuItem load 		= new JMenuItem("Load");
+		JMenuItem newFile 	= new JMenuItem("New");
 		
 		tools.add(anim);
-		menu.add(save);
-		menu.add(load);
+		fileMenu.add(newFile);
+		fileMenu.add(save);
+		fileMenu.add(load);
 		
 		setJMenuBar(menuBar);
 		
@@ -153,6 +155,8 @@ public class EditorGui extends JFrame {
 		get.setActionCommand("21");
 		resize.addActionListener(el);
 		resize.setActionCommand("22");
+		newFile.addActionListener(el);
+		newFile.setActionCommand("23");
 		
 		// Add toggle buttons to the button group //
 		bg.add(stack);
