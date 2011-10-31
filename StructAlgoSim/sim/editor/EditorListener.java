@@ -58,6 +58,10 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 	protected 	GlassPanel 			panel = new GlassPanel();
 	protected 	Vector<Link> 		linkys = new Vector<Link>();
 	private 	Link 				link;
+	private Point resizeStartPoint = new Point();
+	private Point resizeEndPoint = new Point();
+	private Point resizeTempPoint = new Point();
+	private int resizeElementIndex = -1;
 
 // Class Methods //
 	/**
@@ -469,7 +473,10 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 	public void mousePressed(MouseEvent e) {
 		int x = e.getX();
 		int y = e.getY();
-
+		resizeStartPoint.x = x;
+		resizeStartPoint.y = y;
+		resizeTempPoint.x = x;
+		resizeTempPoint.y = y;
 		if(type == ElementType.LINK){
 			for(int i=0;i<guiElements.size();i++){
 				if(guiElements.get(i).getBounds().contains(x, y)){
@@ -481,6 +488,12 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 				}
 			}
 			panel.p1 = new Point(e.getX(),e.getY());
+		}else if(type == ElementType.RESIZE){
+			for(int i = 0;i < guiElements.size();i++){
+				if(guiElements.get(i).getBounds().contains(x, y)){
+					resizeElementIndex = i;
+				}
+			}
 		}
 	}
 
@@ -552,16 +565,17 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 							((Pop) endElement).setSourceVariable((Variable) startElement);
 						}else if(endElement instanceof Get){
 							Object[] options = {"Input", "Output", "Index"};
-							Object sel = JOptionPane.showInputDialog(gui, "What type of variable is this?", "Typeo of variable", JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-							System.out.println(sel);
-							if(sel.equals("Input")){
-								((Get) endElement).setSourceVariable((Variable) startElement);
-							}else if(sel.equals("Output")){
-								((Get) endElement).setTarget(startElement);
-							}else if(sel.equals("Index")){
-								((Get) endElement).setIndexVariable((Variable) startElement);
-							}else{
-								return;
+							Object sel = JOptionPane.showInputDialog(((Get) endElement).getGuiElement(), "What type of variable is this?", "Typeo of variable", JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+							if(sel != null){
+								if(sel.equals("Input")){
+									((Get) endElement).setSourceVariable((Variable) startElement);
+								}else if(sel.equals("Output")){
+									((Get) endElement).setTarget(startElement);
+								}else if(sel.equals("Index")){
+									((Get) endElement).setIndexVariable((Variable) startElement);
+								}else{
+									return;
+								}
 							}
 						}else if(endElement instanceof Set){
 							Object[] options = {"Input", "Index", "Cancel"};
@@ -700,6 +714,22 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 					break;
 				}
 			}
+		}else if(type == ElementType.RESIZE && resizeElementIndex != -1){
+			resizeEndPoint = new Point(x,y);
+			int oldWidth = guiElements.get(resizeElementIndex).getWidth();
+			int newWidth = oldWidth + (resizeEndPoint.x - resizeStartPoint.x);
+			int oldHeight = guiElements.get(resizeElementIndex).getHeight();
+			int oldX = guiElements.get(resizeElementIndex).getX();
+			int oldY = guiElements.get(resizeElementIndex).getY();
+			int newHeight = oldHeight + (resizeEndPoint.y - resizeStartPoint.y);
+			newWidth = newWidth > 10 ? newWidth : 10;
+			newHeight = newHeight > 10 ? newHeight : 10;
+			
+			guiElements.get(resizeElementIndex).setBounds(oldX, oldY, newWidth, newHeight);
+			resizeElementIndex = -1;
+			panel.repaint();
+			panel.validate();
+			gui.validate();
 		}
 		panel.repaint();
 
@@ -725,6 +755,14 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 			}
 			panel.p2 = new Point(e.getX(),e.getY());
 			panel.repaint();
+		}else if(type == ElementType.RESIZE && resizeElementIndex != -1){
+			resizeEndPoint.x = x;
+			resizeEndPoint.y = y;
+			panel.r.width = (panel.r.width + (resizeEndPoint.x - resizeTempPoint.x)) > 10 ? (panel.r.width + (resizeEndPoint.x - resizeTempPoint.x)) : 10;
+			panel.r.height = (panel.r.height + (resizeEndPoint.y - resizeTempPoint.y)) > 10 ? (panel.r.height + (resizeEndPoint.y - resizeTempPoint.y)) : 10;
+			panel.repaint();
+			resizeTempPoint.x = x;
+			resizeTempPoint.y = y;
 		}
 	}
 
@@ -753,6 +791,19 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 			for(int i=0;i<guiElements.size();i++){
 				if(guiElements.get(i).getBounds().contains(x,y)){
 					panel.c = Color.red;
+					panel.r = new Rectangle(guiElements.get(i).getBounds());
+					panel.repaint();
+					break;
+				}else{
+					panel.r = null;
+					panel.c = Color.green;
+					panel.repaint();
+				}
+			}
+		}else if(type == ElementType.RESIZE){
+			for(int i=0;i<guiElements.size();i++){
+				if(guiElements.get(i).getBounds().contains(x,y)){
+					panel.c = Color.orange;
 					panel.r = new Rectangle(guiElements.get(i).getBounds());
 					panel.repaint();
 					break;
@@ -1188,6 +1239,19 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 			// NEW FILE
 			clearEditor();
 			break;
+		case 24:
+			// RESIZE MODE
+			type = ElementType.RESIZE;
+			
+			panel.setOpaque(false);
+			panel.setSize(gui.editorPanel.getSize());
+			panel.addMouseListener(this);
+			panel.addMouseMotionListener(this);
+
+			gui.editorPanel.add(panel);
+			gui.editorPanel.setComponentZOrder(panel, 0);
+			gui.editorPanel.validate();
+			break;
 		}
 		gui.optionsPanel.setOptionsType(type);
 		gui.editorPanel.revalidate();
@@ -1313,7 +1377,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 	}
 
 	public enum ElementType{
-		STACK,ARRAY,LIST,ADD,REMOVE,INSERT,PUSH,POP,VARIABLE,LINK,SELECT,GET, SET,DELETE,TREE,HEAP,QUEUE,NONE
+		STACK,ARRAY,LIST,ADD,REMOVE,INSERT,PUSH,POP,VARIABLE,LINK,SELECT,GET, SET,DELETE,TREE,HEAP,QUEUE,NONE,RESIZE
 	}
 
 	protected enum LinkDirection{
