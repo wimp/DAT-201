@@ -40,7 +40,7 @@ public class Set implements ActionListener{
 		this.i = i;
 	}
 	
-	public Set(Rectangle bounds, Direction dir){
+	public Set(Rectangle bounds){
 	//TODO add direction here
 		gui = new GuiFunction(bounds,"Get");
 		gui.getButton().addActionListener(this);
