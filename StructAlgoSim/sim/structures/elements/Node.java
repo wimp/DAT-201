@@ -7,6 +7,7 @@ package sim.structures.elements;
 public class Node{
 // Class variables
 	private Object 	value;
+	private int index;
 	private Node 	next;
 	private Node 	previous;
 	private boolean added;
@@ -28,6 +29,14 @@ public class Node{
 	public void setPrevious(Node previous) {
 		this.previous = previous;
 	}
+	public int getIndex() {
+		return index;
+	}
+
+	public void setIndex(int index) {
+		this.index = index;
+	}
+
 	public boolean isAdded() {
 		return added;
 	}
@@ -49,10 +58,11 @@ public class Node{
 	}
 
 // Class constructor
-	public Node(Object value){
+	public Node(Object value, int index){
 		this.previous 	= null;
 		this.next 		= null;
 		this.value		= value;
+		this.index 		= index;
 		added = true;
 		removed = false;
 	}
