@@ -4,7 +4,6 @@ import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import sim.functions.MoveChar.Direction;
 import sim.gui.elements.GuiElement;
 import sim.gui.elements.GuiFunction;
 import sim.structures.Array;
@@ -16,6 +15,7 @@ public class Get implements ActionListener{
 	Variable v;
 	Variable i;
 	Object l;
+	boolean singleChar;
 	
 	GuiFunction gui;
 	public GuiElement getGuiElement(){
@@ -38,6 +38,12 @@ public class Get implements ActionListener{
 	}
 	public void setIndexVariable(Variable i) {
 		this.i = i;
+	}
+	public boolean getSingleChar(){
+		return singleChar;
+	}
+	public void setSingleChar(boolean singleChar){
+		this.singleChar = singleChar;
 	}
 	
 	public Get(Rectangle bounds){
@@ -81,6 +87,13 @@ public class Get implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		if(i != null && v != null){
 			
+		}else if(v != null && l instanceof Variable && singleChar){
+			String val = v.getValue();
+			String ch = val.substring(0, 1);
+			v.setValue(val.substring(1));
+			String tarVal = ((Variable) l).getValue();
+			tarVal += ch;
+			((Variable) l).setValue(tarVal);
 		}
 	}
 }

@@ -42,7 +42,7 @@ public class Set implements ActionListener{
 	
 	public Set(Rectangle bounds){
 	//TODO add direction here
-		gui = new GuiFunction(bounds,"Get");
+		gui = new GuiFunction(bounds,"Set");
 		gui.getButton().addActionListener(this);
 		this.v = null;
 		this.l = null;
@@ -56,19 +56,19 @@ public class Set implements ActionListener{
 	 * @param output = output var
 	 */
 	public Set(Rectangle bounds, Array l, Variable v, Variable i) {
-		gui = new GuiFunction(bounds,"Get");
+		gui = new GuiFunction(bounds,"Set");
 		gui.getButton().addActionListener(this);
 		this.l=l;
 		this.v=v;
 	}
 	public Set(Rectangle bounds, LinkedList l, Variable v, Variable i) {
-		gui = new GuiFunction(bounds,"Get");
+		gui = new GuiFunction(bounds,"Set");
 		gui.getButton().addActionListener(this);
 		this.l=l;
 		this.v=v;
 	}
 	public Set(Rectangle bounds, Tree l, Variable v, Variable i) {
-		gui = new GuiFunction(bounds,"Get");
+		gui = new GuiFunction(bounds,"Set");
 		gui.getButton().addActionListener(this);
 		this.l=l;
 		this.i=i;

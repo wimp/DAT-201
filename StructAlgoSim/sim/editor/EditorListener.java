@@ -1,6 +1,7 @@
 package sim.editor;
 
 import java.awt.AlphaComposite;
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Dimension;
@@ -32,26 +33,14 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import sim.editor.EditorGui.EditorPanel;
 import sim.editor.EditorInfo.InfoType;
-import sim.functions.Add;
-import sim.functions.Get;
-import sim.functions.Insert;
-import sim.functions.MoveChar;
-import sim.functions.Pop;
-import sim.functions.Push;
-import sim.functions.Remove;
-import sim.functions.Set;
+import sim.functions.*;
 import sim.gui.elements.GuiElement;
-import sim.structures.Array;
-import sim.structures.Heap;
-import sim.structures.LinkedList;
-import sim.structures.Queue;
-import sim.structures.Stack;
-import sim.structures.Tree;
-import sim.structures.Variable;
+import sim.structures.*;
 
 /**
  * The listener and action handling class for the {@link EditorGui}. 
@@ -109,19 +98,55 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 			guiElements.add(index,addElement.getGuiElement());
 			return addElement.getGuiElement();
 		case ARRAY:
-			Object[] dimOptions = {"1 dimension","2 dimensions"};
-			Object dim = JOptionPane.showInputDialog(gui, "Please select the number of dimensions", "Array Dimensions", JOptionPane.QUESTION_MESSAGE, null, dimOptions, dimOptions[0]);
-			System.out.println(dim);
-			String s = gui.optionsPanel.textOption.getText();
-			int i = 6;
+			JPanel p = new JPanel(new BorderLayout());
+			p.add(new JLabel("Array dimension and size"),BorderLayout.NORTH);
+			
+			ButtonGroup bg1 = new ButtonGroup();
+			JRadioButton dim1 = new JRadioButton("1");
+			dim1.setActionCommand("1");
+			JRadioButton dim2 = new JRadioButton("2");
+			dim2.setActionCommand("2");
+			bg1.add(dim1);
+			bg1.add(dim2);
+			JPanel dimPanel = new JPanel(new GridLayout(2,3));
+			dimPanel.add(new JLabel("Dimension:"));
+			dimPanel.add(dim1);
+			dimPanel.add(dim2);
+			dimPanel.add(new JLabel("Size"));
+			JPanel tf1Panel = new JPanel();
+			JTextField tf1 = new JTextField("12");
+			tf1.setToolTipText("1st dimension");
+			tf1Panel.add(new JLabel("Rows:"));
+			tf1Panel.add(tf1);
+			dimPanel.add(tf1Panel);
+			JPanel tf2Panel = new JPanel();
+			JTextField tf2 = new JTextField("12");
+			tf2.setToolTipText("2nd dimension");
+			tf2Panel.add(new JLabel("Columns:"));
+			tf2Panel.add(tf2);
+			dimPanel.add(tf2Panel);
+			p.add(dimPanel,BorderLayout.CENTER);
+			JOptionPane.showMessageDialog(gui, p);
+			int y = 6;
+			int x = 6;
+			
 			try{
-				i = Integer.parseInt(s);
-			}catch(NumberFormatException x){
-				i = 6;
+				y = Integer.parseInt(tf1.getText());
+				x = Integer.parseInt(tf2.getText());
+			}catch(NumberFormatException nfe){
+				y = 6;
+				x = 6;
 			}
+			
+			Array arrayElement;
 			bounds.width 	= bounds.width < 70 ? 70 : bounds.width;
 			bounds.height 	= bounds.height < 150 ? 150 : bounds.height;
-			Array arrayElement = new Array(bounds,i);
+			if(bg1.getSelection().getActionCommand().equals("2")){
+				arrayElement = new Array(bounds,y,x);
+			}else{
+				arrayElement = new Array(bounds,y);
+			}
+			
 			elements.add(arrayElement);
 			index = elements.lastIndexOf(arrayElement);
 			guiElements.add(index,arrayElement.getGuiElement());
@@ -223,6 +248,16 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 			bounds.width	= bounds.width < 120 ? 120 : bounds.width;
 			bounds.height	= bounds.height < 30 ? 30 : bounds.height;
 			Get getElement 	= new Get(bounds);
+			int getChar 	= JOptionPane.showConfirmDialog(gui, "Should the function get one character at a time?", "Get function",JOptionPane.YES_NO_CANCEL_OPTION);
+			
+			if(getChar == 0){
+				getElement.setSingleChar(true);
+			}else if(getChar == 1){
+				getElement.setSingleChar(false);
+			}else{
+				return null;
+			}
+			
 			elements.add(getElement);
 			index			= elements.lastIndexOf(getElement);
 			guiElements.add(index,getElement.getGuiElement());
@@ -503,12 +538,17 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 						}else if(endElement instanceof Pop){
 							((Pop) endElement).setSourceVariable((Variable) startElement);
 						}else if(endElement instanceof Get){
-							Object[] options = {"Input", "Index", "Cancel"};
-							int sel = JOptionPane.showOptionDialog(gui, "What type of variable is this?", "Typeo of variable", JOptionPane.YES_NO_CANCEL_OPTION	, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-							if(sel == 0){
+							Object[] options = {"Input", "Output", "Index"};
+							Object sel = JOptionPane.showInputDialog(gui, "What type of variable is this?", "Typeo of variable", JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+							System.out.println(sel);
+							if(sel.equals("Input")){
 								((Get) endElement).setSourceVariable((Variable) startElement);
-							}else if(sel == 1){
+							}else if(sel.equals("Output")){
+								((Get) endElement).setTarget(startElement);
+							}else if(sel.equals("Index")){
 								((Get) endElement).setIndexVariable((Variable) startElement);
+							}else{
+								return;
 							}
 						}else if(endElement instanceof Set){
 							Object[] options = {"Input", "Index", "Cancel"};
@@ -552,7 +592,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 					}else if(startElement instanceof Remove){
 						if(endElement instanceof Variable){
 							Object[] options = {"Ouput", "Index", "Cancel"};
-							int sel = JOptionPane.showOptionDialog(gui, "What type of variable is this?", "Typeo of variable", JOptionPane.YES_NO_CANCEL_OPTION	, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+							int sel = JOptionPane.showOptionDialog(gui, "What type of variable is this?", "Type of variable", JOptionPane.YES_NO_CANCEL_OPTION	, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 							if(sel == 0){
 								((Remove) startElement).setSourceVariable((Variable) endElement);
 							}else if(sel == 1){
@@ -567,12 +607,16 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 						}
 					}else if(startElement instanceof Get){
 						if(endElement instanceof Variable){
-							Object[] options = {"Output", "Index", "Cancel"};
-							int sel = JOptionPane.showOptionDialog(gui, "What type of variable is this?", "Typeo of variable", JOptionPane.YES_NO_CANCEL_OPTION	, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-							if(sel == 0){
+							Object[] options = {"Input", "Output", "Index"};
+							Object sel = JOptionPane.showInputDialog(gui, "What type of variable is this?", "Type of variable", JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+							if(sel.equals("Input")){
 								((Get) startElement).setSourceVariable((Variable) endElement);
-							}else if(sel == 1){
+							}else if(sel.equals("Output")){
+								((Get) startElement).setTarget(endElement);
+							}else if(sel.equals("Index")){
 								((Get) startElement).setIndexVariable((Variable) endElement);
+							}else{
+								return;
 							}
 						}else if(endElement instanceof LinkedList){
 							((Get) startElement).setTarget(endElement);
@@ -584,7 +628,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 					}else if(startElement instanceof Set){
 						if(endElement instanceof Variable){
 							Object[] options = {"Input", "Index", "Cancel"};
-							int sel = JOptionPane.showOptionDialog(gui, "What type of variable is this?", "Typeo of variable", JOptionPane.YES_NO_CANCEL_OPTION	, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+							int sel = JOptionPane.showOptionDialog(gui, "What type of variable is this?", "Type of variable", JOptionPane.YES_NO_CANCEL_OPTION	, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 							if(sel == 0){
 								((Set) startElement).setSourceVariable((Variable) endElement);
 							}else if(sel == 1){
@@ -623,7 +667,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 							((Insert) startElement).setTarget(endElement);
 						}else if(endElement instanceof Variable){
 							Object[] options = {"Input", "Index", "Cancel"};
-							int sel = JOptionPane.showOptionDialog(gui, "What type of variable is this?", "Typeo of variable", JOptionPane.YES_NO_CANCEL_OPTION	, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+							int sel = JOptionPane.showOptionDialog(gui, "What type of variable is this?", "Type of variable", JOptionPane.YES_NO_CANCEL_OPTION	, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 							if(sel == 0){
 								((Insert) startElement).setSourceVariable((Variable) endElement);
 							}else if(sel == 1){
@@ -1106,9 +1150,13 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 			break;
 		case 20:
 			//SET
+			type = ElementType.SET;
+			gui.optionsPanel.setOptionsType(ElementType.SET);
 			break;
 		case 21:
 			//GET
+			type = ElementType.GET;
+			gui.optionsPanel.setOptionsType(ElementType.GET);
 			break;
 		case 22:
 			//RESIZE
