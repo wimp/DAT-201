@@ -17,13 +17,11 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 
-import sim.editor.EditorListener.ElementType;
 import sim.editor.EditorListener.Link;
 
 @SuppressWarnings("serial")
@@ -34,7 +32,6 @@ public class EditorGui extends JFrame {
 	JTextField width = new JTextField("Width");
 	JTextField height = new JTextField("Height");
 	
-	OptionsPanel optionsPanel = new OptionsPanel();
 	protected EditorInfo eInfo;
 	
 	public EditorGui(){
@@ -84,7 +81,6 @@ public class EditorGui extends JFrame {
 		mouseCoords = new JLabel("X:   Y:");
 		eInfo = new EditorInfo();
 		JSeparator s = new JSeparator();
-		optionsPanel.setLayout(new GridLayout(2,1));
 		
 		// Init. items that should be in the top panel //
 		ButtonGroup bg			= new ButtonGroup();
@@ -195,7 +191,6 @@ public class EditorGui extends JFrame {
 		westPanel.add(new JSeparator());
 		westPanel.add(variable);
 		westPanel.add(new JSeparator());
-		westPanel.add(optionsPanel);
 		
 		// Add elements to the east panel (functions etc.) //
 		eastPanel.setLayout(new GridLayout(11,1));
@@ -298,63 +293,6 @@ public class EditorGui extends JFrame {
 					break;
 				}*/
 			}
-		}
-	}
-
-	protected class OptionsPanel extends JPanel{
-		JTextField 	textOption 	= new JTextField();
-		ButtonGroup groupOption = new ButtonGroup();
-		JCheckBox 	check1		= new JCheckBox();
-		JCheckBox 	check2		= new JCheckBox();
-		
-		public OptionsPanel(){
-			
-		}
-		
-		public void setOptionsType(ElementType type){
-			removeAll();
-
-			// Remove all buttons from the button group //
-			groupOption = null;
-			groupOption = new ButtonGroup();
-			
-			switch(type){
-			case ARRAY:
-				setLayout(new GridLayout(2,1));
-				add(new JLabel("Number of Elements"));
-				add(textOption);
-				break;
-			case VARIABLE:
-				setLayout(new GridLayout(3,1));
-				add(new JLabel("Editable"));
-				JRadioButton selTrue = new JRadioButton("Yes");
-				selTrue.setActionCommand("1");
-				JRadioButton selFalse = new JRadioButton("No");
-				selFalse.setActionCommand("0");
-				selTrue.setSelected(true);
-				groupOption.add(selTrue);
-				groupOption.add(selFalse);
-				add(selTrue);
-				add(selFalse);
-				break;
-			case INSERT:
-				setLayout(new GridLayout(3,1));
-				add(new JLabel("Where to insert"));
-				JRadioButton selBefore 	= new JRadioButton("Before");
-				selBefore.setActionCommand("0");
-				JRadioButton selAfter	= new JRadioButton("After");
-				selAfter.setActionCommand("1");
-				selBefore.setSelected(true);
-				groupOption.add(selBefore);
-				groupOption.add(selAfter);
-				add(selBefore);
-				add(selAfter);
-				break;
-			default:
-				
-				break;	
-			}
-			validate();
 		}
 	}
 }

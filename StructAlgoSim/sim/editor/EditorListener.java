@@ -25,7 +25,6 @@ import java.io.FileWriter;
 import java.util.Vector;
 
 import javax.swing.ButtonGroup;
-import javax.swing.ButtonModel;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
@@ -90,8 +89,6 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 	 */
 	private JComponent getComponentFromEnum(ElementType type, Rectangle bounds) {
 		int index;
-		boolean e;
-		ButtonModel b;
 		switch(type){
 		case ADD:
 			bounds.width 	= bounds.width < 80 ? 80 : bounds.width;
@@ -156,11 +153,9 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 			guiElements.add(index,arrayElement.getGuiElement());
 			return arrayElement.getGuiElement();
 		case INSERT:
-			b 	= gui.optionsPanel.groupOption.getSelection();
-			e	= b.getActionCommand().equals("1") ? true : false;
 			bounds.width 	= bounds.width < 150 ? 150 : bounds.width;
 			bounds.height 	= bounds.height < 30 ? 30 : bounds.height;
-			Insert insertElement = new Insert(bounds, e);
+			Insert insertElement = new Insert(bounds, true);
 			elements.add(insertElement);
 			index = elements.lastIndexOf(insertElement);
 			guiElements.add(index,insertElement.getGuiElement());
@@ -206,12 +201,10 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 			guiElements.add(index,stackElement.getGuiElement());
 			return stackElement.getGuiElement();
 		case VARIABLE:
-			b = gui.optionsPanel.groupOption.getSelection();
-			e = b == null ? true : b.getActionCommand().equals("1") ? true : false;
 			//			e = b.getActionCommand().equals("1") ? true : false;
 			bounds.width 	= bounds.width < 80 ? 80 : bounds.width;
 			bounds.height 	= bounds.height < 30 ? 30 : bounds.height;
-			Variable variableElement = new Variable(bounds,"",e);
+			Variable variableElement = new Variable(bounds,"",true);
 			elements.add(variableElement);
 			index = elements.lastIndexOf(variableElement);
 			guiElements.add(index,variableElement.getGuiElement());
@@ -865,13 +858,6 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 
 		gui.validate();
 
-		if(e.getActionCommand().equals("16")){
-			gui.editorPanel.grid = ((JCheckBox) e.getSource()).isSelected() ? true : false;
-			gui.editorPanel.repaint();
-			panel.repaint();
-			gui.validate();
-		}
-
 		switch(Integer.parseInt(e.getActionCommand())){
 		case 1:
 			type = ElementType.STACK;
@@ -950,6 +936,12 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 		case 15:
 			type = ElementType.QUEUE;
 			gui.eInfo.setInfoType(InfoType.QUEUE);
+			break;
+		case 16:
+			gui.editorPanel.grid = ((JCheckBox) e.getSource()).isSelected() ? true : false;
+			gui.editorPanel.repaint();
+			panel.repaint();
+			gui.validate();
 			break;
 		case 17:
 			// ANIMATION WINDOW
@@ -1260,12 +1252,12 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 		case 20:
 			//SET
 			type = ElementType.SET;
-			gui.optionsPanel.setOptionsType(ElementType.SET);
+//			gui.optionsPanel.setOptionsType(ElementType.SET);
 			break;
 		case 21:
 			//GET
 			type = ElementType.GET;
-			gui.optionsPanel.setOptionsType(ElementType.GET);
+//			gui.optionsPanel.setOptionsType(ElementType.GET);
 			break;
 		case 22:
 			//RESIZE
@@ -1293,7 +1285,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 			gui.editorPanel.validate();
 			break;
 		}
-		gui.optionsPanel.setOptionsType(type);
+//		gui.optionsPanel.setOptionsType(type);
 		gui.editorPanel.revalidate();
 		gui.repaint();
 		gui.validate();
