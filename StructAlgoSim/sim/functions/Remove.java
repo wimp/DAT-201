@@ -25,16 +25,16 @@ public class Remove implements ActionListener {
 	public GuiElement getGuiElement(){
 		return gui;
 	}
-	public Object getTarget() {
+	public Object getSource() {
 		return l;
 	}
-	public void setTarget(Object l) {
+	public void setSource(Object l) {
 		this.l = l;
 	}
-	public Variable getSourceVariable() {
+	public Variable getTargetVariable() {
 		return v;
 	}
-	public void setSourceVariable(Variable v) {
+	public void setTargetVariable(Variable v) {
 		this.v = v;
 	}
 	public Variable getIndexVariable() {
