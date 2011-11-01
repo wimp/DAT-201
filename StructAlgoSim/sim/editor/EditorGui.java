@@ -9,6 +9,7 @@ import java.awt.GridLayout;
 import java.awt.KeyboardFocusManager;
 
 import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -97,17 +98,27 @@ public class EditorGui extends JFrame {
 		JToggleButton push		= new JToggleButton("Push");
 		JToggleButton pop		= new JToggleButton("Pop");
 		JToggleButton variable	= new JToggleButton("Variable");
-		JToggleButton link		= new JToggleButton("Link");
-		JToggleButton select	= new JToggleButton("Select and Push");
+		JToggleButton link		= new JToggleButton();
+		JToggleButton select	= new JToggleButton();
 		JToggleButton delete	= new JToggleButton("Delete Element");
 		JToggleButton tree		= new JToggleButton("Tree");
 		JToggleButton heap		= new JToggleButton("Heap");
 		JToggleButton queue		= new JToggleButton("Queue");
 		JCheckBox grid			= new JCheckBox("Grid");
-//		JButton resize			= new JButton("Resize");
-		JToggleButton resizeMode= new JToggleButton("Resize Element");
+		JToggleButton resizeMode= new JToggleButton();
 		
+		// Set icons for selected buttons //
+		ImageIcon resizeIcon = new ImageIcon(ClassLoader.getSystemResource("sim/resources/resize.png"));
+		resizeMode.setIcon(resizeIcon);
+		resizeMode.setToolTipText("Resize Element");
 		
+		ImageIcon selectIcon = new ImageIcon(ClassLoader.getSystemResource("sim/resources/arrow.png"));
+		select.setIcon(selectIcon);
+		select.setToolTipText("Simulate and use items in the editor");
+		
+		ImageIcon linkIcon = new ImageIcon(ClassLoader.getSystemResource("sim/resources/link.png"));
+		link.setIcon(linkIcon);
+		link.setToolTipText("Link elements together");
 		
 		// Add actionlisteners and set action commands //
 		stack.addActionListener(el);
