@@ -536,7 +536,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 							Object[] options = {"Output", "Index", "Cancel"};
 							int sel = JOptionPane.showOptionDialog(((Remove) endElement).getGuiElement(), "What type of variable is this?", "Type of variable", JOptionPane.YES_NO_CANCEL_OPTION	, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 							if(sel == 0){
-								((Remove) endElement).setSourceVariable((Variable) startElement);
+								((Remove) endElement).setTargetVariable((Variable) startElement);
 							}else if(sel == 1){
 								((Remove) endElement).setIndexVariable((Variable) startElement);
 							}
@@ -551,7 +551,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 						}else if(endElement instanceof Push){
 							((Push) endElement).setSourceVariable((Variable) startElement);
 						}else if(endElement instanceof Pop){
-							((Pop) endElement).setSourceVariable((Variable) startElement);
+							((Pop) endElement).setTargetVariable((Variable) startElement);
 						}else if(endElement instanceof Get){
 
 							Object[] options = {"Input", "Output", "Index"};
@@ -565,7 +565,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 								getChar = JOptionPane.showConfirmDialog(((Get) endElement).getGuiElement(), "Should the function get one character at a time?", "Get function",JOptionPane.YES_NO_CANCEL_OPTION);
 
 							}else if(sel.equals("Output")){
-								((Get) endElement).setTarget(startElement);
+								((Get) endElement).setSource(startElement);
 								getChar = JOptionPane.showConfirmDialog(((Get) endElement).getGuiElement(), "Should the function set one character at a time?", "Get function",JOptionPane.YES_NO_CANCEL_OPTION);
 
 							}else if(sel.equals("Index")){
@@ -605,7 +605,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 						if(endElement instanceof Push){
 							((Push) endElement).setTarget(startElement);
 						}else if(endElement instanceof Pop){
-							((Pop) endElement).setTarget(startElement);
+							((Pop) endElement).setSource(startElement);
 						}
 					}else if(startElement instanceof Push){
 						if(endElement instanceof Stack){
@@ -615,17 +615,17 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 						}
 					}else if(startElement instanceof Pop){
 						if(endElement instanceof Stack){
-							((Pop) startElement).setTarget(endElement);
+							((Pop) startElement).setSource(endElement);
 						}else if(endElement instanceof Variable){
-							((Pop) startElement).setSourceVariable((Variable) endElement);
+							((Pop) startElement).setTargetVariable((Variable) endElement);
 						}
 					}else if(startElement instanceof LinkedList){
 						if(endElement instanceof Set){
 							((Set) endElement).setTarget(startElement);
 						}else if(endElement instanceof Get){
-							((Get) endElement).setTarget(startElement);
+							((Get) endElement).setSource(startElement);
 						}else if(endElement instanceof Remove){
-							((Remove) endElement).setTarget(startElement);
+							((Remove) endElement).setSource(startElement);
 						}else if(endElement instanceof Insert){
 							((Insert) endElement).setTarget(startElement);
 						}else if(endElement instanceof Add){
@@ -636,16 +636,16 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 							Object[] options = {"Ouput", "Index", "Cancel"};
 							int sel = JOptionPane.showOptionDialog(((Variable) endElement).getGuiElement(), "What type of variable is this?", "Type of variable", JOptionPane.YES_NO_CANCEL_OPTION	, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 							if(sel == 0){
-								((Remove) startElement).setSourceVariable((Variable) endElement);
+								((Remove) startElement).setTargetVariable((Variable) endElement);
 							}else if(sel == 1){
 								((Remove) startElement).setIndexVariable((Variable) endElement);
 							}
 						}else if(endElement instanceof LinkedList){
-							((Remove) startElement).setTarget(endElement);
+							((Remove) startElement).setSource(endElement);
 						}else if(endElement instanceof Tree){
-							((Remove) startElement).setTarget(endElement);
+							((Remove) startElement).setSource(endElement);
 						}else if(endElement instanceof Queue){
-							((Remove) startElement).setTarget(endElement);
+							((Remove) startElement).setSource(endElement);
 						}
 					}else if(startElement instanceof Get){
 						if(endElement instanceof Variable){
@@ -661,7 +661,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 								getChar= JOptionPane.showConfirmDialog(((Variable) endElement).getGuiElement(), "Should the function get one character at a time?", "Get function",JOptionPane.YES_NO_CANCEL_OPTION);
 
 							}else if(sel.equals("Output")){
-								((Get) startElement).setTarget(endElement);
+								((Get) startElement).setSource(endElement);
 								getChar= JOptionPane.showConfirmDialog(((Variable) endElement).getGuiElement(), "Should the function set one character at a time?", "Get function",JOptionPane.YES_NO_CANCEL_OPTION);
 
 							}else if(sel.equals("Index")){
@@ -713,7 +713,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 						if(endElement instanceof Set){
 							((Set) endElement).setTarget(startElement);
 						}else if(endElement instanceof Get){
-							((Get) endElement).setTarget(startElement);
+							((Get) endElement).setSource(startElement);
 						}else if(endElement instanceof Insert){
 							((Insert) endElement).setTarget(startElement);
 						}
@@ -721,13 +721,13 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 						if(endElement instanceof Set){
 							((Set) endElement).setTarget(startElement);
 						}else if(endElement instanceof Get){
-							((Get) endElement).setTarget(startElement);
+							((Get) endElement).setSource(startElement);
 						}else if(endElement instanceof Insert){
 							((Insert) endElement).setTarget(startElement);
 						}else if(endElement instanceof Add){
 							((Add) endElement).setTarget(startElement);
 						}else if(endElement instanceof Remove){
-							((Remove) endElement).setTarget(startElement);
+							((Remove) endElement).setSource(startElement);
 						}
 					}else if(startElement instanceof Insert){
 						if(endElement instanceof Tree){
@@ -747,7 +747,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 						if(endElement instanceof Add){
 							((Add) endElement).setTarget(startElement);
 						}else if(endElement instanceof Remove){
-							((Remove) endElement).setTarget(startElement);
+							((Remove) endElement).setSource(startElement);
 						}
 					}
 				}
@@ -985,8 +985,8 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 							out.write(t+":"+sv+":"+iv);
 							out.flush();
 						}else if(element instanceof Remove){
-							String t = Integer.toString(elements.indexOf(((Remove) element).getTarget()));
-							String sv = Integer.toString(elements.indexOf(((Remove) element).getSourceVariable()));
+							String t = Integer.toString(elements.indexOf(((Remove) element).getSource()));
+							String sv = Integer.toString(elements.indexOf(((Remove) element).getTargetVariable()));
 							String iv = Integer.toString(elements.indexOf(((Remove) element).getIndexVariable()));
 
 							out.write(t+":"+sv+":"+iv);
@@ -1005,8 +1005,8 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 							out.write(t+":"+sv);
 							out.flush();
 						}else if(element instanceof Pop){
-							String t = Integer.toString(elements.indexOf(((Pop) element).getTarget()));
-							String sv = Integer.toString(elements.indexOf(((Pop) element).getSourceVariable()));
+							String t = Integer.toString(elements.indexOf(((Pop) element).getSource()));
+							String sv = Integer.toString(elements.indexOf(((Pop) element).getTargetVariable()));
 
 							out.write(t+":"+sv);
 						}else if(element instanceof Variable){
@@ -1181,10 +1181,10 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 								}else if(element instanceof Remove){
 									switch(j){
 									case 0:
-										((Remove) element).setTarget(elements.get(link[i][j]));
+										((Remove) element).setSource(elements.get(link[i][j]));
 										break;
 									case 1:
-										((Remove) element).setSourceVariable((Variable) elements.get(link[i][j]));
+										((Remove) element).setTargetVariable((Variable) elements.get(link[i][j]));
 										break;
 									case 2:
 										((Remove) element).setIndexVariable((Variable) elements.get(link[i][j]));
@@ -1215,16 +1215,16 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 								}else if(element instanceof Pop){
 									switch(j){
 									case 0:
-										((Pop) element).setTarget(elements.get(link[i][j]));
+										((Pop) element).setSource(elements.get(link[i][j]));
 										break;
 									case 1:
-										((Pop) element).setSourceVariable((Variable) elements.get(link[i][j]));
+										((Pop) element).setTargetVariable((Variable) elements.get(link[i][j]));
 										break;
 									}
 								}else if(element instanceof Get){
 									switch(j){
 									case 0:
-										((Get) element).setTarget(elements.get(link[i][j]));
+										((Get) element).setSource(elements.get(link[i][j]));
 										break;
 									case 1:
 										((Get) element).setSource(elements.get(link[i][j]));
