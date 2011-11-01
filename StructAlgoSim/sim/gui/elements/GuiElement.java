@@ -24,8 +24,15 @@ public abstract class GuiElement extends JPanel{
 		}
 	}
 	int frame;
-	final int MAXFRAME = 7;
-// Class constructor //
+	private int maxFrame = 7;
+	
+public int getMaxFrame() {
+		return maxFrame;
+	}
+	public void setMaxFrame(int maxFrame) {
+		this.maxFrame = maxFrame;
+	}
+	// Class constructor //
 	/**
 	 * Class constructor - sets the instance of the class to visible.
 	 */

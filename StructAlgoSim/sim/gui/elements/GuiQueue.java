@@ -50,7 +50,7 @@ public class GuiQueue extends GuiElement implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource()==animation){
 			frame++;
-			if(frame > MAXFRAME){
+			if(frame > getMaxFrame()){
 				frame = 0;
 				animation.stop();
 				added = false;
@@ -147,17 +147,17 @@ public class GuiQueue extends GuiElement implements ActionListener{
 			if(removed){
 				g.setColor(GuiSettings.QUEUEELEMENTCOLOR);
 
-				g.fillRoundRect(xoffset-(xoffset/MAXFRAME)*frame-elementW,yoffset, elementW, elementH, 5, 5);
+				g.fillRoundRect(xoffset-(xoffset/getMaxFrame())*frame-elementW,yoffset, elementW, elementH, 5, 5);
 				g.setColor(c);
-				g.drawRoundRect(xoffset-(xoffset/MAXFRAME)*frame-elementW,yoffset, elementW, elementH, 5, 5);
+				g.drawRoundRect(xoffset-(xoffset/getMaxFrame())*frame-elementW,yoffset, elementW, elementH, 5, 5);
 				v=g.getFontMetrics(getFont()).getHeight()-g.getFontMetrics(getFont()).getHeight()/4;
 				j = 0;
 				k = recent.length();
 				while(j < k+1) {
 					if (j == k) 
-						g.drawString(recent.substring(j),xoffset-(xoffset/MAXFRAME)*frame+5-elementW, yoffset+10+(j*v));
+						g.drawString(recent.substring(j),xoffset-(xoffset/getMaxFrame())*frame+5-elementW, yoffset+10+(j*v));
 					else
-						g.drawString(recent.substring(j,j+1),xoffset-(xoffset/MAXFRAME)*frame+5-elementW, yoffset+10+(j*v));
+						g.drawString(recent.substring(j,j+1),xoffset-(xoffset/getMaxFrame())*frame+5-elementW, yoffset+10+(j*v));
 					j++;
 				}
 			}
@@ -174,17 +174,17 @@ public class GuiQueue extends GuiElement implements ActionListener{
 					g.setColor(GuiSettings.QUEUEELEMENTCOLOR);
 
 				if(added && s == recent){
-					g.fillRoundRect(((getWidth()-elementW*i)/MAXFRAME)*(MAXFRAME-frame)+elementW*i+xoffset,yoffset, elementW, elementH, 5, 5);
+					g.fillRoundRect(((getWidth()-elementW*i)/getMaxFrame())*(getMaxFrame()-frame)+elementW*i+xoffset,yoffset, elementW, elementH, 5, 5);
 					g.setColor(c);
-					g.drawRoundRect(((getWidth()-elementW*i)/MAXFRAME)*(MAXFRAME-frame)+elementW*i+xoffset,yoffset, elementW, elementH, 5, 5);
+					g.drawRoundRect(((getWidth()-elementW*i)/getMaxFrame())*(getMaxFrame()-frame)+elementW*i+xoffset,yoffset, elementW, elementH, 5, 5);
 					v=g.getFontMetrics(getFont()).getHeight()-g.getFontMetrics(getFont()).getHeight()/4;
 					j = 0;
 					k = s.length();
 					while(j < k+1) {
 						if (j == k) 
-							g.drawString(s.substring(j),((getWidth()-elementW*i)/MAXFRAME)*(MAXFRAME-frame)+i*elementW+5+xoffset, yoffset+10+(j*v));
+							g.drawString(s.substring(j),((getWidth()-elementW*i)/getMaxFrame())*(getMaxFrame()-frame)+i*elementW+5+xoffset, yoffset+10+(j*v));
 						else
-							g.drawString(s.substring(j,j+1),((getWidth()-elementW*i)/MAXFRAME)*(MAXFRAME-frame)+i*elementW+5+xoffset, yoffset+10+(j*v));
+							g.drawString(s.substring(j,j+1),((getWidth()-elementW*i)/getMaxFrame())*(getMaxFrame()-frame)+i*elementW+5+xoffset, yoffset+10+(j*v));
 						j++;
 					}
 				}

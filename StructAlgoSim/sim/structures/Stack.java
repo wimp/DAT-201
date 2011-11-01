@@ -19,7 +19,7 @@ public class Stack {
 	/**
 	 * Constructor. 
 	 * @param bounds The size of the graphical element.
-	 */	
+	 */
 	public Stack(Rectangle bounds){
 		gui = new GuiStack(bounds,s);
 	}

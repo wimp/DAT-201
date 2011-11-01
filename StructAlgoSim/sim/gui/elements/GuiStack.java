@@ -110,17 +110,17 @@ public class GuiStack extends GuiElement implements ActionListener{
 
 				if(added){
 					g.setColor(GuiSettings.STACKADDEDCOLOR);
-					g.fillRoundRect(0, ((getHeight()-data.size()*elementH)/MAXFRAME)*frame, elementW, elementH, 5, 5);
+					g.fillRoundRect(0, ((getHeight()-data.size()*elementH)/getMaxFrame())*frame, elementW, elementH, 5, 5);
 					g.setColor(c);
-					g.drawString(recent,10, ((getHeight()-data.size()*elementH)/MAXFRAME)*frame+elementH-elementH/3);
-					g.drawRoundRect(0, ((getHeight()-data.size()*elementH)/MAXFRAME)*frame, elementW, elementH, 5, 5);
+					g.drawString(recent,10, ((getHeight()-data.size()*elementH)/getMaxFrame())*frame+elementH-elementH/3);
+					g.drawRoundRect(0, ((getHeight()-data.size()*elementH)/getMaxFrame())*frame, elementW, elementH, 5, 5);
 				}
 				else if(removed){
 					g.setColor(GuiSettings.STACKADDEDCOLOR);
-					g.fillRoundRect(0, ((getHeight()-data.size()*elementH)/MAXFRAME)*(MAXFRAME-frame)-elementH, elementW, elementH, 5, 5);
+					g.fillRoundRect(0, ((getHeight()-data.size()*elementH)/getMaxFrame())*(getMaxFrame()-frame)-elementH, elementW, elementH, 5, 5);
 					g.setColor(c);
-					g.drawString(recent,10, ((getHeight()-data.size()*elementH)/MAXFRAME)*(MAXFRAME-frame)-elementH/3);
-					g.drawRoundRect(0, ((getHeight()-data.size()*elementH)/MAXFRAME)*(MAXFRAME-frame)-elementH, elementW, elementH, 5, 5);
+					g.drawString(recent,10, ((getHeight()-data.size()*elementH)/getMaxFrame())*(getMaxFrame()-frame)-elementH/3);
+					g.drawRoundRect(0, ((getHeight()-data.size()*elementH)/getMaxFrame())*(getMaxFrame()-frame)-elementH, elementW, elementH, 5, 5);
 				}
 			}
 			if(preferredWidth+10 !=getWidth() || preferredHeight+10 !=getHeight()){
@@ -134,7 +134,7 @@ public class GuiStack extends GuiElement implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource()==animation){
 			frame++;
-			if(frame > MAXFRAME){
+			if(frame > getMaxFrame()){
 				frame = 0;
 				animation.stop();
 				added = false;

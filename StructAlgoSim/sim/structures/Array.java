@@ -6,7 +6,6 @@ import sim.gui.elements.GuiArray;
 
 /**
  * A class to implement one- and two dimensional arrays in the simulation gui.
- *
  */
 public class Array {
 // Class variables //
@@ -21,7 +20,7 @@ public class Array {
 	}
 	/**
 	 * The total number of dimensions of this array.
-	 * @return int dimensions
+	 * @return int Total number of dimensions.
 	 */
 	public int getDimensions(){
 		return dimensions;
@@ -66,13 +65,24 @@ public class Array {
 	public Object getValueAt(int indexY, int indexX){
 		return array[indexY][indexX];
 	}
+	/**
+	 * Method to set the value of a one-dimensional array at indexY
+	 * @param indexY
+	 */
 	public void setValueAt(Object value,int indexY){
 		setValueAt(value, indexY,0);
 	}
+	/**
+	 * Method to set the value of a two-dimensional array at indexY,indexX
+	 * @param indexY
+	 * @param indexX
+	 */
 	public void setValueAt(Object value, int indexY, int indexX) {
 		if(value != null){
 			String item = (String)value;
 			array[indexY][indexX] = item;
+			gui.setChanged(array[indexY][indexX]);
+			gui.startAnimation();
 			gui.repaint();
 		}
 	}
