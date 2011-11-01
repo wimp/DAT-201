@@ -9,7 +9,6 @@ import java.awt.GridLayout;
 import java.awt.KeyboardFocusManager;
 
 import javax.swing.ButtonGroup;
-import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -50,6 +49,7 @@ public class EditorGui extends JFrame {
 		
 		JMenu fileMenu 	= new JMenu("File");
 		JMenu tools 	= new JMenu("Tools");
+		
 		menuBar.add(fileMenu);
 		menuBar.add(tools);
 		
@@ -57,8 +57,10 @@ public class EditorGui extends JFrame {
 		JMenuItem save 		= new JMenuItem("Save");
 		JMenuItem load 		= new JMenuItem("Load");
 		JMenuItem newFile 	= new JMenuItem("New");
+		JMenuItem resizeView= new JMenuItem("Resize View");
 		
 		tools.add(anim);
+		tools.add(resizeView);
 		fileMenu.add(newFile);
 		fileMenu.add(save);
 		fileMenu.add(load);
@@ -102,7 +104,7 @@ public class EditorGui extends JFrame {
 		JToggleButton heap		= new JToggleButton("Heap");
 		JToggleButton queue		= new JToggleButton("Queue");
 		JCheckBox grid			= new JCheckBox("Grid");
-		JButton resize			= new JButton("Resize");
+//		JButton resize			= new JButton("Resize");
 		JToggleButton resizeMode= new JToggleButton("Resize Element");
 		
 		
@@ -150,8 +152,8 @@ public class EditorGui extends JFrame {
 		set.setActionCommand("20");
 		get.addActionListener(el);
 		get.setActionCommand("21");
-		resize.addActionListener(el);
-		resize.setActionCommand("22");
+		resizeView.addActionListener(el);
+		resizeView.setActionCommand("22");
 		newFile.addActionListener(el);
 		newFile.setActionCommand("23");
 		resizeMode.addActionListener(el);
@@ -219,9 +221,9 @@ public class EditorGui extends JFrame {
 			leftOnTop.setPreferredSize(new Dimension(250,30));
 			leftOnTop.setLayout(new GridLayout(1,1));
 			
-			leftOnTop.add(width);
-			leftOnTop.add(height);
-			leftOnTop.add(resize);
+//			leftOnTop.add(width);
+//			leftOnTop.add(height);
+//			leftOnTop.add(resize);
 			
 		JPanel rightOnTop = new JPanel(new GridLayout(1,2));
 			rightOnTop.setPreferredSize(new Dimension(250,30));

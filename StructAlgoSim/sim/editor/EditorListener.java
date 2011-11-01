@@ -1259,11 +1259,8 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 			break;
 		case 22:
 			//RESIZE
-			try{
-				gui.editorPanel.setPreferredSize(new Dimension(Integer.parseInt(gui.width.getText()),Integer.parseInt(gui.height.getText())));
-			}
-			catch(NumberFormatException nfe){
-			}
+			JPanel resizePanel = new JPanel();
+			JOptionPane.showInputDialog(gui, resizePanel);
 			break;
 		case 23:
 			// NEW FILE
