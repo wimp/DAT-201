@@ -148,13 +148,15 @@ public class Tree {
 		setIndices();
 		newnode.setAdded(true);
 		gui.setChanged(newnode);
+		
+		
 		Vector<TreeNode> changePath = new Vector<TreeNode>();
 		changePath = getAllNodes(changePath, root);
-		TreeNode start =changePath.firstElement();
+		TreeNode start =changePath.lastElement();
 		
-		while(start !=newnode){
+		while(start !=newnode && changePath.size()>0){
+			start = changePath.lastElement();
 			changePath.remove(start);
-			start = changePath.firstElement();
 		}
 		gui.setPathToChanged(changePath);
 		gui.startAnimation();

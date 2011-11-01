@@ -14,7 +14,7 @@ import sim.structures.Tree;
 import sim.structures.Variable;
 
 public class Get implements ActionListener{
-	
+
 	Variable i;
 	Variable target;
 	Object source;
@@ -50,7 +50,7 @@ public class Get implements ActionListener{
 	}
 
 	public Get(Rectangle bounds, boolean singleChar){
-		
+
 		gui = new GuiFunction(bounds,"Get");
 		gui.getButton().addActionListener(this);
 		this.target = null;
@@ -106,21 +106,24 @@ public class Get implements ActionListener{
 			if(source instanceof Variable){
 				if(singleChar){
 					String val = ((Variable)source).getValue();
-					String ch = val.substring(0, 1);
-					((Variable)source).setValue(val.substring(1));
-					String tarVal = ((Variable) target).getValue();
-					tarVal += ch;
-					((Variable) target).setValue(tarVal);
+
+					if(val.length()>0){
+						String ch = val.substring(0, 1);
+						((Variable)source).setValue(val.substring(1));
+						String tarVal = ((Variable) target).getValue();
+						tarVal += ch;
+						((Variable) target).setValue(tarVal);
+					}
 				}
 				else {
-					((Variable) source).setValue(((Variable)target).getValue());
+					((Variable) target).setValue(((Variable)source).getValue());
 				}
 			}else if(i != null && source instanceof Tree){
 				try{
-						int index = Integer.parseInt(i.getValue());
-						String s = ((Tree)source).getValueAt(index);
-						if(s!=null)
-							target.setValue(s);
+					int index = Integer.parseInt(i.getValue());
+					String s = ((Tree)source).getValueAt(index);
+					if(s!=null)
+						target.setValue(s);
 				}catch(NumberFormatException nfe){
 					JOptionPane.showConfirmDialog(gui, "Illegal character: you can only enter numbers.");
 				}

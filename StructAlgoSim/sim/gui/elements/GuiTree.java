@@ -284,15 +284,25 @@ public class GuiTree extends GuiElement implements ActionListener, MouseMotionLi
 					mousePos.y < drawNodeHeight *2* n.getDepth()+drawNodeHeight*2){
 				selected = n;
 			}
-			if(n!=selected)
+			if(n!=selected){
 				if(show){
 					int v=g2d.getFontMetrics(getFont()).charsWidth(n.getValue().toString().toCharArray(), 0, n.getValue().toString().toCharArray().length)+20;
 					if(v<drawNodeWidth) v = drawNodeWidth;
-
-					if(n!=changed)
 					g2d.setColor(GuiSettings.TREECONTENTCOLOR);
-					else 
-					g2d.setColor(GuiSettings.TREECONTENTCOLOR);
+					if(n!=null && pathToChanged !=null)
+					if(n==changed){
+						if(n.isAdded())
+							g2d.setColor(GuiSettings.TREEADDEDCOLOR);
+						else
+							g2d.setColor(GuiSettings.TREEREMOVEDCOLOR);
+					}
+					else if(frame <pathToChanged.size() && pathToChanged.indexOf(n)<frame && pathToChanged.indexOf(n)>=0){						
+						if(n.isAdded())
+							g2d.setColor(GuiSettings.TREEADDPATHCOLOR);
+						else
+							g2d.setColor(GuiSettings.TREEREMOVEPATHCOLOR);
+					}
+					
 					
 					g2d.fillRoundRect(offset, drawNodeHeight *2* n.getDepth()+drawNodeHeight, v, drawNodeHeight, 5, 5);
 					g2d.setColor(c);
@@ -302,13 +312,20 @@ public class GuiTree extends GuiElement implements ActionListener, MouseMotionLi
 				else{
 
 					g2d.setColor(n.isLeaf() ? GuiSettings.TREENODECOLOR : GuiSettings.TREELEAFCOLOR);
-
-					if(n==changed)
+					
+					if(n!=null && pathToChanged !=null)
+					if(n==changed){
 						if(n.isAdded())
 							g2d.setColor(GuiSettings.TREEADDEDCOLOR);
 						else
 							g2d.setColor(GuiSettings.TREEREMOVEDCOLOR);
-					
+					}
+					else if(frame <pathToChanged.size() && pathToChanged.indexOf(n)<frame && pathToChanged.indexOf(n)>=0){						
+						if(n.isAdded())
+							g2d.setColor(GuiSettings.TREEADDPATHCOLOR);
+						else
+							g2d.setColor(GuiSettings.TREEREMOVEPATHCOLOR);
+					}
 					g2d.fillOval(offset, drawNodeHeight *2* n.getDepth()+drawNodeHeight,
 							drawNodeWidth, drawNodeHeight);
 					g2d.setColor(c);			
@@ -317,6 +334,7 @@ public class GuiTree extends GuiElement implements ActionListener, MouseMotionLi
 					g2d.drawString(new Integer(n.getCurrentIndex()).toString(), offset+(drawNodeWidth/3), drawNodeHeight*2*n.getDepth()+drawNodeHeight+(drawNodeHeight/2));
 
 				}
+			}
 		}
 		Tree.TreeNode selected;
 		@Override 
@@ -332,7 +350,6 @@ public class GuiTree extends GuiElement implements ActionListener, MouseMotionLi
 				drawNode(g2d, tree.getRoot(), getOffset(tree.getRoot()));	
 
 			if(selected != null){
-
 				Color c = g2d.getColor();
 				if(!show){
 					int v=g2d.getFontMetrics(getFont()).charsWidth(selected.getValue().toString().toCharArray(), 0, selected.getValue().toString().toCharArray().length)+20;
@@ -367,7 +384,7 @@ public class GuiTree extends GuiElement implements ActionListener, MouseMotionLi
 		stopAnimation();
 		super.startAnimation();
 		if(pathToChanged!=null)
-		setMaxFrame(pathToChanged.size());
+		setMaxFrame(pathToChanged.size()+1);
 		animation.setDelay(5000/getMaxFrame());
 		
 	}

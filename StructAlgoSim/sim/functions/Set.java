@@ -91,20 +91,23 @@ public class Set implements ActionListener{
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(i != null && v != null){
+		if(v != null){
 			if(l instanceof Variable){
 				if(singleChar){
 					String val = v.getValue();
+
+					if(val.length()>0){
 					String ch = val.substring(0, 1);
 					v.setValue(val.substring(1));
 					String tarVal = ((Variable) l).getValue();
 					tarVal += ch;
 					((Variable) l).setValue(tarVal);
+					}
 				}
 				else {
 					v.setValue(((Variable) l).getValue());
 				}
-			}else if(l instanceof Tree){
+			}else if(i != null && l instanceof Tree){
 
 				try{
 						int index = Integer.parseInt(i.getValue());
@@ -113,7 +116,7 @@ public class Set implements ActionListener{
 				}catch(NumberFormatException nfe){
 					JOptionPane.showConfirmDialog(gui, "Illegal character: you can only enter numbers.");
 				}
-			}else if(l instanceof LinkedList){
+			}else if(i != null && l instanceof LinkedList){
 
 				try{
 					int index = Integer.parseInt(i.getValue());
@@ -125,7 +128,7 @@ public class Set implements ActionListener{
 					JOptionPane.showConfirmDialog(gui, "Illegal character: you can only enter numbers.");
 				}
 			}
-			else if(l instanceof Array){
+			else if(i != null && l instanceof Array){
 					if(i.getValue().indexOf(",") > 0){
 						String[] index = i.getValue().split(",");
 						try{
