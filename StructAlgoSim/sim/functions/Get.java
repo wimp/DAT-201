@@ -100,7 +100,7 @@ public class Get implements ActionListener{
 	 * Will remove the first char from the input string and append it to the output string. 
 	 */
 	@Override
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(ActionEvent e) {		
 		if(i != null && target != null){
 			if(source instanceof Variable && target instanceof Variable){
 				if(singleChar){
