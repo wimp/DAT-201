@@ -6,7 +6,6 @@ import javax.swing.JFrame;
 
 import sim.demos.Heapsort;
 import sim.functions.Add;
-import sim.functions.Insert;
 import sim.functions.Pop;
 import sim.functions.Push;
 import sim.functions.Remove;

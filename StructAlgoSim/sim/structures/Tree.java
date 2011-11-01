@@ -54,11 +54,11 @@ public class Tree {
 	public TreeNode getRoot() {
 		return root;
 	}
-	public String get(int index){
+	public String getValueAt(int index){
 		String s = (String)elementAt(index).getValue();
 		return s;
 	}
-	public void set(int index, Object value){
+	public void setValueAt(int index, Object value){
 		TreeNode n = elementAt(index);
 		if(n!=null)
 			n.setValue(value);

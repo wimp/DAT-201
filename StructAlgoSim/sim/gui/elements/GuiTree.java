@@ -24,8 +24,8 @@ import javax.swing.Timer;
 
 import sim.structures.Heap;
 import sim.structures.Heap.CompareKey;
-import sim.structures.Tree.Traversal;
 import sim.structures.Tree;
+import sim.structures.Tree.Traversal;
 
 @SuppressWarnings("serial")
 public class GuiTree extends GuiElement implements ActionListener, MouseMotionListener{

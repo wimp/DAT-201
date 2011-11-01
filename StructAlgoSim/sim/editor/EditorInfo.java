@@ -103,10 +103,10 @@ public class EditorInfo extends JPanel{
 				break;
 			case ARRAY:
 				Array a = new Array(new Rectangle(0,0, 100, 100), 5, 2);
-				a.insertAt("value 1", 0, 1);
-				a.insertAt("value 2", 1, 1);
-				a.insertAt("value 3", 2);
-				a.insertAt("value 4", 4, 1);
+				a.setValueAt("value 1", 0, 1);
+				a.setValueAt("value 2", 1, 1);
+				a.setValueAt("value 3", 2);
+				a.setValueAt("value 4", 4, 1);
 				add(a.getGuiElement(), BorderLayout.WEST);
 				t = 
 						"Structure information:\n" +

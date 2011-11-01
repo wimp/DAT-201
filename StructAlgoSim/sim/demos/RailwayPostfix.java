@@ -4,15 +4,13 @@ import java.awt.Rectangle;
 
 import javax.swing.JFrame;
 
-import sim.functions.MoveChar;
 import sim.functions.Pop;
 import sim.functions.Push;
-import sim.functions.MoveChar.Direction;
 import sim.structures.Stack;
 import sim.structures.Variable;
 
 public class RailwayPostfix {
-	public RailwayPostfix(){
+/*	public RailwayPostfix(){
 		JFrame frame = new JFrame();
 		frame.setTitle("StructAlgoSim 0.1 - infix to postfix using railway algorithm");
 		frame.setSize(700,600);
@@ -52,4 +50,5 @@ public class RailwayPostfix {
 		frame.validate();
 		frame.setVisible(true);
 	}
+	*/
 }

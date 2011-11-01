@@ -11,7 +11,6 @@ import sim.gui.elements.GuiFunction;
 import sim.structures.Array;
 import sim.structures.LinkedList;
 import sim.structures.Tree;
-import sim.structures.Tree.TreeNode;
 import sim.structures.Variable;
 
 public class Get implements ActionListener{
@@ -109,7 +108,7 @@ public class Get implements ActionListener{
 			}else if(source instanceof Tree && target instanceof Variable){
 				try{
 						int index = Integer.parseInt(i.getValue());
-						String s = ((Tree)source).get(index);
+						String s = ((Tree)source).getValueAt(index);
 						if(s!=null)
 							((Variable)target).setValue(s);
 				}catch(NumberFormatException nfe){
@@ -119,7 +118,7 @@ public class Get implements ActionListener{
 
 				try{
 					int index = Integer.parseInt(i.getValue());
-					String s = ((LinkedList)source).get(index);
+					String s = ((LinkedList)source).getValueAt(index);
 					if(s!=null)
 						((Variable)target).setValue(s);
 
@@ -134,9 +133,9 @@ public class Get implements ActionListener{
 						int indexX = Integer.parseInt(index[1]);
 
 						if(((Array) source).getDimensions() == 2){
-							((Variable)target).setValue((String) ((Array) source).valueAt(indexY,indexX));
+							((Variable)target).setValue((String) ((Array) source).getValueAt(indexY,indexX));
 						}else{
-							((Variable)target).setValue((String) ((Array) source).valueAt(indexY));
+							((Variable)target).setValue((String) ((Array) source).getValueAt(indexY));
 						}
 					}catch(Exception nfe){
 						JOptionPane.showConfirmDialog(gui, "Illegal character: you can only enter numbers separated by a comma (,)");
@@ -144,7 +143,7 @@ public class Get implements ActionListener{
 				}else{
 					try{
 						int indexY = Integer.parseInt(i.getValue());
-						((Variable)target).setValue((String) ((Array) source).valueAt(indexY));
+						((Variable)target).setValue((String) ((Array) source).getValueAt(indexY));
 					}catch(Exception nfe){
 						JOptionPane.showConfirmDialog(gui, "Illegal character: you can only enter numbers separated by a comma (,)");
 					}

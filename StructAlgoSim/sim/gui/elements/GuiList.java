@@ -17,7 +17,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.Timer;
 
-import sim.structures.elements.Node;
+import sim.structures.LinkedList.Node;
 
 /**
  * The graphical element of the {@link sim.structures.LinkedList} LinkedList
@@ -28,7 +28,6 @@ public class GuiList extends GuiElement implements ActionListener, ItemListener 
 	// Class variables //
 	private int height;
 	private Node removed = null;
-	private int removedIndex;
 	private Vector<Node> data;
 	private Vector<Link> links;
 	private ListPanel listPanel;
@@ -482,7 +481,6 @@ public class GuiList extends GuiElement implements ActionListener, ItemListener 
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == animation) {
 			frame++;
-			System.out.println(frame);
 			if (frame > MAXFRAME) {
 				stopAnimation();
 
