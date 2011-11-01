@@ -39,7 +39,7 @@ public class GuiTree extends GuiElement implements ActionListener, MouseMotionLi
 	}
 	Tree tree;
 	TreePanel treePanel;
-	
+
 	private TreeNode changed;
 	public TreeNode getChanged() {
 		return changed;
@@ -233,7 +233,6 @@ public class GuiTree extends GuiElement implements ActionListener, MouseMotionLi
 	private class TreePanel extends JPanel{
 		int drawNodeWidth = GuiSettings.TREENODEWIDTH;
 		int drawNodeHeight = GuiSettings.TREENODEHEIGHT;
-
 		int[] indent;
 
 		public TreePanel(){
@@ -263,18 +262,44 @@ public class GuiTree extends GuiElement implements ActionListener, MouseMotionLi
 			if(tree == null) return;
 			for(Tree.TreeNode q : tree.getChildren())
 			{
-				if(q.getChildren().size()>0) 
-					drawTree(g2d , q);
-				drawLink(g2d, q, q.getParent());
-				drawNode(g2d, q, getOffset(q));
+				if(q!=null){
+					if(q.getNumberOfChildren()>0) 
+						drawTree(g2d , q);
+					drawLink(g2d, q, q.getParent());
+					drawNode(g2d, q, getOffset(q));
+				}
 			}
 		}
 		private void drawLink(Graphics2D g2d, Tree.TreeNode n, Tree.TreeNode m){
-			Color c = g2d.getColor();
-			g2d.setColor(c);			
-			if(m!=null && n!=null)
+
+			if(m!=null && n!=null)			
+			{	
+				
+				Color c = g2d.getColor();
+				if(pathToChanged !=null && changed !=null){
+				if((pathToChanged.contains(n) || pathToChanged.contains(m))){
+					if((pathToChanged.contains(n)&& pathToChanged.contains(m)))
+						if(changed.isAdded())
+							g2d.setColor(GuiSettings.TREEADDEDCOLOR);
+						else
+							g2d.setColor(GuiSettings.TREEREMOVEPATHCOLOR);
+					else if((pathToChanged.contains(n) && m==changed))
+						if(changed.isAdded())
+							g2d.setColor(GuiSettings.TREEADDEDCOLOR);
+						else
+							g2d.setColor(GuiSettings.TREEREMOVEPATHCOLOR);
+					else if((pathToChanged.contains(m) && n==changed))
+						if(changed.isAdded())
+							g2d.setColor(GuiSettings.TREEADDEDCOLOR);
+						else
+							g2d.setColor(GuiSettings.TREEREMOVEPATHCOLOR);
+				}
+				}
 				g2d.drawLine(getOffset(n)+drawNodeHeight/2, drawNodeHeight *2* n.getDepth()+drawNodeHeight,
 						getOffset(m)+drawNodeHeight/2,  drawNodeHeight *2* m.getDepth()+drawNodeHeight+drawNodeHeight/2);
+				
+				g2d.setColor(c);
+			}
 		}
 		private void drawNode(Graphics2D g2d, Tree.TreeNode n, int offset){
 			Color c = g2d.getColor();
@@ -290,20 +315,20 @@ public class GuiTree extends GuiElement implements ActionListener, MouseMotionLi
 					if(v<drawNodeWidth) v = drawNodeWidth;
 					g2d.setColor(GuiSettings.TREECONTENTCOLOR);
 					if(n!=null && pathToChanged !=null)
-					if(n==changed){
-						if(n.isAdded())
-							g2d.setColor(GuiSettings.TREEADDEDCOLOR);
-						else
-							g2d.setColor(GuiSettings.TREEREMOVEDCOLOR);
-					}
-					else if(frame <pathToChanged.size() && pathToChanged.indexOf(n)<frame && pathToChanged.indexOf(n)>=0){						
-						if(n.isAdded())
-							g2d.setColor(GuiSettings.TREEADDPATHCOLOR);
-						else
-							g2d.setColor(GuiSettings.TREEREMOVEPATHCOLOR);
-					}
-					
-					
+						if(n==changed){
+							if(changed.isAdded())
+								g2d.setColor(GuiSettings.TREEADDEDCOLOR);
+							else
+								g2d.setColor(GuiSettings.TREEREMOVEDCOLOR);
+						}
+						else if(frame <pathToChanged.size() && n.getCurrentIndex()<=frame){						
+							if(changed.isAdded())
+								g2d.setColor(GuiSettings.TREEADDPATHCOLOR);
+							else
+								g2d.setColor(GuiSettings.TREEREMOVEPATHCOLOR);
+						}
+
+
 					g2d.fillRoundRect(offset, drawNodeHeight *2* n.getDepth()+drawNodeHeight, v, drawNodeHeight, 5, 5);
 					g2d.setColor(c);
 					g2d.drawRoundRect(offset, drawNodeHeight *2* n.getDepth()+drawNodeHeight, v, drawNodeHeight, 5, 5);
@@ -311,20 +336,21 @@ public class GuiTree extends GuiElement implements ActionListener, MouseMotionLi
 				}
 				else{
 
-					g2d.setColor(n.isLeaf() ? GuiSettings.TREENODECOLOR : GuiSettings.TREELEAFCOLOR);
-					
-					if(n!=null && pathToChanged !=null)
-					if(n==changed){
-						if(n.isAdded())
-							g2d.setColor(GuiSettings.TREEADDEDCOLOR);
-						else
-							g2d.setColor(GuiSettings.TREEREMOVEDCOLOR);
-					}
-					else if(frame <pathToChanged.size() && pathToChanged.indexOf(n)<frame && pathToChanged.indexOf(n)>=0){						
-						if(n.isAdded())
-							g2d.setColor(GuiSettings.TREEADDPATHCOLOR);
-						else
-							g2d.setColor(GuiSettings.TREEREMOVEPATHCOLOR);
+					g2d.setColor(!n.isLeaf() ? GuiSettings.TREENODECOLOR : GuiSettings.TREELEAFCOLOR);
+
+					if(n!=null && pathToChanged !=null){
+						if(n==changed){
+							if(changed.isAdded())
+								g2d.setColor(GuiSettings.TREEADDEDCOLOR);
+							else
+								g2d.setColor(GuiSettings.TREEREMOVEDCOLOR);
+						}
+						else if(frame <pathToChanged.size() && n.getCurrentIndex()<=frame){						
+							if(changed.isAdded())
+								g2d.setColor(GuiSettings.TREEADDPATHCOLOR);
+							else
+								g2d.setColor(GuiSettings.TREEREMOVEPATHCOLOR);
+						}
 					}
 					g2d.fillOval(offset, drawNodeHeight *2* n.getDepth()+drawNodeHeight,
 							drawNodeWidth, drawNodeHeight);
@@ -377,16 +403,51 @@ public class GuiTree extends GuiElement implements ActionListener, MouseMotionLi
 	}
 	public void stopAnimation(){
 		animation.stop();
+		if(changed!= null && changed.isRemoved()){
+			changed.setRemoved(false);
 
+			if(changed.getNumberOfChildren()==1){
+				TreeNode child = changed.getChild(0);
+				if(child!=null && changed.getParent()!=null){
+					changed.getParent().getChildren().set(changed.getParent().getChildren().indexOf(changed),child);
+					child.setParent(changed.getParent());
+				}
+				else{
+					child.setParent(null);
+					tree.setRoot(child);
+				}
+			}
+			else if(changed.getNumberOfChildren()>1){
+				Traversal t = tree.getTraversal();
+				tree.setTraversal(Traversal.INORDER);
+				TreeNode n = changed.getChild(0);
+				while(n.getNumberOfChildren()>0){
+					n = n.getChild(0);
+				}
+				changed.setValue(n.getValue().toString());
+				n.getParent().removeChild(n);
+				tree.setTraversal(t);
+			}
+			else{
+				if(changed.getParent()!= null)
+					changed.getParent().removeChild(changed);
+				else
+					tree.setRoot(null);
+			}
+			tree.setIndices();
+		}
+		else if(changed!=null)changed.setAdded(false);
+
+		changed = null;
+		pathToChanged = null;
 		frame = 0;
 	}
 	public void startAnimation(){
-		stopAnimation();
 		super.startAnimation();
 		if(pathToChanged!=null)
-		setMaxFrame(pathToChanged.size()+1);
-		animation.setDelay(5000/getMaxFrame());
-		
+			setMaxFrame(pathToChanged.size()+1);
+		animation.setDelay((500*pathToChanged.size())/getMaxFrame());
+
 	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -394,9 +455,6 @@ public class GuiTree extends GuiElement implements ActionListener, MouseMotionLi
 			frame++;
 			if(frame>getMaxFrame()){
 				stopAnimation();
-				changed.setAdded(false);
-				changed = null;
-				pathToChanged = null;
 			}
 		}
 		if(e.getSource()== preorder){
@@ -413,7 +471,7 @@ public class GuiTree extends GuiElement implements ActionListener, MouseMotionLi
 		}
 		else if(e.getSource() == showvalue)
 			show=!show;
-		
+
 		if(!isheap)
 			if(e.getSource()==nary){
 				nval.setText("");

@@ -85,20 +85,22 @@ public class Tree {
 		for(TreeNode n : nodes)
 			addBreadthFirst(n.getValue().toString());
 
-				setIndices();
+		setIndices();
 	}
 	public void swapNodes(TreeNode a, TreeNode b){
 		Object o = a.getValue().toString();
 		a.setValue(b.getValue().toString());
 		b.setValue(o);
 	}
-	private void setIndices(){
+	public void setIndices(){
 		Vector<TreeNode> nodes = getAllNodes(new Vector<TreeNode>(), root);
 		if(nodes != null){
-			int size = nodes.size();
-			for(int i= 0; i<size; i++){
-				if(elementAt(i)!=null)
-					elementAt(i).setCurrentIndex(i);
+			int count = 0;
+			for(TreeNode n : nodes){
+				if(n!=null){
+					n.setCurrentIndex(count);
+					count++;
+				}
 			}
 		}
 	}
@@ -107,12 +109,14 @@ public class Tree {
 		if(t.getDepth()>max) max = t.getDepth();
 		for(Tree.TreeNode q : t.getChildren())
 		{
-			max = findMaxDepth(q, max);
+			if(q!=null)
+				max = findMaxDepth(q, max);
 		}
 		return max;
 	}
 	//ADD AND INSERT METHODS
 	public void addBreadthFirst(String value){
+		gui.stopAnimation();
 		Vector<TreeNode> nodeQueue = new Vector<TreeNode>();
 		TreeNode n = root;
 		if(n == null){
@@ -122,17 +126,19 @@ public class Tree {
 		}
 		nodeQueue = getAllNodes(nodeQueue,root);
 		for(TreeNode node : nodeQueue){
-			if(node.getChildren().size()<maxCluster){
+			if(node.getNumberOfChildren()<maxCluster){
 				addChildAt(node.getCurrentIndex(), value);
 				break;
 			}
 		}
 		setIndices();
-		
+
 		gui.startAnimation();
 		gui.repaint();
-		}
+	}
 	public void addChildAt(int index, Object value){
+		gui.stopAnimation();
+		
 		TreeNode n = root;
 		if(n == null){
 			root = new TreeNode(value, null);
@@ -142,71 +148,57 @@ public class Tree {
 		TreeNode element = elementAt(index);
 		if(element == null) return;
 		TreeNode newnode = new TreeNode(value, element);
-		if(element.getChildren().size()<maxCluster){
-			element.getChildren().add(newnode);
+		if(element.getNumberOfChildren()<maxCluster){
+			element.addChild(newnode);
 		}
+		else return;
 		setIndices();
 		newnode.setAdded(true);
 		gui.setChanged(newnode);
-		
-		
+
+
 		Vector<TreeNode> changePath = new Vector<TreeNode>();
-		changePath = getAllNodes(changePath, root);
-		TreeNode start =changePath.lastElement();
-		
-		while(start !=newnode && changePath.size()>0){
-			start = changePath.lastElement();
-			changePath.remove(start);
+		changePath = getAllNodes(new Vector<TreeNode>(), root);
+
+		for(int i = 0; i<changePath.size(); i++){
+			if(changePath.get(i).getCurrentIndex()>index){
+				changePath.remove(i);
+				i--;
+			}
 		}
 		gui.setPathToChanged(changePath);
 		gui.startAnimation();
 		gui.repaint();
 	}
 	public String removeAt(int index){
-
+		gui.stopAnimation();
 		setIndices();
 		TreeNode element = elementAt(index);
 
-		if(element!= null){
-			String s = element.getValue().toString();
+		if(element == null) return null;
+			element.setRemoved(true);
+			element.setAdded(false);
+			gui.setChanged(element);
 
-			if(element.getChildren().size()==1){
-				TreeNode child = element.getChildren().firstElement();
-				if(element.getParent()!=null){
-					element.getParent().getChildren().set(element.getParent().getChildren().indexOf(element),child);
-					child.setParent(element.getParent());
-				}
-				else{
-					child.setParent(null);
-					setRoot(child);
+
+			Vector<TreeNode> changePath = new Vector<TreeNode>();
+			changePath = getAllNodes(new Vector<TreeNode>(), root);
+
+			for(int i = 0; i<changePath.size(); i++){
+				if(changePath.get(i).getCurrentIndex()>index){
+					changePath.remove(i);
+					i--;
 				}
 			}
-			else if(element.getChildren().size()>1){
-				Traversal t = traversal;
-				traversal = Traversal.INORDER;
-				TreeNode n = element.getChildren().firstElement();
-				while(n.getChildren().size()>0){
-					n = n.getChildren().firstElement();
-				}
-				element.setValue(n.getValue().toString());
-				n.getParent().getChildren().remove(n);
-				traversal = t;
-			}
-			else{
-				if(element.getParent()!= null)
-					element.getParent().getChildren().remove(element);
-				else
-					setRoot(null);
-			}
-			setIndices();
+			gui.setPathToChanged(changePath);
+			gui.startAnimation();
 			gui.repaint();
-			return s;
-		}
-		else return null;
+			
+			return element.getValue().toString();
 
 	}
 	public void insertAt(int index,Object value, boolean after){
-
+		gui.stopAnimation();
 		setIndices();
 
 		TreeNode n = root;
@@ -221,8 +213,14 @@ public class Tree {
 		if(after){
 			newnode = new TreeNode(value, element);
 
-			if(element.getChildren().size()==maxCluster) return;
-			else element.getChildren().add(newnode);
+			if(element.getNumberOfChildren()==maxCluster){
+				element.getChild(0).setParent(newnode);
+				newnode.addChild(element.getChild(0));
+				element.removeChild(element.getChild(0));
+				element.addChild(newnode);
+				newnode.setParent(element);
+			}
+			else element.addChild(newnode);
 		}
 		else{
 			newnode = new TreeNode(value, element.getParent());
@@ -232,7 +230,7 @@ public class Tree {
 				element.getParent().getChildren().set(element.getParent().getChildren().indexOf(element), newnode);
 			}
 			element.setParent(newnode);
-			newnode.getChildren().add(element);
+			newnode.addChild(element);
 		}
 		setIndices();
 		gui.setChanged(newnode);
@@ -248,32 +246,42 @@ public class Tree {
 		if(n==null) return null;
 		switch(traversal){
 		case INORDER:
-			if(n.getChildren().size()>0)
-				getAllNodes(nodes, n.getChildren().get(0));
+			if(n.getNumberOfChildren()>0)
+				getAllNodes(nodes, n.getChild(0));
 
 			nodes.add(n);
 
-			if(n.getChildren().size()>1)
-				getAllNodes(nodes, n.getChildren().get(1));
+			if(n.getNumberOfChildren()>1)
+				getAllNodes(nodes, n.getChild(1));
 			break;
 		case PREORDER:
 			nodes.add(n);
 
 			for(TreeNode t : n.getChildren())
-				getAllNodes(nodes, t);
-					break;
+				if(t!=null)
+					getAllNodes(nodes, t);
+			
+			break;
 		case POSTORDER:
 			for(TreeNode t : n.getChildren())
-				getAllNodes(nodes, t);
+				if(t!=null)
+					getAllNodes(nodes, t);
 
-					nodes.add(n);
+			nodes.add(n);
+			break;
 		case BREADTHFIRST:
 			nodes.add(n);
 			Vector<TreeNode> tobeadded = new Vector<TreeNode>();
-			tobeadded.addAll(n.getChildren());
+			for(TreeNode ch : n.getChildren())
+				if(ch != null)
+					tobeadded.add(ch);
 			while(tobeadded.size()>0){
 				nodes.add(tobeadded.firstElement());
-				tobeadded.addAll(tobeadded.firstElement().getChildren());
+				
+				for(TreeNode ch : tobeadded.firstElement().getChildren())
+					if(ch != null)
+						tobeadded.add(ch);
+				
 				tobeadded.remove(tobeadded.firstElement());
 			}
 			break;
@@ -306,42 +314,48 @@ public class Tree {
 		Vector<TreeNode> added = new Vector<TreeNode>();
 		Vector<TreeNode> tobeadded = new Vector<TreeNode>();
 		added.add(currentNode);
-		tobeadded.addAll(currentNode.getChildren());
+		
+		for(TreeNode ch : currentNode.getChildren())
+			if(ch != null)
+				tobeadded.add(ch);
+		
 		while(tobeadded.size()>0){
 			added.add(tobeadded.firstElement());
-			tobeadded.addAll(tobeadded.firstElement().getChildren());
+			for(TreeNode ch : tobeadded.firstElement().getChildren())
+				if(ch != null)
+					tobeadded.add(ch);
+			
 			tobeadded.remove(tobeadded.firstElement());
 		}
+		if(index <added.size())
 		currentNode = added.elementAt(index);
 	}
 	private void inOrderElementAt(TreeNode n, int index){
-		if(n.getChildren().size()>0)
-			inOrderElementAt(n.getChildren().elementAt(0), index);		
+		if(n.getNumberOfChildren()>0)
+			inOrderElementAt(n.getChild(0), index);		
 
 		if(index == currentIndex) currentNode = n;
 		currentIndex++;
-		if(n.getChildren().size()>1)
-			inOrderElementAt(n.getChildren().elementAt(1), index);
+		if(n.getNumberOfChildren()>1)
+			inOrderElementAt(n.getChild(1), index);
 	}
 	private void preOrderElementAt(TreeNode n, int index){
 
 		if(index == currentIndex) currentNode = n;
 		currentIndex++;
-		for(int i= 0; i<n.getChildren().size()-1; i++){
-			preOrderElementAt(n.getChildren().elementAt(i), index);
-		}		
-		if(n.getChildren().size()>0)
-			preOrderElementAt(n.getChildren().elementAt(n.getChildren().size()-1), index);
+		if(n.getNumberOfChildren()>0){
+			for(TreeNode ch : n.getChildren())
+				if(ch!=null){
+					preOrderElementAt(ch, index);
+				}
+		}
 	}
 	private void postOrderElementAt(TreeNode n, int index){
 
-		for(int i= 0; i<n.getChildren().size()-1; i++){
-			postOrderElementAt(n.getChildren().elementAt(i), index);
+		for(TreeNode ch : n.getChildren()){
+			if(ch!=null)
+			postOrderElementAt(ch, index);
 		}		
-		if(n.getChildren().size()>0)
-			postOrderElementAt(n.getChildren().elementAt(n.getChildren().size()-1), index);
-
-
 		if(index == currentIndex) currentNode = n;
 		currentIndex++;
 	}
@@ -364,6 +378,26 @@ public class Tree {
 		public void setCurrentIndex(int currentIndex) {
 			this.currentIndex = currentIndex;
 		}
+		public int getNumberOfChildren(){
+			int count = 0;
+			for(TreeNode child: children)
+				if(child!=null) count ++;
+			return count;
+		}
+		public TreeNode getChild(int num){
+			if(num>maxCluster) return null;
+			int count = 0;
+			for(TreeNode child:getChildren())
+				if(child!=null){
+
+					if(count == num)
+						return child;
+
+					count++;
+				}
+			return null;
+
+		}
 		public boolean isRemoved() {
 			return removed;
 		}
@@ -377,7 +411,7 @@ public class Tree {
 			this.parent = parent;
 		}
 		public boolean isLeaf() {
-			return !(children.size()>0);
+			return !( getNumberOfChildren()>0);
 		}
 		public int getDepth() {
 			if(getParent() == null) return 0;
@@ -390,7 +424,7 @@ public class Tree {
 			return depth;
 		}
 		public int getDegree(){
-			return children.size();
+			return getNumberOfChildren();
 		}
 		public Vector<TreeNode> getChildren(){
 			return children;
@@ -407,15 +441,24 @@ public class Tree {
 		public void insert(Object value){
 			TreeNode n = new TreeNode(value, this);
 			n.setAdded(true);
-			addSubTree(n);
+			addChild(n);
 		}
-		public void addSubTree(TreeNode root){
-			children.add(root);	
+		public void addChild(TreeNode child){
+			for(int i = 0; i<children.size(); i++)
+				if(children.get(i)==null){
+					children.set(i,child);	
+					return;
+				}
+		}
+		public void removeChild(TreeNode node){
+			if(children.indexOf(node)>=0)
+				children.set(children.indexOf(node), null);
 		}
 		public TreeNode(Object value, TreeNode parent){
 			this.value = value;
 			this.parent = parent;
 			children = new Vector<TreeNode>();
+			children.setSize(maxCluster);
 		}
 	}
 }
