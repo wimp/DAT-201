@@ -9,7 +9,6 @@ import java.awt.GridLayout;
 import java.awt.KeyboardFocusManager;
 
 import javax.swing.ButtonGroup;
-import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -17,13 +16,11 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 
-import sim.editor.EditorListener.ElementType;
 import sim.editor.EditorListener.Link;
 
 @SuppressWarnings("serial")
@@ -34,7 +31,6 @@ public class EditorGui extends JFrame {
 	JTextField width = new JTextField("Width");
 	JTextField height = new JTextField("Height");
 	
-	OptionsPanel optionsPanel = new OptionsPanel();
 	protected EditorInfo eInfo;
 	
 	public EditorGui(){
@@ -53,6 +49,7 @@ public class EditorGui extends JFrame {
 		
 		JMenu fileMenu 	= new JMenu("File");
 		JMenu tools 	= new JMenu("Tools");
+		
 		menuBar.add(fileMenu);
 		menuBar.add(tools);
 		
@@ -60,8 +57,10 @@ public class EditorGui extends JFrame {
 		JMenuItem save 		= new JMenuItem("Save");
 		JMenuItem load 		= new JMenuItem("Load");
 		JMenuItem newFile 	= new JMenuItem("New");
+		JMenuItem resizeView= new JMenuItem("Resize View");
 		
 		tools.add(anim);
+		tools.add(resizeView);
 		fileMenu.add(newFile);
 		fileMenu.add(save);
 		fileMenu.add(load);
@@ -84,7 +83,6 @@ public class EditorGui extends JFrame {
 		mouseCoords = new JLabel("X:   Y:");
 		eInfo = new EditorInfo();
 		JSeparator s = new JSeparator();
-		optionsPanel.setLayout(new GridLayout(2,1));
 		
 		// Init. items that should be in the top panel //
 		ButtonGroup bg			= new ButtonGroup();
@@ -106,7 +104,7 @@ public class EditorGui extends JFrame {
 		JToggleButton heap		= new JToggleButton("Heap");
 		JToggleButton queue		= new JToggleButton("Queue");
 		JCheckBox grid			= new JCheckBox("Grid");
-		JButton resize			= new JButton("Resize");
+//		JButton resize			= new JButton("Resize");
 		JToggleButton resizeMode= new JToggleButton("Resize Element");
 		
 		
@@ -154,8 +152,8 @@ public class EditorGui extends JFrame {
 		set.setActionCommand("20");
 		get.addActionListener(el);
 		get.setActionCommand("21");
-		resize.addActionListener(el);
-		resize.setActionCommand("22");
+		resizeView.addActionListener(el);
+		resizeView.setActionCommand("22");
 		newFile.addActionListener(el);
 		newFile.setActionCommand("23");
 		resizeMode.addActionListener(el);
@@ -195,7 +193,6 @@ public class EditorGui extends JFrame {
 		westPanel.add(new JSeparator());
 		westPanel.add(variable);
 		westPanel.add(new JSeparator());
-		westPanel.add(optionsPanel);
 		
 		// Add elements to the east panel (functions etc.) //
 		eastPanel.setLayout(new GridLayout(11,1));
@@ -224,9 +221,9 @@ public class EditorGui extends JFrame {
 			leftOnTop.setPreferredSize(new Dimension(250,30));
 			leftOnTop.setLayout(new GridLayout(1,1));
 			
-			leftOnTop.add(width);
-			leftOnTop.add(height);
-			leftOnTop.add(resize);
+//			leftOnTop.add(width);
+//			leftOnTop.add(height);
+//			leftOnTop.add(resize);
 			
 		JPanel rightOnTop = new JPanel(new GridLayout(1,2));
 			rightOnTop.setPreferredSize(new Dimension(250,30));
@@ -298,63 +295,6 @@ public class EditorGui extends JFrame {
 					break;
 				}*/
 			}
-		}
-	}
-
-	protected class OptionsPanel extends JPanel{
-		JTextField 	textOption 	= new JTextField();
-		ButtonGroup groupOption = new ButtonGroup();
-		JCheckBox 	check1		= new JCheckBox();
-		JCheckBox 	check2		= new JCheckBox();
-		
-		public OptionsPanel(){
-			
-		}
-		
-		public void setOptionsType(ElementType type){
-			removeAll();
-
-			// Remove all buttons from the button group //
-			groupOption = null;
-			groupOption = new ButtonGroup();
-			
-			switch(type){
-			case ARRAY:
-				setLayout(new GridLayout(2,1));
-				add(new JLabel("Number of Elements"));
-				add(textOption);
-				break;
-			case VARIABLE:
-				setLayout(new GridLayout(3,1));
-				add(new JLabel("Editable"));
-				JRadioButton selTrue = new JRadioButton("Yes");
-				selTrue.setActionCommand("1");
-				JRadioButton selFalse = new JRadioButton("No");
-				selFalse.setActionCommand("0");
-				selTrue.setSelected(true);
-				groupOption.add(selTrue);
-				groupOption.add(selFalse);
-				add(selTrue);
-				add(selFalse);
-				break;
-			case INSERT:
-				setLayout(new GridLayout(3,1));
-				add(new JLabel("Where to insert"));
-				JRadioButton selBefore 	= new JRadioButton("Before");
-				selBefore.setActionCommand("0");
-				JRadioButton selAfter	= new JRadioButton("After");
-				selAfter.setActionCommand("1");
-				selBefore.setSelected(true);
-				groupOption.add(selBefore);
-				groupOption.add(selAfter);
-				add(selBefore);
-				add(selAfter);
-				break;
-			default:
-				
-				break;	
-			}
-			validate();
 		}
 	}
 }
