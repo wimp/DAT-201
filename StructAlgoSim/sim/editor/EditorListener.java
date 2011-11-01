@@ -37,9 +37,21 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import sim.editor.EditorGui.EditorPanel;
 import sim.editor.EditorInfo.InfoType;
-import sim.functions.*;
+import sim.functions.Add;
+import sim.functions.Get;
+import sim.functions.Insert;
+import sim.functions.Pop;
+import sim.functions.Push;
+import sim.functions.Remove;
+import sim.functions.Set;
 import sim.gui.elements.GuiElement;
-import sim.structures.*;
+import sim.structures.Array;
+import sim.structures.Heap;
+import sim.structures.LinkedList;
+import sim.structures.Queue;
+import sim.structures.Stack;
+import sim.structures.Tree;
+import sim.structures.Variable;
 
 /**
  * The listener and action handling class for the {@link EditorGui}. 
@@ -485,6 +497,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 		int y = e.getY();
 		panel.p1 = null;
 		panel.p2 = null;
+		
 
 		if(type == ElementType.LINK){
 			for(int i=0;i<guiElements.size();i++){
@@ -498,15 +511,17 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 						linkys.add(link);
 						link = null;
 					}
-
+					
+				// startElement
 					if(startElement instanceof Add){
 						if(endElement instanceof Variable){
 							// Show dialog to choose what varaible this should be
-							Object[] options = {"Input", "Index", "Cancel"};
-							int sel = JOptionPane.showOptionDialog(gui, "What type of variable is this?", "Type of variable", JOptionPane.YES_NO_CANCEL_OPTION	, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-							if(sel == 0){
+							Object[] options = {"Input", "Index"};
+							Object sel = JOptionPane.showInputDialog(((Variable) endElement).getGuiElement(), "What type of variable is this?", "Type of variable", JOptionPane.YES_NO_CANCEL_OPTION	, null, options, options[0]);
+							if(sel == null) return;
+							if(sel.equals("Input")){
 								((Add) startElement).setSourceVariable((Variable) endElement);
-							}else if(sel == 1){
+							}else if(sel.equals("Index")){
 								((Add) startElement).setIndexVariable((Variable) endElement);
 							}
 						}else if(endElement instanceof LinkedList){
@@ -516,29 +531,33 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 						}else if(endElement instanceof Queue){
 							((Add) startElement).setTarget(endElement);
 						}
+				// startElement
 					}else if(startElement instanceof Variable){
 						if(endElement instanceof Add){
-							Object[] options = {"Input", "Index", "Cancel"};
-							int sel = JOptionPane.showOptionDialog(((Add) endElement).getGuiElement(), "What type of variable is this?", "Type of variable", JOptionPane.YES_NO_CANCEL_OPTION	, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-							if(sel == 0){
+							Object[] options = {"Input", "Index"};
+							Object sel = JOptionPane.showInputDialog(((Add) endElement).getGuiElement(), "What type of variable is this?", "Type of variable", JOptionPane.YES_NO_CANCEL_OPTION	, null, options, options[0]);
+							if(sel == null) return;
+							if(sel.equals("Input")){
 								((Add) endElement).setSourceVariable((Variable) startElement);
-							}else if(sel == 1){
+							}else if(sel.equals("Index")){
 								((Add) endElement).setIndexVariable((Variable) startElement);
 							}
 						}else if(endElement instanceof Remove){
-							Object[] options = {"Output", "Index", "Cancel"};
-							int sel = JOptionPane.showOptionDialog(((Remove) endElement).getGuiElement(), "What type of variable is this?", "Type of variable", JOptionPane.YES_NO_CANCEL_OPTION	, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-							if(sel == 0){
+							Object[] options = {"Output", "Index"};
+							Object sel = JOptionPane.showInputDialog(((Remove) endElement).getGuiElement(), "What type of variable is this?", "Type of variable", JOptionPane.YES_NO_CANCEL_OPTION	, null, options, options[0]);
+							if(sel == null) return;
+							if(sel.equals("Output")){
 								((Remove) endElement).setTargetVariable((Variable) startElement);
-							}else if(sel == 1){
+							}else if(sel.equals("Index")){
 								((Remove) endElement).setIndexVariable((Variable) startElement);
 							}
 						}else if(endElement instanceof Insert){
-							Object[] options = {"Input", "Index", "Cancel"};
-							int sel = JOptionPane.showOptionDialog(((Insert) endElement).getGuiElement(), "What type of variable is this?", "Type of variable", JOptionPane.YES_NO_CANCEL_OPTION	, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-							if(sel == 0){
+							Object[] options = {"Input", "Index"};
+							Object sel = JOptionPane.showInputDialog(((Insert) endElement).getGuiElement(), "What type of variable is this?", "Type of variable", JOptionPane.YES_NO_CANCEL_OPTION	, null, options, options[0]);
+							if(sel == null) return;
+							if(sel.equals("Input")){
 								((Insert) endElement).setSourceVariable((Variable) startElement);
-							}else if(sel == 1){
+							}else if(sel.equals("Index")){
 								((Insert) endElement).setIndexVariable((Variable) startElement);
 							}
 						}else if(endElement instanceof Push){
@@ -546,54 +565,67 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 						}else if(endElement instanceof Pop){
 							((Pop) endElement).setTargetVariable((Variable) startElement);
 						}else if(endElement instanceof Get){
-
+							int getChar = -1;
 							Object[] options = {"Input", "Output", "Index"};
 							Object sel = JOptionPane.showInputDialog(((Get) endElement).getGuiElement(), "What type of variable is this?", "Type of variable", JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 							if(sel== null) return;
 
-							int getChar = -1;
-							if(sel.equals("Input")){
+							if(sel.equals(options[0])){
 								((Get) endElement).setSource((Variable) startElement);
-
-								getChar = JOptionPane.showConfirmDialog(((Get) endElement).getGuiElement(), "Should the function get one character at a time?", "Get function",JOptionPane.YES_NO_CANCEL_OPTION);
-
-							}else if(sel.equals("Output")){
+								Object[] opt = {"Read a single character at a time","Read the entire value"};
+								Object read = JOptionPane.showInputDialog(((Get) endElement).getGuiElement(), "How would you like to read this variable?", "Type of variable",JOptionPane.OK_CANCEL_OPTION,null,opt,opt[1]);
+								
+								if(read != null){
+									if(read.equals(opt[0]))
+										getChar = 1;
+									else if(read.equals(opt[1]))
+										getChar = 0;
+									else
+										getChar = 0;
+								}else
+									getChar = 0;
+								
+							}else if(sel.equals(options[1])){
 								((Get) endElement).setSource(startElement);
-								getChar = JOptionPane.showConfirmDialog(((Get) endElement).getGuiElement(), "Should the function set one character at a time?", "Get function",JOptionPane.YES_NO_CANCEL_OPTION);
-
-							}else if(sel.equals("Index")){
+							}else if(sel.equals(options[2])){
 								((Get) endElement).setIndexVariable((Variable) startElement);
 							}else{
 								return;
 							}
-							if(getChar == 0){
-								((Get) endElement).setSingleChar(true);
-							}else if(getChar == 1){
-								((Get) endElement).setSingleChar(false);
-							}
-						}else if(endElement instanceof Set){
-
-							int setChar = -1;
-
-							Object[] options = {"Input", "Index", "Cancel"};
-							int sel = JOptionPane.showOptionDialog(((Set) endElement).getGuiElement(), "What type of variable is this?", "Type of variable", JOptionPane.YES_NO_CANCEL_OPTION	, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-
 							
-							if(sel == 0){
-								((Set) endElement).setSourceVariable((Variable) startElement);
-								setChar = JOptionPane.showConfirmDialog(((Set) endElement).getGuiElement(), "Should the function set one character at a time?", "Get function",JOptionPane.YES_NO_CANCEL_OPTION);
+							((Get) endElement).setSingleChar(getChar < 1 ? false : true);
+						}else if(endElement instanceof Set){
+							int getChar = -1;
+							Object[] options = {"Input", "Output", "Index"};
+							Object sel = JOptionPane.showInputDialog(((Set) endElement).getGuiElement(), "What type of variable is this?", "Type of variable", JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+							if(sel== null) return;
 
-							}else if(sel == 1){
+							if(sel.equals(options[0])){
+								((Set) endElement).setSourceVariable((Variable) startElement);
+								Object[] opt = {"Read a single character at a time","Read the entire value"};
+								Object read = JOptionPane.showInputDialog(((Set) endElement).getGuiElement(), "How would you like to read this variable?", "Type of variable",JOptionPane.OK_CANCEL_OPTION,null,opt,opt[1]);
+								
+								if(read != null){
+									if(read.equals(opt[0]))
+										getChar = 1;
+									else if(read.equals(opt[1]))
+										getChar = 0;
+									else
+										getChar = 0;
+								}else
+									getChar = 0;
+								
+							}else if(sel.equals(options[1])){
+								((Set) endElement).setSourceVariable((Variable) startElement);
+							}else if(sel.equals(options[2])){
 								((Set) endElement).setIndexVariable((Variable) startElement);
 							}else{
 								return;
 							}
-							if(setChar == 0){
-								((Set) endElement).setSingleChar(true);
-							}else if(setChar == 1){
-								((Set) endElement).setSingleChar(false);
-							}
+							
+							((Set) endElement).setSingleChar(getChar < 1 ? false : true);
 						}
+				// startElement
 					}else if(startElement instanceof Stack){
 						if(endElement instanceof Push){
 							((Push) endElement).setTarget(startElement);
@@ -624,6 +656,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 						}else if(endElement instanceof Add){
 							((Add) endElement).setTarget(startElement);
 						}
+				// startElement
 					}else if(startElement instanceof Remove){
 						if(endElement instanceof Variable){
 							Object[] options = {"Ouput", "Index", "Cancel"};
@@ -640,33 +673,35 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 						}else if(endElement instanceof Queue){
 							((Remove) startElement).setSource(endElement);
 						}
+				// startElement
 					}else if(startElement instanceof Get){
 						if(endElement instanceof Variable){
-
 							int getChar = -1;
-
-
 							Object[] options = {"Input", "Output", "Index"};
 							Object sel = JOptionPane.showInputDialog(((Variable) endElement).getGuiElement(), "What type of variable is this?", "Type of variable", JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 							if(sel== null) return;
-							if(sel.equals("Input")){
+							if(sel.equals(options[0])){
 								((Get) startElement).setSource((Variable) endElement);
-								getChar= JOptionPane.showConfirmDialog(((Variable) endElement).getGuiElement(), "Should the function get one character at a time?", "Get function",JOptionPane.YES_NO_CANCEL_OPTION);
-
-							}else if(sel.equals("Output")){
+								Object[] opt = {"Read a single character at a time","Read the entire value"};
+								Object read  = JOptionPane.showInputDialog(((Variable) endElement).getGuiElement(), "How would you like to read this variable?", "How to read variable", JOptionPane.OK_CANCEL_OPTION, null, opt, opt[1]);
+								if(read != null){
+									if(read.equals(opt[0])){
+										getChar = 1;
+									}else if(read.equals(opt[1])){
+										getChar = 0;
+									}else
+										getChar = 0;
+								}else
+									getChar = 0;
+							}else if(sel.equals(options[1])){
 								((Get) startElement).setSource(endElement);
-								getChar= JOptionPane.showConfirmDialog(((Variable) endElement).getGuiElement(), "Should the function set one character at a time?", "Get function",JOptionPane.YES_NO_CANCEL_OPTION);
-
-							}else if(sel.equals("Index")){
+							}else if(sel.equals(options[2])){
 								((Get) startElement).setIndexVariable((Variable) endElement);
 							}else{
 								return;
-							}							
-							if(getChar == 0){
-								((Get) startElement).setSingleChar(true);
-							}else if(getChar == 1){
-								((Get) startElement).setSingleChar(false);
 							}
+							
+							((Get) startElement).setSingleChar(getChar < 1 ? false : true);
 						}else if(endElement instanceof LinkedList){
 							((Get) startElement).setSource(endElement);
 						}else if(endElement instanceof Tree){
@@ -674,25 +709,37 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 						}else if(endElement instanceof Array){
 							((Get) startElement).setSource(endElement);
 						}
+				// startElement
 					}else if(startElement instanceof Set){
-						if(endElement instanceof Variable){
-
+						if(endElement instanceof Variable){													
+							int setChar = -1;
+							Object[] options = {"Input", "Output", "Index"};
+							Object sel = JOptionPane.showInputDialog(((Variable) endElement).getGuiElement(), "What type of variable is this?", "Type of variable", JOptionPane.OK_CANCEL_OPTION, null, options, options[0]);
 							
-
-							int setChar 	= JOptionPane.showConfirmDialog(((Variable) endElement).getGuiElement(), "Should the function get one character at a time?", "Get function",JOptionPane.YES_NO_CANCEL_OPTION);
+							if(sel == null) return;
 							
-							Object[] options = {"Input", "Index", "Cancel"};
-							int sel = JOptionPane.showOptionDialog(((Variable) endElement).getGuiElement(), "What type of variable is this?", "Type of variable", JOptionPane.YES_NO_CANCEL_OPTION	, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-							if(sel == 0){
+							if(sel.equals("Input")){
 								((Set) startElement).setSourceVariable((Variable) endElement);
-							}else if(sel == 1){
+								Object[] opt = {"Read a single character at a time","Read the entire value"};
+								Object read = JOptionPane.showInputDialog(((Variable) endElement).getGuiElement(),"How would you like to read this variable?","How to read variable",JOptionPane.OK_CANCEL_OPTION,null,opt,opt[1]);
+								if(read != null){
+									if(read.equals(opt[0])){
+										setChar = 1;
+									}else if(read.equals(opt[1])){
+										setChar = 0;
+									}
+								}else
+									setChar = 0;
+							}else if(sel.equals("Output")){
+								((Set) startElement).setTarget(endElement);
+								setChar = 1;
+							}else if(sel.equals(options[2])){
 								((Set) startElement).setIndexVariable((Variable) endElement);
+								setChar = 0;
 							}
-							if(setChar == 0){
-								((Set) startElement).setSingleChar(true);
-							}else if(setChar == 1){
-								((Set) startElement).setSingleChar(false);
-							}
+							
+							((Set) startElement).setSingleChar(setChar < 1 ? false : true);
+							System.out.println(((Set) startElement).getSingleChar());
 						}else if(endElement instanceof LinkedList){
 							((Set) startElement).setTarget(endElement);
 						}else if(endElement instanceof Tree){
@@ -702,6 +749,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 						}else if(endElement instanceof Array){
 							((Set) startElement).setTarget(endElement);
 						}
+				// startElement
 					}else if(startElement instanceof Array){
 						if(endElement instanceof Set){
 							((Set) endElement).setTarget(startElement);
@@ -710,6 +758,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 						}else if(endElement instanceof Insert){
 							((Insert) endElement).setTarget(startElement);
 						}
+				// startElement
 					}else if(startElement instanceof Tree){
 						if(endElement instanceof Set){
 							((Set) endElement).setTarget(startElement);
@@ -722,6 +771,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 						}else if(endElement instanceof Remove){
 							((Remove) endElement).setSource(startElement);
 						}
+				// startElement
 					}else if(startElement instanceof Insert){
 						if(endElement instanceof Tree){
 							((Insert) startElement).setTarget(endElement);
@@ -736,6 +786,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 								((Insert) startElement).setIndexVariable((Variable) endElement);
 							}
 						}
+				// startElement
 					}else if(startElement instanceof Queue){
 						if(endElement instanceof Add){
 							((Add) endElement).setTarget(startElement);
@@ -1034,6 +1085,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 					e1.printStackTrace();
 				}
 			}
+			// END OF SAVE ROUTINE
 			break;
 		case 19:
 			// LOAD
@@ -1246,21 +1298,38 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 				}
 
 			}
+			// END OF LOAD ROUTINE
 			break;
 		case 20:
 			//SET
 			type = ElementType.SET;
-//			gui.optionsPanel.setOptionsType(ElementType.SET);
 			break;
 		case 21:
 			//GET
 			type = ElementType.GET;
-//			gui.optionsPanel.setOptionsType(ElementType.GET);
 			break;
 		case 22:
-			//RESIZE
-			JPanel resizePanel = new JPanel();
-			JOptionPane.showInputDialog(gui, resizePanel);
+			//RESIZE VIEW
+			JPanel resizePanel = new JPanel(new BorderLayout());
+			
+			JTextField hText = new JTextField(Integer.toString(gui.editorPanel.getHeight()));
+			JTextField wText = new JTextField(Integer.toString(gui.editorPanel.getWidth()));
+			resizePanel.add(new JLabel("Please select the new height and width:"),BorderLayout.NORTH);
+			JPanel gridPanel = new JPanel(new GridLayout(2,2));
+			gridPanel.add(new JLabel("Width:"));
+			gridPanel.add(wText);
+			gridPanel.add(new JLabel("Height:"));
+			gridPanel.add(hText);
+			resizePanel.add(gridPanel,BorderLayout.CENTER);
+			
+			JOptionPane.showMessageDialog(gui, resizePanel);
+			try{
+				int w = Integer.parseInt(wText.getText());
+				int h = Integer.parseInt(hText.getText());
+				gui.editorPanel.setPreferredSize(new Dimension(w,h));
+			}catch(Exception nfe){
+				
+			}
 			break;
 		case 23:
 			// NEW FILE
@@ -1280,7 +1349,6 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 			gui.editorPanel.validate();
 			break;
 		}
-//		gui.optionsPanel.setOptionsType(type);
 		gui.editorPanel.revalidate();
 		gui.repaint();
 		gui.validate();
