@@ -481,7 +481,7 @@ public class GuiList extends GuiElement implements ActionListener, ItemListener 
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == animation) {
 			frame++;
-			if (frame > MAXFRAME) {
+			if (frame > getMaxFrame()) {
 				stopAnimation();
 
 				frame = 0;

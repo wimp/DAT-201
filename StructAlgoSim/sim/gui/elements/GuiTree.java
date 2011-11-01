@@ -12,6 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
+import java.util.Vector;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JCheckBox;
@@ -26,6 +27,7 @@ import sim.structures.Heap;
 import sim.structures.Heap.CompareKey;
 import sim.structures.Tree;
 import sim.structures.Tree.Traversal;
+import sim.structures.Tree.TreeNode;
 
 @SuppressWarnings("serial")
 public class GuiTree extends GuiElement implements ActionListener, MouseMotionListener{
@@ -37,7 +39,22 @@ public class GuiTree extends GuiElement implements ActionListener, MouseMotionLi
 	}
 	Tree tree;
 	TreePanel treePanel;
+	
+	private TreeNode changed;
+	public TreeNode getChanged() {
+		return changed;
+	}
+	public void setChanged(TreeNode changed) {
+		this.changed = changed;
+	}
+	private Vector<TreeNode> pathToChanged;
 
+	public Vector<TreeNode> getPathToChanged() {
+		return pathToChanged;
+	}
+	public void setPathToChanged(Vector<TreeNode> pathToChanged) {
+		this.pathToChanged = pathToChanged;
+	}
 	//TREE
 	JTextField nval;
 	ButtonGroup bg;
@@ -271,14 +288,27 @@ public class GuiTree extends GuiElement implements ActionListener, MouseMotionLi
 				if(show){
 					int v=g2d.getFontMetrics(getFont()).charsWidth(n.getValue().toString().toCharArray(), 0, n.getValue().toString().toCharArray().length)+20;
 					if(v<drawNodeWidth) v = drawNodeWidth;
+
+					if(n!=changed)
 					g2d.setColor(GuiSettings.TREECONTENTCOLOR);
+					else 
+					g2d.setColor(GuiSettings.TREECONTENTCOLOR);
+					
 					g2d.fillRoundRect(offset, drawNodeHeight *2* n.getDepth()+drawNodeHeight, v, drawNodeHeight, 5, 5);
 					g2d.setColor(c);
 					g2d.drawRoundRect(offset, drawNodeHeight *2* n.getDepth()+drawNodeHeight, v, drawNodeHeight, 5, 5);
 					g2d.drawString(n.getValue().toString(),offset+10, drawNodeHeight *2* n.getDepth()+drawNodeHeight+drawNodeHeight/2);
 				}
 				else{
+
 					g2d.setColor(n.isLeaf() ? GuiSettings.TREENODECOLOR : GuiSettings.TREELEAFCOLOR);
+
+					if(n==changed)
+						if(n.isAdded())
+							g2d.setColor(GuiSettings.TREEADDEDCOLOR);
+						else
+							g2d.setColor(GuiSettings.TREEREMOVEDCOLOR);
+					
 					g2d.fillOval(offset, drawNodeHeight *2* n.getDepth()+drawNodeHeight,
 							drawNodeWidth, drawNodeHeight);
 					g2d.setColor(c);			
@@ -328,8 +358,30 @@ public class GuiTree extends GuiElement implements ActionListener, MouseMotionLi
 			revalidate();
 		}
 	}
+	public void stopAnimation(){
+		animation.stop();
+
+		frame = 0;
+	}
+	public void startAnimation(){
+		stopAnimation();
+		super.startAnimation();
+		if(pathToChanged!=null)
+		setMaxFrame(pathToChanged.size());
+		animation.setDelay(5000/getMaxFrame());
+		
+	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		if(e.getSource() == animation){
+			frame++;
+			if(frame>getMaxFrame()){
+				stopAnimation();
+				changed.setAdded(false);
+				changed = null;
+				pathToChanged = null;
+			}
+		}
 		if(e.getSource()== preorder){
 			tree.setTraversal(Traversal.PREORDER);
 		}

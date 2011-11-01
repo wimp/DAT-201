@@ -80,15 +80,8 @@ public class EditorPlayer implements ActionListener, ChangeListener, WindowListe
 		framesPerSecond = FPS_INIT;
 		playerFrame = new JFrame("Animation");
 		playerFrame.setLayout(new BorderLayout());
-		if(editorPanel != null){
-			if(editorPanel.getWidth()>0 && editorPanel.getHeight()>0){
-				playerFrame.setSize(700, 600);
-			}	
-			else
-				playerFrame.setSize(500, 700);
-		}
-		else
-			playerFrame.setSize(500, 500);
+		
+		playerFrame.setSize(700, 700);
 
 		initMenu();
 		JPanel buttonPanel = new JPanel(new GridLayout(1,6));
@@ -138,6 +131,7 @@ public class EditorPlayer implements ActionListener, ChangeListener, WindowListe
 		controlPanel.add(buttonPanel, BorderLayout.SOUTH);
 
 		drawPanel = new AnimationPanel();
+		drawPanel.setPreferredSize(editorPanel.getSize());
 		
 		playerFrame.add(controlPanel, BorderLayout.SOUTH);
 		
@@ -215,8 +209,6 @@ public class EditorPlayer implements ActionListener, ChangeListener, WindowListe
 				animationFile = load.getSelectedFile();
 			}
 			else if(rval == JFileChooser.CANCEL_OPTION) return;	
-			
-			
 		}
 		else if(arg0.getSource() == record){
 
@@ -436,7 +428,7 @@ public class EditorPlayer implements ActionListener, ChangeListener, WindowListe
 				if(bi != null)
 					g.drawImage(bi, 0,0,null);
 
-				setPreferredSize(new Dimension(getWidth(), (int)(bi.getHeight()*(getWidth()/(float)bi.getWidth()))));
+				setPreferredSize(new Dimension(bi.getWidth(), (int)(bi.getHeight()*(getWidth()/(float)bi.getWidth()))));
 			}
 			revalidate();
 		}

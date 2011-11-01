@@ -9,11 +9,15 @@ import sim.gui.elements.GuiTree;
  */
 public class Heap extends Tree{
 
+
 	public enum CompareKey{
 		ALPHABETICAL,
 		NUMERICAL,
 		STRLEN
-	}
+	}	
+	/**
+	 * The CompareKey is used to decide which method to sort this heap by when rearranging.
+	 */
 	private CompareKey key = CompareKey.NUMERICAL;
 
 	private boolean max = true;
@@ -41,6 +45,9 @@ public class Heap extends Tree{
 		setMaxCluster(2);
 		setGuiElement(new GuiTree(bounds, this, animated));
 	}
+	/**
+	 * Use to remove the root.	
+	 */
 	public String removeRoot(){
 		if(getRoot() != null){
 			String value = getRoot().getValue().toString();
@@ -57,16 +64,24 @@ public class Heap extends Tree{
 		}
 		return null;
 	}
-	public void heapify(){
-		if(max) maxHeapifyTree(getRoot());
-		else minHeapifyTree(getRoot());
-	}
+	/**
+	 * Use to remove an element and return the value.
+	 * @param int index (by the traversaltype selected) of the element to be removed.
+	 * @return String - the value of the removed item.	
+	 */
 	@Override 
 	public String removeAt(int index){
 		String n = super.removeAt(index);
 		if(max) maxHeapifyTree(getRoot());
 		else minHeapifyTree(getRoot());
 		return n;
+	}
+	/**
+	 * Calls either maxHeapifyTree or minHeapifyTree to rearrange the heap.
+	 */
+	public void heapify(){
+		if(max) maxHeapifyTree(getRoot());
+		else minHeapifyTree(getRoot());
 	}
 	/**
 	 * Calls reArrangeHeap to make a MinHeap.

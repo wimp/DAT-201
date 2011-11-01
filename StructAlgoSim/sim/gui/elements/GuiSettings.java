@@ -25,6 +25,7 @@ public final class GuiSettings {
 	//Array
 	public static final Color ARRAYELEMENTCOLOR = LISTHEADCOLOR;
 	public static final Color ARRAYEMPTYCOLOR = LISTNODECOLOR;
+	public static final Color ARRAYCHANGEDCOLOR = LISTADDEDCOLOR;
 	public static final int ARRAYELEMENTHEIGHT = LISTNODEHEIGHT;
 	
 	//Stack

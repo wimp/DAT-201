@@ -50,7 +50,7 @@ public class Get implements ActionListener{
 	}
 
 	public Get(Rectangle bounds, boolean singleChar){
-		//TODO add direction here
+		
 		gui = new GuiFunction(bounds,"Get");
 		gui.getButton().addActionListener(this);
 		this.target = null;
@@ -101,8 +101,8 @@ public class Get implements ActionListener{
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(i != null && target != null){
-			if(source instanceof Variable && target instanceof Variable){
+		if(target != null){
+			if(source instanceof Variable){
 				if(singleChar){
 					String val = ((Variable)target).getValue();
 					String ch = val.substring(0, 1);
@@ -114,7 +114,7 @@ public class Get implements ActionListener{
 				else {
 					((Variable) source).setValue(((Variable)target).getValue());
 				}
-			}else if(source instanceof Tree){
+			}else if(i != null && source instanceof Tree){
 				try{
 						int index = Integer.parseInt(i.getValue());
 						String s = ((Tree)source).getValueAt(index);
@@ -123,7 +123,7 @@ public class Get implements ActionListener{
 				}catch(NumberFormatException nfe){
 					JOptionPane.showConfirmDialog(gui, "Illegal character: you can only enter numbers.");
 				}
-			}else if(source instanceof LinkedList){
+			}else if(i != null && source instanceof LinkedList){
 
 				try{
 					int index = Integer.parseInt(i.getValue());
@@ -134,7 +134,7 @@ public class Get implements ActionListener{
 				}catch(NumberFormatException nfe){
 					JOptionPane.showConfirmDialog(gui, "Illegal character: you can only enter numbers.");
 				}
-			}else if(source instanceof Array){
+			}else if(i != null && source instanceof Array){
 				if(i.getValue().indexOf(",") > 0){
 					String[] index = i.getValue().split(",");
 					try{

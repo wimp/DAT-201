@@ -15,7 +15,7 @@ public class Queue {
 	private GuiQueue gui;
 	public GuiElement getGuiElement(){
 		return gui;
-	}	
+	}
 	/**
 	 * Constructor. 
 	 * @param bounds The size of the graphical element.
