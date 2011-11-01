@@ -105,12 +105,12 @@ public class Get implements ActionListener{
 		if(target != null){
 			if(source instanceof Variable){
 				if(singleChar){
-					String val = ((Variable)target).getValue();
+					String val = ((Variable)source).getValue();
 					String ch = val.substring(0, 1);
-					((Variable)target).setValue(val.substring(1));
-					String tarVal = ((Variable) source).getValue();
+					((Variable)source).setValue(val.substring(1));
+					String tarVal = ((Variable) target).getValue();
 					tarVal += ch;
-					((Variable) source).setValue(tarVal);
+					((Variable) target).setValue(tarVal);
 				}
 				else {
 					((Variable) source).setValue(((Variable)target).getValue());
