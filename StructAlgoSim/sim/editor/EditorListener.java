@@ -324,8 +324,6 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 				return true;
 			}else if(element2 instanceof Pop){
 				return true;
-			}else if(element2 instanceof MoveChar){
-				return true;
 			}else if(element2 instanceof Get){
 				return true;
 			}else if(element2 instanceof Set){

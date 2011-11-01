@@ -7,9 +7,9 @@ import javax.swing.JFrame;
 import sim.functions.Add;
 import sim.functions.Remove;
 import sim.structures.Heap;
+import sim.structures.Heap.CompareKey;
 import sim.structures.InfoPanel;
 import sim.structures.Queue;
-import sim.structures.Heap.CompareKey;
 import sim.structures.Tree.Traversal;
 import sim.structures.Variable;
 

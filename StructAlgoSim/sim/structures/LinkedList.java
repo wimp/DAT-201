@@ -4,7 +4,6 @@ import java.awt.Rectangle;
 import java.util.Vector;
 
 import sim.gui.elements.GuiList;
-import sim.structures.elements.Node;
 
 /**
  * A class representing a linked list. Its visual component is the GuiList.
@@ -72,13 +71,22 @@ public class LinkedList {
 	}
 	/**
 	 * Gets an element at a specified index in the list.
-	 * @param index The index of the element to be removed.
+	 * @param index The index of the element to be copied.
 	 */
-	public String get(int index){
+	public String getValueAt(int index){
 		for(Node n : v) 
 			if(n!=null) 
 				if(n.getIndex()==index) return n.getValue().toString();
 		return null;
+	}
+	/**
+	 * Sets an element at a specified index in the list.
+	 * @param index The index of the element to be changed.
+	 */
+	public void setValueAt(int index, Object value){
+		for(Node n : v) 
+			if(n!=null) 
+				if(n.getIndex()==index)  n.setValue(value);
 	}
 	/**
 	 * Adds a new node before a node in the list.
@@ -141,4 +149,72 @@ public class LinkedList {
 		if(n!=null)
 			n.setAdded(true);
 	}
+
+/**
+ * The Node class is an inner class of {@link SingleLinkedList} that contains 
+ * information about where an element is in relationship to other elements in a list
+ */
+public class Node{
+// Class variables
+	private Object 	value;
+	private int index;
+	private Node 	next;
+	private Node 	previous;
+	private boolean added;
+	private boolean removed;
+	
+// Getters and setters
+	public Node getNext() {
+		return next;
+	}
+
+	public void setNext(Node next) {
+		this.next = next;
+	}
+
+	public Node getPrevious() {
+		return previous;
+	}
+
+	public void setPrevious(Node previous) {
+		this.previous = previous;
+	}
+	public int getIndex() {
+		return index;
+	}
+
+	public void setIndex(int index) {
+		this.index = index;
+	}
+
+	public boolean isAdded() {
+		return added;
+	}
+	public void setAdded(boolean added) {
+		this.added = added;
+	}		
+	public boolean isRemoved() {
+		return removed;
+	}
+
+	public void setRemoved(boolean removed) {
+		this.removed = removed;
+	}
+	public Object getValue() {
+		return value;
+	}
+	public void setValue(Object value) {
+		this.value = value;
+	}
+
+// Class constructor
+	public Node(Object value, int index){
+		this.previous 	= null;
+		this.next 		= null;
+		this.value		= value;
+		this.index 		= index;
+		added = true;
+		removed = false;
+	}
+}
 }

@@ -1,6 +1,7 @@
 package sim.structures;
 
 import java.awt.Rectangle;
+
 import sim.gui.elements.GuiElement;
 import sim.gui.elements.GuiVariable;
 

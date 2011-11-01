@@ -2,9 +2,6 @@ package sim.structures;
 
 import java.awt.Rectangle;
 
-import javax.swing.JTextArea;
-
-import sim.gui.elements.GuiElement;
 import sim.gui.elements.GuiInfo;
 
 public class InfoPanel {

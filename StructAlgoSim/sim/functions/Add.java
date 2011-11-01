@@ -107,7 +107,7 @@ public class Add implements ActionListener {
 			}else if(l instanceof Queue){
 				((Queue) l).add(v.getValue());
 			}else if(l instanceof Array){
-				((Array) l).insertAt(v.getValue(), Integer.parseInt(i.getValue()));
+				((Array) l).setValueAt(v.getValue(), Integer.parseInt(i.getValue()));
 			}
 		}
 		else{

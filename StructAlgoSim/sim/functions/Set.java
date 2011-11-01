@@ -108,7 +108,7 @@ public class Set implements ActionListener{
 
 				try{
 						int index = Integer.parseInt(i.getValue());
-						((Tree)l).set(index, v.getValue());
+						((Tree)l).setValueAt(index, v.getValue());
 						
 				}catch(NumberFormatException nfe){
 					JOptionPane.showConfirmDialog(gui, "Illegal character: you can only enter numbers.");
@@ -117,7 +117,7 @@ public class Set implements ActionListener{
 
 				try{
 					int index = Integer.parseInt(i.getValue());
-					String s = ((LinkedList)l).get(index);
+					String s = ((LinkedList)l).getValueAt(index);
 					if(s!=null)
 						v.setValue(s);
 
@@ -133,9 +133,9 @@ public class Set implements ActionListener{
 							int indexX = Integer.parseInt(index[1]);
 
 							if(((Array) l).getDimensions() == 2){
-								((Array) l).insertAt(v.getValue(), indexY, indexX);
+								((Array) l).setValueAt(v.getValue(), indexY, indexX);
 							}else{
-								((Array) l).insertAt(v.getValue(), indexY);
+								((Array) l).setValueAt(v.getValue(), indexY);
 							}
 						}catch(Exception nfe){
 							JOptionPane.showMessageDialog(gui, "Illegal character: you can only enter numbers separated by a comma (,)");
@@ -143,7 +143,7 @@ public class Set implements ActionListener{
 					}else{
 						try{
 							int indexY = Integer.parseInt(i.getValue());
-							((Array) l).insertAt(v.getValue(), indexY);
+							((Array) l).setValueAt(v.getValue(), indexY);
 						}catch(Exception nfe){
 							JOptionPane.showMessageDialog(gui, "Illegal character: you can only enter numbers separated by a comma (,)");
 						}

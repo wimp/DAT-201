@@ -12,8 +12,6 @@ public class Array {
 // Class variables //
 	private  GuiArray gui;
 	private Object[][] array;
-	private int sizeX;
-	private int sizeY;
 	private static int MAX_SIZE = 100;
 	private int dimensions;
 	
@@ -21,7 +19,10 @@ public class Array {
 	public GuiArray getGuiElement(){
 		return gui;
 	}
-	
+	/**
+	 * The total number of dimensions of this array.
+	 * @return int dimensions
+	 */
 	public int getDimensions(){
 		return dimensions;
 	}
@@ -43,57 +44,18 @@ public class Array {
 	public Array(Rectangle bounds, int sizeY, int sizeX){
 		if(sizeY < MAX_SIZE && sizeX < MAX_SIZE){
 			array = new Object[sizeY][sizeX];
-			this.sizeY = sizeY;
-			this.sizeX = sizeX;
 			gui = new GuiArray(bounds, array);
 		}
 		
 		dimensions = sizeX > 0 ? 2 : 1;
 	}
 	/**
-	 * Inserts the given Object in a one-dimensional array at indexY
-	 * @param itemToAdd
-	 * @param indexY
-	 */
-	public void insertAt(Object itemToAdd, int indexY){
-		insertAt(itemToAdd, indexY, 0);
-		gui.repaint();
-	}
-	/**
-	 * Inserts the given Object in a two-dimensional array at indexX
-	 * @param itemToAdd
-	 * @param indexY
-	 * @param indexX
-	 */
-	public void insertAt(Object itemToAdd, int indexY, int indexX){
-		if(indexY < sizeY && indexX < sizeX){
-			array[indexY][indexX] = itemToAdd;
-			gui.repaint();
-		}
-		/*
-		boolean intelligent = true, stupid = false;
-		
-		if(!intelligent && stupid){
-		// Alternative syntax: xD
-			for(int i = 0;i < sizeY;i++){
-				if(i == indexY){
-					for(int j = 0;j < sizeX;j++){
-						if(j == indexX){
-							array[i][j] = itemToAdd;
-							return;
-						}
-					}
-				}
-			}
-		}else return;*/
-	}
-	/**
 	 * Method to get the value of a one-dimensional array at indexY
 	 * @param indexY
 	 * @return The Object at indexY
 	 */
-	public Object valueAt(int indexY){
-		return valueAt(indexY, 0);
+	public Object getValueAt(int indexY){
+		return getValueAt(indexY, 0);
 	}
 	/**
 	 * Method to get the value of a two-dimensional array at indexY,indexX
@@ -101,16 +63,17 @@ public class Array {
 	 * @param indexX
 	 * @return The Object at array[indexY][indexX]
 	 */
-	public Object valueAt(int indexY, int indexX){
+	public Object getValueAt(int indexY, int indexX){
 		return array[indexY][indexX];
 	}
-	public Object removeItem(int indexY){
-		return removeItem(indexY,0);
+	public void setValueAt(Object value,int indexY){
+		setValueAt(value, indexY,0);
 	}
-	private Object removeItem(int indexY, int indexX) {
-		String item = array[indexY][indexX].toString();
-		array[indexY][indexX] = null;
-		gui.repaint();
-		return item;
+	public void setValueAt(Object value, int indexY, int indexX) {
+		if(value != null){
+			String item = (String)value;
+			array[indexY][indexX] = item;
+			gui.repaint();
+		}
 	}
 }
