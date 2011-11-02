@@ -11,7 +11,6 @@ import sim.structures.Variable;
 
 /**
  * Push - Instances of this class is used with structures such as stack to add an element to the top. (LIFO)
- * @author 
  */
 public class Push implements ActionListener{
 // Class variables //
@@ -51,7 +50,7 @@ public class Push implements ActionListener{
 	 * The class constructor. Initializes the graphical element - {@link GuiFunction}
 	 * @param bounds 	- The size and placement of the graphical element
 	 * @param v 		- The input variable.
-	 * @param s 		- The structure on which to perform the push()-action 
+	 * @param l 		- The structure on which to perform the push()-action 
 	 */
 	public Push(Rectangle bounds, Variable v, Stack l){
 		gui = new GuiFunction(bounds,"Push");

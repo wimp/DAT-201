@@ -58,11 +58,6 @@ public class Set implements ActionListener{
 	}
 	/**
 	 * Constructor.
-	 * 
-	 * @param bounds = the dimensions of the graphical element
-	 * @param dir = direction of arrow
-	 * @param input = input var
-	 * @param output = output var
 	 */
 	public Set(Rectangle bounds, Array l, Variable v, Variable i, boolean singleChar) {
 		gui = new GuiFunction(bounds,"Set");

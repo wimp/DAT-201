@@ -11,7 +11,6 @@ import sim.structures.Variable;
 
 /**
  * Pop - Instances of this class is used with structures such as stack to fetch the top element. (LIFO)
- * @author 
  */
 public class Pop implements ActionListener {
 // Class variables //
@@ -51,7 +50,7 @@ public class Pop implements ActionListener {
 	/**
 	 * The class constructor. Initializes the graphical element - {@link GuiFunction}
 	 * @param bounds 	- The size and placement of the graphical element
-	 * @param s 		- The structure on which to perform the pop()-action
+	 * @param l 		- The structure on which to perform the pop()-action
 	 * @param v 		- The output variable
 	 */
 	public Pop(Rectangle bounds, Stack l, Variable v) {

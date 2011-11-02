@@ -16,7 +16,6 @@ import sim.structures.Variable;
 
 /**
  * Add - Instances of this class is used with structures such as linked-list or array to add an element to the end. (LIFO)
- * @author 
  */
 public class Add implements ActionListener {
 	// Class variables //

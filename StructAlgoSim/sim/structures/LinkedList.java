@@ -151,7 +151,7 @@ public class LinkedList {
 	}
 
 /**
- * The Node class is an inner class of {@link SingleLinkedList} that contains 
+ * The Node class is an inner class of {@link LinkedList} that contains 
  * information about the state of the node and its value.
  */
 public class Node{

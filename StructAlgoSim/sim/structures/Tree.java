@@ -38,7 +38,7 @@ public class Tree {
 	/**
 	 * The Traversal enum is used to specify which traversal-rule to use
 	 * on this tree when accessing elements.
-	 * @param The new traversal rule for this tree.
+	 * @param traversal The new traversal rule for this tree.
 	 */
 	public void setTraversal(Traversal traversal) {
 		this.traversal = traversal;
@@ -70,7 +70,7 @@ public class Tree {
 	}
 	/**
 	 * The height of a node is the number of direct descendants.
-	 * @param The node from which the height will be calculated
+	 * @param  t The node from which the height will be calculated
 	 * 
 	 * @return The height of the specified node.
 	 */
@@ -90,7 +90,7 @@ public class Tree {
 	/**
 	 * Clustersize is the maximum number of children that each node can have.
 	 * 
-	 * @param int - The new maximum number of children.
+	 * @param maxCluster - The new maximum number of children.
 	 */
 	public void setMaxCluster(int maxCluster) {
 		this.maxCluster = maxCluster;
@@ -107,7 +107,7 @@ public class Tree {
 	/**
 	 * The root is the only node without a parent.
 	 * 
-	 * @param The new root of this tree.
+	 * @param root The new root of this tree.
 	 */
 	public void setRoot(TreeNode root) {
 		this.root = root;
@@ -136,7 +136,6 @@ public class Tree {
 	/**
 	 * Constructor.
 	 * @param bounds - the dimensions of the graphical element.
-	 * @param 
 	 */
 	public Tree(Rectangle bounds){
 		root = null;	
@@ -151,7 +150,6 @@ public class Tree {
 	//TREE METHODS
 	/**
 	 * Rebuilds the tree by adding breadth-first.
-	 * @param values The values to build the tree from.
 	 */
 	public void rebuildTree(){
 		if(root == null) return;
