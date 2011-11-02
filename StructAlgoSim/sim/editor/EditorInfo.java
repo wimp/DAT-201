@@ -232,7 +232,7 @@ public class EditorInfo extends JPanel{
 						"Editor use:\n" +
 						"Place in desired position after choosing whether it should be editable or not. Can be linked with all" +
 						"the functions. Read information about specific use when selecting a function."
-						;
+				;
 				text.setText(t);
 				break;
 			case ADD:
@@ -250,7 +250,7 @@ public class EditorInfo extends JPanel{
 						"variable it attempts to add the value given at the end or beginning of the structure it is linked with, " +
 						"depending on the type of structure. Can be linked" +
 						"with: Queue, Linked List, Tree, Heap or Variable."
-						;
+				;
 				text.setText(t);
 				break;
 			case INSERT:
