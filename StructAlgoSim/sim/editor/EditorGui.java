@@ -11,6 +11,7 @@ import java.awt.KeyboardFocusManager;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -54,14 +55,16 @@ public class EditorGui extends JFrame {
 		menuBar.add(fileMenu);
 		menuBar.add(tools);
 		
-		JMenuItem anim 		= new JMenuItem("Animation Player");
-		JMenuItem save 		= new JMenuItem("Save");
-		JMenuItem load 		= new JMenuItem("Load");
-		JMenuItem newFile 	= new JMenuItem("New");
-		JMenuItem resizeView= new JMenuItem("Resize View");
+		JMenuItem anim 				= new JMenuItem("Animation Player");
+		JMenuItem save 				= new JMenuItem("Save");
+		JMenuItem load 				= new JMenuItem("Load");
+		JMenuItem newFile 			= new JMenuItem("New");
+		JMenuItem resizeView		= new JMenuItem("Resize View");
+		JCheckBoxMenuItem animated  = new JCheckBoxMenuItem("Animate Structures");
 		
 		tools.add(anim);
 		tools.add(resizeView);
+		tools.add(animated);
 		fileMenu.add(newFile);
 		fileMenu.add(save);
 		fileMenu.add(load);
@@ -100,12 +103,13 @@ public class EditorGui extends JFrame {
 		JToggleButton variable	= new JToggleButton("Variable");
 		JToggleButton link		= new JToggleButton();
 		JToggleButton select	= new JToggleButton();
-		JToggleButton delete	= new JToggleButton("Delete Element");
+		JToggleButton delete	= new JToggleButton();
 		JToggleButton tree		= new JToggleButton("Tree");
 		JToggleButton heap		= new JToggleButton("Heap");
 		JToggleButton queue		= new JToggleButton("Queue");
 		JCheckBox grid			= new JCheckBox("Grid");
 		JToggleButton resizeMode= new JToggleButton();
+		JToggleButton moveMode	= new JToggleButton();
 		
 		// Set icons for selected buttons //
 		ImageIcon resizeIcon = new ImageIcon(ClassLoader.getSystemResource("sim/resources/resize.png"));
@@ -119,6 +123,15 @@ public class EditorGui extends JFrame {
 		ImageIcon linkIcon = new ImageIcon(ClassLoader.getSystemResource("sim/resources/link.png"));
 		link.setIcon(linkIcon);
 		link.setToolTipText("Link elements together");
+		
+		ImageIcon moveIcon = new ImageIcon(ClassLoader.getSystemResource("sim/resources/move.png"));
+		moveMode.setIcon(moveIcon);
+		moveMode.setToolTipText("Move elements placed in the editor");
+		
+		ImageIcon deleteIcon = new ImageIcon(ClassLoader.getSystemResource("sim/resources/delete.png"));
+		delete.setIcon(deleteIcon);
+		delete.setToolTipText("Delete elements placed in the editor");
+		
 		
 		// Add actionlisteners and set action commands //
 		stack.addActionListener(el);
@@ -169,6 +182,10 @@ public class EditorGui extends JFrame {
 		newFile.setActionCommand("23");
 		resizeMode.addActionListener(el);
 		resizeMode.setActionCommand("24");
+		moveMode.addActionListener(el);
+		moveMode.setActionCommand("25");
+		animated.addActionListener(el);
+		animated.setActionCommand("26");
 		
 		// Add toggle buttons to the button group //
 		bg.add(stack);
@@ -189,6 +206,7 @@ public class EditorGui extends JFrame {
 		bg.add(get);
 		bg.add(set);
 		bg.add(resizeMode);
+		bg.add(moveMode);
 
 		// Add elements to the west panel (data structures and variables) //
 		westPanel.setLayout(new GridLayout(11,1));
@@ -223,8 +241,9 @@ public class EditorGui extends JFrame {
 		
 		JPanel centerOfTop = new JPanel();
 		centerOfTop.setLayout(new GridLayout(1,4));
-			centerOfTop.add(link);
 			centerOfTop.add(select);
+			centerOfTop.add(link);
+			centerOfTop.add(moveMode);
 			centerOfTop.add(resizeMode);
 			centerOfTop.add(delete);
 		

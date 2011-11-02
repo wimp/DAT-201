@@ -4,6 +4,7 @@ import java.awt.AlphaComposite;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Composite;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -24,8 +25,10 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.Vector;
 
+import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
 import javax.swing.JCheckBox;
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
@@ -73,6 +76,10 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 	private Point resizeEndPoint = new Point();
 	private Point resizeTempPoint = new Point();
 	private int resizeElementIndex = -1;
+	private Point moveEndPoint = new Point();
+	private int moveElementIndex = -1;
+	private int moveDifferX;
+	private int moveDifferY;
 
 	// Class Methods //
 	/**
@@ -165,9 +172,12 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 			guiElements.add(index,arrayElement.getGuiElement());
 			return arrayElement.getGuiElement();
 		case INSERT:
+			Object[] options = {"Insert BEFORE given index","Insert AFTER given index"};
 			bounds.width 	= bounds.width < 150 ? 150 : bounds.width;
 			bounds.height 	= bounds.height < 30 ? 30 : bounds.height;
-			Insert insertElement = new Insert(bounds, true);
+			Object sel = JOptionPane.showInputDialog(gui, "Where should this function insert values?", "How to insert", JOptionPane.OK_CANCEL_OPTION, null, options, options[0]);
+			sel = sel == null ? options[0] : sel;
+			Insert insertElement = new Insert(bounds, sel.equals(options[0]) ? false : true);
 			elements.add(insertElement);
 			index = elements.lastIndexOf(insertElement);
 			guiElements.add(index,insertElement.getGuiElement());
@@ -488,6 +498,18 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 					resizeElementIndex = i;
 				}
 			}
+		}else if(type == ElementType.MOVE){
+			for(int i = 0;i < guiElements.size();i++){
+				if(guiElements.get(i).getBounds().contains(x, y)){
+					moveElementIndex = i;
+					moveDifferX = guiElements.get(i).getX() - x;
+					moveDifferY = guiElements.get(i).getY() - y;
+					moveEndPoint.x = guiElements.get(i).getX() + (moveDifferX);
+					moveEndPoint.y = guiElements.get(i).getY() + (moveDifferY);
+					panel.r.x = moveEndPoint.x;
+					panel.r.y = moveEndPoint.y;
+				}
+			}
 		}
 	}
 
@@ -512,7 +534,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 						link = null;
 					}
 
-					// startElement
+				// startElement
 					if(startElement instanceof Add){
 						if(endElement instanceof Variable){
 							// Show dialog to choose what varaible this should be
@@ -531,7 +553,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 						}else if(endElement instanceof Queue){
 							((Add) startElement).setTarget(endElement);
 						}
-						// startElement
+				// startElement
 					}else if(startElement instanceof Variable){
 						if(endElement instanceof Add){
 							Object[] options = {"Input", "Index"};
@@ -625,25 +647,28 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 								return;
 							}
 						}
-						// startElement
+				// startElement
 					}else if(startElement instanceof Stack){
 						if(endElement instanceof Push){
 							((Push) endElement).setTarget(startElement);
 						}else if(endElement instanceof Pop){
 							((Pop) endElement).setSource(startElement);
 						}
+				// startElement
 					}else if(startElement instanceof Push){
 						if(endElement instanceof Stack){
 							((Push) startElement).setTarget(endElement);
 						}else if(endElement instanceof Variable){
 							((Push) startElement).setSourceVariable((Variable) endElement);
 						}
+				// startElement
 					}else if(startElement instanceof Pop){
 						if(endElement instanceof Stack){
 							((Pop) startElement).setSource(endElement);
 						}else if(endElement instanceof Variable){
 							((Pop) startElement).setTargetVariable((Variable) endElement);
 						}
+				// startElement
 					}else if(startElement instanceof LinkedList){
 						if(endElement instanceof Set){
 							((Set) endElement).setTarget(startElement);
@@ -656,14 +681,16 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 						}else if(endElement instanceof Add){
 							((Add) endElement).setTarget(startElement);
 						}
-						// startElement
+				// startElement
 					}else if(startElement instanceof Remove){
 						if(endElement instanceof Variable){
-							Object[] options = {"Ouput", "Index", "Cancel"};
-							int sel = JOptionPane.showOptionDialog(((Variable) endElement).getGuiElement(), "What type of variable is this?", "Type of variable", JOptionPane.YES_NO_CANCEL_OPTION	, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-							if(sel == 0){
+							Object[] options = {"Ouput", "Index"};
+							Object sel = JOptionPane.showInputDialog(((Variable) endElement).getGuiElement(), "What type of variable is this?", "Type of variable", JOptionPane.YES_NO_CANCEL_OPTION	, null, options, options[0]);
+							
+							if(sel == null) return;
+							if(sel.equals(options[0])){
 								((Remove) startElement).setTargetVariable((Variable) endElement);
-							}else if(sel == 1){
+							}else if(sel.equals(options[1])){
 								((Remove) startElement).setIndexVariable((Variable) endElement);
 							}
 						}else if(endElement instanceof LinkedList){
@@ -673,7 +700,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 						}else if(endElement instanceof Queue){
 							((Remove) startElement).setSource(endElement);
 						}
-						// startElement
+				// startElement
 					}else if(startElement instanceof Get){
 						if(endElement instanceof Variable){
 							int getChar = -1;
@@ -709,7 +736,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 						}else if(endElement instanceof Array){
 							((Get) startElement).setSource(endElement);
 						}
-						// startElement
+				// startElement
 					}else if(startElement instanceof Set){
 						if(endElement instanceof Variable){													
 							int setChar = -1;
@@ -747,7 +774,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 						}else if(endElement instanceof Array){
 							((Set) startElement).setTarget(endElement);
 						}
-						// startElement
+				// startElement
 					}else if(startElement instanceof Array){
 						if(endElement instanceof Set){
 							((Set) endElement).setTarget(startElement);
@@ -756,7 +783,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 						}else if(endElement instanceof Insert){
 							((Insert) endElement).setTarget(startElement);
 						}
-						// startElement
+				// startElement
 					}else if(startElement instanceof Tree){
 						if(endElement instanceof Set){
 							((Set) endElement).setTarget(startElement);
@@ -769,22 +796,24 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 						}else if(endElement instanceof Remove){
 							((Remove) endElement).setSource(startElement);
 						}
-						// startElement
+				// startElement
 					}else if(startElement instanceof Insert){
 						if(endElement instanceof Tree){
 							((Insert) startElement).setTarget(endElement);
 						}else if(endElement instanceof LinkedList){
 							((Insert) startElement).setTarget(endElement);
 						}else if(endElement instanceof Variable){
-							Object[] options = {"Input", "Index", "Cancel"};
-							int sel = JOptionPane.showOptionDialog(((Variable) endElement).getGuiElement(), "What type of variable is this?", "Type of variable", JOptionPane.YES_NO_CANCEL_OPTION	, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-							if(sel == 0){
+							Object[] options = {"Input", "Index"};
+							Object sel = JOptionPane.showInputDialog(((Variable) endElement).getGuiElement(), "What type of variable is this?", "Type of variable", JOptionPane.YES_NO_CANCEL_OPTION	, null, options, options[0]);
+							
+							if(sel == null) return;
+							if(sel.equals(options[0])){
 								((Insert) startElement).setSourceVariable((Variable) endElement);
-							}else if(sel == 1){
+							}else if(sel.equals(options[1])){
 								((Insert) startElement).setIndexVariable((Variable) endElement);
 							}
 						}
-						// startElement
+				// startElement
 					}else if(startElement instanceof Queue){
 						if(endElement instanceof Add){
 							((Add) endElement).setTarget(startElement);
@@ -810,6 +839,15 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 			panel.repaint();
 			panel.validate();
 			gui.validate();
+		}else if(type == ElementType.MOVE && moveElementIndex != -1){
+			moveEndPoint.x = (int) (x + (moveDifferX));
+			moveEndPoint.y = (int) (y + (moveDifferY));
+			int width = guiElements.get(moveElementIndex).getWidth();
+			int height = guiElements.get(moveElementIndex).getHeight();
+			guiElements.get(moveElementIndex).setBounds(moveEndPoint.x,moveEndPoint.y,width,height);
+			moveElementIndex = -1;
+			moveEndPoint.x = x;
+			moveEndPoint.y = y;
 		}
 		panel.repaint();
 
@@ -843,9 +881,16 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 			panel.repaint();
 			resizeTempPoint.x = x;
 			resizeTempPoint.y = y;
+		}else if(type == ElementType.MOVE && moveElementIndex != -1){
+			moveEndPoint.x = (int) (x + (moveDifferX));
+			moveEndPoint.y = (int) (y + (moveDifferY));
+			panel.r.x = moveEndPoint.x;
+			panel.r.y = moveEndPoint.y;
+			panel.repaint();
 		}
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public void mouseMoved(MouseEvent e) {
 		int x = e.getX();
@@ -864,6 +909,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 				}else{
 					panel.r = null;
 					panel.c = Color.GREEN;
+					gui.setCursor(Cursor.DEFAULT_CURSOR);
 					panel.repaint();
 				}
 			}
@@ -877,6 +923,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 				}else{
 					panel.r = null;
 					panel.c = Color.green;
+					gui.setCursor(Cursor.DEFAULT_CURSOR);
 					panel.repaint();
 				}
 			}
@@ -886,10 +933,27 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 					panel.c = Color.orange;
 					panel.r = new Rectangle(guiElements.get(i).getBounds());
 					panel.repaint();
+					gui.setCursor(Cursor.SE_RESIZE_CURSOR);
 					break;
 				}else{
 					panel.r = null;
 					panel.c = Color.green;
+					gui.setCursor(Cursor.DEFAULT_CURSOR);
+					panel.repaint();
+				}
+			}
+		}else if(type == ElementType.MOVE){
+			for(int i=0;i<guiElements.size();i++){
+				if(guiElements.get(i).getBounds().contains(x,y)){
+					panel.c = Color.blue;
+					panel.r = new Rectangle(guiElements.get(i).getBounds());
+					panel.repaint();
+					gui.setCursor(Cursor.MOVE_CURSOR);
+					break;
+				}else{
+					panel.r = null;
+					panel.c = Color.green;
+					gui.setCursor(Cursor.DEFAULT_CURSOR);
 					panel.repaint();
 				}
 			}
@@ -1346,6 +1410,24 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 			gui.editorPanel.setComponentZOrder(panel, 0);
 			gui.editorPanel.validate();
 			break;
+		case 25:
+			// MOVE MODE
+			type = ElementType.MOVE;
+			
+			panel.setOpaque(false);
+			panel.setSize(gui.editorPanel.getSize());
+			panel.addMouseListener(this);
+			panel.addMouseMotionListener(this);
+
+			gui.editorPanel.add(panel);
+			gui.editorPanel.setComponentZOrder(panel, 0);
+			gui.editorPanel.validate();
+			break;
+		case 26:
+			// ANIMATE SELECTION //
+			boolean animated = ((JCheckBoxMenuItem) e.getSource()).isSelected();
+			
+			break;
 		}
 		gui.editorPanel.revalidate();
 		gui.repaint();
@@ -1470,7 +1552,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 	}
 
 	public enum ElementType{
-		STACK,ARRAY,LIST,ADD,REMOVE,INSERT,PUSH,POP,VARIABLE,LINK,SELECT,GET, SET,DELETE,TREE,HEAP,QUEUE,NONE,RESIZE
+		STACK,ARRAY,LIST,ADD,REMOVE,INSERT,PUSH,POP,VARIABLE,LINK,SELECT,GET, SET,DELETE,TREE,HEAP,QUEUE,NONE,RESIZE,MOVE
 	}
 
 	protected enum LinkDirection{
