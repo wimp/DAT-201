@@ -23,6 +23,7 @@ public class Get implements ActionListener{
 	Variable target;
 	Object source;
 	boolean singleChar;
+	boolean overWrite;
 
 	GuiFunction gui;
 	/**
@@ -45,6 +46,13 @@ public class Get implements ActionListener{
 	 */
 	public void setTarget(Variable l) {
 		this.target = l;
+	}
+	
+	public boolean isOverWrite() {
+		return overWrite;
+	}
+	public void setOverWrite(boolean overWrite) {
+		this.overWrite = overWrite;
 	}
 	/**
 	 * Gets source variable
@@ -96,29 +104,27 @@ public class Get implements ActionListener{
 	 * @param bounds
 	 * @param singleChar - Controls if the Get should retrieve only one character or all.
 	 */
-	public Get(Rectangle bounds, boolean singleChar){
+	public Get(Rectangle bounds){
 
 		gui = new GuiFunction(bounds,"Get");
 		gui.getButton().addActionListener(this);
 		this.target = null;
 		this.source = null;
-		this.singleChar=singleChar;
 	}
 	/**
 	 * Constructor
 	 * @param bounds
 	 * @param l - Source {@link Variable}
 	 * @param o - Target {@link Variable}
-	 * @param i - Index {@link Variable}
 	 * @param singleChar
 	 */
-	public Get(Rectangle bounds, Variable l,Variable o, Variable i, boolean singleChar) {
+	public Get(Rectangle bounds, Variable l,Variable o, boolean singleChar, boolean overWrite) {
 		gui = new GuiFunction(bounds,"Get");
 		gui.getButton().addActionListener(this);
 		this.source=l;
-		this.i=i;
 		this.target=o;
 		this.singleChar=singleChar;
+		this.overWrite = overWrite;
 	}
 	/**
 	 * Constructor
@@ -127,14 +133,14 @@ public class Get implements ActionListener{
 	 * @param o - Target {@link Variable}
 	 * @param singleChar
 	 */
-	public Get(Rectangle bounds, Array l,Variable o, boolean singleChar) {
+	public Get(Rectangle bounds, Array l,Variable o, boolean singleChar, boolean overWrite) {
 		gui = new GuiFunction(bounds,"Get");
 		gui.getButton().addActionListener(this);
 		this.source=l;
 		this.target=o;
 		this.singleChar=singleChar;
+		this.overWrite = overWrite;
 	}
-	
 	/**
 	 * Constructor
 	 * @param bounds
@@ -143,13 +149,14 @@ public class Get implements ActionListener{
 	 * @param i - Index {@link Variable}
 	 * @param singleChar
 	 */
-	public Get(Rectangle bounds, LinkedList l,Variable o, Variable i, boolean singleChar) {
+	public Get(Rectangle bounds, LinkedList l,Variable o, Variable i, boolean singleChar, boolean overWrite) {
 		gui = new GuiFunction(bounds,"Get");
 		gui.getButton().addActionListener(this);
 		this.source=l;
 		this.target=o;
 		this.i = i;
 		this.singleChar=singleChar;
+		this.overWrite = overWrite;
 	}
 	/**
 	 * Constructor
@@ -159,13 +166,14 @@ public class Get implements ActionListener{
 	 * @param i - Index {@link Variable}
 	 * @param singleChar
 	 */
-	public Get(Rectangle bounds, Tree l,Variable o, Variable i, boolean singleChar) {
+	public Get(Rectangle bounds, Tree l,Variable o, Variable i, boolean singleChar, boolean overWrite) {
 		gui = new GuiFunction(bounds,"Get");
 		gui.getButton().addActionListener(this);
 		this.source=l;
 		this.i=i;
 		this.target=o;
 		this.singleChar=singleChar;
+		this.overWrite = overWrite;
 	}
 	/**
 	 * Will remove the first char from the input string and append it to the output string. 
@@ -182,7 +190,10 @@ public class Get implements ActionListener{
 						String ch = val.substring(0, 1);
 						((Variable)source).setValue(val.substring(1));
 						String tarVal = ((Variable) target).getValue();
-						tarVal += ch;
+						
+						if(!overWrite)tarVal += ch;
+						else tarVal = ch;
+						
 						((Variable) target).setValue(tarVal);
 					}
 				}
