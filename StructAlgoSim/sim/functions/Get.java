@@ -14,7 +14,8 @@ import sim.structures.Tree;
 import sim.structures.Variable;
 /**
  * This object retrieves either a single character or the entire string from a source object (or index within the source object) and passes it to a target object. 
- *
+ * The Source object can be a {@link Variable}, {@link LinkedList}, {@link Array} or {@link Tree}
+ * The target can only be a {@link Variable}
  */
 public class Get implements ActionListener{
 
