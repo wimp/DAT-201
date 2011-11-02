@@ -22,6 +22,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
+import javax.swing.UIManager;
 
 import sim.editor.EditorListener.Link;
 
@@ -51,22 +52,24 @@ public class EditorGui extends JFrame {
 		
 		JMenu fileMenu 	= new JMenu("File");
 		JMenu tools 	= new JMenu("Tools");
+		JMenu view		= new JMenu("View");
 		
 		menuBar.add(fileMenu);
 		menuBar.add(tools);
+		menuBar.add(view);
 		
-		JMenuItem anim 				= new JMenuItem("Animation Player");
-		JMenuItem save 				= new JMenuItem("Save");
-		JMenuItem load 				= new JMenuItem("Load");
-		JMenuItem newFile 			= new JMenuItem("New");
+		JMenuItem anim 				= new JMenuItem("Animation Player", UIManager.getIcon("FileView.computerIcon"));
+		JMenuItem save 				= new JMenuItem("Save",UIManager.getIcon("FileView.floppyDriveIcon"));
+		JMenuItem load 				= new JMenuItem("Load",UIManager.getIcon("FileView.directoryIcon"));
+		JMenuItem newFile 			= new JMenuItem("New", UIManager.getIcon("FileView.fileIcon"));
 		JMenuItem resizeView		= new JMenuItem("Resize View");
 		JCheckBoxMenuItem animated  = new JCheckBoxMenuItem("Animate Structures");
 		
 		animated.setSelected(true);
 		
 		tools.add(anim);
-		tools.add(resizeView);
-		tools.add(animated);
+		view.add(resizeView);
+		view.add(animated);
 		fileMenu.add(newFile);
 		fileMenu.add(save);
 		fileMenu.add(load);
@@ -112,6 +115,7 @@ public class EditorGui extends JFrame {
 		JCheckBox grid			= new JCheckBox("Grid");
 		JToggleButton resizeMode= new JToggleButton();
 		JToggleButton moveMode	= new JToggleButton();
+		JToggleButton infoText	= new JToggleButton("Text Area");
 		
 		// Set icons for selected buttons //
 		ImageIcon resizeIcon = new ImageIcon(ClassLoader.getSystemResource("sim/resources/resize.png"));
@@ -188,6 +192,8 @@ public class EditorGui extends JFrame {
 		moveMode.setActionCommand("25");
 		animated.addActionListener(el);
 		animated.setActionCommand("26");
+		infoText.addActionListener(el);
+		infoText.setActionCommand("27");
 		
 		// Add toggle buttons to the button group //
 		bg.add(stack);
@@ -209,6 +215,7 @@ public class EditorGui extends JFrame {
 		bg.add(set);
 		bg.add(resizeMode);
 		bg.add(moveMode);
+		bg.add(infoText);
 
 		// Add elements to the west panel (data structures and variables) //
 		westPanel.setLayout(new GridLayout(11,1));
@@ -223,6 +230,7 @@ public class EditorGui extends JFrame {
 		
 		westPanel.add(new JSeparator());
 		westPanel.add(variable);
+		westPanel.add(infoText);
 		westPanel.add(new JSeparator());
 		
 		// Add elements to the east panel (functions etc.) //

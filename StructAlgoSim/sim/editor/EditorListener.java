@@ -50,6 +50,7 @@ import sim.gui.elements.GuiElement;
 import sim.gui.elements.GuiSettings;
 import sim.structures.Array;
 import sim.structures.Heap;
+import sim.structures.InfoPanel;
 import sim.structures.LinkedList;
 import sim.structures.Queue;
 import sim.structures.Stack;
@@ -272,6 +273,15 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 			index			= elements.lastIndexOf(getElement);
 			guiElements.add(index,getElement.getGuiElement());
 			return getElement.getGuiElement();
+		case TEXT:
+			bounds.width	= bounds.width < 120 ? 120 : bounds.width;
+			bounds.height	= bounds.height < 100 ? 100 : bounds.height;
+			InfoPanel textElement = new InfoPanel(bounds);
+			
+			elements.add(textElement);
+			index 			= elements.lastIndexOf(textElement);
+			guiElements.add(index,textElement.getGuiElement());
+			return textElement.getGuiElement();
 		}
 		return null;
 	}
@@ -1428,6 +1438,10 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 			boolean animated = ((JCheckBoxMenuItem) e.getSource()).isSelected();
 			GuiSettings.isAnimated = animated;
 			break;
+		case 27:
+			// TEXT PANEL //
+			type = ElementType.TEXT;
+			break;
 		}
 		gui.editorPanel.revalidate();
 		gui.repaint();
@@ -1552,7 +1566,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 	}
 
 	public enum ElementType{
-		STACK,ARRAY,LIST,ADD,REMOVE,INSERT,PUSH,POP,VARIABLE,LINK,SELECT,GET, SET,DELETE,TREE,HEAP,QUEUE,NONE,RESIZE,MOVE
+		STACK,ARRAY,LIST,ADD,REMOVE,INSERT,PUSH,POP,VARIABLE,LINK,SELECT,GET, SET,DELETE,TREE,HEAP,QUEUE,NONE,RESIZE,MOVE,TEXT
 	}
 
 	protected enum LinkDirection{
