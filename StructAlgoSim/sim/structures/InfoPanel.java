@@ -10,11 +10,18 @@ public class InfoPanel {
 	public GuiInfo getGuiElement() {
 		return gui;
 	}
-
 	public void setGuiElement(GuiInfo gui) {
 		this.gui = gui;
 	}
-
+	public void setEditable(boolean editable){
+			gui.getTextArea().setEditable(editable);
+	}
+	public boolean getEditable(){
+		return gui.getTextArea().isEditable();
+}
+	public InfoPanel(Rectangle bounds){
+		gui = new GuiInfo(bounds, "");
+	}
 	public InfoPanel(Rectangle bounds, String text, boolean editable){
 		gui = new GuiInfo(bounds, text);
 		gui.getTextArea().setEditable(editable);
