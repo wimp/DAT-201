@@ -1140,13 +1140,14 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 							String iv = Integer.toString(elements.indexOf(((Get) element).getIndexVariable()));
 							String oc = Integer.toString(elements.indexOf(((Get) element).getSingleChar()));
 
-							out.write(t+":"+sv+":"+iv);
+							out.write(t+":"+sv+":"+iv+":"+oc);
 						}else if(element instanceof Set){
-							String t = Integer.toString(elements.indexOf(((Set) element).getTarget()));
+							String t  = Integer.toString(elements.indexOf(((Set) element).getTarget()));
 							String sv = Integer.toString(elements.indexOf(((Set) element).getSourceVariable()));
 							String iv = Integer.toString(elements.indexOf(((Set) element).getIndexVariable()));
+							String oc = Integer.toString(elements.indexOf(((Set) element).getSingleChar()));
 
-							out.write(t+":"+sv+":"+iv);
+							out.write(t+":"+sv+":"+iv+":"+oc);
 						}else if(element instanceof InfoPanel){
 							String val = ((InfoPanel) element).getValue();
 							out.write(val);
@@ -1263,6 +1264,8 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 								if(s[2].equals("InfoPanel")){
 									((InfoPanel) elements.get(id)).setValue(attributes[0]);
 									break;
+								}else if(s[2].equals("Get") || s[2].equals("Set")){
+									
 								}
 								for(int j = 0; j < attributes.length;j++){
 									if(attributes[j].equals("null"))
