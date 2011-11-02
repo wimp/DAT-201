@@ -25,6 +25,7 @@ import javax.swing.JToggleButton;
 import javax.swing.UIManager;
 
 import sim.editor.EditorListener.Link;
+import sim.structures.InfoPanel;
 
 @SuppressWarnings("serial")
 public class EditorGui extends JFrame {
@@ -311,6 +312,7 @@ public class EditorGui extends JFrame {
 			}
 			
 			g2d.setColor(Color.black);
+			
 			
 			for(int i = 0;i<el.linkys.size();i++){
 				Link l = el.linkys.get(i);

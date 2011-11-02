@@ -66,8 +66,8 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 	// Class variables //
 	protected 	ElementType 		type = ElementType.NONE;
 	private 	EditorGui 			gui;
-	private 	Vector<Object> 		elements = new Vector<Object>();
-	private 	Vector<GuiElement> 	guiElements = new Vector<GuiElement>();
+	Vector<Object> 		elements = new Vector<Object>();
+	Vector<GuiElement> 	guiElements = new Vector<GuiElement>();
 	private 	Object 				startElement;
 	private 	Object 				endElement;
 	protected 	GlassPanel 			panel = new GlassPanel();
