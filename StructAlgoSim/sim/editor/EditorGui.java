@@ -62,6 +62,8 @@ public class EditorGui extends JFrame {
 		JMenuItem resizeView		= new JMenuItem("Resize View");
 		JCheckBoxMenuItem animated  = new JCheckBoxMenuItem("Animate Structures");
 		
+		animated.setSelected(true);
+		
 		tools.add(anim);
 		tools.add(resizeView);
 		tools.add(animated);

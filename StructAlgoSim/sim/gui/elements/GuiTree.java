@@ -78,9 +78,9 @@ public class GuiTree extends GuiElement implements ActionListener, MouseMotionLi
 	public GuiTree(Rectangle bounds,Heap heap, boolean animated){
 		super();
 		isheap = true;
-		if(animated) animation = new Timer(750,this);
-		else 
-			animation = new Timer(0, this);
+		
+		animation = new Timer(750,this);
+		
 		this.tree = heap;
 		setLayout(new BorderLayout());
 		setBounds(bounds);			
@@ -89,9 +89,9 @@ public class GuiTree extends GuiElement implements ActionListener, MouseMotionLi
 	public GuiTree(Rectangle bounds,Tree tree, boolean animated){
 		super();
 		isheap = false;
-		if(animated) animation = new Timer(750,this);
-		else 
-			animation = new Timer(0, this);
+		
+		animation = new Timer(750,this);
+		
 		this.tree = tree;
 		setLayout(new BorderLayout());
 		setBounds(bounds);			

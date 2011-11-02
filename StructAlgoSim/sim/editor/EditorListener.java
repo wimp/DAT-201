@@ -25,7 +25,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.Vector;
 
-import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
 import javax.swing.JCheckBox;
 import javax.swing.JCheckBoxMenuItem;
@@ -48,6 +47,7 @@ import sim.functions.Push;
 import sim.functions.Remove;
 import sim.functions.Set;
 import sim.gui.elements.GuiElement;
+import sim.gui.elements.GuiSettings;
 import sim.structures.Array;
 import sim.structures.Heap;
 import sim.structures.LinkedList;
@@ -1426,7 +1426,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 		case 26:
 			// ANIMATE SELECTION //
 			boolean animated = ((JCheckBoxMenuItem) e.getSource()).isSelected();
-			
+			GuiSettings.isAnimated = animated;
 			break;
 		}
 		gui.editorPanel.revalidate();

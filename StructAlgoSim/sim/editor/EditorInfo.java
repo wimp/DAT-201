@@ -168,7 +168,7 @@ public class EditorInfo extends JPanel{
 				
 				break;
 			case TREE:
-				Tree tr = new Tree(new Rectangle(0,0,100, 75), true);
+				Tree tr = new Tree(new Rectangle(0,0,100, 75));
 				tr.addBreadthFirst("value 1");
 				tr.addBreadthFirst("value 2");
 				tr.addBreadthFirst("value 3");

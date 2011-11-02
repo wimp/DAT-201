@@ -66,9 +66,14 @@ public class Tree {
 		this.gui = gui;
 	}
 	//CONSTRUCTORS
-	public Tree(Rectangle bounds,boolean animated){
+	/**
+	 * Constructor.
+	 * @param bounds - the dimensions of the graphical element.
+	 * @param 
+	 */
+	public Tree(Rectangle bounds){
 		root = null;	
-		gui = new GuiTree(bounds, this, animated);
+		gui = new GuiTree(bounds, this);
 	}
 	protected Tree(){
 		root = null;	
