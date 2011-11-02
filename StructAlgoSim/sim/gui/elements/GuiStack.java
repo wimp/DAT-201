@@ -55,7 +55,7 @@ public class GuiStack extends GuiElement implements ActionListener{
 
 		Vector<Object> data;
 
-		
+
 		public Vector<Object> getData() {
 			return data;
 		}
@@ -68,19 +68,22 @@ public class GuiStack extends GuiElement implements ActionListener{
 
 		@Override
 		public void paintComponent(Graphics g){
+			if(!GuiSettings.isAnimated && animation.isRunning())
+				stopAnimation();
+			
 			int elementH = GuiSettings.STACKELEMENTHEIGHT;
 			int elementW = getWidth();//GuiSettings.STACKELEMENTWIDTH;
 			int preferredWidth = 0;
 			int preferredHeight = 0;
-			
+
 			g.clearRect(0, 0, getWidth(), getHeight());
-			
+
 			Color c = g.getColor();
 			if(elementH*data.size()+elementH*2>getHeight() || elementH*data.size()+elementH*2<getHeight())
 				preferredHeight = elementH*data.size()+elementH*2;
 			else
 				preferredHeight = getHeight()-10;
-			
+
 			for(int i = 0; i<data.size(); i++){
 				String s = (String)data.get(i);
 
@@ -92,7 +95,7 @@ public class GuiStack extends GuiElement implements ActionListener{
 				int v=g.getFontMetrics(getFont()).charsWidth(s.toCharArray(), 0, s.toCharArray().length)+20;
 
 				elementW = v<GuiSettings.STACKELEMENTWIDTH ? GuiSettings.STACKELEMENTWIDTH : v;
-				
+
 				if(elementW>preferredWidth)
 					preferredWidth = elementW;
 
@@ -130,18 +133,22 @@ public class GuiStack extends GuiElement implements ActionListener{
 		}
 
 	}
+	public void stopAnimation(){
+		frame = 0;
+		animation.stop();
+		added = false;
+		if(removed){
+			removed = false;
+		}
+		recent = null;
+
+	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource()==animation){
 			frame++;
 			if(frame > getMaxFrame()){
-				frame = 0;
-				animation.stop();
-				added = false;
-				if(removed){
-					removed = false;
-				}
-				recent = null;
+				stopAnimation();
 			}
 			repaint();
 		}

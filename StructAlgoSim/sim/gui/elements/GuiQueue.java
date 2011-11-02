@@ -45,19 +45,21 @@ public class GuiQueue extends GuiElement implements ActionListener{
 		listScroller.setPreferredSize(new Dimension(getWidth(), getHeight()));
 		this.add(listScroller);
 	}
-
+	public void stopAnimation(){
+		frame = 0;
+		animation.stop();
+		added = false;
+		if(removed){
+			removed = false;
+		}
+		repaint();
+	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource()==animation){
 			frame++;
 			if(frame > getMaxFrame()){
-				frame = 0;
-				animation.stop();
-				added = false;
-				if(removed){
-					removed = false;
-				}
-				repaint();
+				stopAnimation();
 			}
 			repaint();
 		}
@@ -80,6 +82,9 @@ public class GuiQueue extends GuiElement implements ActionListener{
 		}
 		@Override
 		public void paintComponent(Graphics g){
+			if(!GuiSettings.isAnimated && animation.isRunning())
+				stopAnimation();
+			
 			int elementH = GuiSettings.QUEUEELEMENTHEIGHT;
 			int elementW = GuiSettings.QUEUEELEMENTWIDTH;
 

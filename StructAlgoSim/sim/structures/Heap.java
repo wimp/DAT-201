@@ -72,8 +72,7 @@ public class Heap extends Tree{
 	@Override 
 	public String removeAt(int index){
 		String n = super.removeAt(index);
-		if(max) maxHeapifyTree(getRoot());
-		else minHeapifyTree(getRoot());
+		heapify();
 		return n;
 	}
 	/**
