@@ -42,4 +42,12 @@ public class Variable {
 	public String getValue(){
 		return gui.getValue();
 	}
+	
+	public void setEditable(boolean editable){
+		this.isEditable = editable;
+	}
+	
+	public boolean getEditable(){
+		return isEditable;
+	}
 }

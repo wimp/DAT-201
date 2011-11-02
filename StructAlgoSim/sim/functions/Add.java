@@ -27,7 +27,7 @@ public class Add implements ActionListener {
 	// Getters and setters //
 	/**
 	 * Returns the GuiElement component for adding to JFrame/JPanel
-	 * @return
+	 * @return {@link GuiElement}
 	 */
 	public GuiElement getGuiElement(){
 		return gui;
@@ -42,7 +42,7 @@ public class Add implements ActionListener {
 	}
 	/**
 	 * Sets the current target object. This is the object the input object will be added to.
-	 * @param l
+	 * @param l - Target object
 	 */
 	public void setTarget(Object l) {
 		this.l = l;
@@ -58,7 +58,7 @@ public class Add implements ActionListener {
 
 	/**
 	 * Set source {@link Variable} from which data to be added is retrieved
-	 * @param v
+	 * @param v - Source {@link Variable}
 	 */
 	public void setSourceVariable(Variable v) {
 		this.v = v;

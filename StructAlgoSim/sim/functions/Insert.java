@@ -80,6 +80,14 @@ public class Insert implements ActionListener {
 	public void setIndexVariable(Variable i) {
 		this.i = i;
 	}
+	
+	public boolean getInsertAfterElement(){
+		return insertAfterElement;
+	}
+	
+	public void setInsertAfterElement(boolean insertAfterElement){
+		this.insertAfterElement = insertAfterElement;
+	}
 
 	// Class constructor //
 	/**
