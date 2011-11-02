@@ -339,8 +339,8 @@ public class EditorInfo extends JPanel{
 						"\n" +
 						"Editor use:\n" +
 						"Place at desired position and link with a variable. Select whether this should be an input or output variable. " +
-						"If input select whether it should get a single char at a time or the whole value. " +
-						"Link with another variable" +
+						"If input select whether it should get a single char at a time or the whole value. This only applies to variable to variable getting." +
+						"Link with a source, either another variable or another suitable structure. " +
 						"the index at which to add the value, or if it should be the output. If Add is only linked to a value-" +
 						"variable it attempts to add the value given at the end or beginning of the structure it is linked with. Can be linked" +
 						"with: Array, Linked List, Tree, Heap or Variable."

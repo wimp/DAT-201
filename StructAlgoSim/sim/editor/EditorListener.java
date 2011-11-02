@@ -259,7 +259,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 		case SET:
 			bounds.width	= bounds.width < 120 ? 120 : bounds.width;
 			bounds.height	= bounds.height < 30 ? 30 : bounds.height;
-			Set setElement 	= new Set(bounds,false);
+			Set setElement 	= new Set(bounds);
 			elements.add(setElement);
 			index 			= elements.lastIndexOf(setElement);
 			guiElements.add(index,setElement.getGuiElement());
@@ -267,7 +267,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 		case GET:
 			bounds.width	= bounds.width < 120 ? 120 : bounds.width;
 			bounds.height	= bounds.height < 30 ? 30 : bounds.height;
-			Get getElement 	= new Get(bounds, false);
+			Get getElement 	= new Get(bounds);
 
 			elements.add(getElement);
 			index			= elements.lastIndexOf(getElement);
