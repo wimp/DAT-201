@@ -284,13 +284,13 @@ public class EditorInfo extends JPanel{
 				demoPanel.add(rem.getGuiElement());
 				t = 
 						"Function information:\n" +
-						"The Remove function removes an element to a given index or at the default end- or starting point of a structure.\n" +
+						"The Remove function removes an element at a given index or at the default end- or starting point of a structure.\n" +
 						"\n" +
 						"Editor use:\n" +
-						"Place at desired position and link with a variable to be able to select whether that variable should be" +
+						"Place at desired position and link with a variable to be able to select whether that variable should be " +
 						"the index at which to remove, or if it should be the output where the removed value is placed. " +
 						"If Remove is only linked to a value-variable it attempts to remove the value given at the end or " +
-						"beginning of the structure it is linked with. Can be linked" +
+						"beginning of the structure it is linked with, depending on the structure. Can be linked" +
 						"with: Queue, Linked List, Tree, Heap or Variable."
 						;
 				text.setText(t);
@@ -302,13 +302,12 @@ public class EditorInfo extends JPanel{
 				demoPanel.add(pop.getGuiElement());
 				t = 
 						"Function information:\n" +
-						"Add adds an element to a given index or at the default end- or starting point of a structure.\n" +
+						"Pop gets the top-most element off a stack.\n" +
 						"\n" +
 						"Editor use:\n" +
-						"Place at desired position and link with a variable to be able to select whether that variable should be" +
-						"the index at which to add the value, or if it should be the value to add. If Add is only linked to a value-" +
-						"variable it attempts to add the value given at the end or beginning of the structure it is linked with. Can be linked" +
-						"with: Queue, Linked List, Tree, Heap or Variable."
+						"Place at desired position and link with a variable and then link with a stack." +
+						" Can be linked" +
+						"with: Stack."
 						;
 				text.setText(t);
 				break;
@@ -319,13 +318,11 @@ public class EditorInfo extends JPanel{
 				demoPanel.add(push.getGuiElement());
 				t = 
 						"Function information:\n" +
-						"Add adds an element to a given index or at the default end- or starting point of a structure.\n" +
+						"Place an element to the top of the stack.\n" +
 						"\n" +
 						"Editor use:\n" +
-						"Place at desired position and link with a variable to be able to select whether that variable should be" +
-						"the index at which to add the value, or if it should be the value to add. If Add is only linked to a value-" +
-						"variable it attempts to add the value given at the end or beginning of the structure it is linked with. Can be linked" +
-						"with: Queue, Linked List, Tree, Heap or Variable."
+						"Place at desired position and link with a variable and then link with a stack." +
+						" Can be linked with: Stack."
 						;
 				text.setText(t);
 				break;
@@ -336,11 +333,15 @@ public class EditorInfo extends JPanel{
 				demoPanel.add(get.getGuiElement());
 				t = 
 						"Function information:\n" +
-						"Add adds an element to a given index or at the default end- or starting point of a structure.\n" +
+						"Gets a value a given index in a structure or from an input variable. " +
+						"Can get either a single char at a time (if getting from a variable) or the whole value" +
+						"\n" +
 						"\n" +
 						"Editor use:\n" +
-						"Place at desired position and link with a variable to be able to select whether that variable should be" +
-						"the index at which to add the value, or if it should be the value to add. If Add is only linked to a value-" +
+						"Place at desired position and link with a variable. Select whether this should be an input or output variable. " +
+						"If input select whether it should get a single char at a time or the while value. " +
+						"to be able to select whether that variable should be" +
+						"the index at which to add the value, or if it should be the output. If Add is only linked to a value-" +
 						"variable it attempts to add the value given at the end or beginning of the structure it is linked with. Can be linked" +
 						"with: Queue, Linked List, Tree, Heap or Variable."
 						;

@@ -87,6 +87,8 @@ public class LinkedList {
 		for(Node n : v) 
 			if(n!=null) 
 				if(n.getIndex()==index)  n.setValue(value);
+		
+		gui.repaint();
 	}
 	/**
 	 * Adds a new node before a node in the list.

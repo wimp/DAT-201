@@ -18,7 +18,9 @@ public class Set implements ActionListener{
 	Variable i;
 	Object l;
 	boolean singleChar;
-	
+
+	boolean overWrite;
+
 	GuiFunction gui;
 	public GuiElement getGuiElement(){
 		return gui;
@@ -28,6 +30,12 @@ public class Set implements ActionListener{
 	}
 	public void setTarget(Object l) {
 		this.l = l;
+	}
+	public boolean isOverWrite() {
+		return overWrite;
+	}
+	public void setOverWrite(boolean overWrite) {
+		this.overWrite = overWrite;
 	}
 	public Variable getSourceVariable() {
 		return v;
@@ -44,42 +52,50 @@ public class Set implements ActionListener{
 	public boolean getSingleChar(){
 		return singleChar;
 	}
-	public void setSingleChar(boolean singleChar){
+	public void setSingleChar(boolean singleChar) {
 		this.singleChar = singleChar;
 	}
+	public void setSingleChar(boolean singleChar, boolean overWrite){
+		this.singleChar = singleChar;
+		this.overWrite=overWrite;
+	}
 
-	public Set(Rectangle bounds, boolean singleChar){
+	public Set(Rectangle bounds, boolean singleChar, boolean overWrite){
 		//TODO add direction here
 		gui = new GuiFunction(bounds,"Set");
 		gui.getButton().addActionListener(this);
 		this.v = null;
 		this.l = null;
 		this.singleChar=singleChar;
+		this.overWrite=overWrite;
 	}
 	/**
 	 * Constructor.
 	 */
-	public Set(Rectangle bounds, Array l, Variable v, Variable i, boolean singleChar) {
+	public Set(Rectangle bounds, Array l, Variable v, Variable i, boolean singleChar, boolean overWrite) {
 		gui = new GuiFunction(bounds,"Set");
 		gui.getButton().addActionListener(this);
 		this.l=l;
 		this.v=v;
 		this.singleChar=singleChar;
+		this.overWrite=overWrite;
 	}
-	public Set(Rectangle bounds, LinkedList l, Variable v, Variable i, boolean singleChar) {
+	public Set(Rectangle bounds, LinkedList l, Variable v, Variable i, boolean singleChar, boolean overWrite) {
 		gui = new GuiFunction(bounds,"Set");
 		gui.getButton().addActionListener(this);
 		this.l=l;
 		this.v=v;
 		this.singleChar=singleChar;
+		this.overWrite=overWrite;
 	}
-	public Set(Rectangle bounds, Tree l, Variable v, Variable i, boolean singleChar) {
+	public Set(Rectangle bounds, Tree l, Variable v, Variable i, boolean singleChar, boolean overWrite) {
 		gui = new GuiFunction(bounds,"Set");
 		gui.getButton().addActionListener(this);
 		this.l=l;
 		this.i=i;
 		this.v=v;
 		this.singleChar=singleChar;
+		this.overWrite=overWrite;
 	}
 	/**
 	 * Will remove the first char from the input string and append it to the output string. 
@@ -95,7 +111,9 @@ public class Set implements ActionListener{
 					String ch = val.substring(0, 1);
 					v.setValue(val.substring(1));
 					String tarVal = ((Variable) l).getValue();
-					tarVal += ch;
+					if(overWrite)tarVal += ch;
+					else tarVal = ch;
+					
 					((Variable) l).setValue(tarVal);
 					}
 				}
@@ -115,6 +133,7 @@ public class Set implements ActionListener{
 
 				try{
 					int index = Integer.parseInt(i.getValue());
+					if(index==0) return;
 					String s = v.getValue();
 					if(s!=null)
 						((LinkedList)l).setValueAt(index,s);
