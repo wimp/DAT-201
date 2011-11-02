@@ -71,6 +71,9 @@ public class GuiArray extends GuiElement implements ActionListener{
 
 		@Override
 		public void paintComponent(Graphics g){
+			if(!GuiSettings.isAnimated && animation.isRunning()){
+				stopAnimation();
+			}
 			int elementH = GuiSettings.ARRAYELEMENTHEIGHT;
 			int elementW =80;
 			g.clearRect(0, 0, getWidth(), getHeight());

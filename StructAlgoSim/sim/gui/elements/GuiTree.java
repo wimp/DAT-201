@@ -365,6 +365,9 @@ public class GuiTree extends GuiElement implements ActionListener, MouseMotionLi
 		Tree.TreeNode selected;
 		@Override 
 		public void paintComponent(Graphics g){
+			if(!GuiSettings.isAnimated && animation.isRunning())
+				stopAnimation();
+			
 			Graphics2D g2d = (Graphics2D)g;
 			g2d.clearRect(0, 0, getWidth(), getHeight());
 
@@ -438,6 +441,7 @@ public class GuiTree extends GuiElement implements ActionListener, MouseMotionLi
 		}
 		else if(changed!=null)changed.setAdded(false);
 
+		if(isheap) ((Heap)tree).heapify();
 		changed = null;
 		pathToChanged = null;
 		frame = 0;

@@ -233,10 +233,23 @@ public class Tree {
 			newnode.addChild(element);
 		}
 		setIndices();
+		newnode.setAdded(true);
 		gui.setChanged(newnode);
+
+
+		Vector<TreeNode> changePath = new Vector<TreeNode>();
+		changePath = getAllNodes(new Vector<TreeNode>(), root);
+
+		for(int i = 0; i<changePath.size(); i++){
+			if(changePath.get(i).getCurrentIndex()>index){
+				changePath.remove(i);
+				i--;
+			}
+		}
+		gui.setPathToChanged(changePath);
 		gui.startAnimation();
 		gui.repaint();
-	}
+		}
 
 	// GET METHODS
 	private int currentIndex = 0;

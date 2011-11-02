@@ -454,6 +454,9 @@ public class GuiList extends GuiElement implements ActionListener, ItemListener 
 
 		@Override
 		public void paintComponent(Graphics g) {
+			if(!GuiSettings.isAnimated && animation.isRunning()){
+				stopAnimation();
+			}
 			Graphics2D g2d = (Graphics2D) g;
 			g2d.clearRect(0, 0, getWidth(), getHeight());
 			setPreferredSize(new Dimension(drawNodeWidth * (data.size() + 1)
