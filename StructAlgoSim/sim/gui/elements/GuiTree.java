@@ -75,7 +75,7 @@ public class GuiTree extends GuiElement implements ActionListener, MouseMotionLi
 	JRadioButton num;
 	JRadioButton strlen;
 
-	public GuiTree(Rectangle bounds,Heap heap, boolean animated){
+	public GuiTree(Rectangle bounds,Heap heap){
 		super();
 		isheap = true;
 		
@@ -86,7 +86,7 @@ public class GuiTree extends GuiElement implements ActionListener, MouseMotionLi
 		setBounds(bounds);			
 		initHeapGraphics();
 	}
-	public GuiTree(Rectangle bounds,Tree tree, boolean animated){
+	public GuiTree(Rectangle bounds,Tree tree){
 		super();
 		isheap = false;
 		

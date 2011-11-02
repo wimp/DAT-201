@@ -234,7 +234,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 		case TREE:
 			bounds.width	= bounds.width < 500 ? 500 : bounds.width;
 			bounds.height	= bounds.height < 250 ? 250 : bounds.height;
-			Tree treeElement = new Tree(bounds,false);
+			Tree treeElement = new Tree(bounds);
 			elements.add(treeElement);
 			index = elements.lastIndexOf(treeElement);
 			guiElements.add(index,treeElement.getGuiElement());
