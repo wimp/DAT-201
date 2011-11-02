@@ -33,7 +33,7 @@ public class StructAlgoSim {
 		//EditorInfo info = new EditorInfo();
 		//frame.add(info);
 		Queue q=new Queue(new Rectangle(300,100,300,100));
-		Tree t=new Tree(new Rectangle(100,100, 400, 400), false);
+		Tree t=new Tree(new Rectangle(100,100, 400, 400));
 		LinkedList l=new LinkedList(new Rectangle(100, 400, 300, 200));
 		Variable v=new Variable(new Rectangle(100, 10, 100, 25), "value", true);
 		Variable in=new Variable(new Rectangle(100, 35, 100, 25), "index", true);

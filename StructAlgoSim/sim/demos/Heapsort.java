@@ -6,6 +6,7 @@ import javax.swing.JFrame;
 
 import sim.functions.Add;
 import sim.functions.Remove;
+import sim.gui.elements.GuiSettings;
 import sim.structures.Heap;
 import sim.structures.Heap.CompareKey;
 import sim.structures.InfoPanel;
@@ -21,6 +22,7 @@ public class Heapsort {
 	}
 
 	public Heapsort(){
+		GuiSettings.isAnimated = false;
 		//Use DemoFrame instead of JFrame
 		DemoFrame frame = new DemoFrame("Heapsort");
 
@@ -58,7 +60,7 @@ public class Heapsort {
 		Remove r = new Remove(new Rectangle(220, 275, 100,25), h, v, i);
 		Queue q = new Queue(new Rectangle(20, 340, 350, 175));	
 		Add p = new Add(new Rectangle(100, 275, 100,25), q,v);
-
+		
 		String info = 
 				"This is a demonstration of the heapsort algorithm." +
 						"It uses a heap which is built as either a max or a min-heap. " +
