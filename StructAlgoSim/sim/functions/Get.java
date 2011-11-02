@@ -116,14 +116,12 @@ public class Get implements ActionListener{
 	 * @param bounds
 	 * @param l - Source {@link Variable}
 	 * @param o - Target {@link Variable}
-	 * @param i - Index {@link Variable}
 	 * @param singleChar
 	 */
-	public Get(Rectangle bounds, Variable l,Variable o, Variable i, boolean singleChar, boolean overWrite) {
+	public Get(Rectangle bounds, Variable l,Variable o, boolean singleChar, boolean overWrite) {
 		gui = new GuiFunction(bounds,"Get");
 		gui.getButton().addActionListener(this);
 		this.source=l;
-		this.i=i;
 		this.target=o;
 		this.singleChar=singleChar;
 		this.overWrite = overWrite;

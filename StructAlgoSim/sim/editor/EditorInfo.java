@@ -327,23 +327,23 @@ public class EditorInfo extends JPanel{
 				text.setText(t);
 				break;
 			case GET:
-				Get get = new Get(new Rectangle(50,50,80,30), false, false);
+				Get get = new Get(new Rectangle(50,50,80,30));
 				get.getGuiElement().setPreferredSize(new Dimension(100, 30));
 				demoPanel.setLayout(new FlowLayout());
 				demoPanel.add(get.getGuiElement());
 				t = 
 						"Function information:\n" +
-						"Gets a value a given index in a structure or from an input variable. " +
-						"Can get either a single char at a time (if getting from a variable) or the whole value" +
+						"Gets a value at a given index in a structure or from an input variable. " +
+						"Can get either a single char at a time (if getting from a variable) or the whole value." +
 						"\n" +
 						"\n" +
 						"Editor use:\n" +
 						"Place at desired position and link with a variable. Select whether this should be an input or output variable. " +
-						"If input select whether it should get a single char at a time or the while value. " +
-						"to be able to select whether that variable should be" +
+						"If input select whether it should get a single char at a time or the whole value. " +
+						"Link with another variable" +
 						"the index at which to add the value, or if it should be the output. If Add is only linked to a value-" +
 						"variable it attempts to add the value given at the end or beginning of the structure it is linked with. Can be linked" +
-						"with: Queue, Linked List, Tree, Heap or Variable."
+						"with: Array, Linked List, Tree, Heap or Variable."
 						;
 				text.setText(t);
 				break;
@@ -354,14 +354,19 @@ public class EditorInfo extends JPanel{
 				demoPanel.add(set.getGuiElement());
 				t = 
 						"Function information:\n" +
-						"Add adds an element to a given index or at the default end- or starting point of a structure.\n" +
-						"\n" +
-						"Editor use:\n" +
-						"Place at desired position and link with a variable to be able to select whether that variable should be" +
-						"the index at which to add the value, or if it should be the value to add. If Add is only linked to a value-" +
-						"variable it attempts to add the value given at the end or beginning of the structure it is linked with. Can be linked" +
-						"with: Queue, Linked List, Tree, Heap or Variable."
-						;
+								"Sets a value at a given index in a structure or in an output variable. " +
+								"Can set either a single char at a time (if setting in a variable) or the whole value" +
+								"\n" +
+								"\n" +
+								"Editor use:\n" +
+								"Place at desired position and link with a variable. Select whether this should be an " +
+								"input or output variable. If input select whether it should set a single char at a time " +
+								"or the whole value. To be able to select whether that variable should be" +
+								"the index at which to set the value, or if it should be the output. If Add is only" +
+								" linked to a value-variable it attempts to add the value given at the end or beginning of the " +
+								"structure it is linked with. Can be linked" +
+								"with: Array, Linked List, Tree, Heap or Variable."
+								;
 				text.setText(t);
 				break;
 			}
