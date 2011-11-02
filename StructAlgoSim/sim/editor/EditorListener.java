@@ -1438,6 +1438,10 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 			boolean animated = ((JCheckBoxMenuItem) e.getSource()).isSelected();
 			GuiSettings.isAnimated = animated;
 			break;
+		case 27:
+			// TEXT PANEL //
+			type = ElementType.TEXT;
+			break;
 		}
 		gui.editorPanel.revalidate();
 		gui.repaint();
