@@ -22,6 +22,12 @@ public class InfoPanel {
 	public InfoPanel(Rectangle bounds){
 		gui = new GuiInfo(bounds, "");
 	}
+	public String getValue(){
+		return gui.getTextArea().getText();
+	}
+	public void setValue(String value){
+		gui.getTextArea().setText(value);
+	}
 	public InfoPanel(Rectangle bounds, String text, boolean editable){
 		gui = new GuiInfo(bounds, text);
 		gui.getTextArea().setEditable(editable);

@@ -51,10 +51,21 @@ public class Tree {
 	public int getMaxDepth() {
 		return findMaxDepth(root, 0);
 	}
+	/**
+	 * The height of a node is the number of direct descendants.
+	 * @param The node from which the height will be calculated
+	 * 
+	 * @return The height of the specified node.
+	 */
 	public int getHeight(TreeNode t){
 		if(t==null) return 0;
 		return findMaxDepth(t, 0)-t.getDepth();
 	}
+	/**
+	 * Clustersize is the .
+	 * 
+	 * @return The height of the specified node.
+	 */
 	public int getMaxCluster() {
 		return maxCluster;
 	}
