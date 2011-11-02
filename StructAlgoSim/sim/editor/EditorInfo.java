@@ -327,7 +327,7 @@ public class EditorInfo extends JPanel{
 				text.setText(t);
 				break;
 			case GET:
-				Get get = new Get(new Rectangle(50,50,80,30), false);
+				Get get = new Get(new Rectangle(50,50,80,30), false, false);
 				get.getGuiElement().setPreferredSize(new Dimension(100, 30));
 				demoPanel.setLayout(new FlowLayout());
 				demoPanel.add(get.getGuiElement());
@@ -348,7 +348,7 @@ public class EditorInfo extends JPanel{
 				text.setText(t);
 				break;
 			case SET:
-				Set set = new Set(new Rectangle(50,50,80,30), false);
+				Set set = new Set(new Rectangle(50,50,80,30), false, false);
 				set.getGuiElement().setPreferredSize(new Dimension(100, 30));
 				demoPanel.setLayout(new FlowLayout());
 				demoPanel.add(set.getGuiElement());

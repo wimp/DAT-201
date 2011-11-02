@@ -55,19 +55,12 @@ public class Set implements ActionListener{
 	public void setSingleChar(boolean singleChar) {
 		this.singleChar = singleChar;
 	}
-	public void setSingleChar(boolean singleChar, boolean overWrite){
-		this.singleChar = singleChar;
-		this.overWrite=overWrite;
-	}
-
-	public Set(Rectangle bounds, boolean singleChar, boolean overWrite){
+	public Set(Rectangle bounds){
 		//TODO add direction here
 		gui = new GuiFunction(bounds,"Set");
 		gui.getButton().addActionListener(this);
 		this.v = null;
 		this.l = null;
-		this.singleChar=singleChar;
-		this.overWrite=overWrite;
 	}
 	/**
 	 * Constructor.
@@ -111,7 +104,7 @@ public class Set implements ActionListener{
 					String ch = val.substring(0, 1);
 					v.setValue(val.substring(1));
 					String tarVal = ((Variable) l).getValue();
-					if(overWrite)tarVal += ch;
+					if(!overWrite)tarVal += ch;
 					else tarVal = ch;
 					
 					((Variable) l).setValue(tarVal);

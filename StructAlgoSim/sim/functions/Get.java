@@ -96,23 +96,20 @@ public class Get implements ActionListener{
 	 * Sets whether or not the get should retrieve a single character or not
 	 * @param singleChar
 	 */
-	public void setSingleChar(boolean singleChar, boolean overWrite){
+	public void setSingleChar(){
 		this.singleChar = singleChar;
-		this.overWrite = overWrite;
 	}
 	/**
 	 * Constructor
 	 * @param bounds
 	 * @param singleChar - Controls if the Get should retrieve only one character or all.
 	 */
-	public Get(Rectangle bounds, boolean singleChar, boolean overWrite){
+	public Get(Rectangle bounds){
 
 		gui = new GuiFunction(bounds,"Get");
 		gui.getButton().addActionListener(this);
 		this.target = null;
 		this.source = null;
-		this.singleChar=singleChar;
-		this.overWrite = overWrite;
 	}
 	/**
 	 * Constructor
@@ -196,7 +193,7 @@ public class Get implements ActionListener{
 						((Variable)source).setValue(val.substring(1));
 						String tarVal = ((Variable) target).getValue();
 						
-						if(overWrite)tarVal += ch;
+						if(!overWrite)tarVal += ch;
 						else tarVal = ch;
 						
 						((Variable) target).setValue(tarVal);
