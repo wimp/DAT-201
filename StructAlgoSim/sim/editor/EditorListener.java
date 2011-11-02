@@ -95,7 +95,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 	 * Adds a JComponent to the active instance of EditorGui's editor panel.
 	 * @param element
 	 */
-	private void addElementAtPosition(JComponent element){
+	void addElementAtPosition(JComponent element){
 		if(element!=null)
 			gui.editorPanel.add(element);
 	}
@@ -107,7 +107,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 	 * @param bounds
 	 * @return The graphical component of the type given.
 	 */
-	private JComponent getComponentFromEnum(ElementType type, Rectangle bounds) {
+	JComponent getComponentFromEnum(ElementType type, Rectangle bounds) {
 		int index;
 		switch(type){
 		case ADD:

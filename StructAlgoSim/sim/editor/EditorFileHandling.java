@@ -1,5 +1,6 @@
 package sim.editor;
 
+import java.awt.Rectangle;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -7,6 +8,9 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.Vector;
 
+import javax.swing.JComponent;
+
+import sim.editor.EditorListener.ElementType;
 import sim.functions.*;
 import sim.gui.elements.*;
 import sim.structures.*;
@@ -77,14 +81,75 @@ class EditorFileHandling {
 		}
 	}
 	
-	public static Vector<Object> loadFile(File loadFile){
+	public static Vector<Object> loadFile(File loadFile, EditorListener el){
+		Object[] returnVal	 = new Object[2];
+		Vector<Object> ev	 = new Vector<Object>();
+		Vector<GuiElement>gv = new Vector<GuiElement>();
+		int numLines 	 	 = getNumberOfLines(loadFile);
+		int[][] links	 	 = new int[numLines][4];
+		
 		try{
 			FileReader fr 	 = new FileReader(loadFile);
 			BufferedReader r = new BufferedReader(fr);
-			int numLines 	 = getNumberOfLines(loadFile);
-			while(r.readLine() != null)
-				numLines++;
-			r.close();
+			String line		 = r.readLine();
+		
+			// Main loop for looping through the lines in the file
+			while(line != null){
+				String[] loadString = line.split(MAIN_SEPARATOR);
+				//Loop to traverse the main sections of every line in the file
+				for(int i = 0; i < loadString.length; i++){
+					int id;
+					Rectangle bounds = null;
+					String[] boundsSection;
+					switch(i){
+					case 0:
+						// Get the id of the item
+						id = Integer.parseInt(loadString[i]);
+						break;
+					case 1:
+						// Get the bounds
+						boundsSection = loadString[i].split(SUB_SEPARATOR);
+						bounds = new Rectangle(
+								Integer.parseInt(boundsSection[0]),
+								Integer.parseInt(boundsSection[1]),
+								Integer.parseInt(boundsSection[2]),
+								Integer.parseInt(boundsSection[3])
+								);
+						break;
+					case 2:
+						// Get class name and set object
+						String name = loadString[i];
+						if(name.equals("LinkedList")){
+							JComponent c = el.getComponentFromEnum(ElementType.LIST,bounds);
+							el.addElementAtPosition(c);
+						}else if(name.equals("Queue")){
+							JComponent c = el.getComponentFromEnum(ElementType.QUEUE,bounds);
+							el.addElementAtPosition(c);
+						}else if(name.equals("Stack")){
+							JComponent c = el.getComponentFromEnum(ElementType.STACK,bounds);
+							el.addElementAtPosition(c);
+						}else if(name.equals("Array")){
+							JComponent c = el.getComponentFromEnum(ElementType.ARRAY,bounds);
+							el.addElementAtPosition(c);
+						}else if(name.equals("Heap")){
+							JComponent c = el.getComponentFromEnum(ElementType.HEAP,bounds);
+							el.addElementAtPosition(c);
+						}else if(name.equals("Tree")){
+							JComponent c = el.getComponentFromEnum(ElementType.TREE,bounds);
+							el.addElementAtPosition(c);
+						}else if(name.equals("Variable")){
+							JComponent c = el.getComponentFromEnum(ElementType.VARIABLE,bounds);
+							el.addElementAtPosition(c);
+						}else if(name.equals("InfoPanel")){
+							JComponent c = el.getComponentFromEnum(ElementType.TEXT,bounds);
+							el.addElementAtPosition(c);
+						}
+						break;
+					case 3:
+						break;
+					}
+				}//End of main sections loop
+			}// End of main loop
 		}catch(Exception e){
 			e.printStackTrace();
 		}
@@ -175,7 +240,7 @@ class EditorFileHandling {
 				numLines++;
 			r.close();
 		}catch(Exception e){
-			
+			numLines = 0;
 		}
 		return numLines;
 	}
