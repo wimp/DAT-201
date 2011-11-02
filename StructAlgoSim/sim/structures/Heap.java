@@ -43,7 +43,8 @@ public class Heap extends Tree{
 	public Heap(Rectangle bounds) {
 		super();
 		setMaxCluster(2);
-		setGuiElement(new GuiTree(bounds, this));
+		
+		gui =new GuiTree(bounds, this);
 	}
 	/**
 	 * Use to remove the root.	
