@@ -40,10 +40,10 @@ public class Heap extends Tree{
 	 * @param bounds The size of the graphical element.
 	 * @param animated Determines whether insertion and deletion will be animated.
 	 */
-	public Heap(Rectangle bounds, boolean animated) {
+	public Heap(Rectangle bounds) {
 		super();
 		setMaxCluster(2);
-		setGuiElement(new GuiTree(bounds, this, animated));
+		setGuiElement(new GuiTree(bounds, this));
 	}
 	/**
 	 * Use to remove the root.	

@@ -242,7 +242,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 		case HEAP:
 			bounds.width	= bounds.width < 400 ? 400 : bounds.width;
 			bounds.height	= bounds.height < 400 ? 400 : bounds.height;
-			Heap heapElement = new Heap(bounds,true);
+			Heap heapElement = new Heap(bounds);
 			elements.add(heapElement);
 			index = elements.lastIndexOf(heapElement);
 			guiElements.add(index,heapElement.getGuiElement());

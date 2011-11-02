@@ -73,7 +73,7 @@ public class Tree {
 	 */
 	public Tree(Rectangle bounds){
 		root = null;	
-		gui = new GuiTree(bounds);
+		gui = new GuiTree(bounds, this);
 	}
 	protected Tree(){
 		root = null;	
