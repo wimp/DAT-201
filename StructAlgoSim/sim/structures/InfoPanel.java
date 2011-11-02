@@ -35,7 +35,7 @@ public class InfoPanel {
 			gui.getTextArea().setEditable(editable);
 	}
 	/**
-	 * Gets wheter or not the textarea is editable or not
+	 * Gets whether or not the textarea is editable or not
 	 * @return Editable boolean
 	 */
 	public boolean getEditable(){
