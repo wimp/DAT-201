@@ -5,9 +5,15 @@ import java.util.Vector;
 
 import sim.gui.elements.GuiTree;
 
-
+/**
+ * An implementation of a tree structure. Its graphical element is the GuiTree.
+ */
 public class Tree {
 
+	/**
+	 * The Traversal enum is used to specify which traversal-rule to use
+	 * on this tree when accessing elements.
+	 */
 	public enum Traversal{
 		PREORDER,
 		INORDER,
@@ -21,13 +27,27 @@ public class Tree {
 	private Traversal traversal = Traversal.INORDER;
 
 	//GETTERS AND SETTERS
+	/**
+	 * The Traversal enum is used to specify which traversal-rule to use
+	 * on this tree when accessing elements.
+	 * @return The current traversal rule.
+	 */
 	public Traversal getTraversal() {
 		return traversal;
 	}
+	/**
+	 * The Traversal enum is used to specify which traversal-rule to use
+	 * on this tree when accessing elements.
+	 * @param The new traversal rule for this tree.
+	 */
 	public void setTraversal(Traversal traversal) {
 		this.traversal = traversal;
 		setIndices();
 	}
+	/**
+	 * The depth of a node is the number of nodes between it and the root.
+	 * @return The maximum depth of any node in the tree.
+	 */
 	public int getMaxDepth() {
 		return findMaxDepth(root, 0);
 	}
