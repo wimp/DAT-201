@@ -27,9 +27,9 @@ public class Array {
 	}
 // Class constructors //
 	/**
-	 * Create a new instance of Array() that is one dimensional with the size of {@link size}
+	 * Create a new instance of Array() that is one dimensional with the size of sizeY
 	 * @param bounds
-	 * @param size
+	 * @param sizeY the number of elements in this one-dimensional array.
 	 */
 	public Array(Rectangle bounds, int sizeY){
 		this(bounds,sizeY,1);
@@ -37,8 +37,8 @@ public class Array {
 	/**
 	 * Create a new instance of Array() that is two dimensional with the first array being of sizeA and the second array being of sizeB
 	 * @param bounds
-	 * @param sizeA
-	 * @param sizeB
+	 * @param sizeY - the number of rows.
+	 * @param sizeX - the number of columns.
 	 */
 	public Array(Rectangle bounds, int sizeY, int sizeX){
 		if(sizeY < MAX_SIZE && sizeX < MAX_SIZE){

@@ -61,7 +61,6 @@ public class InfoPanel {
 	 */
 	public void setValue(String value){
 		gui.getTextArea().setText(value);
-		gui.repaint();
 	}
 	
 	/**

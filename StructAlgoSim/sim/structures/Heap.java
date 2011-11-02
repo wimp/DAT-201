@@ -38,7 +38,6 @@ public class Heap extends Tree{
 	/**
 	 * Constructor.
 	 * @param bounds The size of the graphical element.
-	 * @param animated Determines whether insertion and deletion will be animated.
 	 */
 	public Heap(Rectangle bounds) {
 		super();
@@ -67,7 +66,7 @@ public class Heap extends Tree{
 	}
 	/**
 	 * Use to remove an element and return the value.
-	 * @param int index (by the traversaltype selected) of the element to be removed.
+	 * @param index (by the traversaltype selected) of the element to be removed.
 	 * @return String - the value of the removed item.	
 	 */
 	@Override 

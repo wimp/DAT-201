@@ -15,6 +15,7 @@ import sim.functions.Add;
 import sim.gui.elements.GuiElement;
 import sim.gui.elements.GuiSettings;
 import sim.structures.Array;
+import sim.structures.Heap;
 import sim.structures.LinkedList;
 import sim.structures.Queue;
 import sim.structures.Stack;
@@ -122,6 +123,27 @@ public class EditorInfo extends JPanel{
 				text.setText(t);
 				break;
 			case HEAP:
+				Heap h = new Heap(new Rectangle(0,0,100, 75));
+				h.addBreadthFirst("value 1");
+				h.addBreadthFirst("value 2");
+				h.addBreadthFirst("value 3");
+				
+				add(h.getGuiElement(), BorderLayout.WEST);
+				t = 
+						"Structure information:\n" +
+						"The heap is a special-binary tree that is used when easy access to an item " +
+						"that is an extreme according to a certain sorting key is necessary. " +
+						"Whether this extreme is the minimum or maximum is specified as min-heap or max-heap respectively." +
+						" For instance, if the heap is built as a max-heap according to a numerical sorting key " +
+						"the root will always be the largest number in the heap. This " +
+						"is used by the heapsort algorithm to sort sequences of numbers from largest to smallest."+
+						"\n\n" +
+						"Editor use:\n" +
+						"Place in desired position and use the controls on the element to change how the heap is built. Can be linked with" +
+						"Add, Remove, Insert, Get or Set"
+					;
+				text.setText(t);
+				
 				break;
 			case LINKEDLIST:
 				LinkedList ll = new LinkedList(new Rectangle(0,0,100, 75));

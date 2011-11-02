@@ -63,6 +63,7 @@ public class EditorGui extends JFrame {
 		JMenuItem load 				= new JMenuItem("Load",UIManager.getIcon("FileView.directoryIcon"));
 		JMenuItem newFile 			= new JMenuItem("New", UIManager.getIcon("FileView.fileIcon"));
 		JMenuItem resizeView		= new JMenuItem("Resize View");
+		JCheckBoxMenuItem grid		= new JCheckBoxMenuItem("Enable grid");
 		JCheckBoxMenuItem animated  = new JCheckBoxMenuItem("Animate Structures");
 		
 		animated.setSelected(true);
@@ -70,6 +71,7 @@ public class EditorGui extends JFrame {
 		tools.add(anim);
 		view.add(resizeView);
 		view.add(animated);
+		view.add(grid);
 		fileMenu.add(newFile);
 		fileMenu.add(save);
 		fileMenu.add(load);
@@ -112,7 +114,6 @@ public class EditorGui extends JFrame {
 		JToggleButton tree		= new JToggleButton("Tree");
 		JToggleButton heap		= new JToggleButton("Heap");
 		JToggleButton queue		= new JToggleButton("Queue");
-		JCheckBox grid			= new JCheckBox("Grid");
 		JToggleButton resizeMode= new JToggleButton();
 		JToggleButton moveMode	= new JToggleButton();
 		JToggleButton infoText	= new JToggleButton("Text Area");
@@ -237,10 +238,10 @@ public class EditorGui extends JFrame {
 		eastPanel.setLayout(new GridLayout(11,1));
 		
 		eastPanel.add(new JLabel("Functions:"));
+		eastPanel.add(add);
 		eastPanel.add(remove);
 		eastPanel.add(insert);
 		eastPanel.add(push);
-		eastPanel.add(add);
 		eastPanel.add(pop);
 		eastPanel.add(get);
 		eastPanel.add(set);
@@ -261,9 +262,8 @@ public class EditorGui extends JFrame {
 			leftOnTop.setPreferredSize(new Dimension(250,30));
 			leftOnTop.setLayout(new GridLayout(1,1));
 			
-		JPanel rightOnTop = new JPanel(new GridLayout(1,2));
+		JPanel rightOnTop = new JPanel(new GridLayout(1,1));
 			rightOnTop.setPreferredSize(new Dimension(250,30));
-			rightOnTop.add(grid);
 			
 		topPanel.add(centerOfTop,BorderLayout.CENTER);
 		topPanel.add(leftOnTop,BorderLayout.WEST);

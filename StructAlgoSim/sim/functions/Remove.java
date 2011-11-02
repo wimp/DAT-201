@@ -54,6 +54,14 @@ public class Remove implements ActionListener {
 		this.i= null;
 	}
 	
+
+	public Remove(Rectangle bounds, Queue l, Variable v) {
+		gui = new GuiFunction(bounds,"Remove");
+		gui.getButton().addActionListener(this);
+		this.l = l;
+		this.v = v;
+		this.i = null;
+	}	
 	/**
 	 * The class constructor. Initializes the graphical element - {@link GuiFunction}
 	 * @param bounds 	- The size and placement of the graphical element
@@ -61,13 +69,6 @@ public class Remove implements ActionListener {
 	 * @param v 		- The output variable
 	 * @param i			- The input variable. The index to be removed from the list/array
 	 */
-	public Remove(Rectangle bounds, Queue l, Variable v) {
-		gui = new GuiFunction(bounds,"Remove");
-		gui.getButton().addActionListener(this);
-		this.l = l;
-		this.v = v;
-		this.i = null;
-	}
 	public Remove(Rectangle bounds, LinkedList l, Variable v, Variable i) {
 		gui = new GuiFunction(bounds,"Remove");
 		gui.getButton().addActionListener(this);

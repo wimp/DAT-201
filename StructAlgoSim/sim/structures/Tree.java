@@ -38,7 +38,7 @@ public class Tree {
 	/**
 	 * The Traversal enum is used to specify which traversal-rule to use
 	 * on this tree when accessing elements.
-	 * @param The new traversal rule for this tree.
+	 * @param traversal The new traversal rule for this tree.
 	 */
 	public void setTraversal(Traversal traversal) {
 		this.traversal = traversal;
@@ -70,7 +70,7 @@ public class Tree {
 	}
 	/**
 	 * The height of a node is the number of direct descendants.
-	 * @param The node from which the height will be calculated
+	 * @param  t The node from which the height will be calculated
 	 * 
 	 * @return The height of the specified node.
 	 */
@@ -90,7 +90,7 @@ public class Tree {
 	/**
 	 * Clustersize is the maximum number of children that each node can have.
 	 * 
-	 * @param int - The new maximum number of children.
+	 * @param maxCluster - The new maximum number of children.
 	 */
 	public void setMaxCluster(int maxCluster) {
 		this.maxCluster = maxCluster;
@@ -107,7 +107,7 @@ public class Tree {
 	/**
 	 * The root is the only node without a parent.
 	 * 
-	 * @param The new root of this tree.
+	 * @param root The new root of this tree.
 	 */
 	public void setRoot(TreeNode root) {
 		this.root = root;
@@ -136,7 +136,6 @@ public class Tree {
 	/**
 	 * Constructor.
 	 * @param bounds - the dimensions of the graphical element.
-	 * @param 
 	 */
 	public Tree(Rectangle bounds){
 		root = null;	
@@ -151,7 +150,6 @@ public class Tree {
 	//TREE METHODS
 	/**
 	 * Rebuilds the tree by adding breadth-first.
-	 * @param values The values to build the tree from.
 	 */
 	public void rebuildTree(){
 		if(root == null) return;
@@ -189,8 +187,8 @@ public class Tree {
 	}
 	//ADD AND INSERT METHODS
 	/**
-	 * Swaps the value of two nodes (effectively swapping the elements).
-	 * @param a The value of the new node added.
+	 * Adds a new node to the next node, breadthwise, that has numberOfChildren<maxCluster.
+	 * @param value The value of the new node.
 	 */
 	public void addBreadthFirst(String value){
 		gui.stopAnimation();
@@ -213,6 +211,11 @@ public class Tree {
 		gui.startAnimation();
 		gui.repaint();
 	}
+	/**
+	 * Adds a new node as a child of the node with the index specified.
+	 * @param index The index of the parent of the new object.
+	 * @param value The value of the new node.
+	 */
 	public void addChildAt(int index, Object value){
 		gui.stopAnimation();
 		
@@ -247,6 +250,11 @@ public class Tree {
 		gui.startAnimation();
 		gui.repaint();
 	}
+	/**
+	 * Removes the node with the index specified.
+	 * @param index The index of the node to be removed.
+	 * @return the value of the removed node.
+	 */
 	public String removeAt(int index){
 		gui.stopAnimation();
 		setIndices();
@@ -274,6 +282,15 @@ public class Tree {
 			return element.getValue().toString();
 
 	}
+	/**
+	 * Inserts a new node at the specified index. If the boolean after is set, the node will be added as a child.
+	 * if the node at the index has less than the maximum number of children. If not the node will push the first child down a level
+	 * and place itself as the new child (and therefore parent of the previous child).
+	 * If the boolean after is not set, however, the new node replaces the indexed node and adds it as its child. 
+
+	 * @param index The index of the parent of the new object.
+	 * @param value The value of the new node.
+	 */
 	public void insertAt(int index,Object value, boolean after){
 		gui.stopAnimation();
 		setIndices();
@@ -331,7 +348,15 @@ public class Tree {
 	// GET METHODS
 	private int currentIndex = 0;
 	private TreeNode currentNode = null;
-
+	
+	/**
+	 * Returns a Vector<TreeNode> with all the nodes of this tree in the order found by the current traversal rule. 
+	 * 
+	 * @param nodes An empty vector to be used by the method when traversing. Do not replace this with the desired output vector
+	 * because it will be changed.
+	 * @param n The root of the tree to find the nodes in.
+	 * @return A vector containing all the elements in the tree in the traversal order.
+	 */
 	public Vector<TreeNode> getAllNodes(Vector<TreeNode> nodes, TreeNode n){
 		if(n==null) return null;
 		switch(traversal){
@@ -378,6 +403,12 @@ public class Tree {
 		}
 		return nodes;
 	}
+	/**
+	 * Gets the element at the index specified.
+	 * 
+	 * @param index the index of the node to be accessed, by the current traversal rule.
+	 * @return the TreeNode at the specified index, null if no such index is found.
+	 */
 	public TreeNode elementAt(int index){
 		currentNode = null;
 		currentIndex = 0;
@@ -398,6 +429,11 @@ public class Tree {
 			}
 		return currentNode;
 	}
+	/**
+	 * Sets the class variable currentNode = element at the index specified by the breadthFirst traversal rule .
+	 * 
+	 * @param index the index of the node to be accessed, by the current traversal rule.
+	 */
 	private void breadthFirstElementAt(int index){
 		if(getRoot()==null) return;
 		currentNode = getRoot();
@@ -420,6 +456,12 @@ public class Tree {
 		if(index <added.size())
 		currentNode = added.elementAt(index);
 	}
+	/**
+	 * Sets the class variable currentNode = element at the index specified by the inOrder traversal rule.
+	 * 
+	 * @param n the node to start traversing from.
+	 * @param index the index of the node to be accessed, by the breadthFirst rule.
+	 */
 	private void inOrderElementAt(TreeNode n, int index){
 		if(n.getNumberOfChildren()>0)
 			inOrderElementAt(n.getChild(0), index);		
@@ -429,6 +471,12 @@ public class Tree {
 		if(n.getNumberOfChildren()>1)
 			inOrderElementAt(n.getChild(1), index);
 	}
+	/**
+	 * Sets the class variable currentNode = element at the index specified by the preOrder traversal rule.
+	 * 
+	 * @param n the node to start traversing from.
+	 * @param index the index of the node to be accessed, by preOrder rule.
+	 */
 	private void preOrderElementAt(TreeNode n, int index){
 
 		if(index == currentIndex) currentNode = n;
@@ -440,6 +488,12 @@ public class Tree {
 				}
 		}
 	}
+	/**
+	 * Sets the class variable currentNode = element at the index specified by the postOrder traversal rule.
+	 * 
+	 * @param n the node to start traversing from.
+	 * @param index the index of the node to be accessed, by the postOrder rule.
+	 */
 	private void postOrderElementAt(TreeNode n, int index){
 
 		for(TreeNode ch : n.getChildren()){
@@ -449,6 +503,9 @@ public class Tree {
 		if(index == currentIndex) currentNode = n;
 		currentIndex++;
 	}
+	/**
+	 * A class representing a node in a tree.
+	 */
 	public class TreeNode{
 		private TreeNode parent;		
 		private Vector<TreeNode> children;

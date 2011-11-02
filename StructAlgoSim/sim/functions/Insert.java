@@ -15,7 +15,6 @@ import sim.structures.Variable;
 
 /**
  * Add - Instances of this class is used with structures such as linked-list or array to add an element to the end. (LIFO)
- * @author 
  */
 public class Insert implements ActionListener {
 	// Class variables //
@@ -62,11 +61,7 @@ public class Insert implements ActionListener {
 	}
 	/**
 	 * The class constructor. Initializes the graphical element - {@link GuiFunction}
-	 * @param bounds 			- The size and placement of the graphical element
-	 * @param l 				- The structure on which to perform the add()-action
-	 * @param v 				- The output variable
-	 * @param i					- The input variable (The index of array element that is to be "added before")
-	 * @param insertAfterElement- Whether the element at i should be added after (true) or before (false).
+	 *
 	 */
 	public Insert(Rectangle bounds, LinkedList l, Variable v, Variable i, boolean insertAfterElement) {
 		this.l = l;

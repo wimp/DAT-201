@@ -59,11 +59,6 @@ public class Get implements ActionListener{
 	}
 	/**
 	 * Constructor.
-	 * 
-	 * @param bounds = the dimensions of the graphical element
-	 * @param dir = direction of arrow
-	 * @param input = input var
-	 * @param output = output var
 	 */
 	public Get(Rectangle bounds, Variable l,Variable o, Variable i, boolean singleChar) {
 		gui = new GuiFunction(bounds,"Get");

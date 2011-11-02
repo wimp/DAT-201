@@ -28,9 +28,17 @@ public class Variable {
 	public GuiElement getGuiElement() {
 		return gui;
 	}
+	/**
+	 * Sets the value of this variable to the one provided.
+	 * @param value the new value of this variable.
+	 */
 	public void setValue(String value){
 		gui.setValue(value);
 	}
+	/**
+	 * Gets the current value of this variable.
+	 * @return value the value of this variable.
+	 */
 	public String getValue(){
 		return gui.getValue();
 	}

@@ -1058,7 +1058,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 			gui.eInfo.setInfoType(InfoType.QUEUE);
 			break;
 		case 16:
-			gui.editorPanel.grid = ((JCheckBox) e.getSource()).isSelected() ? true : false;
+			gui.editorPanel.grid = ((JCheckBoxMenuItem) e.getSource()).isSelected() ? true : false;
 			gui.editorPanel.repaint();
 			panel.repaint();
 			gui.validate();
@@ -1069,6 +1069,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 			break;
 		case 18:
 			// SAVE
+			
 			JFileChooser fc = new JFileChooser();
 			FileNameExtensionFilter filter = new FileNameExtensionFilter("AlgoSim files", "ags");
 			fc.setFileFilter(filter);
@@ -1140,13 +1141,14 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 							String iv = Integer.toString(elements.indexOf(((Get) element).getIndexVariable()));
 							String oc = Integer.toString(elements.indexOf(((Get) element).getSingleChar()));
 
-							out.write(t+":"+sv+":"+iv);
+							out.write(t+":"+sv+":"+iv+":"+oc);
 						}else if(element instanceof Set){
-							String t = Integer.toString(elements.indexOf(((Set) element).getTarget()));
+							String t  = Integer.toString(elements.indexOf(((Set) element).getTarget()));
 							String sv = Integer.toString(elements.indexOf(((Set) element).getSourceVariable()));
 							String iv = Integer.toString(elements.indexOf(((Set) element).getIndexVariable()));
+							String oc = Integer.toString(elements.indexOf(((Set) element).getSingleChar()));
 
-							out.write(t+":"+sv+":"+iv);
+							out.write(t+":"+sv+":"+iv+":"+oc);
 						}else if(element instanceof InfoPanel){
 							String val = ((InfoPanel) element).getValue();
 							out.write(val);
@@ -1267,7 +1269,15 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 								for(int j = 0; j < attributes.length;j++){
 									if(attributes[j].equals("null"))
 										attributes[j] = "-1";
-									link[currentLine][j] = Integer.parseInt(attributes[j]);
+									
+									if(j != 4)
+										link[currentLine][j] = Integer.parseInt(attributes[j]);
+									
+									if(j == 4 && s[2].equals("Get"))
+										((Get) elements.get(id)).setSingleChar(attributes[j].equals("1") ? true : false);
+									
+									if(j == 4 && s[2].equals("Set"))
+										((Set) elements.get(id)).setSingleChar(attributes[j].equals("1") ? true : false);
 								}
 								break;
 							}
