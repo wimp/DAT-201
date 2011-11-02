@@ -4,11 +4,12 @@ import java.awt.Rectangle;
 import java.util.Vector;
 
 import sim.gui.elements.GuiTree;
+import sim.gui.elements.GuiElement.GraphicalStructure;
 
 /**
  * An implementation of a tree structure. Its graphical element is the GuiTree.
  */
-public class Tree {
+public class Tree implements GraphicalStructure {
 
 	/**
 	 * The Traversal enum is used to specify which traversal-rule to use
