@@ -261,10 +261,6 @@ public class EditorGui extends JFrame {
 			leftOnTop.setPreferredSize(new Dimension(250,30));
 			leftOnTop.setLayout(new GridLayout(1,1));
 			
-//			leftOnTop.add(width);
-//			leftOnTop.add(height);
-//			leftOnTop.add(resize);
-			
 		JPanel rightOnTop = new JPanel(new GridLayout(1,2));
 			rightOnTop.setPreferredSize(new Dimension(250,30));
 			rightOnTop.add(grid);
@@ -285,7 +281,6 @@ public class EditorGui extends JFrame {
 		add(topPanel,BorderLayout.NORTH);
 		add(bottomPanel,BorderLayout.SOUTH);
 		add(scroll,BorderLayout.CENTER);
-//		add(editorPanel,BorderLayout.CENTER);
 		
 		eInfo.setBackground(Color.green);
 		eInfo.setPreferredSize(new Dimension(700,200));
@@ -311,6 +306,7 @@ public class EditorGui extends JFrame {
 			}
 			
 			g2d.setColor(Color.black);
+			
 			
 			for(int i = 0;i<el.linkys.size();i++){
 				Link l = el.linkys.get(i);

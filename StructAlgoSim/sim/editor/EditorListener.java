@@ -66,8 +66,8 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 	// Class variables //
 	protected 	ElementType 		type = ElementType.NONE;
 	private 	EditorGui 			gui;
-	private 	Vector<Object> 		elements = new Vector<Object>();
-	private 	Vector<GuiElement> 	guiElements = new Vector<GuiElement>();
+	Vector<Object> 		elements = new Vector<Object>();
+	Vector<GuiElement> 	guiElements = new Vector<GuiElement>();
 	private 	Object 				startElement;
 	private 	Object 				endElement;
 	protected 	GlassPanel 			panel = new GlassPanel();
@@ -970,7 +970,6 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 		}
 	}
 
-	@SuppressWarnings("unused")
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		gui.editorPanel.remove(panel);
@@ -1136,9 +1135,10 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 						}else if(element instanceof Heap){
 							out.write("null");
 						}else if(element instanceof Get){
-							String t = Integer.toString(elements.indexOf(((Get) element).getTarget()));
+							String t  = Integer.toString(elements.indexOf(((Get) element).getTarget()));
 							String sv = Integer.toString(elements.indexOf(((Get) element).getSource()));
 							String iv = Integer.toString(elements.indexOf(((Get) element).getIndexVariable()));
+							String oc = Integer.toString(elements.indexOf(((Get) element).getSingleChar()));
 
 							out.write(t+":"+sv+":"+iv);
 						}else if(element instanceof Set){
@@ -1147,6 +1147,9 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 							String iv = Integer.toString(elements.indexOf(((Set) element).getIndexVariable()));
 
 							out.write(t+":"+sv+":"+iv);
+						}else if(element instanceof InfoPanel){
+							String val = ((InfoPanel) element).getValue();
+							out.write(val);
 						}
 						out.flush();
 
@@ -1248,12 +1251,19 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 								}else if(s[i].equals("Set")){
 									JComponent c = getComponentFromEnum(ElementType.SET, bounds);
 									addElementAtPosition(c);
+								}else if(s[i].equals("InfoPanel")){
+									JComponent c = getComponentFromEnum(ElementType.TEXT, bounds);
+									addElementAtPosition(c);
 								}
 
 								break;
 							case 3:
 								// Attributes
 								String[] attributes = s[i].split(":");
+								if(s[2].equals("InfoPanel")){
+									((InfoPanel) elements.get(id)).setValue(attributes[0]);
+									break;
+								}
 								for(int j = 0; j < attributes.length;j++){
 									if(attributes[j].equals("null"))
 										attributes[j] = "-1";
@@ -1274,7 +1284,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 						li.fromGui = guiElements.get(i);
 						for(int j = 0;j < link[i].length;j++){
 
-							if(link[i][j] != -1){
+							if(link[i][j] != -1 && !(element instanceof InfoPanel)){
 								if(!elements.get(link[i][j]).equals(element) && checkCompatibility(element,elements.get(link[i][j])) && !(element instanceof Variable)){
 									li.to = elements.get(link[i][j]);
 									li.toGui = guiElements.get(link[i][j]);
