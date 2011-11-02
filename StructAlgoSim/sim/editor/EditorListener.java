@@ -19,14 +19,11 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.util.Vector;
 
 import javax.swing.ButtonGroup;
-import javax.swing.JCheckBox;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
@@ -304,7 +301,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 	 * @param element2
 	 * @return Returns true if the two items can be linked
 	 */
-	private boolean checkCompatibility(Object element1, Object element2){
+	boolean checkCompatibility(Object element1, Object element2){
 
 		if(element1 instanceof Add){
 			if(element2 instanceof Variable){
@@ -1438,7 +1435,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 	 * Instances of this class are added to the internal class variable {@link linkys} which is used for the drawing of links in the {@link EditorPanel}.
 	 *
 	 */
-	class Link{
+	public class Link{
 		protected GuiElement 	fromGui;
 		protected GuiElement 	toGui;
 		protected Object	 	from;

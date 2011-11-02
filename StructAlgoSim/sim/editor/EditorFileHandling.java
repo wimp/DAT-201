@@ -11,6 +11,7 @@ import java.util.Vector;
 import javax.swing.JComponent;
 
 import sim.editor.EditorListener.ElementType;
+import sim.editor.EditorListener.Link;
 import sim.functions.*;
 import sim.gui.elements.*;
 import sim.structures.*;
@@ -81,10 +82,7 @@ class EditorFileHandling {
 		}
 	}
 	
-	public static Vector<Object> loadFile(File loadFile, EditorListener el){
-		Object[] returnVal	 = new Object[2];
-		Vector<Object> ev	 = new Vector<Object>();
-		Vector<GuiElement>gv = new Vector<GuiElement>();
+	public static void loadFile(File loadFile, EditorListener el){
 		int numLines 	 	 = getNumberOfLines(loadFile);
 		int[][] links	 	 = new int[numLines][4];
 		
@@ -96,6 +94,7 @@ class EditorFileHandling {
 			// Main loop for looping through the lines in the file
 			while(line != null){
 				String[] loadString = line.split(MAIN_SEPARATOR);
+				String[][] attributes = new String[4][2];
 				//Loop to traverse the main sections of every line in the file
 				for(int i = 0; i < loadString.length; i++){
 					int id;
@@ -143,17 +142,75 @@ class EditorFileHandling {
 						}else if(name.equals("InfoPanel")){
 							JComponent c = el.getComponentFromEnum(ElementType.TEXT,bounds);
 							el.addElementAtPosition(c);
+						}else if(name.equals("Remove")){
+							JComponent c = el.getComponentFromEnum(ElementType.REMOVE,bounds);
+							el.addElementAtPosition(c);
+						}else if(name.equals("Insert")){
+							JComponent c = el.getComponentFromEnum(ElementType.INSERT,bounds);
+							el.addElementAtPosition(c);
+						}else if(name.equals("Push")){
+							JComponent c = el.getComponentFromEnum(ElementType.PUSH,bounds);
+							el.addElementAtPosition(c);
+						}else if(name.equals("Add")){
+							JComponent c = el.getComponentFromEnum(ElementType.ADD,bounds);
+							el.addElementAtPosition(c);
+						}else if(name.equals("Pop")){
+							JComponent c = el.getComponentFromEnum(ElementType.POP,bounds);
+							el.addElementAtPosition(c);
+						}else if(name.equals("Get")){
+							JComponent c = el.getComponentFromEnum(ElementType.GET,bounds);
+							el.addElementAtPosition(c);
+						}else if(name.equals("Set")){
+							JComponent c = el.getComponentFromEnum(ElementType.SET,bounds);
+							el.addElementAtPosition(c);
 						}
 						break;
 					case 3:
+						// Get the id of the links
+						String[] linkArray = loadString[i].split(SUB_SEPARATOR);
+						for(int j = 0;j < linkArray.length;j++){
+							links[i][j] = Integer.parseInt(linkArray[j]);
+						}
 						break;
-					}
+					case 4:
+						// Get the attributes
+						String[] attrArray = loadString[i].split(SUB_SEPARATOR);
+						String eName = loadString[2];
+						for(int j = 0;j < attrArray.length;j++){
+							if(eName.equals("Variable")){
+								String[] varAttr = attrArray[j].split(ATTR_SEPARATOR);
+								attributes[j][0] = varAttr[0];
+								attributes[j][1] = varAttr[1];
+							}
+						}
+						break;
+					}//End of swtich/case
 				}//End of main sections loop
 			}// End of main loop
+			
+			// Handle the links between the objects //
+			for(int i = 0;i < links.length;i++){
+				Object element = el.elements.get(i);
+				Link li = el.new Link();
+				li.from = element;
+				li.fromGui = el.guiElements.get(i);
+				
+				for(int j = 0;j < links[i].length;j++){
+					if(!el.elements.get(links[i][j]).equals(element) && el.checkCompatibility(element,el.elements.get(links[i][j])) && !(element instanceof Variable)){
+						li.to = el.elements.get(links[i][j]);
+						li.toGui = el.guiElements.get(links[i][j]);
+						li.getDirection();
+						el.linkys.add(li);
+						li = el.new Link();
+						li.from = element;
+						li.fromGui = el.guiElements.get(i);
+					}
+				}
+			}
+			// End of link handling //
 		}catch(Exception e){
 			e.printStackTrace();
 		}
-		return null;
 	}
 	
 	/**
