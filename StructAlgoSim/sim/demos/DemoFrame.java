@@ -19,8 +19,6 @@ import sim.structures.Tree;
 import sim.structures.Variable;
 /**
  * DemoFrame - All programmatical demos should have an instance of DemoFrame instead of JFrame for similar appearance plus easier adding. Using DemoFrame lets you add the element instead of the GuiElement to the frame. Add each element as you would add a JLabel or JButton to a JFrame.
- * @author Rune B. Kalleberg
- *
  */
 public class DemoFrame {
 	JFrame frame;
