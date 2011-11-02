@@ -23,19 +23,13 @@ public class RailwayPostfix {
 
 		Variable infix = new Variable(new Rectangle(500,170,200,50),"a+b*c-e",true);
 		
-		Get getInfix = new Get(new Rectangle(450,170,50,50),true);
-		getInfix.setSource(infix);
-		getInfix.setTarget(si);
+		Get getInfix = new Get(new Rectangle(450,170,50,50)infix,si,true,true);
 		
-		Get getSi = new Get(new Rectangle(335,170,55,50),true);
-		getSi.setSource(si);
-		getSi.setTarget(so);
+		Get getSi = new Get(new Rectangle(335,170,55,50),si,so,true,true);
 		
 		Variable postfix = new Variable(new Rectangle(25,170,200,50),"                               ",true);
 		
-		Get movePostfix = new Get(new Rectangle(225,170,50,50),true);
-		movePostfix.setSource(so);
-		movePostfix.setTarget(postfix);
+		Get movePostfix = new Get(new Rectangle(225,170,50,50),so,postfix,true,false);
 		
 		Pop popSi = new Pop(new Rectangle(405,300,70,25),s, si);
 		Push pushSi = new Push(new Rectangle(405,350,70,25),si, s);
