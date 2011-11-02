@@ -57,7 +57,7 @@ public class DemoFrame {
 		else if(element instanceof Insert)
 			frame.add(((Insert) element).getGuiElement());
 		else if(element instanceof Pop)
-			frame.add(((Push) element).getGuiElement());
+			frame.add(((Pop) element).getGuiElement());
 		else if(element instanceof Push)
 			frame.add(((Push) element).getGuiElement());
 		else if(element instanceof Remove)
