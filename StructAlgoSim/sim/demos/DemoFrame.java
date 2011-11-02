@@ -22,47 +22,51 @@ import sim.structures.Variable;
  * @author Rune B. Kalleberg
  *
  */
-public class DemoFrame extends JFrame {
-
+public class DemoFrame {
+	JFrame frame;
 	DemoFrame(String title){
-
-		setTitle("StructAlgoSim 0.1 - "+title);
-		setSize(800,550);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setLayout(null);
-		setVisible(true);
+		frame = new JFrame();
+		frame.setTitle("StructAlgoSim 0.1 - "+title);
+		frame.setSize(800,550);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setLayout(null);
+		frame.setVisible(true);
 	}
-	
+
 	public void add(Object element){
 		if(element instanceof Array)
-			super.add(((Array) element).getGuiElement());
+			frame.add(((Array) element).getGuiElement());
 		else if(element instanceof Heap)
-			super.add(((Heap) element).getGuiElement());
+			frame.add(((Heap) element).getGuiElement());
 		else if(element instanceof InfoPanel)
-			super.add(((InfoPanel) element).getGuiElement());
+			frame.add(((InfoPanel) element).getGuiElement());
 		else if(element instanceof LinkedList)
-			super.add(((LinkedList) element).getGuiElement());
+			frame.add(((LinkedList) element).getGuiElement());
 		else if(element instanceof Queue)
-			super.add(((Queue) element).getGuiElement());
+			frame.add(((Queue) element).getGuiElement());
 		else if(element instanceof Stack)
-			super.add(((Stack) element).getGuiElement());
+			frame.add(((Stack) element).getGuiElement());
 		else if(element instanceof Tree)
-			super.add(((Tree) element).getGuiElement());
+			frame.add(((Tree) element).getGuiElement());
 		else if(element instanceof Variable)
-			super.add(((Variable) element).getGuiElement());
+			frame.add(((Variable) element).getGuiElement());
 		else if(element instanceof Add)
-			super.add(((Add) element).getGuiElement());
+			frame.add(((Add) element).getGuiElement());
 		else if(element instanceof Get)
-			super.add(((Get) element).getGuiElement());
+			frame.add(((Get) element).getGuiElement());
 		else if(element instanceof Insert)
-			super.add(((Insert) element).getGuiElement());
+			frame.add(((Insert) element).getGuiElement());
 		else if(element instanceof Pop)
-			super.add(((Push) element).getGuiElement());
+			frame.add(((Push) element).getGuiElement());
 		else if(element instanceof Push)
-			super.add(((Push) element).getGuiElement());
+			frame.add(((Push) element).getGuiElement());
 		else if(element instanceof Remove)
-			super.add(((Remove) element).getGuiElement());
+			frame.add(((Remove) element).getGuiElement());
 		else if(element instanceof Set)
-			super.add(((Set) element).getGuiElement());
+			frame.add(((Set) element).getGuiElement());
+	}
+
+	public void validate(){
+		frame.validate();
 	}
 }
