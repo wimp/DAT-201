@@ -1,7 +1,11 @@
 0;31:23:1114:166;LinkedList;null
-1;60:200:150:30;Insert;0:3:2
+1;60:200:150:30;Insert;-1:-1:-1
 2;240:200:80:30;Variable;1
 3;360:200:80:30;Variable;1
-4;360:240:80:30;Variable;1
-5;240:240:80:30;Variable;1
-6;469:200:120:30;Remove;0:3:2
+4;469:200:120:30;Remove;-1:-1:-1
+5;261:229:120:100;InfoPanel;Index
+6;381:229:120:100;InfoPanel;Value
+7;30:258:772:186;InfoPanel;Bubblesort algo:
+
+test man.. ffs!!!
+
