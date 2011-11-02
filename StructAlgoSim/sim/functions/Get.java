@@ -96,7 +96,7 @@ public class Get implements ActionListener{
 	 * Sets whether or not the get should retrieve a single character or not
 	 * @param singleChar
 	 */
-	public void setSingleChar(){
+	public void setSingleChar(boolean singleChar){
 		this.singleChar = singleChar;
 	}
 	/**
