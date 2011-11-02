@@ -30,7 +30,7 @@ import sim.structures.Variable;
  */
 public class DemoFrame {
 	JFrame frame;
-	Graphics g;
+	DemoPanel panel;
 
 	/**
 	 * Constructor
@@ -45,25 +45,28 @@ public class DemoFrame {
 		frame.setVisible(true);
 
 		panel = new DemoPanel();
+		panel.setLayout(null);
+		panel.setSize(800,550);
 		frame.add(panel);
 	}
-	
+
 	class DemoPanel extends JPanel{
 		public void paintComponent(Graphics g){
 			super.paintComponent(g);
 			Graphics2D g2d = (Graphics2D) g;
 			g2d.setColor(Color.gray);
-			
-			System.out.println("Drawing links");
+
+			System.out.println("Drawing links size "+links.size());
 			for(int i = 0; i<links.size();i++){
-				System.out.println("Drawing "+links.get(i).p1.x);
-				g2d.drawLine(links.get(i).p1.x, links.get(i).p1.y, links.get(i).p2.x, links.get(i).p2.y);
-				g2d.drawLine(links.get(i).p2.x, links.get(i).p2.y, links.get(i).p3.x, links.get(i).p3.y);
-				g2d.drawLine(links.get(i).p3.x, links.get(i).p3.y, links.get(i).p4.x, links.get(i).p4.y);
+				System.out.println("Drawing "+i);
+				if(links.get(i) != null && links.get(i).p1 != null){
+					g2d.drawLine(links.get(i).p1.x, links.get(i).p1.y, links.get(i).p2.x, links.get(i).p2.y);
+					g2d.drawLine(links.get(i).p2.x, links.get(i).p2.y, links.get(i).p3.x, links.get(i).p3.y);
+					g2d.drawLine(links.get(i).p3.x, links.get(i).p3.y, links.get(i).p4.x, links.get(i).p4.y);
+				}
 			}
 		}
 	}
-
 	ArrayList<GuiElement> guiElements = new ArrayList<GuiElement>();
 	ArrayList<Object> elements = new ArrayList<Object>();
 
@@ -73,7 +76,7 @@ public class DemoFrame {
 	 * @param element2 
 	 */
 	private void addElement(GuiElement guiElement, Object element){
-//		panel.add(guiElement);
+		panel.add(guiElement);
 		guiElements.add(guiElement);
 		elements.add(element);
 	}
@@ -116,18 +119,18 @@ public class DemoFrame {
 	}
 
 	ArrayList<Link> links = new ArrayList<Link>();
-	private DemoPanel panel;
 
 	/** 
 	 * Creates all the links from the elements added
 	 */
 	private void createLinks(){
+		System.out.println("Creating links");
 		for(int i = 0; i<elements.size();i++){
 			//Determine links
 			Object element = elements.get(i);
 			ArrayList<Object> subElements = getSubElements(element);
 
-			ArrayList<Link> links = new ArrayList<Link>();
+
 			for(int j = 0; j<subElements.size();j++){
 				Link link = new Link();
 				link.from = element;
@@ -135,11 +138,13 @@ public class DemoFrame {
 				link.fromGui = getGuiElement(element);
 				link.toGui = getGuiElement(subElements.get(j));
 
-//				System.out.println("Calculating link from "+link.from+" to "+link.to);
+
 				link.calculate();
 				links.add(link);
+				System.out.println(links.size());
 			}
 		}
+		System.out.println("Link size: "+links.size());
 	}
 
 
@@ -285,4 +290,5 @@ public class DemoFrame {
 		panel.validate();
 		panel.repaint();
 	}
+
 }
