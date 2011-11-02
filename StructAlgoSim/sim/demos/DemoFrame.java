@@ -56,7 +56,6 @@ public class DemoFrame {
 			Graphics2D g2d = (Graphics2D) g;
 			g2d.setColor(Color.gray);
 
-			System.out.println("Drawing links size "+links.size());
 			for(int i = 0; i<links.size();i++){
 				System.out.println("Drawing "+i);
 				if(links.get(i) != null && links.get(i).p1 != null){
@@ -124,7 +123,7 @@ public class DemoFrame {
 	 * Creates all the links from the elements added
 	 */
 	private void createLinks(){
-		System.out.println("Creating links");
+//		System.out.println("Creating links");
 		for(int i = 0; i<elements.size();i++){
 			//Determine links
 			Object element = elements.get(i);
@@ -286,7 +285,6 @@ public class DemoFrame {
 	public void validate(){
 		createLinks();
 		frame.validate();
-		System.out.println("Validating panel");
 		panel.validate();
 		panel.repaint();
 	}
