@@ -35,6 +35,10 @@ public class Variable {
 	public void setValue(String value){
 		gui.setValue(value);
 	}
+	/**
+	 * Gets the current value of this variable.
+	 * @return value the value of this variable.
+	 */
 	public String getValue(){
 		return gui.getValue();
 	}
