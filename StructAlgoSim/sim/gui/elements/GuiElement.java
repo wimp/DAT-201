@@ -40,4 +40,7 @@ public int getMaxFrame() {
 		setLayout(new GridLayout(1,1));
 		setVisible(true);
 	}
+	public interface GraphicalStructure{
+		public GuiElement getGuiElement();
+	}
 }

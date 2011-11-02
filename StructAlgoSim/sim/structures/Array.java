@@ -1,13 +1,13 @@
 package sim.structures;
 
 import java.awt.Rectangle;
-
 import sim.gui.elements.GuiArray;
+import sim.gui.elements.GuiElement.GraphicalStructure;
 
 /**
  * A class to implement one- and two dimensional arrays in the simulation gui.
  */
-public class Array {
+public class Array implements GraphicalStructure{
 // Class variables //
 	private  GuiArray gui;
 	private Object[][] array;

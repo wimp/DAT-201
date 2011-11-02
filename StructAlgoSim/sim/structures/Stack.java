@@ -5,10 +5,11 @@ import java.util.Vector;
 
 import sim.gui.elements.GuiElement;
 import sim.gui.elements.GuiStack;
+import sim.gui.elements.GuiElement.GraphicalStructure;
 /**
  * A class representing a stack. Its visual component is the GuiStack.
  */
-public class Stack {
+public class Stack implements GraphicalStructure{
 	
 	private Vector<Object> s = new Vector<Object>();
 	
