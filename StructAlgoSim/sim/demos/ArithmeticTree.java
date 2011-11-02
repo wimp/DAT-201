@@ -20,7 +20,7 @@ public class ArithmeticTree {
 	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	frame.setLayout(null);
 	
-	Tree tree = new Tree(new Rectangle(200,200,200,200), true);
+	Tree tree = new Tree(new Rectangle(200,200,200,200));
 	String infix = "2+2*2";
 	String postfix = "2 2 2 +*";
 	
