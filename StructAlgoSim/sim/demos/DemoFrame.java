@@ -22,6 +22,11 @@ import sim.structures.Variable;
  */
 public class DemoFrame {
 	JFrame frame;
+	
+	/**
+	 * Constructor
+	 * @param title - Appending Demo-title. "StructAlgoSim Version - "+title
+	 */
 	DemoFrame(String title){
 		frame = new JFrame();
 		frame.setTitle("StructAlgoSim 0.1 - "+title);
