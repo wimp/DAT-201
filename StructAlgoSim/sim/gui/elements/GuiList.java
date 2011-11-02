@@ -5,11 +5,14 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
 import java.util.Vector;
 
 import javax.swing.JCheckBox;
@@ -24,19 +27,26 @@ import sim.structures.LinkedList.Node;
  * class
  */
 @SuppressWarnings("serial")
-public class GuiList extends GuiElement implements ActionListener, ItemListener {
+public class GuiList extends GuiElement implements ActionListener, ItemListener, MouseMotionListener {
 	// Class variables //
 	private int height;
+
+	private Point mousePos = new Point(0,0);
+	private Node selected = null;
 	private Node removed = null;
 	private Vector<Node> data;
 	private Vector<Link> links;
 	private ListPanel listPanel;
+
+	private boolean show;
+	
 	public ListPanel getListPanel() {
 		return listPanel;
 	}
 
 	private JCheckBox circular;
 	private JCheckBox doublyLinked;
+	private JCheckBox showValues;
 	private JScrollPane listScroller;
 	private final int drawNodeWidth = GuiSettings.LISTNODEWIDTH;
 	private final int drawNodeHeight = GuiSettings.LISTNODEHEIGHT;
@@ -82,6 +92,7 @@ public class GuiList extends GuiElement implements ActionListener, ItemListener 
 		setBounds(bounds);
 		height = drawNodeHeight * 4;
 		listPanel = new ListPanel(false, false);
+		listPanel.addMouseMotionListener(this);
 		links = new Vector<Link>();
 		updateLinks();
 		initGraphics();
@@ -131,9 +142,13 @@ public class GuiList extends GuiElement implements ActionListener, ItemListener 
 		circular.addItemListener(this);
 		doublyLinked = new JCheckBox("Doublylinked");
 		doublyLinked.addItemListener(this);
+		showValues = new JCheckBox("Show values");
+		showValues.addItemListener(this);
+		
 		JPanel check = new JPanel(new BorderLayout());
 		check.add(circular, BorderLayout.WEST);
-		check.add(doublyLinked, BorderLayout.EAST);
+		check.add(doublyLinked, BorderLayout.CENTER);
+		check.add(showValues, BorderLayout.EAST);
 		this.add(check, BorderLayout.NORTH);
 		this.add(listScroller, BorderLayout.CENTER);
 	}
@@ -174,6 +189,7 @@ public class GuiList extends GuiElement implements ActionListener, ItemListener 
 		}
 
 		public void drawLink(Graphics2D g2d) {
+			Color temp = g2d.getColor();
 			g2d.setColor(c);
 			int indexOfStart = a.getIndex() + 1;
 			int indexOfEnd = b.getIndex() + 1;
@@ -210,13 +226,15 @@ public class GuiList extends GuiElement implements ActionListener, ItemListener 
 					(int) (height / 2 + (1 / 4.0) * drawNodeHeight), };
 			g2d.drawPolyline(linkX, linkY, linkX.length);
 			g2d.fillPolygon(arrowX, arrowY, arrowX.length);
+			
+			g2d.setColor(temp);
 		}
 	}
 
 	private class ListPanel extends JPanel {
 		private boolean circular;
 		private boolean doublyLinked;
-
+		
 		public ListPanel(boolean circular, boolean doublyLinked) {
 			this.circular = circular;
 			this.doublyLinked = doublyLinked;
@@ -241,26 +259,50 @@ public class GuiList extends GuiElement implements ActionListener, ItemListener 
 		private void drawNode(Graphics2D g2d, Node n) {
 			int indexOfNode = n.getIndex() + 1;
 			
+			if(mousePos.x > (2 * indexOfNode) * drawNodeWidth && 
+					mousePos.x < (2 * indexOfNode) * drawNodeWidth+drawNodeWidth && 
+					mousePos.y > height / 2- drawNodeHeight / 2 && 
+					mousePos.y < height / 2+ drawNodeHeight / 2){
+				selected = n;
+			}
 			Color c = g2d.getColor();
-			if (n.isAdded())
-				g2d.setColor(GuiSettings.LISTADDEDCOLOR);
-			else if (n==removed)
-				g2d.setColor(GuiSettings.LISTREMOVEDCOLOR);
-			else if (n.getNext().getIndex() < n.getIndex()
-					|| n.getNext() == n)
-				g2d.setColor(GuiSettings.LISTLASTCOLOR);
-			else if (n.getIndex() == 0)
-				g2d.setColor(GuiSettings.LISTHEADCOLOR);
-			else
-				g2d.setColor(GuiSettings.LISTNODECOLOR);
+			if(n!=selected)
+			if(show){
+				int v=g2d.getFontMetrics(getFont()).charsWidth(n.getValue().toString().toCharArray(), 0, n.getValue().toString().toCharArray().length)+20;
+				if(v<drawNodeWidth) v = drawNodeWidth;
+				g2d.setColor(GuiSettings.LISTCONTENTCOLOR);
 
-			g2d.fillOval((2 * indexOfNode) * drawNodeWidth, height / 2
-					- drawNodeHeight / 2, drawNodeWidth, drawNodeHeight);
-			g2d.setColor(c);
-			g2d.drawOval((2 * indexOfNode) * drawNodeWidth, height / 2
-					- drawNodeHeight / 2, drawNodeWidth, drawNodeHeight);
-			g2d.drawString((String) n.getValue(), (2 * indexOfNode)
-					* drawNodeWidth, height / 2);
+
+				g2d.fillRoundRect((2 * indexOfNode) * drawNodeWidth, height / 2
+						- drawNodeHeight / 2, v, drawNodeHeight, 5, 5);
+				g2d.setColor(c);
+				g2d.drawRoundRect((2 * indexOfNode) * drawNodeWidth, height / 2
+						- drawNodeHeight / 2, v, drawNodeHeight, 5, 5);
+				g2d.drawString(n.getValue().toString(),(2 * indexOfNode) * drawNodeWidth+drawNodeWidth/6, height / 2
+						+ drawNodeHeight / 6);
+			
+			}
+			else{
+				if (n.isAdded())
+					g2d.setColor(GuiSettings.LISTADDEDCOLOR);
+				else if (n==removed)
+					g2d.setColor(GuiSettings.LISTREMOVEDCOLOR);
+				else if (n.getNext().getIndex() < n.getIndex()
+						|| n.getNext() == n)
+					g2d.setColor(GuiSettings.LISTLASTCOLOR);
+				else if (n.getIndex() == 0)
+					g2d.setColor(GuiSettings.LISTHEADCOLOR);
+				else
+					g2d.setColor(GuiSettings.LISTNODECOLOR);
+				
+				g2d.fillOval((2 * indexOfNode) * drawNodeWidth, height / 2
+						- drawNodeHeight / 2, drawNodeWidth, drawNodeHeight);
+				g2d.setColor(c);
+				g2d.drawOval((2 * indexOfNode) * drawNodeWidth, height / 2
+						- drawNodeHeight / 2, drawNodeWidth, drawNodeHeight);
+				g2d.drawString(((Integer)(indexOfNode)).toString(), (2 * indexOfNode)
+						* drawNodeWidth+drawNodeWidth/3, height / 2+drawNodeHeight/8);
+			}
 			g2d.setColor(c);
 		}
 
@@ -461,25 +503,66 @@ public class GuiList extends GuiElement implements ActionListener, ItemListener 
 			g2d.clearRect(0, 0, getWidth(), getHeight());
 			setPreferredSize(new Dimension(drawNodeWidth * (data.size() + 1)
 					* 2, getHeight()));
-
+			for (Link l : links) {
+				l.drawLink(g2d);
+			}
 			for (Node n : data) {
 				if (n == null)
 					continue;
 				drawNode(g2d, n);
 				if (n.isAdded())
 					addAnimation(n);
+				
+				Color c = g2d.getColor();
+				if(n==selected)
+				if(!show){
+					int v=g2d.getFontMetrics(getFont()).charsWidth(n.getValue().toString().toCharArray(), 0, n.getValue().toString().toCharArray().length)+20;
+					if(v<drawNodeWidth) v = drawNodeWidth;
+					g2d.setColor(GuiSettings.LISTCONTENTCOLOR);
+
+
+					g2d.fillRoundRect((2 * (n.getIndex() + 1)) * drawNodeWidth, height / 2
+							- drawNodeHeight / 2, v, drawNodeHeight, 5, 5);
+					g2d.setColor(c);
+					g2d.drawRoundRect((2 *(n.getIndex() + 1)) * drawNodeWidth, height / 2
+							- drawNodeHeight / 2, v, drawNodeHeight, 5, 5);
+					g2d.drawString(n.getValue().toString(),(2 * (n.getIndex() + 1)) * drawNodeWidth+drawNodeWidth/6, height / 2
+							+ drawNodeHeight / 6);
+					selected = null;
+				}
+				else{
+					if (n.isAdded())
+						g2d.setColor(GuiSettings.LISTADDEDCOLOR);
+					else if (n==removed)
+						g2d.setColor(GuiSettings.LISTREMOVEDCOLOR);
+					else if (n.getNext().getIndex() < n.getIndex()
+							|| n.getNext() == n)
+						g2d.setColor(GuiSettings.LISTLASTCOLOR);
+					else if (n.getIndex() == 0)
+						g2d.setColor(GuiSettings.LISTHEADCOLOR);
+					else
+						g2d.setColor(GuiSettings.LISTNODECOLOR);
+					
+					g2d.fillOval((2 * (n.getIndex() + 1)) * drawNodeWidth, height / 2
+							- drawNodeHeight / 2, drawNodeWidth, drawNodeHeight);
+					g2d.setColor(c);
+					g2d.drawOval((2 * (n.getIndex() + 1)) * drawNodeWidth, height / 2
+							- drawNodeHeight / 2, drawNodeWidth, drawNodeHeight);
+					g2d.drawString(((Integer)((n.getIndex() + 1))).toString(), (2 * (n.getIndex() + 1))
+							* drawNodeWidth+drawNodeWidth/3, height / 2+drawNodeHeight/8);
+					selected = null;
+				}
+				g2d.setColor(c);
 			}
+			
 			if (removed != null) {
 				removeAnimation(removed);
 				drawNode(g2d, removed);
 			}
-			for (Link l : links) {
-				l.drawLink(g2d);
-			}
+			
 			listPanel.revalidate();
 		}
 	}
-
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == animation) {
@@ -499,9 +582,22 @@ public class GuiList extends GuiElement implements ActionListener, ItemListener 
 			listPanel.setCircular(!listPanel.isCircular());
 		} else if (e.getSource() == doublyLinked) {
 			listPanel.setDoublyLinked(!listPanel.isDoublyLinked());
+		}	else if(e.getSource() == showValues){
+			show = !show;
 		}
 		stopAnimation();
 		updateLinks();
+		repaint();
+	}
+
+	@Override
+	public void mouseDragged(MouseEvent e) {
+	}
+
+	@Override
+	public void mouseMoved(MouseEvent e) {
+		mousePos.x = e.getX();
+		mousePos.y = e.getY();
 		repaint();
 	}
 }

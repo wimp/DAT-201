@@ -12,6 +12,7 @@ public final class GuiSettings {
 	public static final Color LISTREMOVEDCOLOR 		= Color.RED;
 	public static final Color LISTHEADCOLOR 		= Color.YELLOW;
 	public static final Color LISTLASTCOLOR 		= Color.MAGENTA;
+	public static final Color LISTCONTENTCOLOR		= Color.LIGHT_GRAY;
 	public static final int LISTNODEWIDTH 			= 30;
 	public static final int LISTNODEHEIGHT 			= 30;	
 	//Tree

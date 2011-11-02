@@ -3,7 +3,7 @@ package sim.demos;
 import javax.swing.JFrame;
 import sim.gui.elements.GuiElement.GraphicalStructure;
 /**
- * DemoFrame - All programmatical demos should have an instance of DemoFrame instead of JFrame for similar appearance plus easier adding. Using DemoFrame lets you add the element instead of the GuiElement to the frame. Add each element as you would add a JLabel or JButton to a JFrame.
+ * DemoFrame - All programatical demos should have an instance of DemoFrame instead of JFrame for similar appearance plus easier adding. Using DemoFrame lets you add the element instead of the GuiElement to the frame. Add each element as you would add a JLabel or JButton to a JFrame.
  */
 public class DemoFrame {
 	JFrame frame;
