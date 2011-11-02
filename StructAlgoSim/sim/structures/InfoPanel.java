@@ -27,6 +27,7 @@ public class InfoPanel {
 	}
 	public void setValue(String value){
 		gui.getTextArea().setText(value);
+		gui.repaint();
 	}
 	public InfoPanel(Rectangle bounds, String text, boolean editable){
 		gui = new GuiInfo(bounds, text);

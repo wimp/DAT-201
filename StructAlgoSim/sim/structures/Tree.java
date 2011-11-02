@@ -22,7 +22,7 @@ public class Tree {
 	}
 	private int maxCluster = 2;
 	private TreeNode root; 
-	private GuiTree gui;
+	protected GuiTree gui;
 
 	private Traversal traversal = Traversal.INORDER;
 
@@ -46,10 +46,27 @@ public class Tree {
 	}
 	/**
 	 * The depth of a node is the number of nodes between it and the root.
-	 * @return The maximum depth of any node in the tree.
+	 * @return The depth of the deepest node in the tree.
 	 */
 	public int getMaxDepth() {
 		return findMaxDepth(root, 0);
+	}
+	/**
+	 * The depth of a node is the number of nodes between it and the root.
+	 * @param t - the node for which to find the depth.
+	 * @param max - variable used by the method to keep the highest depth through recursion.
+	 * 
+	 * @return The maximum depth of the specified node.
+	 */
+	private int findMaxDepth(TreeNode t, int max){
+		if(t==null) return max;
+		if(t.getDepth()>max) max = t.getDepth();
+		for(Tree.TreeNode q : t.getChildren())
+		{
+			if(q!=null)
+				max = findMaxDepth(q, max);
+		}
+		return max;
 	}
 	/**
 	 * The height of a node is the number of direct descendants.
@@ -61,21 +78,37 @@ public class Tree {
 		if(t==null) return 0;
 		return findMaxDepth(t, 0)-t.getDepth();
 	}
+
 	/**
-	 * Clustersize is the .
+	 * Clustersize is the maximum number of children that each node can have.
 	 * 
-	 * @return The height of the specified node.
+	 * @return The maximum number of children.
 	 */
 	public int getMaxCluster() {
 		return maxCluster;
 	}
+	/**
+	 * Clustersize is the maximum number of children that each node can have.
+	 * 
+	 * @param int - The new maximum number of children.
+	 */
 	public void setMaxCluster(int maxCluster) {
 		this.maxCluster = maxCluster;
 		rebuildTree();
 	}
+	/**
+	 * The root is the only node without a parent.
+	 * 
+	 * @return The root of this tree.
+	 */
 	public TreeNode getRoot() {
 		return root;
 	}	
+	/**
+	 * The root is the only node without a parent.
+	 * 
+	 * @param The new root of this tree.
+	 */
 	public void setRoot(TreeNode root) {
 		this.root = root;
 	}
@@ -83,6 +116,12 @@ public class Tree {
 		String s = (String)elementAt(index).getValue();
 		return s;
 	}
+	/**
+	 * Sets the value of an element.
+	 * 
+	 * @param index - the index, by the current traversal rule, of the element to be changed.
+	 * @param value - the new value of the element at index.	 
+	 */
 	public void setValueAt(int index, Object value){
 		TreeNode n = elementAt(index);
 		if(n!=null)
@@ -92,9 +131,6 @@ public class Tree {
 	}
 	public GuiTree getGuiElement() {
 		return gui;
-	}
-	public void setGuiElement(GuiTree gui) {
-		this.gui = gui;
 	}
 	//CONSTRUCTORS
 	/**
@@ -106,6 +142,9 @@ public class Tree {
 		root = null;	
 		gui = new GuiTree(bounds, this);
 	}
+	/**
+	 * Constructor used by the Heap class to instantiate without setting the gui element.
+	 */
 	protected Tree(){
 		root = null;	
 	}
@@ -123,11 +162,19 @@ public class Tree {
 
 		setIndices();
 	}
+	/**
+	 * Swaps the value of two nodes (effectively swapping the elements).
+	 * @param a The first TreeNode.
+	 * @param b The second TreeNode.
+	 */
 	public void swapNodes(TreeNode a, TreeNode b){
 		Object o = a.getValue().toString();
 		a.setValue(b.getValue().toString());
 		b.setValue(o);
 	}
+	/**
+	 * Sets the index of each node in the order found using the current traversal method.
+	 */
 	public void setIndices(){
 		Vector<TreeNode> nodes = getAllNodes(new Vector<TreeNode>(), root);
 		if(nodes != null){
@@ -140,17 +187,11 @@ public class Tree {
 			}
 		}
 	}
-	private int findMaxDepth(TreeNode t, int max){
-		if(t==null) return max;
-		if(t.getDepth()>max) max = t.getDepth();
-		for(Tree.TreeNode q : t.getChildren())
-		{
-			if(q!=null)
-				max = findMaxDepth(q, max);
-		}
-		return max;
-	}
 	//ADD AND INSERT METHODS
+	/**
+	 * Swaps the value of two nodes (effectively swapping the elements).
+	 * @param a The value of the new node added.
+	 */
 	public void addBreadthFirst(String value){
 		gui.stopAnimation();
 		Vector<TreeNode> nodeQueue = new Vector<TreeNode>();
