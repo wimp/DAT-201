@@ -1058,7 +1058,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 			gui.eInfo.setInfoType(InfoType.QUEUE);
 			break;
 		case 16:
-			gui.editorPanel.grid = ((JCheckBox) e.getSource()).isSelected() ? true : false;
+			gui.editorPanel.grid = ((JCheckBoxMenuItem) e.getSource()).isSelected() ? true : false;
 			gui.editorPanel.repaint();
 			panel.repaint();
 			gui.validate();
@@ -1069,6 +1069,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 			break;
 		case 18:
 			// SAVE
+			
 			JFileChooser fc = new JFileChooser();
 			FileNameExtensionFilter filter = new FileNameExtensionFilter("AlgoSim files", "ags");
 			fc.setFileFilter(filter);
@@ -1264,13 +1265,19 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 								if(s[2].equals("InfoPanel")){
 									((InfoPanel) elements.get(id)).setValue(attributes[0]);
 									break;
-								}else if(s[2].equals("Get") || s[2].equals("Set")){
-									
 								}
 								for(int j = 0; j < attributes.length;j++){
 									if(attributes[j].equals("null"))
 										attributes[j] = "-1";
-									link[currentLine][j] = Integer.parseInt(attributes[j]);
+									
+									if(j != 4)
+										link[currentLine][j] = Integer.parseInt(attributes[j]);
+									
+									if(j == 4 && s[2].equals("Get"))
+										((Get) elements.get(id)).setSingleChar(attributes[j].equals("1") ? true : false);
+									
+									if(j == 4 && s[2].equals("Set"))
+										((Set) elements.get(id)).setSingleChar(attributes[j].equals("1") ? true : false);
 								}
 								break;
 							}
