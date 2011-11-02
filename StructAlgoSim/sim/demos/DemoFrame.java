@@ -67,6 +67,7 @@ public class DemoFrame {
 			frame.add(((Remove) element).getGuiElement());
 		else if(element instanceof Set)
 			frame.add(((Set) element).getGuiElement());
+		
 	}
 
 	public void validate(){

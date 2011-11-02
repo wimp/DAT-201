@@ -105,11 +105,13 @@ public class EditorInfo extends JPanel{
 
 				t = 
 						"Structure information:\n" +
-						"The elements in a stack can only be accessed from one end, the top.\n" +
+						"A stack is a collection of elements only accessible at one end, called the top." +
+						" This is known as First-In-First-Out (FIFO). " +
 						"The methods to add or remove elements are Push and Pop, respectively.\n" +
 						"\n" +
 						"Editor use:\n" +
-						"Place in the desired position and link with a Pop and/or a Push function."
+						"Place in the desired position and link with a Pop and/or a Push function." +
+						"\nCan be linked with:\n -Pop\n -Push."
 					;
 				text.setText(t);
 				break;
@@ -122,14 +124,15 @@ public class EditorInfo extends JPanel{
 				demoPanel.add(a.getGuiElement(), BorderLayout.CENTER);
 				t = 
 						"Structure information:\n" +
-						"An array has a fixed size and a fixed amount of dimensions. To access the data in an array, one simply points" +
-						"to the indices of the position in a given dimension. Arrays are good for random access, but the fact that they have" +
-						"a fixed size implements a few problem if the data one wants to store has variable size as that would require a " +
-						"remake of the array with new sizes.\n" +
+						"An array has a fixed size and a fixed amount of dimensions. To access the data in an array, " +
+						"use the row and column number of the element. Arrays are good for random access, but the fact that they have" +
+						"a fixed size causes a few problems if the data stored varies in size as that would require a " +
+						"remake of the array with new sizes and reinsertion at each element.\n" +
 						"\n" +
 						"Editor use:\n" +
 						"Place in the desired position, then select one- or two-dimensional as well as size of the two dimensions." +
-						"The array can be linked with Set and Get. If you want to delete an element, simply set the value blank."
+						"To delete an element, simply set the value blank. " +
+						"\nCan be linked with:\n -Set\n -Get. "
 					;
 				text.setText(t);
 				break;
@@ -150,8 +153,9 @@ public class EditorInfo extends JPanel{
 						"is used by the heapsort algorithm to sort sequences of numbers from largest to smallest."+
 						"\n\n" +
 						"Editor use:\n" +
-						"Place in desired position and use the controls on the element to change how the heap is built. Can be linked with" +
-						"Add, Remove, Insert, Get or Set"
+						"Place in desired position and use the controls on the element to change how the heap is built. " +
+						"\nCan be linked with: " +
+						"\n -Add\n -Remove\n -Insert\n -Get\n -Set"
 					;
 				text.setText(t);
 				
@@ -175,7 +179,7 @@ public class EditorInfo extends JPanel{
 						"\n" +
 						"Editor use:\n" +
 						"Place in the desired position and use the controls on the element to choose between single or doubly linked as well" +
-						"as circular or non-circular. The linked list can be linked with Insert, Add and Remove"
+						"as circular or non-circular. \nCan be linked with:\n -Insert\n -Add\n -Remove"
 					;
 				text.setText(t);
 				
@@ -194,7 +198,8 @@ public class EditorInfo extends JPanel{
 						"out of the queue at any time.\n" +
 						"\n" +
 						"Editor use:\n" +
-						"Place in desired position and link with Add and Remove to, believe it or not, add or remove items from the queue."
+						"Place in desired position and link with Add or Remove to add or remove items from the queue." +
+						" \nCan be linked with:\n -Add\n -Remove"
 					;
 				text.setText(t);
 				
@@ -214,8 +219,8 @@ public class EditorInfo extends JPanel{
 						"the linked list in that it is, in some cases, much more efficient to traverse and operate on.\n"+
 						"\n" +
 						"Editor use:\n" +
-						"Place in desired position and use the controls on the element to change how the tree is built. Can be linked with" +
-						"Add, Remove, Insert, Get or Set"
+						"Place in desired position and use the controls on the element to change how the tree is built. \nCan be linked with:\n" +
+						" -Add\n -Remove\n -Insert\n -Get\n -Set"
 					;
 				text.setText(t);
 				
@@ -230,8 +235,8 @@ public class EditorInfo extends JPanel{
 						"A variable is used to pass values to and from functions and structures.\n" +
 						"\n" +
 						"Editor use:\n" +
-						"Place in desired position after choosing whether it should be editable or not. Can be linked with all" +
-						"the functions. Read information about specific use when selecting a function."
+						"Place in desired position after choosing whether it should be editable or not. Can be linked with: \n -All " +
+						"the functions \nRead information about specific use when selecting a function."
 				;
 				text.setText(t);
 				break;
@@ -248,8 +253,8 @@ public class EditorInfo extends JPanel{
 						"Place at desired position and link with a variable to be able to select whether that variable should be" +
 						"the index at which to add the value, or if it should be the value to add. If Add is only linked to a value-" +
 						"variable it attempts to add the value given at the end or beginning of the structure it is linked with, " +
-						"depending on the type of structure. Can be linked" +
-						"with: Queue, Linked List, Tree, Heap or Variable."
+						"depending on the type of structure. \nCan be linked" +
+						"with:\n -Queue\n -Linked List\n -Tree\n -Heap\n -Variable."
 				;
 				text.setText(t);
 				break;
@@ -272,8 +277,8 @@ public class EditorInfo extends JPanel{
 						"Place at desired position and link with a variable. Choose if the function will insert before" +
 						" or after the index. " +
 						"Select whether that variable should be the index at which to insert the value, or if it " +
-						"should be the value to add. Can be linked" +
-						"with: Linked List, Tree, Heap or Variable."
+						"should be the value to add. \nCan be linked" +
+						"with:\n -Linked List\n -Tree\n -Heap\n -Variable."
 						;
 				text.setText(t);
 				break;
@@ -290,8 +295,8 @@ public class EditorInfo extends JPanel{
 						"Place at desired position and link with a variable to be able to select whether that variable should be " +
 						"the index at which to remove, or if it should be the output where the removed value is placed. " +
 						"If Remove is only linked to a value-variable it attempts to remove the value given at the end or " +
-						"beginning of the structure it is linked with, depending on the structure. Can be linked" +
-						"with: Queue, Linked List, Tree, Heap or Variable."
+						"beginning of the structure it is linked with, depending on the structure. \nCan be linked " +
+						"with:\n -Queue\n -Linked List\n -Tree\n -Heap\n -Variable."
 						;
 				text.setText(t);
 				break;
@@ -306,8 +311,8 @@ public class EditorInfo extends JPanel{
 						"\n" +
 						"Editor use:\n" +
 						"Place at desired position and link with a variable and then link with a stack." +
-						" Can be linked" +
-						"with: Stack."
+						" \nCan be linked with:" +
+						"\n -Stack."
 						;
 				text.setText(t);
 				break;
@@ -322,7 +327,8 @@ public class EditorInfo extends JPanel{
 						"\n" +
 						"Editor use:\n" +
 						"Place at desired position and link with a variable and then link with a stack." +
-						" Can be linked with: Stack."
+						" \nCan be linked with:\n" +
+						" -Stack."
 						;
 				text.setText(t);
 				break;
@@ -334,16 +340,16 @@ public class EditorInfo extends JPanel{
 				t = 
 						"Function information:\n" +
 						"Gets a value at a given index in a structure or from an input variable. " +
-						"Can get either a single char at a time (if getting from a variable) or the whole value." +
+						"Can get either a single char at a time (if the target is a variable) or the whole value." +
 						"\n" +
 						"\n" +
 						"Editor use:\n" +
 						"Place at desired position and link with a variable. Select whether this should be an input or output variable. " +
-						"If input select whether it should get a single char at a time or the whole value. " +
-						"Link with another variable" +
-						"the index at which to add the value, or if it should be the output. If Add is only linked to a value-" +
-						"variable it attempts to add the value given at the end or beginning of the structure it is linked with. Can be linked" +
-						"with: Array, Linked List, Tree, Heap or Variable."
+						"If input select whether it should get a single char at a time or the whole value. This only applies to variable to variable getting." +
+						"Link with a source, either another variable or another suitable structure. " +
+						"If the source is anything other than a variable, another variable to be used as index needs to be linked. " +
+						"\nCan be linked with:\n" +
+						" -Array\n -Linked List\n -Tree\n -Heap\n -Variable."
 						;
 				text.setText(t);
 				break;
@@ -354,19 +360,17 @@ public class EditorInfo extends JPanel{
 				demoPanel.add(set.getGuiElement());
 				t = 
 						"Function information:\n" +
-								"Sets a value at a given index in a structure or in an output variable. " +
-								"Can set either a single char at a time (if setting in a variable) or the whole value" +
-								"\n" +
-								"\n" +
-								"Editor use:\n" +
-								"Place at desired position and link with a variable. Select whether this should be an " +
-								"input or output variable. If input select whether it should set a single char at a time " +
-								"or the whole value. To be able to select whether that variable should be" +
-								"the index at which to set the value, or if it should be the output. If Add is only" +
-								" linked to a value-variable it attempts to add the value given at the end or beginning of the " +
-								"structure it is linked with. Can be linked" +
-								"with: Array, Linked List, Tree, Heap or Variable."
-								;
+						"Sets a value at a given index in a structure or in an output variable. " +
+						"Can set either a single char at a time (if the source is a variable) or the whole value." +
+						"\n" +
+						"\n" +
+						"Editor use:\n" +
+						"Place at desired position and link with a variable. Select whether this should be an input or output variable. " +
+						"If input select whether it should get a single char at a time or the whole value. This only applies to variable to variable setting." +
+						"Link with a source, either another variable or another suitable structure. " +
+						"If the source is anything other than a variable, another variable to be used as index needs to be linked. " +
+						"\nCan be linked with:\n -Array\n -Linked List\n -Tree\n -Heap\n -Variable."
+						;
 				text.setText(t);
 				break;
 			}
