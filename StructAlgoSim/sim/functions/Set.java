@@ -115,9 +115,9 @@ public class Set implements ActionListener{
 
 				try{
 					int index = Integer.parseInt(i.getValue());
-					String s = ((LinkedList)l).getValueAt(index);
+					String s = v.getValue();
 					if(s!=null)
-						v.setValue(s);
+						((LinkedList)l).setValueAt(index,s);
 
 				}catch(NumberFormatException nfe){
 					JOptionPane.showConfirmDialog(gui, "Illegal character: you can only enter numbers.");

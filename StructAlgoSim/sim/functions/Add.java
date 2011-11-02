@@ -25,36 +25,66 @@ public class Add implements ActionListener {
 	GuiFunction gui;
 
 	// Getters and setters //
+	/**
+	 * Returns the GuiElement component for adding to JFrame/JPanel
+	 * @return {@link GuiElement}
+	 */
 	public GuiElement getGuiElement(){
 		return gui;
 	}
 
+	/**
+	 * Getter for the target.
+	 * @return current target object where the input variable should be added
+	 */
 	public Object getTarget() {
 		return l;
 	}
-
+	/**
+	 * Sets the current target object. This is the object the input object will be added to.
+	 * @param l - Target object
+	 */
 	public void setTarget(Object l) {
 		this.l = l;
 	}
 
+	/**
+	 * Gets source variable
+	 * @return The source {@link Variable} from which data to be added is retrieved
+	 */
 	public Variable getSourceVariable() {
 		return v;
 	}
 
+	/**
+	 * Set source {@link Variable} from which data to be added is retrieved
+	 * @param v - Source {@link Variable}
+	 */
 	public void setSourceVariable(Variable v) {
 		this.v = v;
 	}
+	
+	/**
+	 * Get index {@link Variable} from which the index number is retrieved. The index is later used for positioning the addition to the target object.
+	 * @return Index {@link Variable}
+	 */
 	public Variable getIndexVariable() {
 		return i;
 	}
-
+	/**
+	 * Set index {@link Variable} from which the index number is retrieved. The index is later used for positioning the addition to the target object.
+	 * @param i - Index {@link Variable}
+	 */
 	public void setIndexVariable(Variable i) {
 		this.i = i;
 	}
 
 
 	// Class constructor //
-
+	/**
+	 * The class constructor. Initializes the graphical element - {@link GuiFunction}
+	 * @param bounds 	- The size and placement of the graphical element
+	 */
 	public Add(Rectangle bounds) {
 		gui = new GuiFunction(bounds,"Add");
 		gui.getButton().addActionListener(this);
@@ -64,7 +94,7 @@ public class Add implements ActionListener {
 	/**
 	 * The class constructor. Initializes the graphical element - {@link GuiFunction}
 	 * @param bounds 	- The size and placement of the graphical element
-	 * @param l 		- The structure on which to perform the add()-action
+	 * @param l 		- The {@link LinkedList} on which to perform the add()-action
 	 * @param v 		- The output variable
 	 */
 	public Add(Rectangle bounds, LinkedList l, Variable v) {
@@ -73,6 +103,13 @@ public class Add implements ActionListener {
 		this.l=l;
 		this.v=v;
 	}
+	/**
+	 * The class constructor. Initializes the graphical element - {@link GuiFunction}
+	 * @param bounds 	- The size and placement of the graphical element
+	 * @param l 		- The {@link Tree} on which to perform the add()-action
+	 * @param v 		- The output variable
+	 * @param i 		- The input variable
+	 */
 	public Add(Rectangle bounds, Tree l, Variable v, Variable i) {
 		gui = new GuiFunction(bounds,"Add");
 		gui.getButton().addActionListener(this);
@@ -80,6 +117,12 @@ public class Add implements ActionListener {
 		this.i=i;
 		this.v=v;
 	}
+	/**
+	 * The class constructor. Initializes the graphical element - {@link GuiFunction}
+	 * @param bounds 	- The size and placement of the graphical element
+	 * @param l 		- The {@link Queue} on which to perform the add()-action
+	 * @param v 		- The output variable
+	 */
 	public Add(Rectangle bounds, Queue l, Variable v) {
 		gui = new GuiFunction(bounds,"Add");
 		gui.getButton().addActionListener(this);

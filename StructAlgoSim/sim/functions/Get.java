@@ -12,7 +12,11 @@ import sim.structures.Array;
 import sim.structures.LinkedList;
 import sim.structures.Tree;
 import sim.structures.Variable;
-
+/**
+ * This object retrieves either a single character or the entire string from a source object (or index within the source object) and passes it to a target object. 
+ * The Source object can be a {@link Variable}, {@link LinkedList}, {@link Array} or {@link Tree}
+ * The target can only be a {@link Variable}
+ */
 public class Get implements ActionListener{
 
 	Variable i;
@@ -21,34 +25,77 @@ public class Get implements ActionListener{
 	boolean singleChar;
 
 	GuiFunction gui;
+	/**
+	 * Returns the GuiElement component for adding to JFrame/JPanel
+	 * @return
+	 */
 	public GuiElement getGuiElement(){
 		return gui;
 	}
+	/**
+	 * Gets target variable
+	 * @return {@link Variable} target
+	 */
 	public Variable getTarget() {
 		return target;
 	}
+	/**
+	 * Sets target variable
+	 * @param l - {@link Variable} target
+	 */
 	public void setTarget(Variable l) {
 		this.target = l;
 	}
+	/**
+	 * Gets source variable
+	 * @return {@link Variable} source
+	 */
 	public Object getSource() {
 		return source;
 	}
+	/**
+	 * Sets source variable
+	 * @param l - {@link Variable} source
+	 */
 	public void setSource(Object l) {
 		this.source= l;
 	}
+
+	/**
+	 * Gets index variable
+	 * @return {@link Variable} index
+	 */
 	public Variable getIndexVariable() {
 		return i;
 	}
+
+	/**
+	 * Sets index variable
+	 * @param {@link Variable} index
+	 */
 	public void setIndexVariable(Variable i) {
 		this.i = i;
 	}
+
+	/**
+	 * Gets whether or not the get should retrieve a single character or not
+	 * @return boolean
+	 */
 	public boolean getSingleChar(){
 		return singleChar;
 	}
+	/**
+	 * Sets whether or not the get should retrieve a single character or not
+	 * @param singleChar
+	 */
 	public void setSingleChar(boolean singleChar){
 		this.singleChar = singleChar;
 	}
-
+	/**
+	 * Constructor
+	 * @param bounds
+	 * @param singleChar - Controls if the Get should retrieve only one character or all.
+	 */
 	public Get(Rectangle bounds, boolean singleChar){
 
 		gui = new GuiFunction(bounds,"Get");
@@ -58,7 +105,12 @@ public class Get implements ActionListener{
 		this.singleChar=singleChar;
 	}
 	/**
-	 * Constructor.
+	 * Constructor
+	 * @param bounds
+	 * @param l - Source {@link Variable}
+	 * @param o - Target {@link Variable}
+	 * @param i - Index {@link Variable}
+	 * @param singleChar
 	 */
 	public Get(Rectangle bounds, Variable l,Variable o, Variable i, boolean singleChar) {
 		gui = new GuiFunction(bounds,"Get");
@@ -68,6 +120,13 @@ public class Get implements ActionListener{
 		this.target=o;
 		this.singleChar=singleChar;
 	}
+	/**
+	 * Constructor
+	 * @param bounds
+	 * @param l - Source {@link Array}
+	 * @param o - Target {@link Variable}
+	 * @param singleChar
+	 */
 	public Get(Rectangle bounds, Array l,Variable o, boolean singleChar) {
 		gui = new GuiFunction(bounds,"Get");
 		gui.getButton().addActionListener(this);
@@ -75,6 +134,15 @@ public class Get implements ActionListener{
 		this.target=o;
 		this.singleChar=singleChar;
 	}
+	
+	/**
+	 * Constructor
+	 * @param bounds
+	 * @param l - Source {@link LinkedList}
+	 * @param o - Target {@link Variable}
+	 * @param i - Index {@link Variable}
+	 * @param singleChar
+	 */
 	public Get(Rectangle bounds, LinkedList l,Variable o, Variable i, boolean singleChar) {
 		gui = new GuiFunction(bounds,"Get");
 		gui.getButton().addActionListener(this);
@@ -83,6 +151,14 @@ public class Get implements ActionListener{
 		this.i = i;
 		this.singleChar=singleChar;
 	}
+	/**
+	 * Constructor
+	 * @param bounds
+	 * @param l - Source {@link Tree}
+	 * @param o - Target {@link Variable}
+	 * @param i - Index {@link Variable}
+	 * @param singleChar
+	 */
 	public Get(Rectangle bounds, Tree l,Variable o, Variable i, boolean singleChar) {
 		gui = new GuiFunction(bounds,"Get");
 		gui.getButton().addActionListener(this);

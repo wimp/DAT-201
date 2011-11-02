@@ -13,34 +13,55 @@ import sim.structures.Variable;
  * Pop - Instances of this class is used with structures such as stack to fetch the top element. (LIFO)
  */
 public class Pop implements ActionListener {
-// Class variables //
+	// Class variables //
 	Object l;
 	Variable v;
 	GuiFunction gui;
-	
-// Getters and setters //
+
+	// Getters and setters //
+	/**
+	 * Gets the functions {@link GuiElement}
+	 * @return {@link GuiElement}
+	 */
 	public GuiElement getGuiElement(){
 		return gui;
 	}
-	
+	/**
+	 * Gets the source object
+	 * @return The functions Source Object
+	 */
 	public Object getSource() {
 		return l;
 	}
-
+	/**
+	 * Sets the source object
+	 * @param l - Source Object
+	 */
 	public void setSource(Object l) {
 		this.l = l;
 	}
-
+	/**
+	 * Gets the target {@link Variable}
+	 * @return Target {@link Variable}
+	 */
 	public Variable getTargetVariable() {
 		return v;
 	}
 
+	/**
+	 * Sets the target {@link Variable}
+	 * @param v - Target {@link Variable}
+	 */
 	public void setTargetVariable(Variable v) {
 		this.v = v;
 	}
 
 
 	// Class constructor //
+	/**
+	 * The class constructor. Initializes the graphical element - {@link GuiFunction}
+	 * @param bounds 	- The size and placement of the graphical element
+	 */
 	public Pop(Rectangle bounds) {
 		gui = new GuiFunction(bounds,"Pop");
 		gui.getButton().addActionListener(this);
@@ -60,7 +81,7 @@ public class Pop implements ActionListener {
 		this.v=v;
 	}
 
-// Action Listener implementation //
+	// Action Listener implementation //
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(l instanceof Stack){

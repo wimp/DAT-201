@@ -3,6 +3,7 @@ package sim.editor;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.Rectangle;
 
@@ -12,6 +13,12 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 import sim.functions.Add;
+import sim.functions.Get;
+import sim.functions.Insert;
+import sim.functions.Pop;
+import sim.functions.Push;
+import sim.functions.Remove;
+import sim.functions.Set;
 import sim.gui.elements.GuiElement;
 import sim.gui.elements.GuiSettings;
 import sim.structures.Array;
@@ -73,14 +80,18 @@ public class EditorInfo extends JPanel{
 		private void drawComp(InfoType info){
 			JTextArea text = new JTextArea();
 			text.setEditable(false);
-			text.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-
+			text.setBorder(BorderFactory.createLineBorder(Color.GRAY));
+			
 			JScrollPane textPane = new JScrollPane(text);
 			add(textPane);
 			text.setLineWrap(true);
 			text.setWrapStyleWord(true);
 			textPane.setPreferredSize(new Dimension(getWidth()-150,getHeight()));
 			
+			JPanel demoPanel = new JPanel(new BorderLayout());
+			demoPanel.setBorder(BorderFactory.createLineBorder(Color.GRAY));
+			
+			add(demoPanel);
 			String t;
 			
 			switch(info){
@@ -90,7 +101,7 @@ public class EditorInfo extends JPanel{
 				s.push("value 2");
 				s.push("value 3");
 				s.push("value 4");
-				add(s.getGuiElement());
+				demoPanel.add(s.getGuiElement(), BorderLayout.CENTER);
 
 				t = 
 						"Structure information:\n" +
@@ -108,7 +119,7 @@ public class EditorInfo extends JPanel{
 				a.setValueAt("value 2", 1, 1);
 				a.setValueAt("value 3", 2);
 				a.setValueAt("value 4", 4, 1);
-				add(a.getGuiElement(), BorderLayout.WEST);
+				demoPanel.add(a.getGuiElement(), BorderLayout.CENTER);
 				t = 
 						"Structure information:\n" +
 						"An array has a fixed size and a fixed amount of dimensions. To access the data in an array, one simply points" +
@@ -128,7 +139,7 @@ public class EditorInfo extends JPanel{
 				h.addBreadthFirst("value 2");
 				h.addBreadthFirst("value 3");
 				
-				add(h.getGuiElement(), BorderLayout.WEST);
+				demoPanel.add(h.getGuiElement(), BorderLayout.CENTER);
 				t = 
 						"Structure information:\n" +
 						"The heap is a special-binary tree that is used when easy access to an item " +
@@ -153,8 +164,7 @@ public class EditorInfo extends JPanel{
 				ll.addFirst("value 2");
 				ll.addFirst("value 3");
 				
-				
-				add(ll.getGuiElement(), BorderLayout.WEST);
+				demoPanel.add(ll.getGuiElement(), BorderLayout.CENTER);
 				t = 
 						"Structure information:\n" +
 						"A linked list consist of a number of elements that are connected to each other, either singularily or doubly." +
@@ -176,7 +186,7 @@ public class EditorInfo extends JPanel{
 				q.add("value 2");
 				q.add("value 3");
 				
-				add(q.getGuiElement(), BorderLayout.WEST);
+				demoPanel.add(q.getGuiElement(), BorderLayout.CENTER);
 				t = 
 						"Structure information:\n" +
 						"A queue is a special case of a stack that only allows items to be added at the top and removed at the bottom." +
@@ -195,7 +205,7 @@ public class EditorInfo extends JPanel{
 				tr.addBreadthFirst("value 2");
 				tr.addBreadthFirst("value 3");
 				
-				add(tr.getGuiElement(), BorderLayout.WEST);
+				demoPanel.add(tr.getGuiElement(), BorderLayout.CENTER);
 				t = 
 						"Structure information:\n" +
 						"A tree consists of a root with one or more sub-elements that further can be parents to new" +
@@ -211,9 +221,10 @@ public class EditorInfo extends JPanel{
 				
 				break;
 			case VARIABLE:
-				Variable v = new Variable(new Rectangle(50,50,50,100), "Variable value", true);
-				
-				add(v.getGuiElement());
+				Variable v = new Variable(new Rectangle(50,50,100,50), "Variable value", true);
+				v.getGuiElement().setPreferredSize(new Dimension(100, 30));
+				demoPanel.setLayout(new FlowLayout());
+				demoPanel.add(v.getGuiElement());
 				t= 
 						"Structure information:\n" +
 						"A variable is used to pass values to and from functions and structures.\n" +
@@ -221,12 +232,74 @@ public class EditorInfo extends JPanel{
 						"Editor use:\n" +
 						"Place in desired position after choosing whether it should be editable or not. Can be linked with all" +
 						"the functions. Read information about specific use when selecting a function."
-						;
+				;
 				text.setText(t);
 				break;
 			case ADD:
 				Add add = new Add(new Rectangle(50,50,80,30));
-				add(add.getGuiElement());
+				add.getGuiElement().setPreferredSize(new Dimension(100, 30));
+				demoPanel.setLayout(new FlowLayout());
+				demoPanel.add(add.getGuiElement());
+				t = 
+						"Function information:\n" +
+						"The Add function adds an element to a given index or at the default end- or starting point of a structure.\n" +
+						"\n" +
+						"Editor use:\n" +
+						"Place at desired position and link with a variable to be able to select whether that variable should be" +
+						"the index at which to add the value, or if it should be the value to add. If Add is only linked to a value-" +
+						"variable it attempts to add the value given at the end or beginning of the structure it is linked with, " +
+						"depending on the type of structure. Can be linked" +
+						"with: Queue, Linked List, Tree, Heap or Variable."
+				;
+				text.setText(t);
+				break;
+			case INSERT:
+				Insert inA = new Insert(new Rectangle(50,50,80,30), true);
+				Insert inB = new Insert(new Rectangle(50,50,80,30),false);
+				inA.getGuiElement().setPreferredSize(new Dimension(130, 30));
+				inB.getGuiElement().setPreferredSize(new Dimension(130, 30));
+				demoPanel.setLayout(new FlowLayout());
+				demoPanel.add(inA.getGuiElement());
+				demoPanel.add(inB.getGuiElement());
+				
+				t = 
+						"Function information:\n" +
+						"Insert takes a value from a variable an inserts a new element at a specified index." +
+						"This operation will push items down in the structure and it is therefore necessary to specify" +
+						"if the element is to be inserted after the element at the index or before.\n" +
+						"\n" +
+						"Editor use:\n" +
+						"Place at desired position and link with a variable. Choose if the function will insert before" +
+						" or after the index. " +
+						"Select whether that variable should be the index at which to insert the value, or if it " +
+						"should be the value to add. Can be linked" +
+						"with: Linked List, Tree, Heap or Variable."
+						;
+				text.setText(t);
+				break;
+			case REMOVE:
+				Remove rem = new Remove(new Rectangle(50,50,80,30));
+				rem.getGuiElement().setPreferredSize(new Dimension(100, 30));
+				demoPanel.setLayout(new FlowLayout());
+				demoPanel.add(rem.getGuiElement());
+				t = 
+						"Function information:\n" +
+						"The Remove function removes an element to a given index or at the default end- or starting point of a structure.\n" +
+						"\n" +
+						"Editor use:\n" +
+						"Place at desired position and link with a variable to be able to select whether that variable should be" +
+						"the index at which to remove, or if it should be the output where the removed value is placed. " +
+						"If Remove is only linked to a value-variable it attempts to remove the value given at the end or " +
+						"beginning of the structure it is linked with. Can be linked" +
+						"with: Queue, Linked List, Tree, Heap or Variable."
+						;
+				text.setText(t);
+				break;
+			case POP:
+				Pop pop = new Pop(new Rectangle(50,50,80,30));
+				pop.getGuiElement().setPreferredSize(new Dimension(100, 30));
+				demoPanel.setLayout(new FlowLayout());
+				demoPanel.add(pop.getGuiElement());
 				t = 
 						"Function information:\n" +
 						"Add adds an element to a given index or at the default end- or starting point of a structure.\n" +
@@ -239,7 +312,57 @@ public class EditorInfo extends JPanel{
 						;
 				text.setText(t);
 				break;
-			
+			case PUSH:
+				Push push = new Push(new Rectangle(50,50,80,30));
+				push.getGuiElement().setPreferredSize(new Dimension(100, 30));
+				demoPanel.setLayout(new FlowLayout());
+				demoPanel.add(push.getGuiElement());
+				t = 
+						"Function information:\n" +
+						"Add adds an element to a given index or at the default end- or starting point of a structure.\n" +
+						"\n" +
+						"Editor use:\n" +
+						"Place at desired position and link with a variable to be able to select whether that variable should be" +
+						"the index at which to add the value, or if it should be the value to add. If Add is only linked to a value-" +
+						"variable it attempts to add the value given at the end or beginning of the structure it is linked with. Can be linked" +
+						"with: Queue, Linked List, Tree, Heap or Variable."
+						;
+				text.setText(t);
+				break;
+			case GET:
+				Get get = new Get(new Rectangle(50,50,80,30), false);
+				get.getGuiElement().setPreferredSize(new Dimension(100, 30));
+				demoPanel.setLayout(new FlowLayout());
+				demoPanel.add(get.getGuiElement());
+				t = 
+						"Function information:\n" +
+						"Add adds an element to a given index or at the default end- or starting point of a structure.\n" +
+						"\n" +
+						"Editor use:\n" +
+						"Place at desired position and link with a variable to be able to select whether that variable should be" +
+						"the index at which to add the value, or if it should be the value to add. If Add is only linked to a value-" +
+						"variable it attempts to add the value given at the end or beginning of the structure it is linked with. Can be linked" +
+						"with: Queue, Linked List, Tree, Heap or Variable."
+						;
+				text.setText(t);
+				break;
+			case SET:
+				Set set = new Set(new Rectangle(50,50,80,30), false);
+				set.getGuiElement().setPreferredSize(new Dimension(100, 30));
+				demoPanel.setLayout(new FlowLayout());
+				demoPanel.add(set.getGuiElement());
+				t = 
+						"Function information:\n" +
+						"Add adds an element to a given index or at the default end- or starting point of a structure.\n" +
+						"\n" +
+						"Editor use:\n" +
+						"Place at desired position and link with a variable to be able to select whether that variable should be" +
+						"the index at which to add the value, or if it should be the value to add. If Add is only linked to a value-" +
+						"variable it attempts to add the value given at the end or beginning of the structure it is linked with. Can be linked" +
+						"with: Queue, Linked List, Tree, Heap or Variable."
+						;
+				text.setText(t);
+				break;
 			}
 		}
 	}
