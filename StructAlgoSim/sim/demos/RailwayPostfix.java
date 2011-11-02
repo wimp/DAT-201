@@ -23,7 +23,7 @@ public class RailwayPostfix {
 
 		Variable infix = new Variable(new Rectangle(500,170,200,50),"a+b*c-e",true);
 		
-		Get getInfix = new Get(new Rectangle(450,170,50,50)infix,si,true,true);
+		Get getInfix = new Get(new Rectangle(450,170,50,50),infix,si,true,true);
 		
 		Get getSi = new Get(new Rectangle(335,170,55,50),si,so,true,true);
 		
