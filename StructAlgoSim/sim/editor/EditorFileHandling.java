@@ -6,6 +6,9 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
+import java.nio.charset.Charset;
 import java.util.Vector;
 
 import javax.swing.JComponent;
@@ -20,7 +23,7 @@ class EditorFileHandling {
 	private static final String MAIN_SEPARATOR 	= "#¤%";
 	private static final String SUB_SEPARATOR	= "£€";
 	private static final String ATTR_SEPARATOR	= "µ!@";
-	private static final String BYTE_SEPARATOR	= "|";
+	private static final String BYTE_SEPARATOR	= "§";
 	
 	/**
 	 * File format:
@@ -177,19 +180,13 @@ class EditorFileHandling {
 					case 4:
 						// Get the attributes
 						String[] attrArray = loadString[i].split(SUB_SEPARATOR);
-//						String eName = loadString[2];
 						for(int j = 0;j < attrArray.length;j++){
 							String[] varAttr = attrArray[j].split(ATTR_SEPARATOR);
-							attributes[j][0] = varAttr[0];
-							attributes[j][1] = varAttr[1];
-							attributeElements.add(id,attributes);
-							/*if(eName.equals("Variable")){
-								String[] varAttr = attrArray[j].split(ATTR_SEPARATOR);
+							if(varAttr.length > 1 && attributeElements.size() >= id){
 								attributes[j][0] = varAttr[0];
 								attributes[j][1] = varAttr[1];
-							}else if(eName.equals("InfoPanel")){
-								
-							}*/
+								attributeElements.add(id,attributes);
+							}
 						}
 						break;
 					}//End of swtich/case
@@ -302,11 +299,13 @@ class EditorFileHandling {
 			
 			// Handle object attributes //
 			for(int i = 0;i < el.elements.size();i++){
+				if(attributeElements.size() == 0) break;
 				if(attributeElements.get(i) != null){
 					Object element = el.elements.get(i); 
 					if(element instanceof Variable){
 						for(int j = 0;j < attributeElements.get(i).length;j++){
-							if(attributeElements.get(j)[j][0] == null)
+							if(attributeElements.get(i) == null) break;
+							if(attributeElements.get(i)[j][0] == null)
 								continue;
 							
 							if(attributeElements.get(i)[j][0].equals("value"))
@@ -315,30 +314,54 @@ class EditorFileHandling {
 								((Variable) element).setEditable(Boolean.parseBoolean(attributeElements.get(i)[j][1]));
 						}
 					}else if(element instanceof InfoPanel){
-						for(int j = 0;j < attributeElements.get(i).length;j++){
-							if(attributeElements.get(j)[j][0] == null)
+						for(int j = 0;j < attributeElements.size();j++){
+							if(attributeElements.get(i) == null) break;
+							if(attributeElements.get(i)[j] == null || attributeElements.get(i)[j][0] == null)
 								continue;
 							
-							if(attributeElements.get(j)[j][0].equals("value"))
-								((InfoPanel) element).setValue(attributeElements.get(i)[j][1]);
-							else if(attributeElements.get(i)[j][0].equals("editable"))
+							if(attributeElements.get(i)[j][0].equals("value")){
+								String[] bytes = attributeElements.get(i)[j][1].split(BYTE_SEPARATOR);
+								String valueString = "";
+								for(int k = 0;k < bytes.length;k++){
+									String val = bytes[k];
+									Charset cs = Charset.forName("ISO-8859-1");
+									byte[] bs = {Byte.parseByte(val)};
+									ByteBuffer b = ByteBuffer.wrap(bs);
+									CharBuffer cb = cs.decode(b);
+									
+									char subStr = cb.get();
+									valueString += subStr;
+								}
+								((InfoPanel) element).setValue(valueString);
+							}else if(attributeElements.get(i)[j][0].equals("editable"))
 								((InfoPanel) element).setEditable(Boolean.parseBoolean(attributeElements.get(i)[j][1]));
 						}
 					}else if(element instanceof Set){
 						for(int j = 0;j < attributeElements.get(i).length;j++){
-							if(attributeElements.get(j)[j][0] == null)
+							if(attributeElements.get(i) == null) break;
+							if(attributeElements.get(i)[j][0] == null)
 								continue;
 							
-							if(attributeElements.get(j)[j][0].equals("singleChar"))
+							if(attributeElements.get(i)[j][0].equals("singleChar"))
 								((Set) element).setSingleChar(Boolean.parseBoolean(attributeElements.get(i)[j][1]));
 						}
 					}else if(element instanceof Get){
 						for(int j = 0;j < attributeElements.get(i).length;j++){
-							if(attributeElements.get(j)[j][0] == null)
+							if(attributeElements.get(i) == null) break;
+							if(attributeElements.get(i)[j][0] == null)
 								continue;
 							
-							if(attributeElements.get(j)[j][0].equals("singleChar"))
+							if(attributeElements.get(i)[j][0].equals("singleChar"))
 								((Get) element).setSingleChar(Boolean.parseBoolean(attributeElements.get(i)[j][1]));
+						}
+					}else if(element instanceof Insert){
+						for(int j = 0;j < attributeElements.get(i).length;j++){
+							if(attributeElements.get(i) == null) break;
+							if(attributeElements.get(i)[j] == null || attributeElements.get(i)[j][0] == null)
+								continue;
+							
+							if(attributeElements.get(i)[j][0].equals("insertAfter"))
+								((Insert) element).setInsertAfterElement(Boolean.parseBoolean(attributeElements.get(i)[j][1]));
 						}
 					}
 				}
@@ -406,7 +429,7 @@ class EditorFileHandling {
 			attr += "editable"+ATTR_SEPARATOR+((Variable) element).getEditable();
 		}else if(element instanceof InfoPanel){
 			attr += "value"+ATTR_SEPARATOR;
-			byte[] b = ((InfoPanel) element).getValue().getBytes();
+			byte[] b = ((InfoPanel) element).getValue().getBytes(Charset.forName("ISO-8859-1"));
 			for(int i = 0;i < b.length;i++){
 				attr += b[i] + BYTE_SEPARATOR;
 			}
@@ -419,6 +442,9 @@ class EditorFileHandling {
 		}else if(element instanceof Set){
 			attr += "singleChar"+ATTR_SEPARATOR;
 			attr += Boolean.toString(((Set) element).getSingleChar());
+		}else if(element instanceof Insert){
+			attr += "insertAfter"+ATTR_SEPARATOR;
+			attr += Boolean.toString(((Insert) element).getInsertAfterElement());
 		}
 		return attr;
 	}
