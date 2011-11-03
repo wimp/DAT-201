@@ -18,6 +18,8 @@ import sim.editor.EditorListener.Link;
 import sim.functions.*;
 import sim.gui.elements.*;
 import sim.structures.*;
+import sim.structures.Tree.Traversal;
+import sim.structures.Tree.TreeNode;
 
 class EditorFileHandling {
 	private static final String MAIN_SEPARATOR 	= "#¤%";
@@ -364,6 +366,49 @@ class EditorFileHandling {
 							
 							if(attributeElements.get(i)[j][0].equals("insertAfter"))
 								((Insert) element).setInsertAfterElement(Boolean.parseBoolean(attributeElements.get(i)[j][1]));
+						}
+					}else if(element instanceof Tree){
+						for(int j = 0;j < attributeElements.get(i).length;j++){
+							if(attributeElements.get(i) == null) break;
+							if(attributeElements.get(i)[j] == null || attributeElements.get(i)[j][0] == null)
+								continue;
+							
+							if(attributeElements.get(i)[j][0].equals("maxCluster")){
+								((Tree) element).setMaxCluster(Integer.parseInt(attributeElements.get(i)[j][1]));
+							}else if(attributeElements.get(i)[j][0].equals("values")){
+								String[] treeVals = attributeElements.get(i)[j][1].split(BYTE_SEPARATOR);
+								((Tree) element).setTraversal(Traversal.BREADTHFIRST);
+								int treeIndex = 0;
+								((Tree) element).addChildAt(treeIndex, treeVals[0]);
+								((Tree) element).getRoot().getChildren().removeAllElements();
+								
+								for(int k = 0;k < treeVals.length;k++){
+										if(k != 0){
+											if(treeVals[k].equals("NiL")){
+												((Tree) element).elementAt(treeIndex).getChildren().add(null);
+											}else{
+												TreeNode node = ((Tree) element).new TreeNode(treeVals[k],((Tree) element).elementAt(treeIndex));
+												node.getChildren().removeAllElements();
+												((Tree) element).elementAt(treeIndex).getChildren().add(node);
+											}
+										}
+									if(k > 0 && k % ((Tree) element).getMaxCluster() == 0){
+										treeIndex++;
+									}
+								}
+								
+							}else if(attributeElements.get(i)[j][0].equals("traversal")){
+								if(attributeElements.get(i)[j][1].equals(Traversal.BREADTHFIRST.name())){
+									((Tree) element).setTraversal(Traversal.BREADTHFIRST);
+								}else if(attributeElements.get(i)[j][1].equals(Traversal.INORDER.name())){
+									((Tree) element).setTraversal(Traversal.INORDER);
+								}else if(attributeElements.get(i)[j][1].equals(Traversal.POSTORDER.name())){
+									((Tree) element).setTraversal(Traversal.POSTORDER);
+								}else if(attributeElements.get(i)[j][1].equals(Traversal.PREORDER.name())){
+									((Tree) element).setTraversal(Traversal.PREORDER);
+								}
+								((Tree) element).setIndices();
+							}
 						}
 					}
 				}
