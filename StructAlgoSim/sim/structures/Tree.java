@@ -417,6 +417,7 @@ public class Tree implements GraphicalStructure {
 			while(tobeadded.size()>0){
 				nodes.add(tobeadded.firstElement());
 				
+				if(tobeadded.firstElement()!=null)
 				for(TreeNode ch : tobeadded.firstElement().getChildren())
 					if(ch != null || withNull)
 						tobeadded.add(ch);
