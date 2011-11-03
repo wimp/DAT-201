@@ -24,7 +24,7 @@ public class Heapsort {
 	public Heapsort(){
 		GuiSettings.isAnimated = false;
 		//Use DemoFrame instead of JFrame
-		DemoFrame frame = new DemoFrame("Heapsort");
+		DemoFrame frame = new DemoFrame("Heapsort", );
 
 		Heap h = new Heap(new Rectangle(400,50, 380, 465));
 		h.getGuiElement().showValues(true);
