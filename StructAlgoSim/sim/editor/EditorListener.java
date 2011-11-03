@@ -18,9 +18,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.util.Vector;
 
 import javax.swing.ButtonGroup;
@@ -78,6 +76,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 	private int moveElementIndex = -1;
 	private int moveDifferX;
 	private int moveDifferY;
+	boolean showDialogOnAdd = true;
 
 	// Class Methods //
 	/**
@@ -173,9 +172,14 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 			Object[] options = {"Insert BEFORE given index","Insert AFTER given index"};
 			bounds.width 	= bounds.width < 150 ? 150 : bounds.width;
 			bounds.height 	= bounds.height < 30 ? 30 : bounds.height;
-			Object sel = JOptionPane.showInputDialog(gui, "Where should this function insert values?", "How to insert", JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
-			sel = sel == null ? options[0] : sel;
-			Insert insertElement = new Insert(bounds, sel.equals(options[0]) ? false : true);
+			Insert insertElement;
+			if(showDialogOnAdd){
+				Object sel = JOptionPane.showInputDialog(gui, "Where should this function insert values?", "How to insert", JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
+				sel = sel == null ? options[0] : sel;
+				insertElement = new Insert(bounds, sel.equals(options[0]) ? false : true);
+			}else{
+				insertElement = new Insert(bounds, false);
+			}
 			elements.add(insertElement);
 			index = elements.lastIndexOf(insertElement);
 			guiElements.add(index,insertElement.getGuiElement());
@@ -222,7 +226,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 			return stackElement.getGuiElement();
 		case VARIABLE:
 			//			e = b.getActionCommand().equals("1") ? true : false;
-			bounds.width 	= bounds.width < 80 ? 80 : bounds.width;
+			bounds.width 	= bounds.width < 30 ? 30 : bounds.width;
 			bounds.height 	= bounds.height < 30 ? 30 : bounds.height;
 			Variable variableElement = new Variable(bounds,"",true);
 			elements.add(variableElement);
@@ -974,6 +978,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		gui.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 		gui.editorPanel.remove(panel);
 		panel.removeMouseListener(this);
 		panel.removeMouseMotionListener(this);
@@ -1094,221 +1099,6 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 			if(l == JFileChooser.APPROVE_OPTION){
 				File openFile = load.getSelectedFile();
 				EditorFileHandling.loadFile(openFile, this);
-				/*try{
-					FileReader fr = new FileReader(openFile);
-					BufferedReader r = new BufferedReader(fr);
-
-					int numLines = 0;
-					while(r.readLine() != null)
-						numLines++;
-					r.close();
-
-					fr = new FileReader(openFile);
-					r = new BufferedReader(fr);
-					String line = r.readLine();
-					int currentLine = 0;
-					int[][] link = new int[numLines][3];
-
-					while(line != null){
-						String[] s = line.split(";");
-						int id = -1;
-						Rectangle bounds = new Rectangle();
-						for(int i = 0;i<s.length;i++){
-							switch(i){
-							case 0:
-								// Sets the id
-								id = Integer.parseInt(s[i]);
-								break;
-							case 1:
-								// Sets the bounds of the object
-								String[] boundStrings = s[i].split(":");
-								bounds = new Rectangle(
-										Integer.parseInt(boundStrings[0]),
-										Integer.parseInt(boundStrings[1]),
-										Integer.parseInt(boundStrings[2]),
-										Integer.parseInt(boundStrings[3])
-										);
-								break;
-							case 2:
-								// Sets the object
-								if(s[i].equals("Stack")){
-									JComponent c = getComponentFromEnum(ElementType.STACK, bounds);
-									addElementAtPosition(c);
-								}else if(s[i].equals("Array")){
-									JComponent c = getComponentFromEnum(ElementType.ARRAY, bounds);
-									addElementAtPosition(c);
-								}else if(s[i].equals("LinkedList")){
-									JComponent c = getComponentFromEnum(ElementType.LIST, bounds);
-									addElementAtPosition(c);
-								}else if(s[i].equals("Tree")){
-									JComponent c = getComponentFromEnum(ElementType.TREE, bounds);
-									addElementAtPosition(c);
-								}else if(s[i].equals("Heap")){
-									JComponent c = getComponentFromEnum(ElementType.HEAP, bounds);
-									addElementAtPosition(c);
-								}else if(s[i].equals("Queue")){
-									JComponent c = getComponentFromEnum(ElementType.QUEUE, bounds);
-									addElementAtPosition(c);
-								}else if(s[i].equals("Variable")){
-									JComponent c = getComponentFromEnum(ElementType.VARIABLE, bounds);
-									addElementAtPosition(c);
-								}else if(s[i].equals("Add")){
-									JComponent c = getComponentFromEnum(ElementType.ADD, bounds);
-									addElementAtPosition(c);
-								}else if(s[i].equals("Remove")){
-									JComponent c = getComponentFromEnum(ElementType.REMOVE, bounds);
-									addElementAtPosition(c);
-								}else if(s[i].equals("Insert")){
-									JComponent c = getComponentFromEnum(ElementType.INSERT, bounds);
-									addElementAtPosition(c);
-								}else if(s[i].equals("Push")){
-									JComponent c = getComponentFromEnum(ElementType.PUSH, bounds);
-									addElementAtPosition(c);
-								}else if(s[i].equals("Pop")){
-									JComponent c = getComponentFromEnum(ElementType.POP, bounds);
-									addElementAtPosition(c);
-								}else if(s[i].equals("Get")){
-									JComponent c = getComponentFromEnum(ElementType.GET, bounds);
-									addElementAtPosition(c);
-								}else if(s[i].equals("Set")){
-									JComponent c = getComponentFromEnum(ElementType.SET, bounds);
-									addElementAtPosition(c);
-								}else if(s[i].equals("InfoPanel")){
-									JComponent c = getComponentFromEnum(ElementType.TEXT, bounds);
-									addElementAtPosition(c);
-								}
-
-								break;
-							case 3:
-								// Attributes
-								String[] attributes = s[i].split(":");
-								if(s[2].equals("InfoPanel")){
-									((InfoPanel) elements.get(id)).setValue(attributes[0]);
-									break;
-								}
-								for(int j = 0; j < attributes.length;j++){
-									if(attributes[j].equals("null"))
-										attributes[j] = "-1";
-									
-									if(j != 4)
-										link[currentLine][j] = Integer.parseInt(attributes[j]);
-									
-									if(j == 4 && s[2].equals("Get"))
-										((Get) elements.get(id)).setSingleChar(attributes[j].equals("1") ? true : false);
-									
-									if(j == 4 && s[2].equals("Set"))
-										((Set) elements.get(id)).setSingleChar(attributes[j].equals("1") ? true : false);
-								}
-								break;
-							}
-						}
-						line = r.readLine();
-						currentLine++;
-					}
-
-					// Handling the links between the objects in the gui.
-					for(int i = 0;i < link.length;i++){
-						Object element = elements.get(i);
-						Link li = new Link();
-						li.from = element;
-						li.fromGui = guiElements.get(i);
-						for(int j = 0;j < link[i].length;j++){
-
-							if(link[i][j] != -1 && !(element instanceof InfoPanel)){
-								if(!elements.get(link[i][j]).equals(element) && checkCompatibility(element,elements.get(link[i][j])) && !(element instanceof Variable)){
-									li.to = elements.get(link[i][j]);
-									li.toGui = guiElements.get(link[i][j]);
-									li.getDirection();
-									linkys.add(li);
-									li = new Link();
-									li.from = element;
-									li.fromGui = guiElements.get(i);
-								}
-
-								if(element instanceof Push){
-									switch(j){
-									case 0:
-										((Push) element).setTarget(elements.get(link[i][j]));
-										break;
-									case 1:
-										((Push) element).setSourceVariable((Variable) elements.get(link[i][j]));
-										break;
-									}
-								}else if(element instanceof Remove){
-									switch(j){
-									case 0:
-										((Remove) element).setSource(elements.get(link[i][j]));
-										break;
-									case 1:
-										((Remove) element).setTargetVariable((Variable) elements.get(link[i][j]));
-										break;
-									case 2:
-										((Remove) element).setIndexVariable((Variable) elements.get(link[i][j]));
-										break;
-									}
-								}else if(element instanceof Insert){
-									switch(j){
-									case 0:
-										((Insert) element).setTarget(elements.get(link[i][j]));
-										break;
-									case 1:
-										((Insert) element).setSourceVariable((Variable) elements.get(link[i][j]));
-										break;
-									case 2:
-										((Insert) element).setIndexVariable((Variable) elements.get(link[i][j]));
-									}
-								}else if(element instanceof Add){
-									switch(j){
-									case 0:
-										((Add) element).setTarget(elements.get(link[i][j]));
-										break;
-									case 1:
-										((Add) element).setSourceVariable((Variable) elements.get(link[i][j]));
-										break;
-									case 2:
-										((Add) element).setIndexVariable((Variable) elements.get(link[i][j]));
-									}
-								}else if(element instanceof Pop){
-									switch(j){
-									case 0:
-										((Pop) element).setSource(elements.get(link[i][j]));
-										break;
-									case 1:
-										((Pop) element).setTargetVariable((Variable) elements.get(link[i][j]));
-										break;
-									}
-								}else if(element instanceof Get){
-									switch(j){
-									case 0:
-										((Get) element).setSource(elements.get(link[i][j]));
-										break;
-									case 1:
-										((Get) element).setSource(elements.get(link[i][j]));
-										break;
-									case 2:
-										((Get) element).setIndexVariable((Variable) elements.get(link[i][j]));
-										break;
-									}
-								}else if(element instanceof Set){
-									switch(j){
-									case 0:
-										((Set) element).setTarget(elements.get(link[i][j]));
-										break;
-									case 1:
-										((Set) element).setSourceVariable((Variable) elements.get(link[i][j]));
-										break;
-									case 2:
-										((Set) element).setIndexVariable((Variable) elements.get(link[i][j]));
-										break;
-									}
-								}
-							}
-						}
-					}
-				}catch(Exception e1){
-					e1.printStackTrace();
-				}*/
-
 			}
 			// END OF LOAD ROUTINE
 			break;

@@ -88,6 +88,8 @@ public class Insert implements ActionListener , GraphicalStructure {
 	
 	public void setInsertAfterElement(boolean insertAfterElement){
 		this.insertAfterElement = insertAfterElement;
+		buttonText = insertAfterElement ? "Insert After" : "Insert Before";
+		gui.getButton().setText(buttonText);
 	}
 
 	// Class constructor //

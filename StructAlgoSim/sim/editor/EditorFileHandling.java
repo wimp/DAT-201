@@ -150,8 +150,10 @@ class EditorFileHandling {
 							JComponent c = el.getComponentFromEnum(ElementType.REMOVE,bounds);
 							el.addElementAtPosition(c);
 						}else if(name.equals("Insert")){
+							el.showDialogOnAdd = false;
 							JComponent c = el.getComponentFromEnum(ElementType.INSERT,bounds);
 							el.addElementAtPosition(c);
+							el.showDialogOnAdd = true;
 						}else if(name.equals("Push")){
 							JComponent c = el.getComponentFromEnum(ElementType.PUSH,bounds);
 							el.addElementAtPosition(c);
@@ -313,7 +315,7 @@ class EditorFileHandling {
 							else if(attributeElements.get(i)[j][0].equals("editable"))
 								((Variable) element).setEditable(Boolean.parseBoolean(attributeElements.get(i)[j][1]));
 						}
-					}else if(element instanceof InfoPanel){
+					}else if(element instanceof Info){
 						for(int j = 0;j < attributeElements.size();j++){
 							if(attributeElements.get(i) == null) break;
 							if(attributeElements.get(i)[j] == null || attributeElements.get(i)[j][0] == null)
@@ -332,9 +334,9 @@ class EditorFileHandling {
 									char subStr = cb.get();
 									valueString += subStr;
 								}
-								((InfoPanel) element).setValue(valueString);
+								((Info) element).setValue(valueString);
 							}else if(attributeElements.get(i)[j][0].equals("editable"))
-								((InfoPanel) element).setEditable(Boolean.parseBoolean(attributeElements.get(i)[j][1]));
+								((Info) element).setEditable(Boolean.parseBoolean(attributeElements.get(i)[j][1]));
 						}
 					}else if(element instanceof Set){
 						for(int j = 0;j < attributeElements.get(i).length;j++){
@@ -447,6 +449,21 @@ class EditorFileHandling {
 		}else if(element instanceof Insert){
 			attr += "insertAfter"+ATTR_SEPARATOR;
 			attr += Boolean.toString(((Insert) element).getInsertAfterElement());
+		}else if(element instanceof Tree){
+			attr += "maxCluster"+ATTR_SEPARATOR;
+			attr += Integer.toString((((Tree) element).getMaxCluster()));
+			attr += SUB_SEPARATOR;
+			attr += "traversal"+ATTR_SEPARATOR;
+			attr += ((Tree) element).getTraversal().name();
+			attr += SUB_SEPARATOR;
+			attr += "values"+ATTR_SEPARATOR;
+			Vector<String> vals = element.getAllValuesWithNullBreadthFirst();
+			for(int i = 0;i < vals.size();i++){
+				String str = vals.get(i);
+				if(vals.get(i) == null) str = "NiL";
+				attr += str+BYTE_SEPARATOR;
+			}
+			attr = attr.substring(0, attr.length() - BYTE_SEPARATOR.length());
 		}
 		return attr;
 	}
