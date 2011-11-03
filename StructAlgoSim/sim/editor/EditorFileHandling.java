@@ -457,7 +457,7 @@ class EditorFileHandling {
 			attr += ((Tree) element).getTraversal().name();
 			attr += SUB_SEPARATOR;
 			attr += "values"+ATTR_SEPARATOR;
-			Vector<String> vals = element.getAllValuesWithNullBreadthFirst();
+			Vector<String> vals = ((Tree) element).getAllValuesWithNullBreadthFirst();
 			for(int i = 0;i < vals.size();i++){
 				String str = vals.get(i);
 				if(vals.get(i) == null) str = "NiL";
