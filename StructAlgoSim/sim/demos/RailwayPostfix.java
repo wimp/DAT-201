@@ -34,25 +34,25 @@ public class RailwayPostfix {
 				"+ has the same priority as - but came first. If the priority is equal, prefer popping from stack.\n" +
 				"Now push - onto the stack and see if you can figure out the rest for yourself.";
 		
-		Info info = new Info(new Rectangle(10,400,700,120),text,false);
+		Info info = new Info(new Rectangle(10,320,700,120),text,false);
 		
-		Stack s = new Stack(new Rectangle(325,250, 80, 150));
-		Variable si = new Variable(new Rectangle(390,170,60,50),"#",false);
-		Variable so = new Variable(new Rectangle(275,170,60,50),"",false);
+		Stack s = new Stack(new Rectangle(325,150, 80, 150));
+		Variable si = new Variable(new Rectangle(405,70,60,50),"#",false);
+		Variable so = new Variable(new Rectangle(260,70,60,50),"",false);
 
-		Variable infix = new Variable(new Rectangle(500,170,200,50),"a+b*c-e",true);
-		Get getInfix = new Get(new Rectangle(450,170,55,50),infix,si,true,true);
+		Variable infix = new Variable(new Rectangle(550,70,150,50),"a+b*c-e",true);
+		Get getInfix = new Get(new Rectangle(480,70,55,50),infix,si,true,true);
 		
-		Get getSi = new Get(new Rectangle(335,170,55,50),si,so,true,true);
+		Get getSi = new Get(new Rectangle(335,70,55,50),si,so,true,true);
 		
-		Variable postfix = new Variable(new Rectangle(25,170,200,50),"                               ",true);
+		Variable postfix = new Variable(new Rectangle(25,70,150,50),"                               ",true);
 		
-		Get movePostfix = new Get(new Rectangle(225,170,55,50),so,postfix,true,false);
+		Get movePostfix = new Get(new Rectangle(190,70,55,50),so,postfix,true,false);
 		
-		Pop popSi = new Pop(new Rectangle(405,300,70,25),s, si);
-		Push pushSi = new Push(new Rectangle(405,350,70,25),si, s);
-		Pop popSo = new Pop(new Rectangle(225,300,70,25),s, so);
-		Push pushSo = new Push(new Rectangle(225,350,70,25),so, s);
+		Pop popSi = new Pop(new Rectangle(435,200,70,25),s, si);
+		Push pushSi = new Push(new Rectangle(435,250,70,25),si, s);
+		Pop popSo = new Pop(new Rectangle(225,200,70,25),s, so);
+		Push pushSo = new Push(new Rectangle(225,250,70,25),so, s);
 		
 		frame.add(popSi);
 		frame.add(info);

@@ -450,9 +450,10 @@ public class GuiTree extends GuiElement implements ActionListener, MouseMotionLi
 	}
 	public void startAnimation(){
 		super.startAnimation();
-		if(pathToChanged!=null)
+		if(pathToChanged!=null){
 			setMaxFrame(pathToChanged.size()+1);
-		animation.setDelay((500*pathToChanged.size())/getMaxFrame());
+			animation.setDelay((500*pathToChanged.size())/getMaxFrame());
+		}
 
 	}
 	@Override
