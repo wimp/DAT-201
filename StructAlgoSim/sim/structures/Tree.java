@@ -154,7 +154,7 @@ public class Tree implements GraphicalStructure {
 	 */
 	public void rebuildTree(){
 		if(root == null) return;
-		Vector<TreeNode> nodes = getAllNodes(new Vector<TreeNode>(), root);
+		Vector<TreeNode> nodes = getAllNodes(new Vector<TreeNode>(), root, true);
 		setRoot(new TreeNode(nodes.remove(0).getValue().toString(), null));
 		for(TreeNode n : nodes)
 			addBreadthFirst(n.getValue().toString());
@@ -175,7 +175,7 @@ public class Tree implements GraphicalStructure {
 	 * Sets the index of each node in the order found using the current traversal method.
 	 */
 	public void setIndices(){
-		Vector<TreeNode> nodes = getAllNodes(new Vector<TreeNode>(), root);
+		Vector<TreeNode> nodes = getAllNodes(new Vector<TreeNode>(), root, false);
 		if(nodes != null){
 			int count = 0;
 			for(TreeNode n : nodes){
@@ -200,7 +200,7 @@ public class Tree implements GraphicalStructure {
 			gui.repaint();
 			return;
 		}
-		nodeQueue = getAllNodes(nodeQueue,root);
+		nodeQueue = getAllNodes(nodeQueue,root, false);
 		for(TreeNode node : nodeQueue){
 			if(node.getNumberOfChildren()<maxCluster){
 				addChildAt(node.getCurrentIndex(), value);
@@ -239,7 +239,7 @@ public class Tree implements GraphicalStructure {
 
 
 		Vector<TreeNode> changePath = new Vector<TreeNode>();
-		changePath = getAllNodes(new Vector<TreeNode>(), root);
+		changePath = getAllNodes(new Vector<TreeNode>(), root, false);
 
 		for(int i = 0; i<changePath.size(); i++){
 			if(changePath.get(i).getCurrentIndex()>index){
@@ -268,7 +268,7 @@ public class Tree implements GraphicalStructure {
 
 
 			Vector<TreeNode> changePath = new Vector<TreeNode>();
-			changePath = getAllNodes(new Vector<TreeNode>(), root);
+			changePath = getAllNodes(new Vector<TreeNode>(), root, false);
 
 			for(int i = 0; i<changePath.size(); i++){
 				if(changePath.get(i).getCurrentIndex()>index){
@@ -333,7 +333,7 @@ public class Tree implements GraphicalStructure {
 
 
 		Vector<TreeNode> changePath = new Vector<TreeNode>();
-		changePath = getAllNodes(new Vector<TreeNode>(), root);
+		changePath = getAllNodes(new Vector<TreeNode>(), root, false);
 
 		for(int i = 0; i<changePath.size(); i++){
 			if(changePath.get(i).getCurrentIndex()>index){
@@ -349,7 +349,21 @@ public class Tree implements GraphicalStructure {
 	// GET METHODS
 	private int currentIndex = 0;
 	private TreeNode currentNode = null;
-	
+	public Vector<String> getAllValuesWithNullBreadthFirst(){
+		Vector<String> values = new Vector<String>();
+		Vector<TreeNode> nodes = new Vector<TreeNode>();
+		Traversal t = getTraversal();
+		setTraversal(Traversal.BREADTHFIRST);
+		nodes = getAllNodes(new Vector<TreeNode>(), root, true);
+		setTraversal(t);
+		
+		for(TreeNode n: nodes){
+			if(n== null) values.add(null);
+			else values.add(n.getValue().toString());
+		}
+		return values;
+		
+	}
 	/**
 	 * Returns a Vector<TreeNode> with all the nodes of this tree in the order found by the current traversal rule. 
 	 * 
@@ -358,30 +372,39 @@ public class Tree implements GraphicalStructure {
 	 * @param n The root of the tree to find the nodes in.
 	 * @return A vector containing all the elements in the tree in the traversal order.
 	 */
-	public Vector<TreeNode> getAllNodes(Vector<TreeNode> nodes, TreeNode n){
+	public Vector<TreeNode> getAllNodes(Vector<TreeNode> nodes, TreeNode n, boolean withNull){
 		if(n==null) return null;
 		switch(traversal){
 		case INORDER:
-			if(n.getNumberOfChildren()>0)
-				getAllNodes(nodes, n.getChild(0));
+			for(TreeNode t : n.getChildren()){
+				if(t!=null || withNull){
+					getAllNodes(nodes, t, withNull);
+					break;
+				}
+			}
 
 			nodes.add(n);
 
-			if(n.getNumberOfChildren()>1)
-				getAllNodes(nodes, n.getChild(1));
+			for(int i = n.getChildren().size()-1; i>=0; i--){
+				if(n.getChildren().get(i)!=null || withNull){
+					getAllNodes(nodes, n.getChildren().get(i), withNull);
+					break;
+				}
+			}
+
 			break;
 		case PREORDER:
 			nodes.add(n);
 
 			for(TreeNode t : n.getChildren())
-				if(t!=null)
-					getAllNodes(nodes, t);
+				if(t!=null || withNull)
+					getAllNodes(nodes, t, withNull);
 			
 			break;
 		case POSTORDER:
 			for(TreeNode t : n.getChildren())
-				if(t!=null)
-					getAllNodes(nodes, t);
+				if(t!=null || withNull)
+					getAllNodes(nodes, t, withNull);
 
 			nodes.add(n);
 			break;
@@ -389,13 +412,13 @@ public class Tree implements GraphicalStructure {
 			nodes.add(n);
 			Vector<TreeNode> tobeadded = new Vector<TreeNode>();
 			for(TreeNode ch : n.getChildren())
-				if(ch != null)
+				if(ch != null || withNull)
 					tobeadded.add(ch);
 			while(tobeadded.size()>0){
 				nodes.add(tobeadded.firstElement());
 				
 				for(TreeNode ch : tobeadded.firstElement().getChildren())
-					if(ch != null)
+					if(ch != null || withNull)
 						tobeadded.add(ch);
 				
 				tobeadded.remove(tobeadded.firstElement());

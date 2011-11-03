@@ -15,9 +15,9 @@ import sim.structures.Variable;
  */
 public class Push implements ActionListener , GraphicalStructure{
 // Class variables //
-	Object l;
-	Variable v;
-	GuiFunction gui;
+	private Object l;
+	private Variable v;
+	private GuiFunction gui;
 
 // Getters and setters //
 	/**

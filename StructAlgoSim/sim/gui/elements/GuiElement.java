@@ -13,7 +13,7 @@ import javax.swing.Timer;
 @SuppressWarnings("serial")
 public abstract class GuiElement extends JPanel{
 // Class variables //
-	Timer animation;
+	protected Timer animation;
 	public Timer getAnimation() {
 		return animation;
 	}
@@ -23,7 +23,7 @@ public abstract class GuiElement extends JPanel{
 		frame = 0;
 		}
 	}
-	int frame;
+	protected int frame;
 	private int maxFrame = 7;
 	
 public int getMaxFrame() {

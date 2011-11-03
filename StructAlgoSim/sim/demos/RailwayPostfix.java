@@ -36,7 +36,7 @@ public class RailwayPostfix {
 		
 		Info info = new Info(new Rectangle(10,400,700,120),text,false);
 		
-		Stack s = new Stack(new Rectangle(325,300, 70, 150));
+		Stack s = new Stack(new Rectangle(325,250, 80, 150));
 		Variable si = new Variable(new Rectangle(390,170,60,50),"#",false);
 		Variable so = new Variable(new Rectangle(275,170,60,50),"",false);
 

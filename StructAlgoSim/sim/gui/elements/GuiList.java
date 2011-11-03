@@ -174,12 +174,12 @@ public class GuiList extends GuiElement implements ActionListener, ItemListener,
 	}
 
 	private class Link {
-		Node a;
-		Node b;
-		int direction;
-		boolean circular;
+		private Node a;
+		private Node b;
+		private int direction;
+		private boolean circular;
 
-		Color c = Color.BLACK;
+		private Color c = Color.BLACK;
 
 		public Link(Node a, Node b, int direction, boolean circular) {
 			this.a = a;

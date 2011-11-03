@@ -21,12 +21,12 @@ import sim.structures.Variable;
  */
 public class Insert implements ActionListener , GraphicalStructure {
 	// Class variables //
-	Object l;
-	Variable v;
-	Variable i;
-	GuiFunction gui;
-	boolean insertAfterElement;
-	String buttonText = "Insert Before";
+	private Object l;
+	private Variable v;
+	private Variable i;
+	private GuiFunction gui;
+	private boolean insertAfterElement;
+	private String buttonText = "Insert Before";
 
 	// Getters and setters //
 	/**

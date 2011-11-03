@@ -15,10 +15,10 @@ import javax.swing.Timer;
 @SuppressWarnings("serial")
 public class GuiQueue extends GuiElement implements ActionListener{
 	// Class variables //
-	QueuePanel queuePanel;
-	boolean removed;
-	boolean added;
-	String recent;
+	private QueuePanel queuePanel;
+	private boolean removed;
+	private boolean added;
+	private String recent;
 	// Getters and setters //
 	public void setAdded(String changed){
 		added = true;

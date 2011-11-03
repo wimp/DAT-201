@@ -15,14 +15,14 @@ import sim.structures.Tree;
 import sim.structures.Variable;
 
 public class Set implements ActionListener , GraphicalStructure{
-	Variable source;
-	Variable i;
-	Object target;
-	boolean singleChar;
+	private Variable source;
+	private Variable i;
+	private Object target;
+	private boolean singleChar;
+	private boolean overWrite;
 
-	boolean overWrite;
-
-	GuiFunction gui;
+	private GuiFunction gui;
+	
 	public GuiElement getGuiElement(){
 		return gui;
 	}

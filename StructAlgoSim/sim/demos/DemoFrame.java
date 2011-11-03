@@ -29,21 +29,23 @@ public class DemoFrame {
 	 * Constructor.
 	 * @param title - Appending Demo-title. "StructAlgoSim Version - "+title
 	 */
-	DemoFrame(String title){
+	DemoFrame(String title, int width, int height){
 		frame = new JFrame();
 		frame.setTitle("StructAlgoSim 0.1 - "+title);
-		frame.setSize(800,550);
+		frame.setSize(width,height);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setLayout(null);
 		frame.setVisible(true);
 
 		panel = new DemoPanel();
-		panel.setLayout(null);
-		panel.setSize(800,550);
+		
 		frame.add(panel);
 	}
 
-	class DemoPanel extends JPanel{
+	private class DemoPanel extends JPanel{
+		
+		public DemoPanel(){
+			setLayout(null);
+		}
 		public void paintComponent(Graphics g){
 			super.paintComponent(g);
 			Graphics2D g2d = (Graphics2D) g;
