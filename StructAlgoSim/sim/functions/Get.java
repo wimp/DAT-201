@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
 
 import sim.gui.elements.GuiElement;
+import sim.gui.elements.GuiElement.GraphicalStructure;
 import sim.gui.elements.GuiFunction;
 import sim.structures.Array;
 import sim.structures.LinkedList;
@@ -17,7 +18,7 @@ import sim.structures.Variable;
  * The Source object can be a {@link Variable}, {@link LinkedList}, {@link Array} or {@link Tree}
  * The target can only be a {@link Variable}
  */
-public class Get implements ActionListener{
+public class Get implements ActionListener , GraphicalStructure{
 
 	Variable i;
 	Variable target;

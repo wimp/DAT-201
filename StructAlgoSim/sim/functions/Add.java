@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
 
 import sim.gui.elements.GuiElement;
+import sim.gui.elements.GuiElement.GraphicalStructure;
 import sim.gui.elements.GuiFunction;
 import sim.structures.Array;
 import sim.structures.LinkedList;
@@ -17,7 +18,7 @@ import sim.structures.Variable;
 /**
  * Add - Instances of this class is used with structures such as linked-list or array to add an element to the end. (LIFO)
  */
-public class Add implements ActionListener {
+public class Add implements ActionListener , GraphicalStructure{
 	// Class variables //
 	Object l;
 	Variable v;

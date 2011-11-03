@@ -16,14 +16,15 @@ public class RailwayPostfix {
 
 	}
 	public RailwayPostfix(){
-		DemoFrame frame = new DemoFrame("infix to postfix using railway algorithm");	
+		DemoFrame frame = new DemoFrame("Infix to postfix using railway algorithm");	
 		
 		InfoPanel title = new InfoPanel(new Rectangle(10,10,700,20),"Railway Algorithm",false);
 		String text = "The Railway algorithm is useful for generating pre- and postfix expressions for easier computing. \n" +
 				"To use this demo with the infix expression given, do the following: \n\n" +
 				"" +
 				"Press the right 'Push' to Push # on to the stack. This is the 'Stack empty' testing char.\n" +
-				"Press the right 'Get' to get the first character from infix. Since this is an operand we can go ahead and press the middle and then the left Get to move it to the postfix textfield.\n" +
+				"Press the right 'Get' to get the first character from infix. Since this is an operand we can go ahead and press " +
+				"the middle and then the left Get to move it to the postfix textfield.\n" +
 				"Now press the right get. Since this is an operator and there are no operators on the stack, Push it to the stack.\n" +
 				"Get the next char and move the operand to the postfix area.\n" +
 				"Get the next char. Since * has a higher mathematical priority than + we push it on to the stack and get the next character.\n" +

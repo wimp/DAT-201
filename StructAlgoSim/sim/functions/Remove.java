@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import sim.gui.elements.GuiElement;
+import sim.gui.elements.GuiElement.GraphicalStructure;
 import sim.gui.elements.GuiFunction;
 import sim.structures.LinkedList;
 import sim.structures.Queue;
@@ -14,7 +15,7 @@ import sim.structures.Variable;
 /**
  * Remove - Instances of this class is used with structures such as linked-list or array to remove an element at the index i.
  */
-public class Remove implements ActionListener {
+public class Remove implements ActionListener , GraphicalStructure {
 	// Class variables //
 	Object l;
 	Variable v;

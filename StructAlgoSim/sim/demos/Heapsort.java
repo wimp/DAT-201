@@ -54,9 +54,8 @@ public class Heapsort {
 
 		h.setMax(false);
 
-		//Tree t = new Tree(new Rectangle(200,100, 475, 300), true);
 		Variable v = new Variable(new Rectangle(225,310, 90, 25), "output", true);
-		Variable i = new Variable(new Rectangle(300,10, 70, 25), "0", false);
+		Variable i = new Variable(new Rectangle(220,275, 70, 25), "0", false);
 		Remove r = new Remove(new Rectangle(220, 275, 100,25), h, v, i);
 		Queue q = new Queue(new Rectangle(20, 340, 350, 175));	
 		Add p = new Add(new Rectangle(100, 275, 100,25), q,v);

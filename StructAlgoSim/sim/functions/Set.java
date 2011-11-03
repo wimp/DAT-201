@@ -7,13 +7,14 @@ import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
 
 import sim.gui.elements.GuiElement;
+import sim.gui.elements.GuiElement.GraphicalStructure;
 import sim.gui.elements.GuiFunction;
 import sim.structures.Array;
 import sim.structures.LinkedList;
 import sim.structures.Tree;
 import sim.structures.Variable;
 
-public class Set implements ActionListener{
+public class Set implements ActionListener , GraphicalStructure{
 	Variable source;
 	Variable i;
 	Object target;

@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import sim.gui.elements.GuiElement;
+import sim.gui.elements.GuiElement.GraphicalStructure;
 import sim.gui.elements.GuiFunction;
 import sim.structures.Stack;
 import sim.structures.Variable;
@@ -12,7 +13,7 @@ import sim.structures.Variable;
 /**
  * Push - Instances of this class is used with structures such as stack to add an element to the top. (LIFO)
  */
-public class Push implements ActionListener{
+public class Push implements ActionListener , GraphicalStructure{
 // Class variables //
 	Object l;
 	Variable v;

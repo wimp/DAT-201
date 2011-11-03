@@ -17,14 +17,7 @@ import sim.functions.Push;
 import sim.functions.Remove;
 import sim.functions.Set;
 import sim.gui.elements.GuiElement;
-import sim.structures.Array;
-import sim.structures.Heap;
-import sim.structures.InfoPanel;
-import sim.structures.LinkedList;
-import sim.structures.Queue;
-import sim.structures.Stack;
-import sim.structures.Tree;
-import sim.structures.Variable;
+import sim.gui.elements.GuiElement.GraphicalStructure;
 /**
  * DemoFrame - All programatical demos should have an instance of DemoFrame instead of JFrame for similar appearance plus easier adding. Using DemoFrame lets you add the element instead of the GuiElement to the frame. Add each element as you would add a JLabel or JButton to a JFrame.
  */
@@ -33,7 +26,7 @@ public class DemoFrame {
 	DemoPanel panel;
 
 	/**
-	 * Constructor
+	 * Constructor.
 	 * @param title - Appending Demo-title. "StructAlgoSim Version - "+title
 	 */
 	DemoFrame(String title){
@@ -57,7 +50,6 @@ public class DemoFrame {
 			g2d.setColor(Color.gray);
 
 			for(int i = 0; i<links.size();i++){
-				System.out.println("Drawing "+i);
 				if(links.get(i) != null && links.get(i).p1 != null){
 					g2d.drawLine(links.get(i).p1.x, links.get(i).p1.y, links.get(i).p2.x, links.get(i).p2.y);
 					g2d.drawLine(links.get(i).p2.x, links.get(i).p2.y, links.get(i).p3.x, links.get(i).p3.y);
@@ -66,55 +58,24 @@ public class DemoFrame {
 			}
 		}
 	}
-	ArrayList<GuiElement> guiElements = new ArrayList<GuiElement>();
 	ArrayList<Object> elements = new ArrayList<Object>();
-
 	/**
-	 * Internal element adding handler
-	 * @param guiElement
-	 * @param element2 
+	 * Gets the GuiElement of an object.
+	 * @param element The element to get the GuiElement from.
 	 */
-	private void addElement(GuiElement guiElement, Object element){
-		panel.add(guiElement);
-		guiElements.add(guiElement);
-		elements.add(element);
+	private GuiElement getGuiElement(Object element){
+		if(element instanceof GraphicalStructure){
+			return ((GraphicalStructure)element).getGuiElement();
+		}
+		else return null;
 	}
-
 	/**
 	 * Adds elements to working frame and stores them for later link processing
-	 * @param element
+	 * @param element to be added to the frame.
 	 */
 	public void add(Object element){
-		if(element instanceof Array)
-			addElement(((Array) element).getGuiElement(), element);
-		else if(element instanceof Heap)
-			addElement(((Heap) element).getGuiElement(), element);
-		else if(element instanceof InfoPanel)
-			addElement(((InfoPanel) element).getGuiElement(), element);
-		else if(element instanceof LinkedList)
-			addElement(((LinkedList) element).getGuiElement(), element);
-		else if(element instanceof Queue)
-			addElement(((Queue) element).getGuiElement(), element);
-		else if(element instanceof Stack)
-			addElement(((Stack) element).getGuiElement(), element);
-		else if(element instanceof Tree)
-			addElement(((Tree) element).getGuiElement(), element);
-		else if(element instanceof Variable)
-			addElement(((Variable) element).getGuiElement(), element);
-		else if(element instanceof Add)
-			addElement(((Add) element).getGuiElement(), element);
-		else if(element instanceof Get)
-			addElement(((Get) element).getGuiElement(), element);
-		else if(element instanceof Insert)
-			addElement(((Insert) element).getGuiElement(), element);
-		else if(element instanceof Pop)
-			addElement(((Pop) element).getGuiElement(), element);
-		else if(element instanceof Push)
-			addElement(((Push) element).getGuiElement(), element);
-		else if(element instanceof Remove)
-			addElement(((Remove) element).getGuiElement(), element);
-		else if(element instanceof Set)
-			addElement(((Set) element).getGuiElement(), element);
+		elements.add(element);
+		panel.add(getGuiElement(element));
 	}
 
 	ArrayList<Link> links = new ArrayList<Link>();
@@ -123,7 +84,6 @@ public class DemoFrame {
 	 * Creates all the links from the elements added
 	 */
 	private void createLinks(){
-//		System.out.println("Creating links");
 		for(int i = 0; i<elements.size();i++){
 			//Determine links
 			Object element = elements.get(i);
@@ -140,10 +100,8 @@ public class DemoFrame {
 
 				link.calculate();
 				links.add(link);
-				System.out.println(links.size());
 			}
 		}
-		System.out.println("Link size: "+links.size());
 	}
 
 
@@ -152,43 +110,10 @@ public class DemoFrame {
 	 * @param element
 	 * @return
 	 */
-	private GuiElement getGuiElement(Object element){
-		if(element instanceof Array)
-			return(((Array) element).getGuiElement());
-		else if(element instanceof Heap)
-			return(((Heap) element).getGuiElement());
-		else if(element instanceof InfoPanel)
-			return(((InfoPanel) element).getGuiElement());
-		else if(element instanceof LinkedList)
-			return(((LinkedList) element).getGuiElement());
-		else if(element instanceof Queue)
-			return(((Queue) element).getGuiElement());
-		else if(element instanceof Stack)
-			return(((Stack) element).getGuiElement());
-		else if(element instanceof Tree)
-			return(((Tree) element).getGuiElement());
-		else if(element instanceof Variable)
-			return(((Variable) element).getGuiElement());
-		else if(element instanceof Add)
-			return(((Add) element).getGuiElement());
-		else if(element instanceof Get)
-			return(((Get) element).getGuiElement());
-		else if(element instanceof Insert)
-			return(((Insert) element).getGuiElement());
-		else if(element instanceof Pop)
-			return(((Pop) element).getGuiElement());
-		else if(element instanceof Push)
-			return(((Push) element).getGuiElement());
-		else if(element instanceof Remove)
-			return(((Remove) element).getGuiElement());
-		else if(element instanceof Set)
-			return(((Set) element).getGuiElement());
-		else 
-			return null;
-	}
 	private ArrayList<Object> getSubElements(Object element) {
 		ArrayList<Object> subElements = new ArrayList<Object>();
 		if(element instanceof Add){
+			if(((Add)element).getIndexVariable() != null) 
 			subElements.add(((Add)element).getIndexVariable());
 			subElements.add(((Add)element).getSourceVariable());
 			subElements.add(((Add)element).getTarget());
@@ -213,11 +138,13 @@ public class DemoFrame {
 			subElements.add(((Push)element).getTarget());
 		}
 		else if(element instanceof Remove){
+			if(((Remove)element).getIndexVariable() != null) 
 			subElements.add(((Remove)element).getIndexVariable());
 			subElements.add(((Remove)element).getTargetVariable());
 			subElements.add(((Remove)element).getSource());
 		}
 		else if(element instanceof Set){
+			if(((Set)element).getIndexVariable() != null) 
 			subElements.add(((Set)element).getIndexVariable());
 			subElements.add(((Set)element).getSourceVariable());
 			subElements.add(((Set)element).getTarget());
@@ -236,6 +163,8 @@ public class DemoFrame {
 		protected Point			p4;
 
 		void calculate(){
+			if(fromGui ==null || toGui == null) return;
+			
 			int fromX 		= fromGui.getX();
 			int fromY 		= fromGui.getY();
 			int fromWidth 	= fromGui.getWidth();
@@ -247,19 +176,19 @@ public class DemoFrame {
 			int toHeight 	= toGui.getHeight();
 
 			if(fromX+fromWidth < toX){ // 1st element is to the left of 2nd element
-				int middleOfElements = toX - ((toX - (fromX + fromWidth)) / 2);
-				p1 = new Point(fromX+fromWidth,fromY + (fromHeight / 2));
-				p2 = new Point(middleOfElements,p1.y);
-				p3 = new Point(middleOfElements,toY + (toHeight / 2));
-				p4 = new Point(toX,p3.y);
+					int middleOfElements = toX - ((toX - (fromX + fromWidth)) / 2);
+					p1 = new Point(fromX+fromWidth,fromY + (fromHeight / 2));
+					p2 = new Point(middleOfElements,p1.y);
+					p3 = new Point(middleOfElements,toY + (toHeight / 2));
+					p4 = new Point(toX,p3.y);
 
 
 			}else if(fromX > toX+toWidth){ // 1st element is to the right of 2nd element
-				int middleOfElements = fromX - ((fromX - (toX + toWidth)) / 2);
-				p1 = new Point(toX+toWidth,toY + (toHeight / 2));
-				p2 = new Point(middleOfElements,p1.y);
-				p3 = new Point(middleOfElements,fromY + (fromHeight / 2));
-				p4 = new Point(fromX,p3.y);
+					int middleOfElements = fromX - ((fromX - (toX + toWidth)) / 2);
+					p1 = new Point(toX+toWidth,toY + (toHeight / 2));
+					p2 = new Point(middleOfElements,p1.y);
+					p3 = new Point(middleOfElements,fromY + (fromHeight / 2));
+					p4 = new Point(fromX,p3.y);
 
 
 			}else{ // The elements are above or below each other
@@ -281,7 +210,6 @@ public class DemoFrame {
 			}
 		}
 	}
-
 	public void validate(){
 		createLinks();
 		frame.validate();

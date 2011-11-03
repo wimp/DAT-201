@@ -512,49 +512,47 @@ public class GuiList extends GuiElement implements ActionListener, ItemListener,
 				drawNode(g2d, n);
 				if (n.isAdded())
 					addAnimation(n);
-				
-				Color c = g2d.getColor();
-				if(n==selected)
-				if(!show){
-					int v=g2d.getFontMetrics(getFont()).charsWidth(n.getValue().toString().toCharArray(), 0, n.getValue().toString().toCharArray().length)+20;
-					if(v<drawNodeWidth) v = drawNodeWidth;
-					g2d.setColor(GuiSettings.LISTCONTENTCOLOR);
-
-
-					g2d.fillRoundRect((2 * (n.getIndex() + 1)) * drawNodeWidth, height / 2
-							- drawNodeHeight / 2, v, drawNodeHeight, 5, 5);
-					g2d.setColor(c);
-					g2d.drawRoundRect((2 *(n.getIndex() + 1)) * drawNodeWidth, height / 2
-							- drawNodeHeight / 2, v, drawNodeHeight, 5, 5);
-					g2d.drawString(n.getValue().toString(),(2 * (n.getIndex() + 1)) * drawNodeWidth+drawNodeWidth/6, height / 2
-							+ drawNodeHeight / 6);
-					selected = null;
-				}
-				else{
-					if (n.isAdded())
-						g2d.setColor(GuiSettings.LISTADDEDCOLOR);
-					else if (n==removed)
-						g2d.setColor(GuiSettings.LISTREMOVEDCOLOR);
-					else if (n.getNext().getIndex() < n.getIndex()
-							|| n.getNext() == n)
-						g2d.setColor(GuiSettings.LISTLASTCOLOR);
-					else if (n.getIndex() == 0)
-						g2d.setColor(GuiSettings.LISTHEADCOLOR);
-					else
-						g2d.setColor(GuiSettings.LISTNODECOLOR);
-					
-					g2d.fillOval((2 * (n.getIndex() + 1)) * drawNodeWidth, height / 2
-							- drawNodeHeight / 2, drawNodeWidth, drawNodeHeight);
-					g2d.setColor(c);
-					g2d.drawOval((2 * (n.getIndex() + 1)) * drawNodeWidth, height / 2
-							- drawNodeHeight / 2, drawNodeWidth, drawNodeHeight);
-					g2d.drawString(((Integer)((n.getIndex() + 1))).toString(), (2 * (n.getIndex() + 1))
-							* drawNodeWidth+drawNodeWidth/3, height / 2+drawNodeHeight/8);
-					selected = null;
-				}
-				g2d.setColor(c);
 			}
-			
+			Color c = g2d.getColor();
+			if(selected!= null)
+			if(!show){
+				int v=g2d.getFontMetrics(getFont()).charsWidth(selected.getValue().toString().toCharArray(), 0, selected.getValue().toString().toCharArray().length)+20;
+				if(v<drawNodeWidth) v = drawNodeWidth;
+				g2d.setColor(GuiSettings.LISTCONTENTCOLOR);
+
+
+				g2d.fillRoundRect((2 * (selected.getIndex() + 1)) * drawNodeWidth, height / 2
+						- drawNodeHeight / 2, v, drawNodeHeight, 5, 5);
+				g2d.setColor(c);
+				g2d.drawRoundRect((2 *(selected.getIndex() + 1)) * drawNodeWidth, height / 2
+						- drawNodeHeight / 2, v, drawNodeHeight, 5, 5);
+				g2d.drawString(selected.getValue().toString(),(2 * (selected.getIndex() + 1)) * drawNodeWidth+drawNodeWidth/6, height / 2
+						+ drawNodeHeight / 6);
+				selected = null;
+			}
+			else{
+				if (selected.isAdded())
+					g2d.setColor(GuiSettings.LISTADDEDCOLOR);
+				else if (selected==removed)
+					g2d.setColor(GuiSettings.LISTREMOVEDCOLOR);
+				else if (selected.getNext().getIndex() < selected.getIndex()
+						|| selected.getNext() == selected)
+					g2d.setColor(GuiSettings.LISTLASTCOLOR);
+				else if (selected.getIndex() == 0)
+					g2d.setColor(GuiSettings.LISTHEADCOLOR);
+				else
+					g2d.setColor(GuiSettings.LISTNODECOLOR);
+				
+				g2d.fillOval((2 * (selected.getIndex() + 1)) * drawNodeWidth, height / 2
+						- drawNodeHeight / 2, drawNodeWidth, drawNodeHeight);
+				g2d.setColor(c);
+				g2d.drawOval((2 * (selected.getIndex() + 1)) * drawNodeWidth, height / 2
+						- drawNodeHeight / 2, drawNodeWidth, drawNodeHeight);
+				g2d.drawString(((Integer)((selected.getIndex() + 1))).toString(), (2 * (selected.getIndex() + 1))
+						* drawNodeWidth+drawNodeWidth/3, height / 2+drawNodeHeight/8);
+				selected = null;
+			}
+			g2d.setColor(c);
 			if (removed != null) {
 				removeAnimation(removed);
 				drawNode(g2d, removed);

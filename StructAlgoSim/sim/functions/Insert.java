@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
 
 import sim.gui.elements.GuiElement;
+import sim.gui.elements.GuiElement.GraphicalStructure;
 import sim.gui.elements.GuiFunction;
 import sim.structures.Array;
 import sim.structures.Heap;
@@ -18,7 +19,7 @@ import sim.structures.Variable;
  * Insert - Instances of this class is used with structures such as {@link Tree}, {@link Heap} or {@link LinkedList}
  * It has a source object, an index object and a toggle that decides if it inserts before or after the given index.
  */
-public class Insert implements ActionListener {
+public class Insert implements ActionListener , GraphicalStructure {
 	// Class variables //
 	Object l;
 	Variable v;

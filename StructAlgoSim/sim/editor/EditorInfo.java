@@ -131,7 +131,9 @@ public class EditorInfo extends JPanel{
 						"\n" +
 						"Editor use:\n" +
 						"Place in the desired position, then select one- or two-dimensional as well as size of the two dimensions." +
-						"To delete an element, simply set the value blank. " +
+						"To delete an element, simply set the value blank. Indexing the array works like this: a single number like 'row'" +
+								"will get an element from a one dimensional array, two numbers separated by a comma  like 'row,column' will access" +
+								" elements in a two-dimensional array."+
 						"\nCan be linked with:\n -Set\n -Get. "
 					;
 				text.setText(t);
