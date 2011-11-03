@@ -278,7 +278,7 @@ public class GuiList extends GuiElement implements ActionListener, ItemListener,
 				g2d.setColor(c);
 				g2d.drawRoundRect((2 * indexOfNode) * drawNodeWidth, height / 2
 						- drawNodeHeight / 2, v, drawNodeHeight, 5, 5);
-				g2d.drawString(n.getValue().toString(),(2 * indexOfNode) * drawNodeWidth+drawNodeWidth/6, height / 2
+				g2d.drawString(n.getValue().toString(),(2 * indexOfNode-1) * drawNodeWidth+drawNodeWidth/6, height / 2
 						+ drawNodeHeight / 6);
 			
 			}

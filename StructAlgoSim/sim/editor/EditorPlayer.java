@@ -51,6 +51,7 @@ public class EditorPlayer implements ActionListener, ChangeListener, WindowListe
 	AnimationPanel drawPanel;
 	JFrame playerFrame;
 	JButton record;
+	JButton delete;
 	JButton play;
 	JButton stop;
 	JButton pause;
@@ -91,6 +92,7 @@ public class EditorPlayer implements ActionListener, ChangeListener, WindowListe
 		play			= new JButton("Play");
 		stop 			= new JButton("Stop");
 		pause			= new JButton("Pause");
+		delete			= new JButton("Delete");
 		stepback		= new JButton("<-Step");
 		stepforward		= new JButton("Step->");
 
@@ -100,6 +102,7 @@ public class EditorPlayer implements ActionListener, ChangeListener, WindowListe
 		play.			addActionListener(this);
 		stop.			addActionListener(this);
 		pause.			addActionListener(this);
+		delete.			addActionListener(this);
 		stepback.		addActionListener(this);
 		stepforward.	addActionListener(this);
 
@@ -107,6 +110,7 @@ public class EditorPlayer implements ActionListener, ChangeListener, WindowListe
 		buttonPanel.add(play);
 		buttonPanel.add(stepback);
 		buttonPanel.add(pause);
+		buttonPanel.add(delete);
 		buttonPanel.add(stepforward);
 		buttonPanel.add(stop);
 
@@ -248,6 +252,7 @@ public class EditorPlayer implements ActionListener, ChangeListener, WindowListe
 				record.setEnabled(false);
 				play.setEnabled(false);
 				pause.setEnabled(false);
+				delete.setEnabled(false);
 				stepback.setEnabled(false);
 				stepforward.setEnabled(false);
 				
@@ -261,6 +266,7 @@ public class EditorPlayer implements ActionListener, ChangeListener, WindowListe
 			record.setEnabled(false);
 			play.setEnabled(false);
 			pause.setEnabled(true);
+			delete.setEnabled(false);
 			stepback.setEnabled(true);
 			stepforward.setEnabled(true);
 			
@@ -276,6 +282,7 @@ public class EditorPlayer implements ActionListener, ChangeListener, WindowListe
 			record.setEnabled(false);
 			play.setEnabled(true);
 			pause.setEnabled(false);
+			delete.setEnabled(true);
 			stepback.setEnabled(true);
 			stepforward.setEnabled(true);
 			
@@ -300,11 +307,15 @@ public class EditorPlayer implements ActionListener, ChangeListener, WindowListe
 			recordInfo.setText("PAUSED!  Frame #"+ drawPanel.getCurrentIndex());
 
 		}
+		else if(arg0.getSource() == delete){
+			
+		}
 		else if(arg0.getSource() == stop){
 
 			record.setEnabled(true);
 			play.setEnabled(true);
 			pause.setEnabled(false);
+			delete.setEnabled(true);
 			stepback.setEnabled(true);
 			stepforward.setEnabled(true);
 			

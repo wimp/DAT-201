@@ -210,7 +210,7 @@ class EditorFileHandling {
 					if(!el.elements.get(links[i][j]).equals(element) && el.checkCompatibility(element,el.elements.get(links[i][j])) && !(element instanceof Variable)){
 						li.to = el.elements.get(links[i][j]);
 						li.toGui = el.guiElements.get(links[i][j]);
-						li.getDirection();
+						li.makeLink();
 						el.linkys.add(li);
 						li = el.new Link();
 						li.from = element;

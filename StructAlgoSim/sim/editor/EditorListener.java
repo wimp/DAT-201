@@ -449,14 +449,16 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 			if(elementIndex != -1){
 				gui.editorPanel.remove(guiElements.get(elementIndex));
 				for(int i = 0;i < linkys.size(); i++){
-					if(linkys.get(i).from.equals(elements.get(elementIndex)) || linkys.get(i).to.equals(elements.get(elementIndex))){
+					if(linkys.get(i).from==elements.get(elementIndex) || linkys.get(i).to==elements.get(elementIndex)){
 						linkys.remove(i);
+						i--;
 					}
 				}
 				guiElements.remove(elementIndex);
 				elements.remove(elementIndex);
 
 				panel.r = null;
+				reLinkElements(linkys);
 				gui.editorPanel.validate();
 			}
 			return;
@@ -536,7 +538,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 					if(checkCompatibility(startElement,endElement)){
 						link.to = endElement;
 						link.toGui = guiElements.get(i);
-						link.getDirection();
+						link.makeLink();
 						linkys.add(link);
 						link = null;
 					}
@@ -845,6 +847,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 
 			guiElements.get(resizeElementIndex).setBounds(oldX, oldY, newWidth, newHeight);
 			resizeElementIndex = -1;
+			reLinkElements(linkys);
 			panel.repaint();
 			panel.validate();
 			gui.validate();
@@ -857,7 +860,9 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 			moveElementIndex = -1;
 			moveEndPoint.x = x;
 			moveEndPoint.y = y;
+			reLinkElements(linkys);
 		}
+
 		panel.repaint();
 
 		startElement = null;
@@ -898,8 +903,6 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 			panel.repaint();
 		}
 	}
-
-	@SuppressWarnings("deprecation")
 	@Override
 	public void mouseMoved(MouseEvent e) {
 		int x = e.getX();
@@ -1435,7 +1438,11 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 			}
 		}
 	}
-
+	private void reLinkElements(Vector<Link> links){
+		for(Link l : links){
+				l.makeLink();
+			}
+	}
 	/**
 	 * An inner class of {@link EditorListener} that contains information about the links between objects in the editor panel.
 	 * Instances of this class are added to the internal class variable {@link linkys} which is used for the drawing of links in the {@link EditorPanel}.
@@ -1452,7 +1459,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 		protected Point			p3;
 		protected Point			p4;
 
-		void getDirection(){
+		void makeLink(){
 			int fromX 		= fromGui.getX();
 			int fromY 		= fromGui.getY();
 			int fromWidth 	= fromGui.getWidth();
