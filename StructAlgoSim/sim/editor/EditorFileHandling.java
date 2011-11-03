@@ -18,7 +18,7 @@ import sim.structures.*;
 
 class EditorFileHandling {
 	private static final String MAIN_SEPARATOR 	= "#¤%";
-	private static final String SUB_SEPARATOR	= "£$€";
+	private static final String SUB_SEPARATOR	= "£€";
 	private static final String ATTR_SEPARATOR	= "µ!@";
 	private static final String BYTE_SEPARATOR	= "|";
 	
@@ -90,16 +90,17 @@ class EditorFileHandling {
 			FileReader fr 	 = new FileReader(loadFile);
 			BufferedReader r = new BufferedReader(fr);
 			String line		 = r.readLine();
+			Vector<String[][]> attributeElements = new Vector<String[][]>();
 		
 			// Main loop for looping through the lines in the file
 			while(line != null){
 				String[] loadString = line.split(MAIN_SEPARATOR);
 				String[][] attributes = new String[4][2];
+				int id = 0;
+				Rectangle bounds = null;
+				String[] boundsSection = new String[4];
 				//Loop to traverse the main sections of every line in the file
 				for(int i = 0; i < loadString.length; i++){
-					int id;
-					Rectangle bounds = null;
-					String[] boundsSection;
 					switch(i){
 					case 0:
 						// Get the id of the item
@@ -169,23 +170,31 @@ class EditorFileHandling {
 						// Get the id of the links
 						String[] linkArray = loadString[i].split(SUB_SEPARATOR);
 						for(int j = 0;j < linkArray.length;j++){
-							links[i][j] = Integer.parseInt(linkArray[j]);
+							if(linkArray[j].length() > 0)
+								links[id][j] = Integer.parseInt(linkArray[j]);
 						}
 						break;
 					case 4:
 						// Get the attributes
 						String[] attrArray = loadString[i].split(SUB_SEPARATOR);
-						String eName = loadString[2];
+//						String eName = loadString[2];
 						for(int j = 0;j < attrArray.length;j++){
-							if(eName.equals("Variable")){
+							String[] varAttr = attrArray[j].split(ATTR_SEPARATOR);
+							attributes[j][0] = varAttr[0];
+							attributes[j][1] = varAttr[1];
+							attributeElements.add(id,attributes);
+							/*if(eName.equals("Variable")){
 								String[] varAttr = attrArray[j].split(ATTR_SEPARATOR);
 								attributes[j][0] = varAttr[0];
 								attributes[j][1] = varAttr[1];
-							}
+							}else if(eName.equals("InfoPanel")){
+								
+							}*/
 						}
 						break;
 					}//End of swtich/case
 				}//End of main sections loop
+				line = r.readLine();
 			}// End of main loop
 			
 			// Handle the links between the objects //
@@ -196,6 +205,8 @@ class EditorFileHandling {
 				li.fromGui = el.guiElements.get(i);
 				
 				for(int j = 0;j < links[i].length;j++){
+					if(links[i][j] == -1) continue;
+					// Adding actual links between the objects //
 					if(!el.elements.get(links[i][j]).equals(element) && el.checkCompatibility(element,el.elements.get(links[i][j])) && !(element instanceof Variable)){
 						li.to = el.elements.get(links[i][j]);
 						li.toGui = el.guiElements.get(links[i][j]);
@@ -204,10 +215,134 @@ class EditorFileHandling {
 						li = el.new Link();
 						li.from = element;
 						li.fromGui = el.guiElements.get(i);
+					}// End of adding links
+					
+					// Making the objects fit together by setting their relationships
+					if(element instanceof Add){
+						switch(j){
+						case 0:
+							((Add) element).setTarget(el.elements.get(links[i][j]));
+							break;
+						case 1:
+							((Add) element).setSourceVariable((Variable) el.elements.get(links[i][j]));
+							break;
+						case 2:
+							((Add) element).setIndexVariable((Variable) el.elements.get(links[i][j]));
+							break;
+						}
+					}else if(element instanceof Remove){
+						switch(j){
+						case 0:
+							((Remove) element).setSource(el.elements.get(links[i][j]));
+							break;
+						case 1:
+							((Remove) element).setTargetVariable((Variable) el.elements.get(links[i][j]));
+							break;
+						case 2:
+							((Remove) element).setIndexVariable((Variable) el.elements.get(links[i][j]));
+							break;
+						}
+					}else if(element instanceof Insert){
+						switch(j){
+						case 0:
+							((Insert) element).setTarget(el.elements.get(links[i][j]));
+							break;
+						case 1:
+							((Insert) element).setSourceVariable((Variable) el.elements.get(links[i][j]));
+							break;
+						case 2:
+							((Insert) element).setIndexVariable((Variable) el.elements.get(links[i][j]));
+							break;
+						}
+					}else if(element instanceof Push){
+						switch(j){
+						case 0:
+							((Push) element).setTarget(el.elements.get(links[i][j]));
+							break;
+						case 1:
+							((Push) element).setSourceVariable((Variable) el.elements.get(links[i][j]));
+							break;
+						}
+					}else if(element instanceof Pop){
+						switch(j){
+						case 0:
+							((Pop) element).setSource(el.elements.get(links[i][j]));
+							break;
+						case 1:
+							((Pop) element).setTargetVariable((Variable) el.elements.get(links[i][j]));
+							break;
+						}
+					}else if(element instanceof Get){
+						switch(j){
+						case 0:
+							((Get) element).setSource(el.elements.get(links[i][j]));
+							break;
+						case 1:
+							((Get) element).setTarget((Variable) el.elements.get(links[i][j]));
+							break;
+						case 2:
+							((Get) element).setIndexVariable((Variable) el.elements.get(links[i][j]));
+							break;
+						}
+					}else if(element instanceof Set){
+						switch(j){
+						case 0:
+							((Set) element).setTarget(el.elements.get(links[i][j]));
+							break;
+						case 1:
+							((Set) element).setSourceVariable((Variable) el.elements.get(links[i][j]));
+							break;
+						case 2:
+							((Set) element).setIndexVariable((Variable) el.elements.get(links[i][j]));
+							break;
+						}
+					}// End of object relationship routine
+				}
+			}// End of link handling //
+			
+			// Handle object attributes //
+			for(int i = 0;i < el.elements.size();i++){
+				if(attributeElements.get(i) != null){
+					Object element = el.elements.get(i); 
+					if(element instanceof Variable){
+						for(int j = 0;j < attributeElements.get(i).length;j++){
+							if(attributeElements.get(j)[j][0] == null)
+								continue;
+							
+							if(attributeElements.get(i)[j][0].equals("value"))
+								((Variable) element).setValue(attributeElements.get(i)[j][1]);
+							else if(attributeElements.get(i)[j][0].equals("editable"))
+								((Variable) element).setEditable(Boolean.parseBoolean(attributeElements.get(i)[j][1]));
+						}
+					}else if(element instanceof InfoPanel){
+						for(int j = 0;j < attributeElements.get(i).length;j++){
+							if(attributeElements.get(j)[j][0] == null)
+								continue;
+							
+							if(attributeElements.get(j)[j][0].equals("value"))
+								((InfoPanel) element).setValue(attributeElements.get(i)[j][1]);
+							else if(attributeElements.get(i)[j][0].equals("editable"))
+								((InfoPanel) element).setEditable(Boolean.parseBoolean(attributeElements.get(i)[j][1]));
+						}
+					}else if(element instanceof Set){
+						for(int j = 0;j < attributeElements.get(i).length;j++){
+							if(attributeElements.get(j)[j][0] == null)
+								continue;
+							
+							if(attributeElements.get(j)[j][0].equals("singleChar"))
+								((Set) element).setSingleChar(Boolean.parseBoolean(attributeElements.get(i)[j][1]));
+						}
+					}else if(element instanceof Get){
+						for(int j = 0;j < attributeElements.get(i).length;j++){
+							if(attributeElements.get(j)[j][0] == null)
+								continue;
+							
+							if(attributeElements.get(j)[j][0].equals("singleChar"))
+								((Get) element).setSingleChar(Boolean.parseBoolean(attributeElements.get(i)[j][1]));
+						}
 					}
 				}
-			}
-			// End of link handling //
+			}// End of attributes handling
 		}catch(Exception e){
 			e.printStackTrace();
 		}
