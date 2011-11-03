@@ -207,7 +207,7 @@ class EditorFileHandling {
 					if(!el.elements.get(links[i][j]).equals(element) && el.checkCompatibility(element,el.elements.get(links[i][j])) && !(element instanceof Variable)){
 						li.to = el.elements.get(links[i][j]);
 						li.toGui = el.guiElements.get(links[i][j]);
-						li.getDirection();
+						li.makeLink();
 						el.linkys.add(li);
 						li = el.new Link();
 						li.from = element;
@@ -427,15 +427,17 @@ class EditorFileHandling {
 			attr += "value"+ATTR_SEPARATOR+((Variable) element).getValue();
 			attr += SUB_SEPARATOR;
 			attr += "editable"+ATTR_SEPARATOR+((Variable) element).getEditable();
-		}else if(element instanceof InfoPanel){
+		}else if(element instanceof Info){
 			attr += "value"+ATTR_SEPARATOR;
-			byte[] b = ((InfoPanel) element).getValue().getBytes(Charset.forName("ISO-8859-1"));
+
+			byte[] b = ((Info) element).getValue().getBytes(Charset.forName("ISO-8859-1"));
+
 			for(int i = 0;i < b.length;i++){
 				attr += b[i] + BYTE_SEPARATOR;
 			}
 			attr += SUB_SEPARATOR;
 			attr += "editable" + ATTR_SEPARATOR;
-			attr += Boolean.toString(((InfoPanel) element).getEditable());
+			attr += Boolean.toString(((Info) element).getEditable());
 		}else if(element instanceof Get){
 			attr += "singleChar"+ATTR_SEPARATOR;
 			attr += Boolean.toString(((Get) element).getSingleChar());

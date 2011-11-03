@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.Point;
 import java.awt.Rectangle;
 
 import javax.swing.BorderFactory;
@@ -23,6 +24,7 @@ import sim.gui.elements.GuiElement;
 import sim.gui.elements.GuiSettings;
 import sim.structures.Array;
 import sim.structures.Heap;
+import sim.structures.Info;
 import sim.structures.LinkedList;
 import sim.structures.Queue;
 import sim.structures.Stack;
@@ -376,7 +378,23 @@ public class EditorInfo extends JPanel{
 						;
 				text.setText(t);
 				break;
+			case INFO:
+				Info in = new Info(new Rectangle(50,50,80,30));
+				in.getGuiElement().setPreferredSize(new Dimension(100, 30));
+				demoPanel.setLayout(new FlowLayout());
+				demoPanel.add(in.getGuiElement());
+				t = 
+						"Structure information:\n" +
+						"An area in which to put text."+
+						"\n" +
+						"\n" +
+						"Editor use:\n" +
+						"Place at desired position and enter desired text."
+						;
+				text.setText(t);
+				break;
 			}
+			text.setCaretPosition(0);
 		}
 	}
 }
