@@ -54,6 +54,7 @@ public class EditorInfo extends JPanel{
 		QUEUE,
 		TREE,
 		VARIABLE,
+		INFO,
 		//Functions
 		ADD,
 		INSERT,
