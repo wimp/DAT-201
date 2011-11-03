@@ -6,11 +6,12 @@ import java.util.Vector;
 
 import sim.gui.elements.GuiElement;
 import sim.gui.elements.GuiQueue;
+import sim.gui.elements.GuiElement.GraphicalStructure;
 
 /**
  * A class representing a queue. Its visual component is the GuiQueue.
  */
-public class Queue {
+public class Queue implements GraphicalStructure{
 	private Vector<Object> data;
 	private GuiQueue gui;
 	public GuiElement getGuiElement(){

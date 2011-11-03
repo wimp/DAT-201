@@ -4,13 +4,14 @@ import java.awt.Rectangle;
 
 import sim.gui.elements.GuiElement;
 import sim.gui.elements.GuiVariable;
+import sim.gui.elements.GuiElement.GraphicalStructure;
 
 /**
  * A class representing a variable. Its visual component is the GuiVariable.
  * This class is used to hold data, usually as the output/input or index to functions
  *  such as Add, Insert, Get etc. 
  */
-public class Variable {
+public class Variable implements GraphicalStructure{
 
 	private GuiVariable gui;
 	

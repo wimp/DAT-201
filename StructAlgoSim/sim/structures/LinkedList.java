@@ -4,11 +4,12 @@ import java.awt.Rectangle;
 import java.util.Vector;
 
 import sim.gui.elements.GuiList;
+import sim.gui.elements.GuiElement.GraphicalStructure;
 
 /**
  * A class representing a linked list. Its visual component is the GuiList.
  */
-public class LinkedList {
+public class LinkedList implements GraphicalStructure{
 	private GuiList gui;
 	private Vector<Node> v = new Vector<Node>();
 	private Node dummy;

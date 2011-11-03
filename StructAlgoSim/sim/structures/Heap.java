@@ -4,10 +4,11 @@ import java.awt.Rectangle;
 import java.util.Vector;
 
 import sim.gui.elements.GuiTree;
+import sim.gui.elements.GuiElement.GraphicalStructure;
 /**
  * A class representing an heap. Its visual component is the GuiTree.
  */
-public class Heap extends Tree{
+public class Heap extends Tree implements GraphicalStructure{
 
 
 	public enum CompareKey{

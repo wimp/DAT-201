@@ -3,12 +3,13 @@ package sim.structures;
 import java.awt.Rectangle;
 
 import sim.gui.elements.GuiInfo;
+import sim.gui.elements.GuiElement.GraphicalStructure;
 
 /**
  * Informationpanel using a JTextArea. Useful for displaying demo-usage info and various algorithm explanations
  *
  */
-public class InfoPanel {
+public class InfoPanel  implements GraphicalStructure{
 	GuiInfo gui;
 	
 	/**
