@@ -37,33 +37,34 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class EditorPlayer implements ActionListener, ChangeListener, WindowListener {
 
-	static final int FPS_MIN = 1;
-	static final int FPS_MAX = 4;
-	static final int FPS_INIT = 2;    //initial frames per second
-	static final int MAX_FRAMES = 2000;
-	static final int MAX_TEMP_FRAMES = 5;
-	static final int MAX_WIDTH = 1000;
-	static final int MAX_HEIGHT = 1000;
+	private static final int FPS_MIN = 1;
+	private static final int FPS_MAX = 4;
+	private static final int FPS_INIT = 2;    //initial frames per second
+	private static final int MAX_FRAMES = 2000;
+	private static final int MAX_TEMP_FRAMES = 5;
+	private static final int MAX_WIDTH = 1000;
+	private static final int MAX_HEIGHT = 1000;
 
 	private int framesPerSecond;
 	private boolean recording;
-	JPanel editorPanel;
-	AnimationPanel drawPanel;
-	JFrame playerFrame;
-	JButton record;
-	JButton delete;
-	JButton play;
-	JButton stop;
-	JButton pause;
-	JButton stepback;
-	JButton stepforward;
-	JSlider fps;
-	JLabel recordInfo;
-	JMenuBar menu;
-	JMenu file;
-	JMenuItem open;
+	private JPanel editorPanel;
+	private AnimationPanel drawPanel;
+	private JFrame playerFrame;
+	private JButton record;
+	private JButton delete;
+	private JButton play;
+	private JButton stop;
+	private JButton pause;
+	private JButton stepback;
+	private JButton stepforward;
+	private JSlider fps;
+	private JLabel recordInfo;
+	private JMenuBar menu;
+	private JMenu file;
+	private JMenuItem open;
 	
-	Timer animTimer;
+	private Timer animTimer;
+	
 	private void initMenu(){
 		file = new JMenu("File");
 		open = new JMenuItem("Open");
@@ -393,7 +394,7 @@ public class EditorPlayer implements ActionListener, ChangeListener, WindowListe
 
 	}
 	@SuppressWarnings("serial")
-	class AnimationPanel extends JPanel{
+	private class AnimationPanel extends JPanel{
 
 		private int currentIndex;
 		public int getCurrentIndex() {

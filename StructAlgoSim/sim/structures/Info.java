@@ -10,7 +10,7 @@ import sim.gui.elements.GuiElement.GraphicalStructure;
  *
  */
 public class Info  implements GraphicalStructure{
-	GuiInfo gui;
+	private GuiInfo gui;
 	
 	/**
 	 * Returns the GuiElement component for adding to JFrame/JPanel

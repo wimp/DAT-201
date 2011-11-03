@@ -7,19 +7,14 @@ import javax.swing.JButton;
 
 /**
  * The graphical part of any function type object such as {@link sim.functions.Pop} and {@link sim.functions.Push}
- * @author 
  */
 @SuppressWarnings("serial")
 public class GuiFunction extends GuiElement{
-// Class variables //
 	private JButton b;
 	
-// Getters and setters //
 	public JButton getButton(){
 		return b;
 	}
-	
-// Class constructor //
 	/**
 	 * Creates and adds a button to itself using the function name provided in {@param s}
 	 * @param bounds - The size and placement of the graphical element

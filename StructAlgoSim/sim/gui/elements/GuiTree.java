@@ -31,19 +31,18 @@ import sim.structures.Tree.TreeNode;
 
 @SuppressWarnings("serial")
 public class GuiTree extends GuiElement implements ActionListener, MouseMotionListener{
-	boolean isheap;
+	private boolean isheap;
 	private Point mousePos = new Point(0,0);
 	private boolean show;
-	public void showValues(boolean b){
-		show = b;
-	}
-	Tree tree;
-	TreePanel treePanel;
+
+	private Tree tree;
+	private TreePanel treePanel;
 
 	private TreeNode changed;
 	public TreeNode getChanged() {
 		return changed;
-	}
+	}	
+
 	public void setChanged(TreeNode changed) {
 		this.changed = changed;
 	}
@@ -54,26 +53,29 @@ public class GuiTree extends GuiElement implements ActionListener, MouseMotionLi
 	}
 	public void setPathToChanged(Vector<TreeNode> pathToChanged) {
 		this.pathToChanged = pathToChanged;
+	}	
+	public void showValues(boolean b){
+		show = b;
 	}
 	//TREE
-	JTextField nval;
-	ButtonGroup bg;
-	JRadioButton nary;
-	JRadioButton bin;
-	ButtonGroup trg;
-	JRadioButton inorder;
-	JRadioButton preorder;
-	JRadioButton postorder;
-	JRadioButton breadthfirst;
-	JCheckBox showvalue;
+	private JTextField nval;
+	private ButtonGroup bg;
+	private JRadioButton nary;
+	private JRadioButton bin;
+	private ButtonGroup trg;
+	private JRadioButton inorder;
+	private JRadioButton preorder;
+	private JRadioButton postorder;
+	private JRadioButton breadthfirst;
+	private JCheckBox showvalue;
 
 	//HEAP
-	ButtonGroup bg1;
-	JRadioButton min;
-	JRadioButton max;
-	JRadioButton alpha;
-	JRadioButton num;
-	JRadioButton strlen;
+	private ButtonGroup bg1;
+	private JRadioButton min;
+	private JRadioButton max;
+	private JRadioButton alpha;
+	private JRadioButton num;
+	private JRadioButton strlen;
 
 	public GuiTree(Rectangle bounds,Heap heap){
 		super();

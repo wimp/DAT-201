@@ -18,10 +18,10 @@ import javax.swing.Timer;
 @SuppressWarnings("serial")
 public class GuiStack extends GuiElement implements ActionListener{
 	// Class variables //
-	StackPanel stackPanel;
-	boolean removed;
-	boolean added;
-	String recent;
+	private StackPanel stackPanel;
+	private boolean removed;
+	private boolean added;
+	private String recent;
 	// Getters and setters //
 
 	public GuiStack(Rectangle bounds,Vector<Object> data){
@@ -53,7 +53,7 @@ public class GuiStack extends GuiElement implements ActionListener{
 	@SuppressWarnings("unused")
 	private class StackPanel extends JPanel{
 
-		Vector<Object> data;
+		private Vector<Object> data;
 
 
 		public Vector<Object> getData() {

@@ -33,8 +33,8 @@ import sim.structures.Variable;
 
 @SuppressWarnings("serial")
 public class EditorInfo extends JPanel{
-	InfoPanel panel;
-	InfoType infotype;
+	private InfoPanel panel;
+	private InfoType infotype;
 
 	public EditorInfo(){
 		panel = new InfoPanel();
@@ -68,13 +68,10 @@ public class EditorInfo extends JPanel{
 		//Default
 		NONE	
 	}
-	public class InfoPanel extends JPanel{
-		GuiElement type;
-		InfoType info;
+	private class InfoPanel extends JPanel{
 		
 		public InfoPanel(){
 			super(new GridLayout(1,2));
-			info = InfoType.NONE;
 		}
 		public void changeInfo(InfoType infotype){
 			removeAll();

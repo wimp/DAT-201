@@ -20,10 +20,10 @@ import sim.structures.Variable;
  */
 public class Add implements ActionListener , GraphicalStructure{
 	// Class variables //
-	Object l;
-	Variable v;
-	Variable i;
-	GuiFunction gui;
+	private Object l;
+	private Variable v;
+	private Variable i;
+	private GuiFunction gui;
 
 	// Getters and setters //
 	/**

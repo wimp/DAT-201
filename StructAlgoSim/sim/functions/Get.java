@@ -20,13 +20,13 @@ import sim.structures.Variable;
  */
 public class Get implements ActionListener , GraphicalStructure{
 
-	Variable i;
-	Variable target;
-	Object source;
-	boolean singleChar;
-	boolean overWrite;
+	private Variable i;
+	private Variable target;
+	private Object source;
+	private boolean singleChar;
+	private boolean overWrite;
 
-	GuiFunction gui;
+	private GuiFunction gui;
 	/**
 	 * Returns the GuiElement component for adding to JFrame/JPanel
 	 * @return

@@ -16,7 +16,7 @@ public class GuiArray extends GuiElement implements ActionListener{
 	private Object[][] data;
 	private Object changed;
 
-	ArrayPanel panel;
+	private ArrayPanel panel;
 	public Object getChanged() {
 		return changed;
 	}
@@ -53,43 +53,6 @@ public class GuiArray extends GuiElement implements ActionListener{
 		panel.setPreferredSize(new Dimension(80 * data[0].length, getHeight()));
 		this.add(listScroller);
 	}
-	@SuppressWarnings("unused")
-	private class ArrayPanel extends JPanel{
-
-		Object[][] data;
-
-
-		public Object[][] getData() {
-			return data;
-		}
-		public void setData(Object[][] data) {
-			this.data = data;
-		}
-		public ArrayPanel(Object[][] data){
-			this.data = data;
-		}
-
-		@Override
-		public void paintComponent(Graphics g){
-			if(!GuiSettings.isAnimated && animation.isRunning()){
-				stopAnimation();
-			}
-			int elementH = GuiSettings.ARRAYELEMENTHEIGHT;
-			int elementW =80;
-			g.clearRect(0, 0, getWidth(), getHeight());
-			if(elementH*data.length>getHeight())
-				setPreferredSize(new Dimension(getWidth(), elementH*data.length));
-
-			for(int y = 0; y<data.length; y++){
-				for(int x = 0; x<data[y].length; x++){
-					drawElement(g,data[y][x],x,y,  elementW, elementH, 0);
-				}
-			}
-			revalidate();
-		}
-
-	}
-
 	private void drawElement(Graphics g, Object o,int x,int y,  int elementW, int elementH, int offset){
 
 		String s = (String)o;
@@ -123,5 +86,43 @@ public class GuiArray extends GuiElement implements ActionListener{
 			}
 		}
 		
+	}	
+	
+	@SuppressWarnings("unused")
+	private class ArrayPanel extends JPanel{
+
+		private Object[][] data;
+
+
+		public Object[][] getData() {
+			return data;
+		}
+		public void setData(Object[][] data) {
+			this.data = data;
+		}
+		public ArrayPanel(Object[][] data){
+			this.data = data;
+		}
+
+		@Override
+		public void paintComponent(Graphics g){
+			if(!GuiSettings.isAnimated && animation.isRunning()){
+				stopAnimation();
+			}
+			int elementH = GuiSettings.ARRAYELEMENTHEIGHT;
+			int elementW =80;
+			g.clearRect(0, 0, getWidth(), getHeight());
+			if(elementH*data.length>getHeight())
+				setPreferredSize(new Dimension(getWidth(), elementH*data.length));
+
+			for(int y = 0; y<data.length; y++){
+				for(int x = 0; x<data[y].length; x++){
+					drawElement(g,data[y][x],x,y,  elementW, elementH, 0);
+				}
+			}
+			revalidate();
+		}
+
 	}
+
 }

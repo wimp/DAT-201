@@ -8,7 +8,7 @@ import javax.swing.JTextArea;
 @SuppressWarnings("serial")
 public class GuiInfo extends GuiElement {
 	
-	JTextArea text;
+	private JTextArea text;
 	
 	public JTextArea getTextArea() {
 		return text;

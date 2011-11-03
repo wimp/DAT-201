@@ -54,7 +54,7 @@ public class Heap extends Tree implements GraphicalStructure{
 			String value = getRoot().getValue().toString();
 
 			Vector<String> values = new Vector<String>();
-			for(TreeNode t : getAllNodes(new Vector<TreeNode>() , getRoot())){
+			for(TreeNode t : getAllNodes(new Vector<TreeNode>() , getRoot(), false)){
 				if(t!=null && t!=getRoot())
 					values.add(t.getValue().toString());
 			}
