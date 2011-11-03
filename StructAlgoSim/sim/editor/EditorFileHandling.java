@@ -314,15 +314,15 @@ class EditorFileHandling {
 							else if(attributeElements.get(i)[j][0].equals("editable"))
 								((Variable) element).setEditable(Boolean.parseBoolean(attributeElements.get(i)[j][1]));
 						}
-					}else if(element instanceof InfoPanel){
+					}else if(element instanceof Info){
 						for(int j = 0;j < attributeElements.get(i).length;j++){
 							if(attributeElements.get(j)[j][0] == null)
 								continue;
 							
 							if(attributeElements.get(j)[j][0].equals("value"))
-								((InfoPanel) element).setValue(attributeElements.get(i)[j][1]);
+								((Info) element).setValue(attributeElements.get(i)[j][1]);
 							else if(attributeElements.get(i)[j][0].equals("editable"))
-								((InfoPanel) element).setEditable(Boolean.parseBoolean(attributeElements.get(i)[j][1]));
+								((Info) element).setEditable(Boolean.parseBoolean(attributeElements.get(i)[j][1]));
 						}
 					}else if(element instanceof Set){
 						for(int j = 0;j < attributeElements.get(i).length;j++){
@@ -404,15 +404,15 @@ class EditorFileHandling {
 			attr += "value"+ATTR_SEPARATOR+((Variable) element).getValue();
 			attr += SUB_SEPARATOR;
 			attr += "editable"+ATTR_SEPARATOR+((Variable) element).getEditable();
-		}else if(element instanceof InfoPanel){
+		}else if(element instanceof Info){
 			attr += "value"+ATTR_SEPARATOR;
-			byte[] b = ((InfoPanel) element).getValue().getBytes();
+			byte[] b = ((Info) element).getValue().getBytes();
 			for(int i = 0;i < b.length;i++){
 				attr += b[i] + BYTE_SEPARATOR;
 			}
 			attr += SUB_SEPARATOR;
 			attr += "editable" + ATTR_SEPARATOR;
-			attr += Boolean.toString(((InfoPanel) element).getEditable());
+			attr += Boolean.toString(((Info) element).getEditable());
 		}else if(element instanceof Get){
 			attr += "singleChar"+ATTR_SEPARATOR;
 			attr += Boolean.toString(((Get) element).getSingleChar());

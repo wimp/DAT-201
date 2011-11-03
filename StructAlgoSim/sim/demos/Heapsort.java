@@ -9,7 +9,7 @@ import sim.functions.Remove;
 import sim.gui.elements.GuiSettings;
 import sim.structures.Heap;
 import sim.structures.Heap.CompareKey;
-import sim.structures.InfoPanel;
+import sim.structures.Info;
 import sim.structures.Queue;
 import sim.structures.Tree.Traversal;
 import sim.structures.Variable;
@@ -81,8 +81,8 @@ public class Heapsort {
 						" the heap is empty." +System.getProperty("line.separator")+
 						"P.S. Try sorting a min-heap by length for a little surprise. =)";
 
-		InfoPanel in = new InfoPanel(new Rectangle(10, 50, 380,200),info, false);
-		InfoPanel title = new InfoPanel(new Rectangle(50, 10, 100,25),"HEAPSORT", false);
+		Info in = new Info(new Rectangle(10, 50, 380,200),info, false);
+		Info title = new Info(new Rectangle(50, 10, 100,25),"HEAPSORT", false);
 
 		frame.add(v);
 		frame.add(h);
