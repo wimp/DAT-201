@@ -1088,7 +1088,8 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 			int l = load.showOpenDialog(gui);
 			if(l == JFileChooser.APPROVE_OPTION){
 				File openFile = load.getSelectedFile();
-				try{
+				EditorFileHandling.loadFile(openFile, this);
+				/*try{
 					FileReader fr = new FileReader(openFile);
 					BufferedReader r = new BufferedReader(fr);
 
@@ -1301,7 +1302,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 					}
 				}catch(Exception e1){
 					e1.printStackTrace();
-				}
+				}*/
 
 			}
 			// END OF LOAD ROUTINE
@@ -1309,10 +1310,12 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 		case 20:
 			//SET
 			type = ElementType.SET;
+			gui.eInfo.setInfoType(InfoType.SET);
 			break;
 		case 21:
 			//GET
 			type = ElementType.GET;
+			gui.eInfo.setInfoType(InfoType.GET);
 			break;
 		case 22:
 			//RESIZE VIEW
@@ -1375,6 +1378,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 		case 27:
 			// TEXT PANEL //
 			type = ElementType.TEXT;
+			gui.eInfo.setInfoType(InfoType.INFO);
 			break;
 		}
 		gui.editorPanel.revalidate();
