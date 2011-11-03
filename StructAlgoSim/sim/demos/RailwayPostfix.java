@@ -16,7 +16,7 @@ public class RailwayPostfix {
 
 	}
 	public RailwayPostfix(){
-		DemoFrame frame = new DemoFrame("Infix to postfix using railway algorithm");	
+		DemoFrame frame = new DemoFrame("Infix to postfix using railway algorithm", 800, 550);	
 		
 		Info title = new Info(new Rectangle(10,10,110,20),"Railway Algorithm",false);
 		

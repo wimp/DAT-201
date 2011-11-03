@@ -154,7 +154,7 @@ public class Tree implements GraphicalStructure {
 	 */
 	public void rebuildTree(){
 		if(root == null) return;
-		Vector<TreeNode> nodes = getAllNodes(new Vector<TreeNode>(), root, true);
+		Vector<TreeNode> nodes = getAllNodes(new Vector<TreeNode>(), root, false);
 		setRoot(new TreeNode(nodes.remove(0).getValue().toString(), null));
 		for(TreeNode n : nodes)
 			addBreadthFirst(n.getValue().toString());
