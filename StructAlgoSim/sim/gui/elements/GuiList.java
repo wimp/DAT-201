@@ -278,7 +278,7 @@ public class GuiList extends GuiElement implements ActionListener, ItemListener,
 				g2d.setColor(c);
 				g2d.drawRoundRect((2 * indexOfNode) * drawNodeWidth, height / 2
 						- drawNodeHeight / 2, v, drawNodeHeight, 5, 5);
-				g2d.drawString(n.getValue().toString(),(2 * indexOfNode-1) * drawNodeWidth+drawNodeWidth/6, height / 2
+				g2d.drawString(n.getValue().toString(),(2 * indexOfNode) * drawNodeWidth+drawNodeWidth/6, height / 2
 						+ drawNodeHeight / 6);
 			
 			}
@@ -300,7 +300,7 @@ public class GuiList extends GuiElement implements ActionListener, ItemListener,
 				g2d.setColor(c);
 				g2d.drawOval((2 * indexOfNode) * drawNodeWidth, height / 2
 						- drawNodeHeight / 2, drawNodeWidth, drawNodeHeight);
-				g2d.drawString(((Integer)(indexOfNode)).toString(), (2 * indexOfNode)
+				g2d.drawString(((Integer)(indexOfNode-1)).toString(), (2 * indexOfNode)
 						* drawNodeWidth+drawNodeWidth/3, height / 2+drawNodeHeight/8);
 			}
 			g2d.setColor(c);
@@ -548,7 +548,7 @@ public class GuiList extends GuiElement implements ActionListener, ItemListener,
 				g2d.setColor(c);
 				g2d.drawOval((2 * (selected.getIndex() + 1)) * drawNodeWidth, height / 2
 						- drawNodeHeight / 2, drawNodeWidth, drawNodeHeight);
-				g2d.drawString(((Integer)((selected.getIndex() + 1))).toString(), (2 * (selected.getIndex() + 1))
+				g2d.drawString(((Integer)((selected.getIndex()))).toString(), (2 * (selected.getIndex() + 1))
 						* drawNodeWidth+drawNodeWidth/3, height / 2+drawNodeHeight/8);
 				selected = null;
 			}
