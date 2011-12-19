@@ -16,22 +16,13 @@ import javax.swing.Timer;
  * The graphical element of the {@link sim.structures.Stack} stack class
  */
 @SuppressWarnings("serial")
-public class GuiStack extends GuiElement implements ActionListener{
+public class GuiStack extends GuiElement{
 	// Class variables //
 	private StackPanel stackPanel;
 	private boolean removed;
 	private boolean added;
 	private String recent;
 	// Getters and setters //
-
-	public GuiStack(Rectangle bounds,Vector<Object> data){
-		super();
-
-		animation = new Timer(400,this);
-
-		setBounds(bounds);
-		initGraphics(data);
-	}
 	public void setAdded(String changed){
 		added = true;
 		recent = changed;
@@ -40,6 +31,12 @@ public class GuiStack extends GuiElement implements ActionListener{
 		removed = true;
 		recent = changed;
 	}
+	//Class constructor//
+	public GuiStack(Rectangle bounds,Vector<Object> data){
+		setBounds(bounds);
+		initGraphics(data);
+	}
+	//Class methods//
 	private void initGraphics(Vector<Object> data){
 		stackPanel = new StackPanel(data);
 		JScrollPane listScroller = new JScrollPane(stackPanel);
@@ -50,12 +47,35 @@ public class GuiStack extends GuiElement implements ActionListener{
 		listScroller.setPreferredSize(new Dimension(getWidth(), getHeight()));
 		this.add(listScroller);
 	}
+	public void startAnimation() {
+		if(animation.isRunning())
+			stopAnimation();
+		animation.start();
+	}
+	public void stopAnimation(){
+		currentFrame = 0;
+		animation.stop();
+		added = false;
+		if(removed){
+			removed = false;
+		}
+		recent = null;
+	}
+	public void actionPerformed(ActionEvent e) {
+		if(e.getSource()==animation){
+			currentFrame++;
+			if(currentFrame > getMaxFrame()){
+				stopAnimation();
+			}
+			repaint();
+		}
+	}
+	//Nested classes and interfaces//
 	@SuppressWarnings("unused")
 	private class StackPanel extends JPanel{
 
 		private Vector<Object> data;
-
-
+		
 		public Vector<Object> getData() {
 			return data;
 		}
@@ -65,14 +85,13 @@ public class GuiStack extends GuiElement implements ActionListener{
 		public StackPanel(Vector<Object> data){
 			this.data = data;
 		}
-
 		@Override
 		public void paintComponent(Graphics g){
 			if(!GuiSettings.isAnimated && animation.isRunning())
 				stopAnimation();
-			
+
 			int elementH = GuiSettings.STACKELEMENTHEIGHT;
-			int elementW = getWidth();//GuiSettings.STACKELEMENTWIDTH;
+			int elementW = getWidth();
 			int preferredWidth = 0;
 			int preferredHeight = 0;
 
@@ -113,44 +132,23 @@ public class GuiStack extends GuiElement implements ActionListener{
 
 				if(added){
 					g.setColor(GuiSettings.STACKADDEDCOLOR);
-					g.fillRoundRect(0, ((getHeight()-data.size()*elementH)/getMaxFrame())*frame, elementW, elementH, 5, 5);
+					g.fillRoundRect(0, ((getHeight()-data.size()*elementH)/getMaxFrame())*currentFrame, elementW, elementH, 5, 5);
 					g.setColor(c);
-					g.drawString(recent,10, ((getHeight()-data.size()*elementH)/getMaxFrame())*frame+elementH-elementH/3);
-					g.drawRoundRect(0, ((getHeight()-data.size()*elementH)/getMaxFrame())*frame, elementW, elementH, 5, 5);
+					g.drawString(recent,10, ((getHeight()-data.size()*elementH)/getMaxFrame())*currentFrame+elementH-elementH/3);
+					g.drawRoundRect(0, ((getHeight()-data.size()*elementH)/getMaxFrame())*currentFrame, elementW, elementH, 5, 5);
 				}
 				else if(removed){
 					g.setColor(GuiSettings.STACKADDEDCOLOR);
-					g.fillRoundRect(0, ((getHeight()-data.size()*elementH)/getMaxFrame())*(getMaxFrame()-frame)-elementH, elementW, elementH, 5, 5);
+					g.fillRoundRect(0, ((getHeight()-data.size()*elementH)/getMaxFrame())*(getMaxFrame()-currentFrame)-elementH, elementW, elementH, 5, 5);
 					g.setColor(c);
-					g.drawString(recent,10, ((getHeight()-data.size()*elementH)/getMaxFrame())*(getMaxFrame()-frame)-elementH/3);
-					g.drawRoundRect(0, ((getHeight()-data.size()*elementH)/getMaxFrame())*(getMaxFrame()-frame)-elementH, elementW, elementH, 5, 5);
+					g.drawString(recent,10, ((getHeight()-data.size()*elementH)/getMaxFrame())*(getMaxFrame()-currentFrame)-elementH/3);
+					g.drawRoundRect(0, ((getHeight()-data.size()*elementH)/getMaxFrame())*(getMaxFrame()-currentFrame)-elementH, elementW, elementH, 5, 5);
 				}
 			}
 			if(preferredWidth+10 !=getWidth() || preferredHeight+10 !=getHeight()){
 				setPreferredSize(new Dimension(preferredWidth+10, preferredHeight+10));
 			}
 			revalidate();
-		}
-
-	}
-	public void stopAnimation(){
-		frame = 0;
-		animation.stop();
-		added = false;
-		if(removed){
-			removed = false;
-		}
-		recent = null;
-
-	}
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		if(e.getSource()==animation){
-			frame++;
-			if(frame > getMaxFrame()){
-				stopAnimation();
-			}
-			repaint();
 		}
 	}
 }

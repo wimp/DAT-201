@@ -27,60 +27,53 @@ import sim.structures.LinkedList.Node;
  * class
  */
 @SuppressWarnings("serial")
-public class GuiList extends GuiElement implements ActionListener, ItemListener, MouseMotionListener {
+public class GuiList extends GuiElement implements ItemListener, MouseMotionListener {
 	// Class variables //
 	private int height;
-
 	private Point mousePos = new Point(0,0);
 	private Node selected = null;
 	private Node removed = null;
+	
 	private Vector<Node> data;
 	private Vector<Link> links;
 	private ListPanel listPanel;
-
-	private boolean show;
-	
-	public ListPanel getListPanel() {
-		return listPanel;
-	}
-
 	private JCheckBox circular;
 	private JCheckBox doublyLinked;
 	private JCheckBox showValues;
 	private JScrollPane listScroller;
 	private final int drawNodeWidth = GuiSettings.LISTNODEWIDTH;
 	private final int drawNodeHeight = GuiSettings.LISTNODEHEIGHT;
+	private boolean show;
 
-	// Getters and setters //
+	// Getters and setters //	
+	public ListPanel getListPanel() {
+		return listPanel;
+	}
 	public void setData(Vector<Node> data) {
 		this.data = data;
 	}
-
 	public Node getRemoved() {
 		return removed;
 	}
-
 	public void setRemoved(Node removed) {
 		this.removed = removed;
 	}
 	public boolean isCircular() {
 		return listPanel==null ? false : listPanel.isCircular();
 	}
-
 	public void setCircular(boolean circular) {
 		if(this.circular!=null) 	this.circular.setSelected(circular);
 		if(listPanel != null) listPanel.setCircular(circular);	
-		}
-
+	}
 	public boolean isDoublyLinked() {
-		
 		return listPanel==null ? false : listPanel.isDoublyLinked();
 	}
-
 	public void setDoublyLinked(boolean doublyLinked) {
 		if(this.doublyLinked!=null) this.doublyLinked.setSelected(doublyLinked);
 		listPanel.setDoublyLinked(doublyLinked);
 	}
+	
+	//Class constructor//
 	public GuiList(Rectangle bounds, Vector<Node> data, boolean animated) {
 		super();
 		if (animated)
@@ -97,15 +90,16 @@ public class GuiList extends GuiElement implements ActionListener, ItemListener,
 		updateLinks();
 		initGraphics();
 	}
-
-	@Override
+	//Class methods//
 	public void startAnimation() {
-		super.startAnimation();
+		if(animation.isRunning())
+			stopAnimation();
+		animation.start();
 	}
 	public void stopAnimation() {
 		animation.stop();
 		
-		frame = 0;
+		currentFrame = 0;
 		if (removed != null) {
 
 			removed.getNext().setPrevious(removed.getPrevious());
@@ -128,9 +122,9 @@ public class GuiList extends GuiElement implements ActionListener, ItemListener,
 		}
 		updateLinks();
 	}
-
 	private void initGraphics() {
 		listPanel.setPreferredSize(new Dimension(getWidth(), height));
+		
 		listScroller = new JScrollPane(listPanel);
 		listScroller
 				.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -152,7 +146,6 @@ public class GuiList extends GuiElement implements ActionListener, ItemListener,
 		this.add(check, BorderLayout.NORTH);
 		this.add(listScroller, BorderLayout.CENTER);
 	}
-
 	public void updateLinks() {
 		links.removeAllElements();
 		for (Node n : data) {
@@ -172,7 +165,41 @@ public class GuiList extends GuiElement implements ActionListener, ItemListener,
 					links.add(new Link(n, n.getPrevious(), -1, false));
 		}
 	}
+	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == animation) {
+			currentFrame++;
+			if (currentFrame > getMaxFrame()) {
+				stopAnimation();
 
+				currentFrame = 0;
+			}
+			repaint();
+		}
+	}
+
+	@Override
+	public void itemStateChanged(ItemEvent e) {
+		if (e.getSource() == circular) {
+			listPanel.setCircular(!listPanel.isCircular());
+		} else if (e.getSource() == doublyLinked) {
+			listPanel.setDoublyLinked(!listPanel.isDoublyLinked());
+		}	else if(e.getSource() == showValues){
+			show = !show;
+		}
+		stopAnimation();
+		updateLinks();
+		repaint();
+	}
+	@Override
+	public void mouseDragged(MouseEvent e) {
+	}
+	@Override
+	public void mouseMoved(MouseEvent e) {
+		mousePos.x = e.getX();
+		mousePos.y = e.getY();
+		repaint();
+	}
+	//Nested classes and interfaces//
 	private class Link {
 		private Node a;
 		private Node b;
@@ -307,7 +334,7 @@ public class GuiList extends GuiElement implements ActionListener, ItemListener,
 		}
 
 		private void addAnimation(Node n) {
-			switch (frame) {
+			switch (currentFrame) {
 			case 1:
 				break;
 			case 2:
@@ -351,7 +378,7 @@ public class GuiList extends GuiElement implements ActionListener, ItemListener,
 						links.add(l);
 					}
 					if (!listPanel.isDoublyLinked())
-						frame++;
+						currentFrame++;
 				}
 				break;
 			case 5:
@@ -411,7 +438,7 @@ public class GuiList extends GuiElement implements ActionListener, ItemListener,
 		}
 
 		private void removeAnimation(Node n) {
-			switch (frame) {
+			switch (currentFrame) {
 			case 1:
 				for (int i = 0; i < links.size(); i++) {
 					if (links.get(i).b == n.getPrevious()
@@ -560,42 +587,5 @@ public class GuiList extends GuiElement implements ActionListener, ItemListener,
 			
 			listPanel.revalidate();
 		}
-	}
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == animation) {
-			frame++;
-			if (frame > getMaxFrame()) {
-				stopAnimation();
-
-				frame = 0;
-			}
-			repaint();
-		}
-	}
-
-	@Override
-	public void itemStateChanged(ItemEvent e) {
-		if (e.getSource() == circular) {
-			listPanel.setCircular(!listPanel.isCircular());
-		} else if (e.getSource() == doublyLinked) {
-			listPanel.setDoublyLinked(!listPanel.isDoublyLinked());
-		}	else if(e.getSource() == showValues){
-			show = !show;
-		}
-		stopAnimation();
-		updateLinks();
-		repaint();
-	}
-
-	@Override
-	public void mouseDragged(MouseEvent e) {
-	}
-
-	@Override
-	public void mouseMoved(MouseEvent e) {
-		mousePos.x = e.getX();
-		mousePos.y = e.getY();
-		repaint();
 	}
 }

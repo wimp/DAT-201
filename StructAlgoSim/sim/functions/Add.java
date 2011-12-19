@@ -20,7 +20,7 @@ import sim.structures.Variable;
  */
 public class Add implements ActionListener , GraphicalStructure{
 	// Class variables //
-	private Object l;
+	private Object o;
 	private Variable v;
 	private Variable i;
 	private GuiFunction gui;
@@ -39,14 +39,14 @@ public class Add implements ActionListener , GraphicalStructure{
 	 * @return current target object where the input variable should be added
 	 */
 	public Object getTarget() {
-		return l;
+		return o;
 	}
 	/**
 	 * Sets the current target object. This is the object the input object will be added to.
 	 * @param l - Target object
 	 */
 	public void setTarget(Object l) {
-		this.l = l;
+		this.o = l;
 	}
 
 	/**
@@ -89,7 +89,7 @@ public class Add implements ActionListener , GraphicalStructure{
 	public Add(Rectangle bounds) {
 		gui = new GuiFunction(bounds,"Add");
 		gui.getButton().addActionListener(this);
-		this.l=null;
+		this.o=null;
 		this.v=null;
 	}	
 	/**
@@ -101,7 +101,7 @@ public class Add implements ActionListener , GraphicalStructure{
 	public Add(Rectangle bounds, LinkedList l, Variable v) {
 		gui = new GuiFunction(bounds,"Add");
 		gui.getButton().addActionListener(this);
-		this.l=l;
+		this.o=l;
 		this.v=v;
 	}
 	/**
@@ -114,7 +114,7 @@ public class Add implements ActionListener , GraphicalStructure{
 	public Add(Rectangle bounds, Tree l, Variable v, Variable i) {
 		gui = new GuiFunction(bounds,"Add");
 		gui.getButton().addActionListener(this);
-		this.l=l;
+		this.o=l;
 		this.i=i;
 		this.v=v;
 	}
@@ -127,19 +127,19 @@ public class Add implements ActionListener , GraphicalStructure{
 	public Add(Rectangle bounds, Queue l, Variable v) {
 		gui = new GuiFunction(bounds,"Add");
 		gui.getButton().addActionListener(this);
-		this.l=l;
+		this.o=l;
 		this.v=v;
 	}
 	// Action Listener implementation //
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(v != null){
-			if(l instanceof LinkedList){
-				((LinkedList) l).addLast(v.getValue());
-			}else if(l instanceof Tree){
+			if(o instanceof LinkedList){
+				((LinkedList) o).addLast(v.getValue());
+			}else if(o instanceof Tree){
 				if(i!=null)
 					try{
-						((Tree) l).addChildAt(Integer.parseInt(i.getValue()),v.getValue());
+						((Tree) o).addChildAt(Integer.parseInt(i.getValue()),v.getValue());
 					}
 				catch(NumberFormatException n){
 				}
@@ -147,10 +147,10 @@ public class Add implements ActionListener , GraphicalStructure{
 						"You need to connect an index variable to add to a tree.",
 						"Warning",
 						JOptionPane.WARNING_MESSAGE);
-			}else if(l instanceof Queue){
-				((Queue) l).add(v.getValue());
-			}else if(l instanceof Array){
-				((Array) l).setValueAt(v.getValue(), Integer.parseInt(i.getValue()));
+			}else if(o instanceof Queue){
+				((Queue) o).add(v.getValue());
+			}else if(o instanceof Array){
+				((Array) o).setValueAt(v.getValue(), Integer.parseInt(i.getValue()));
 			}
 		}
 		else{

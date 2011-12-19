@@ -6,6 +6,7 @@ public final class GuiSettings {
 	
 	//Global
 	public static boolean isAnimated = true;
+	public static final int ANIMATIONFRAMES = 7;
 	//LinkedList
 	public static final Color LISTNODECOLOR 		= Color.CYAN;
 	public static final Color LISTADDEDCOLOR 		= Color.GREEN;

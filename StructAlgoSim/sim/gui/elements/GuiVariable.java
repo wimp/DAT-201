@@ -1,6 +1,7 @@
 package sim.gui.elements;
 
 import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
 
 import javax.swing.JTextField;
 
@@ -22,5 +23,17 @@ public class GuiVariable extends GuiElement{
 	}
 	public String getValue(){
 		return t.getText();
+	}
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		
+	}
+	@Override
+	public void startAnimation() {
+		
+	}
+	@Override
+	public void stopAnimation() {
+		
 	}
 }

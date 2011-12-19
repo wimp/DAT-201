@@ -12,11 +12,13 @@ import javax.swing.JScrollPane;
 import javax.swing.Timer;
 
 @SuppressWarnings("serial")
-public class GuiArray extends GuiElement implements ActionListener{
+public class GuiArray extends GuiElement{
+	//Class variables//
 	private Object[][] data;
 	private Object changed;
-
 	private ArrayPanel panel;
+	
+	//Getters and setters//
 	public Object getChanged() {
 		return changed;
 	}
@@ -26,30 +28,24 @@ public class GuiArray extends GuiElement implements ActionListener{
 	public void setData(Object[][] data){
 		this.data = data;
 	}
-	public void stopAnimation() {
-		frame = 0;
-		animation.stop();
-		changed = null;
-	}
+	
+	//Class constructor//
 	public GuiArray(Rectangle bounds,Object[][] data){
-		super();
 		animation = new Timer(200, this);
 		changed = null;
 		this.data = data;
 		setBounds(bounds);
-
 		initGraphics();
 	}
-
+	
+	//Class methods//
 	public void initGraphics(){
 		panel = new ArrayPanel(data);
 
 		JScrollPane listScroller = new JScrollPane(panel);
 		listScroller.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 		listScroller.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-
-		//int v=g.getFontMetrics(getFont()).charsWidth(s.toCharArray(), 0, s.toCharArray().length)+20;
-
+		
 		panel.setPreferredSize(new Dimension(80 * data[0].length, getHeight()));
 		this.add(listScroller);
 	}
@@ -73,26 +69,31 @@ public class GuiArray extends GuiElement implements ActionListener{
 			g.drawString(s,offset+elementW*x+10,y*elementH+elementH-elementH/3);
 
 		g.drawRoundRect(offset+elementW*x,y*elementH, elementW, elementH, 5, 5);
-
-
 	}
-	@Override
+	public void startAnimation() {
+		if(animation.isRunning())
+			stopAnimation();
+		animation.start();
+	}
+	public void stopAnimation() {
+		currentFrame = 0;
+		animation.stop();
+		changed = null;
+	}
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == animation){
-			frame ++;
-			if(frame >getMaxFrame()){
+			currentFrame ++;
+			if(currentFrame >getMaxFrame()){
 				stopAnimation();
 				repaint();
 			}
 		}
-		
 	}	
 	
+	//Nested classes and interfaces//
 	@SuppressWarnings("unused")
 	private class ArrayPanel extends JPanel{
-
 		private Object[][] data;
-
 
 		public Object[][] getData() {
 			return data;
@@ -103,7 +104,6 @@ public class GuiArray extends GuiElement implements ActionListener{
 		public ArrayPanel(Object[][] data){
 			this.data = data;
 		}
-
 		@Override
 		public void paintComponent(Graphics g){
 			if(!GuiSettings.isAnimated && animation.isRunning()){
@@ -122,7 +122,5 @@ public class GuiArray extends GuiElement implements ActionListener{
 			}
 			revalidate();
 		}
-
 	}
-
 }
