@@ -10,7 +10,6 @@ import java.awt.KeyboardFocusManager;
 
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
-import javax.swing.JCheckBox;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -308,8 +307,8 @@ public class EditorGui extends JFrame {
 			g2d.setColor(Color.black);
 			
 			
-			for(int i = 0;i<el.linkys.size();i++){
-				Link l = el.linkys.get(i);
+			for(int i = 0;i<el.links.size();i++){
+				Link l = el.links.get(i);
 				if(l != null && l.p1 != null){
 					g2d.drawLine(l.p1.x, l.p1.y, l.p2.x, l.p2.y);
 					g2d.drawLine(l.p2.x, l.p2.y, l.p3.x, l.p3.y);

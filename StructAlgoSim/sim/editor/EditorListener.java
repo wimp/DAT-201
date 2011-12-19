@@ -58,27 +58,31 @@ import sim.structures.Variable;
  *
  */
 public class EditorListener implements ActionListener, MouseMotionListener, MouseListener, KeyEventDispatcher {
-	// Class variables //
-	protected 	ElementType 		type = ElementType.NONE;
-	private 	EditorGui 			gui;
-	Vector<Object> 		elements = new Vector<Object>();
-	Vector<GuiElement> 	guiElements = new Vector<GuiElement>();
-	private 	Object 				startElement;
-	private 	Object 				endElement;
-	protected 	GlassPanel 			panel = new GlassPanel();
-	protected 	Vector<Link> 		linkys = new Vector<Link>();
-	private 	Link 				link;
-	private Point resizeStartPoint = new Point();
-	private Point resizeEndPoint = new Point();
-	private Point resizeTempPoint = new Point();
-	private int resizeElementIndex = -1;
-	private Point moveEndPoint = new Point();
-	private int moveElementIndex = -1;
-	private int moveDifferX;
-	private int moveDifferY;
-	boolean showDialogOnAdd = true;
+// Class variables //
+	protected ElementType 			type 			= ElementType.NONE;
+	protected GlassPanel 			panel 			= new GlassPanel();
+	protected Vector<Link> 			links 			= new Vector<Link>();
+	protected boolean 				showDialogOnAdd = true;
+	protected Vector<Object> 		elements 		= new Vector<Object>();
+	protected Vector<GuiElement> 	guiElements 	= new Vector<GuiElement>();
+	
+	private Point 		resizeStartPoint 	= new Point();
+	private Point 		resizeEndPoint 		= new Point();
+	private Point 		resizeTempPoint 	= new Point();
+	private Point 		moveEndPoint 		= new Point();
+	private int 		moveElementIndex 	= -1;
+	private int 		resizeElementIndex 	= -1;
+	private int 		moveDifferX;
+	private int 		moveDifferY;
+	private EditorGui 	gui;
+	private Object 		startElement;
+	private Object 		endElement;
+	private Link 		link;
+	
+	
+	
 
-	// Class Methods //
+// Class Methods //
 	/**
 	 * Class constructor. An instance of EditorGui is required as these two classes communicate about events and graphical components
 	 * @param gui
@@ -91,19 +95,19 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 	 * Adds a JComponent to the active instance of EditorGui's editor panel.
 	 * @param element
 	 */
-	void addElementAtPosition(JComponent element){
+	protected void addElementAtPosition(JComponent element){
 		if(element!=null)
 			gui.editorPanel.add(element);
 	}
 
 	/**
-	 * A method to get the actual instance of a class from the class enum {@link ElementType}
+	 * A method to get the actual instance of a class from the class enum {@link ElementType}.
 	 * This method also adds the given type's class instance and graphical instance in the two internal class variables, {@link elements} and {@link guiElements}
 	 * @param type
 	 * @param bounds
 	 * @return The graphical component of the type given.
 	 */
-	JComponent getComponentFromEnum(ElementType type, Rectangle bounds) {
+	protected JComponent getComponentFromEnum(ElementType type, Rectangle bounds) {
 		int index;
 		switch(type){
 		case ADD:
@@ -288,10 +292,20 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 	}
 
 	/**
+	 * Refreshes the links between elements in cases where for example one of the elements has been removed.
+	 * @param links
+	 */
+	private void reLinkElements(Vector<Link> links){
+		for(Link l : links){
+			l.makeLink();
+		}
+	}
+	
+	/**
 	 * Clears all objects in the editor panel and removes them from {@link EditorListener}'s internal pointers.
 	 */
 	public void clearEditor(){
-		linkys.clear();
+		links.clear();
 		elements.clear();
 		guiElements.clear();
 		gui.editorPanel.removeAll();
@@ -300,135 +314,134 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 	}
 
 	/**
-	 * Checks whether element1 and element2 fits together in the editor gui. E.g. an instance of {@link Add} can't be linked with another instance of {@link Add}
-	 * @param element1
-	 * @param element2
+	 * Checks whether elementFrom and elementTo fits together in the editor gui. E.g. an instance of {@link Add} can't be linked with another instance of {@link Add}
+	 * @param elementFrom
+	 * @param elementTo
 	 * @return Returns true if the two items can be linked
 	 */
-	boolean checkCompatibility(Object element1, Object element2){
-
-		if(element1 instanceof Add){
-			if(element2 instanceof Variable){
+	boolean checkCompatibility(Object elementFrom, Object elementTo){
+		if(elementFrom instanceof Add){
+			if(elementTo instanceof Variable){
 				return true;
-			}else if(element2 instanceof LinkedList){
+			}else if(elementTo instanceof LinkedList){
 				return true;
-			}else if(element2 instanceof Tree){
+			}else if(elementTo instanceof Tree){
 				return true;
-			}else if(element2 instanceof Queue){
-				return true;
-			}
-		}else if(element1 instanceof Get){
-			if(element2 instanceof Variable){
-				return true;
-			}else if(element2 instanceof LinkedList){
-				return true;
-			}else if(element2 instanceof Tree){
-				return true;
-			}else if(element2 instanceof Array){
+			}else if(elementTo instanceof Queue){
 				return true;
 			}
-		}
-		else if(element1 instanceof Set){
-			if(element2 instanceof Variable){
+		}else if(elementFrom instanceof Get){
+			if(elementTo instanceof Variable){
 				return true;
-			}else if(element2 instanceof LinkedList){
+			}else if(elementTo instanceof LinkedList){
 				return true;
-			}else if(element2 instanceof Tree){
+			}else if(elementTo instanceof Tree){
 				return true;
-			}else if(element2 instanceof Array){
+			}else if(elementTo instanceof Array){
 				return true;
 			}
 		}
-		else if(element1 instanceof Variable){
-			if(element2 instanceof Add){
+		else if(elementFrom instanceof Set){
+			if(elementTo instanceof Variable){
 				return true;
-			}else if(element2 instanceof Remove){
+			}else if(elementTo instanceof LinkedList){
 				return true;
-			}else if(element2 instanceof Insert){
+			}else if(elementTo instanceof Tree){
 				return true;
-			}else if(element2 instanceof Push){
-				return true;
-			}else if(element2 instanceof Pop){
-				return true;
-			}else if(element2 instanceof Get){
-				return true;
-			}else if(element2 instanceof Set){
+			}else if(elementTo instanceof Array){
 				return true;
 			}
-		}else if(element1 instanceof Stack){
-			if(element2 instanceof Push){
+		}
+		else if(elementFrom instanceof Variable){
+			if(elementTo instanceof Add){
 				return true;
-			}else if(element2 instanceof Pop){
+			}else if(elementTo instanceof Remove){
 				return true;
-			}
-		}else if(element1 instanceof Push){
-			if(element2 instanceof Stack){
+			}else if(elementTo instanceof Insert){
 				return true;
-			}else if(element2 instanceof Variable){
+			}else if(elementTo instanceof Push){
 				return true;
-			}
-		}else if(element1 instanceof Pop){
-			if(element2 instanceof Stack){
+			}else if(elementTo instanceof Pop){
 				return true;
-			}else if(element2 instanceof Variable){
+			}else if(elementTo instanceof Get){
 				return true;
-			}
-		}else if(element1 instanceof LinkedList){
-			if(element2 instanceof Remove){
-				return true;
-			}else if(element2 instanceof Insert){
-				return true;
-			}else if(element2 instanceof Get){
-				return true;
-			}else if(element2 instanceof Set){
-				return true;
-			}else if(element2 instanceof Add){
+			}else if(elementTo instanceof Set){
 				return true;
 			}
-		}else if(element1 instanceof Remove){
-			if(element2 instanceof Variable){
+		}else if(elementFrom instanceof Stack){
+			if(elementTo instanceof Push){
 				return true;
-			}else if(element2 instanceof LinkedList){
-				return true;
-			}else if(element2 instanceof Tree){
-				return true;
-			}else if(element2 instanceof Queue){
+			}else if(elementTo instanceof Pop){
 				return true;
 			}
-		}else if(element1 instanceof Array){
-			if(element2 instanceof Get){
+		}else if(elementFrom instanceof Push){
+			if(elementTo instanceof Stack){
 				return true;
-			}else if(element2 instanceof Set){
-				return true;
-			}else if(element2 instanceof Remove){
-				return true;
-			}else if(element2 instanceof Insert){
+			}else if(elementTo instanceof Variable){
 				return true;
 			}
-		}else if(element1 instanceof Tree){
-			if(element2 instanceof Get){
+		}else if(elementFrom instanceof Pop){
+			if(elementTo instanceof Stack){
 				return true;
-			}else if(element2 instanceof Set){
-				return true;
-			}else if(element2 instanceof Remove){
-				return true;
-			}else if(element2 instanceof Insert){
-				return true;
-			}else if(element2 instanceof Add){
+			}else if(elementTo instanceof Variable){
 				return true;
 			}
-		}else if(element1 instanceof Insert){
-			if(element2 instanceof Tree){
+		}else if(elementFrom instanceof LinkedList){
+			if(elementTo instanceof Remove){
 				return true;
-			}else if(element2 instanceof LinkedList){
+			}else if(elementTo instanceof Insert){
 				return true;
-			}else if(element2 instanceof Variable){
+			}else if(elementTo instanceof Get){
+				return true;
+			}else if(elementTo instanceof Set){
+				return true;
+			}else if(elementTo instanceof Add){
 				return true;
 			}
-		}else if(element1 instanceof Queue){
-			if(element2 instanceof Add){
+		}else if(elementFrom instanceof Remove){
+			if(elementTo instanceof Variable){
 				return true;
-			}else if(element2 instanceof Remove){
+			}else if(elementTo instanceof LinkedList){
+				return true;
+			}else if(elementTo instanceof Tree){
+				return true;
+			}else if(elementTo instanceof Queue){
+				return true;
+			}
+		}else if(elementFrom instanceof Array){
+			if(elementTo instanceof Get){
+				return true;
+			}else if(elementTo instanceof Set){
+				return true;
+			}else if(elementTo instanceof Remove){
+				return true;
+			}else if(elementTo instanceof Insert){
+				return true;
+			}
+		}else if(elementFrom instanceof Tree){
+			if(elementTo instanceof Get){
+				return true;
+			}else if(elementTo instanceof Set){
+				return true;
+			}else if(elementTo instanceof Remove){
+				return true;
+			}else if(elementTo instanceof Insert){
+				return true;
+			}else if(elementTo instanceof Add){
+				return true;
+			}
+		}else if(elementFrom instanceof Insert){
+			if(elementTo instanceof Tree){
+				return true;
+			}else if(elementTo instanceof LinkedList){
+				return true;
+			}else if(elementTo instanceof Variable){
+				return true;
+			}
+		}else if(elementFrom instanceof Queue){
+			if(elementTo instanceof Add){
+				return true;
+			}else if(elementTo instanceof Remove){
 				return true;
 			}
 		}
@@ -441,7 +454,9 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 		int y = e.getY();
 		int elementIndex = -1;
 
-		if(type == ElementType.SELECT) return;
+		if(type == ElementType.SELECT) 
+			return;
+		
 		if(type == ElementType.DELETE){
 			for(int i=0;i<guiElements.size();i++){
 				if(guiElements.get(i).getBounds().contains(x, y)){
@@ -452,9 +467,9 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 
 			if(elementIndex != -1){
 				gui.editorPanel.remove(guiElements.get(elementIndex));
-				for(int i = 0;i < linkys.size(); i++){
-					if(linkys.get(i).from==elements.get(elementIndex) || linkys.get(i).to==elements.get(elementIndex)){
-						linkys.remove(i);
+				for(int i = 0;i < links.size(); i++){
+					if(links.get(i).from==elements.get(elementIndex) || links.get(i).to==elements.get(elementIndex)){
+						links.remove(i);
 						i--;
 					}
 				}
@@ -462,11 +477,12 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 				elements.remove(elementIndex);
 
 				panel.r = null;
-				reLinkElements(linkys);
+				reLinkElements(links);
 				gui.editorPanel.validate();
 			}
 			return;
 		}
+		
 		if(type != ElementType.LINK){
 			JComponent c = getComponentFromEnum(type, new Rectangle(e.getX(),e.getY(),10,10));
 			addElementAtPosition(c);
@@ -490,10 +506,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 	public void mousePressed(MouseEvent e) {
 		int x = e.getX();
 		int y = e.getY();
-		resizeStartPoint.x = x;
-		resizeStartPoint.y = y;
-		resizeTempPoint.x = x;
-		resizeTempPoint.y = y;
+		
 		if(type == ElementType.LINK){
 			for(int i=0;i<guiElements.size();i++){
 				if(guiElements.get(i).getBounds().contains(x, y)){
@@ -506,6 +519,11 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 			}
 			panel.p1 = new Point(e.getX(),e.getY());
 		}else if(type == ElementType.RESIZE){
+			resizeStartPoint.x = x;
+			resizeStartPoint.y = y;
+			resizeTempPoint.x = x;
+			resizeTempPoint.y = y;
+			
 			for(int i = 0;i < guiElements.size();i++){
 				if(guiElements.get(i).getBounds().contains(x, y)){
 					resizeElementIndex = i;
@@ -543,7 +561,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 						link.to = endElement;
 						link.toGui = guiElements.get(i);
 						link.makeLink();
-						linkys.add(link);
+						links.add(link);
 						link = null;
 					}
 
@@ -851,7 +869,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 
 			guiElements.get(resizeElementIndex).setBounds(oldX, oldY, newWidth, newHeight);
 			resizeElementIndex = -1;
-			reLinkElements(linkys);
+			reLinkElements(links);
 			panel.repaint();
 			panel.validate();
 			gui.validate();
@@ -864,7 +882,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 			moveElementIndex = -1;
 			moveEndPoint.x = x;
 			moveEndPoint.y = y;
-			reLinkElements(linkys);
+			reLinkElements(links);
 		}
 
 		panel.repaint();
@@ -907,6 +925,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 			panel.repaint();
 		}
 	}
+	
 	@Override
 	public void mouseMoved(MouseEvent e) {
 		int x = e.getX();
@@ -975,7 +994,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 			}
 		}
 	}
-
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		gui.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
@@ -984,7 +1003,8 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 		panel.removeMouseMotionListener(this);
 
 		gui.validate();
-
+		
+		// Converting integers from EditorGui to enums.
 		switch(Integer.parseInt(e.getActionCommand())){
 		case 1:
 			type = ElementType.STACK;
@@ -1193,6 +1213,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 		return false;
 	}
 
+// Nested Classes and Interfaces //
 	/**
 	 * An inner class of {@link EditorListener} that adds the ability to layer a "glass pane" on top of the current editor panel.
 	 * This makes it easier to add mouselistener for item linking and deletion as you don't have to add a mouselistener to every single
@@ -1211,7 +1232,6 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 			super.paintComponent(g);
 			Graphics2D g2d = (Graphics2D) g;
 
-
 			if(r != null){
 				g2d.setColor(Color.yellow);
 				g2d.drawRect(r.x-2, r.y-2, r.width+3, r.height+3);
@@ -1228,11 +1248,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 			}
 		}
 	}
-	private void reLinkElements(Vector<Link> links){
-		for(Link l : links){
-				l.makeLink();
-			}
-	}
+
 	/**
 	 * An inner class of {@link EditorListener} that contains information about the links between objects in the editor panel.
 	 * Instances of this class are added to the internal class variable {@link linkys} which is used for the drawing of links in the {@link EditorPanel}.
@@ -1302,6 +1318,7 @@ public class EditorListener implements ActionListener, MouseMotionListener, Mous
 		}
 	}
 
+// Class Enums //
 	public enum ElementType{
 		STACK,ARRAY,LIST,ADD,REMOVE,INSERT,PUSH,POP,VARIABLE,LINK,SELECT,GET, SET,DELETE,TREE,HEAP,QUEUE,NONE,RESIZE,MOVE,TEXT
 	}

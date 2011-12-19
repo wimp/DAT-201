@@ -21,6 +21,10 @@ import sim.structures.*;
 import sim.structures.Tree.Traversal;
 import sim.structures.Tree.TreeNode;
 
+/**
+ * Class for handling file i/o concerning saving and loading of files from the Editor.
+ *
+ */
 class EditorFileHandling {
 	private static final String MAIN_SEPARATOR 	= "#¤%";
 	private static final String SUB_SEPARATOR	= "£€";
@@ -28,16 +32,19 @@ class EditorFileHandling {
 	private static final String BYTE_SEPARATOR	= "§";
 	
 	/**
-	 * File format:
-	 * elementID MAIN_SEPARATOR 
-	 * bounds MAIN_SEPARATOR 
-	 * elementName MAIN_SEPARATOR
-	 * elementLinks MAIN_SEPARATOR
-	 * elementAttributes LINE_SEPARATOR
+	 * Saves a file with the given name in filePath. Elements in the editor as well as the abstract 
+	 * types of these elements needs to be supplied as well. <br>
+	 * <br>
+	 * File format:<br>
+	 * elementID MAIN_SEPARATOR <br>
+	 * bounds MAIN_SEPARATOR <br>
+	 * elementName MAIN_SEPARATOR <br>
+	 * elementLinks MAIN_SEPARATOR <br>
+	 * elementAttributes LINE_SEPARATOR <br>
 	 * 
-	 * @param filePath
-	 * @param elements
-	 * @param guiElements
+	 * @param filePath The absolute path to where the file should be saved, including the filename. If the file name does not end with .ags this will be appended automatically
+	 * @param elements The vector containing the data representation of the objects in the editor
+	 * @param guiElements The vector containing the graphical representation of the objects in the editor
 	 */
 	public static void saveFile(String filePath, Vector<Object> elements, Vector<GuiElement> guiElements){
 	// Converting path if necessary
@@ -82,11 +89,16 @@ class EditorFileHandling {
 			}
 			out.close();
 		}catch(Exception e){
-			//TODO CHANGE THIS SHIZZLE
-			e.printStackTrace();
+			return;
 		}
 	}
 	
+	/**
+	 * Loads a file with the given file name and path in the variable loadFile. When this routine is finished it will have filled
+	 * the editor with the elements that lay within the file. It also clears the editor before it starts loading new elements.
+	 * @param loadFile
+	 * @param el
+	 */
 	public static void loadFile(File loadFile, EditorListener el){
 		int numLines 	 	 = getNumberOfLines(loadFile);
 		int[][] links	 	 = new int[numLines][4];
@@ -96,6 +108,7 @@ class EditorFileHandling {
 			BufferedReader r = new BufferedReader(fr);
 			String line		 = r.readLine();
 			Vector<String[][]> attributeElements = new Vector<String[][]>();
+			attributeElements.setSize(numLines);
 		
 			// Main loop for looping through the lines in the file
 			while(line != null){
@@ -104,7 +117,7 @@ class EditorFileHandling {
 				int id = 0;
 				Rectangle bounds = null;
 				String[] boundsSection = new String[4];
-				//Loop to traverse the main sections of every line in the file
+				// Loop to traverse the main sections of every line in the file
 				for(int i = 0; i < loadString.length; i++){
 					switch(i){
 					case 0:
@@ -190,13 +203,16 @@ class EditorFileHandling {
 								attributes[j][0] = varAttr[0];
 								attributes[j][1] = varAttr[1];
 								attributeElements.add(id,attributes);
+//								attributeElements.set(id, attributes);
 							}
 						}
+						
 						break;
 					}//End of swtich/case
 				}//End of main sections loop
 				line = r.readLine();
 			}// End of main loop
+			
 			
 			// Handle the links between the objects //
 			for(int i = 0;i < links.length;i++){
@@ -212,7 +228,7 @@ class EditorFileHandling {
 						li.to = el.elements.get(links[i][j]);
 						li.toGui = el.guiElements.get(links[i][j]);
 						li.makeLink();
-						el.linkys.add(li);
+						el.links.add(li);
 						li = el.new Link();
 						li.from = element;
 						li.fromGui = el.guiElements.get(i);
@@ -414,7 +430,7 @@ class EditorFileHandling {
 				}
 			}// End of attributes handling
 		}catch(Exception e){
-			e.printStackTrace();
+			return;
 		}
 	}
 	

@@ -5,7 +5,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
-import java.awt.Point;
 import java.awt.Rectangle;
 
 import javax.swing.BorderFactory;
@@ -20,7 +19,6 @@ import sim.functions.Pop;
 import sim.functions.Push;
 import sim.functions.Remove;
 import sim.functions.Set;
-import sim.gui.elements.GuiElement;
 import sim.gui.elements.GuiSettings;
 import sim.structures.Array;
 import sim.structures.Heap;
@@ -31,7 +29,7 @@ import sim.structures.Stack;
 import sim.structures.Tree;
 import sim.structures.Variable;
 
-@SuppressWarnings("serial")
+@SuppressWarnings({"serial","unused"})
 public class EditorInfo extends JPanel{
 	private InfoPanel panel;
 	private InfoType infotype;

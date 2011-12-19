@@ -35,6 +35,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+@SuppressWarnings("unused")
 public class EditorPlayer implements ActionListener, ChangeListener, WindowListener {
 
 	private static final int FPS_MIN = 1;
