@@ -10,15 +10,16 @@ import sim.gui.elements.GuiElement.GraphicalStructure;
  */
 public class Heap extends Tree implements GraphicalStructure{
 
-
+	/**
+	 * The CompareKey is used to decide which method to sort this heap by when rearranging.
+	 *
+	 */
 	public enum CompareKey{
 		ALPHABETICAL,
 		NUMERICAL,
 		STRLEN
-	}	
-	/**
-	 * The CompareKey is used to decide which method to sort this heap by when rearranging.
-	 */
+	}
+	
 	private CompareKey key = CompareKey.NUMERICAL;
 
 	private boolean max = true;

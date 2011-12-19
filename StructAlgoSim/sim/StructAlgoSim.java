@@ -17,6 +17,7 @@ import sim.structures.Variable;
 
 public class StructAlgoSim {
 	
+	@SuppressWarnings("unused")
 	public static void main(String[] args) {
 	//	RailwayPostfix rsim = new RailwayPostfix();
 		new Heapsort();

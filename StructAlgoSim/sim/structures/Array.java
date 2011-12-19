@@ -18,6 +18,7 @@ public class Array implements GraphicalStructure{
 	public GuiArray getGuiElement(){
 		return gui;
 	}
+	
 	/**
 	 * The total number of dimensions of this array.
 	 * @return int Total number of dimensions.
@@ -25,6 +26,7 @@ public class Array implements GraphicalStructure{
 	public int getDimensions(){
 		return dimensions;
 	}
+	
 // Class constructors //
 	/**
 	 * Create a new instance of Array() that is one dimensional with the size of sizeY
@@ -34,6 +36,7 @@ public class Array implements GraphicalStructure{
 	public Array(Rectangle bounds, int sizeY){
 		this(bounds,sizeY,1);
 	}
+	
 	/**
 	 * Create a new instance of Array() that is two dimensional with the first array being of sizeA and the second array being of sizeB
 	 * @param bounds
@@ -48,6 +51,7 @@ public class Array implements GraphicalStructure{
 		
 		dimensions = sizeX > 0 ? 2 : 1;
 	}
+	
 	/**
 	 * Method to get the value of a one-dimensional array at indexY
 	 * @param indexY
@@ -56,6 +60,7 @@ public class Array implements GraphicalStructure{
 	public Object getValueAt(int indexY){
 		return getValueAt(indexY, 0);
 	}
+	
 	/**
 	 * Method to get the value of a two-dimensional array at indexY,indexX
 	 * @param indexY
@@ -65,6 +70,7 @@ public class Array implements GraphicalStructure{
 	public Object getValueAt(int indexY, int indexX){
 		return array[indexY][indexX];
 	}
+	
 	/**
 	 * Method to set the value of a one-dimensional array at indexY
 	 * @param indexY
@@ -72,6 +78,7 @@ public class Array implements GraphicalStructure{
 	public void setValueAt(Object value,int indexY){
 		setValueAt(value, indexY,0);
 	}
+	
 	/**
 	 * Method to set the value of a two-dimensional array at indexY,indexX
 	 * @param indexY
