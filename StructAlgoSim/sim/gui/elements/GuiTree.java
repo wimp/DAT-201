@@ -30,29 +30,25 @@ import sim.structures.Tree.Traversal;
 import sim.structures.Tree.TreeNode;
 
 @SuppressWarnings("serial")
-public class GuiTree extends GuiElement implements ActionListener, MouseMotionListener{
+public class GuiTree extends GuiElement implements MouseMotionListener{
 	private boolean isheap;
-	private Point mousePos = new Point(0,0);
-	private boolean show;
-
 	private Tree tree;
 	private TreePanel treePanel;
-
-	private TreeNode changed;
+	private Point mousePos = new Point(0,0);
+	private boolean show;
 	public TreeNode getChanged() {
-		return changed;
+		return treePanel.changed;
 	}	
 
 	public void setChanged(TreeNode changed) {
-		this.changed = changed;
+		treePanel.changed = changed;
 	}
-	private Vector<TreeNode> pathToChanged;
 
 	public Vector<TreeNode> getPathToChanged() {
-		return pathToChanged;
+		return treePanel.pathToChanged;
 	}
 	public void setPathToChanged(Vector<TreeNode> pathToChanged) {
-		this.pathToChanged = pathToChanged;
+		treePanel.pathToChanged = pathToChanged;
 	}	
 	public void showValues(boolean b){
 		show = b;
@@ -80,9 +76,9 @@ public class GuiTree extends GuiElement implements ActionListener, MouseMotionLi
 	public GuiTree(Rectangle bounds,Heap heap){
 		super();
 		isheap = true;
-		
+
 		animation = new Timer(750,this);
-		
+
 		this.tree = heap;
 		setLayout(new BorderLayout());
 		setBounds(bounds);			
@@ -91,16 +87,16 @@ public class GuiTree extends GuiElement implements ActionListener, MouseMotionLi
 	public GuiTree(Rectangle bounds,Tree tree){
 		super();
 		isheap = false;
-		
+
 		animation = new Timer(750,this);
-		
+
 		this.tree = tree;
 		setLayout(new BorderLayout());
 		setBounds(bounds);			
 		initTreeGraphics();
 	}
 	private void initTreeGraphics(){
-		treePanel = new TreePanel();
+		treePanel = new TreePanel(tree);
 		treePanel.setPreferredSize(new Dimension(getWidth(), getHeight()));
 		JScrollPane listScroller = new JScrollPane(treePanel);
 		listScroller.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -159,7 +155,7 @@ public class GuiTree extends GuiElement implements ActionListener, MouseMotionLi
 		this.add(listScroller, BorderLayout.CENTER);
 	}
 	private void initHeapGraphics(){
-		treePanel = new TreePanel();
+		treePanel = new TreePanel(tree);
 		treePanel.setPreferredSize(new Dimension(getWidth(), getHeight()));
 		JScrollPane listScroller = new JScrollPane(treePanel);
 		listScroller.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -167,7 +163,7 @@ public class GuiTree extends GuiElement implements ActionListener, MouseMotionLi
 		listScroller.setPreferredSize(new Dimension(getWidth(), getHeight()));
 		listScroller.addMouseMotionListener(this);
 
-		JPanel check = new JPanel(new GridLayout(4,5));
+		JPanel check = new JPanel(new GridLayout(3,5));
 		min = new JRadioButton("Min");
 		min.setSelected(true);
 		min.addActionListener(this);
@@ -182,27 +178,7 @@ public class GuiTree extends GuiElement implements ActionListener, MouseMotionLi
 		check.add(max);
 		check.add(new JLabel(""));
 		check.add(new JLabel(""));
-
-		preorder = new JRadioButton("PreOrder");
-		preorder.addActionListener(this);
-		inorder = new JRadioButton("InOrder");
-		inorder.addActionListener(this);
-		postorder = new JRadioButton("PostOrder");
-		postorder.addActionListener(this);
-		breadthfirst = new JRadioButton("BreadthFirst");
-		breadthfirst.addActionListener(this);
-		trg = new ButtonGroup();
-		trg.add(preorder);
-		trg.add(inorder);
-		trg.add(postorder);
-		trg.add(breadthfirst);
-
-		check.add(new JLabel("Traversal:"));
-		check.add(preorder);
-		check.add(inorder);
-		check.add(postorder);
-		check.add(breadthfirst);
-
+		
 		alpha = new JRadioButton("Alphabetical");
 		alpha.addActionListener(this);
 		num = new JRadioButton("Numerical");
@@ -232,12 +208,18 @@ public class GuiTree extends GuiElement implements ActionListener, MouseMotionLi
 		this.add(check, BorderLayout.NORTH);
 		this.add(listScroller, BorderLayout.CENTER);
 	}
-	private class TreePanel extends JPanel{
+protected class TreePanel extends JPanel{
+
 		int drawNodeWidth = GuiSettings.TREENODEWIDTH;
 		int drawNodeHeight = GuiSettings.TREENODEHEIGHT;
+		Tree tree;
+		TreeNode changed;
+		Vector<TreeNode> pathToChanged;
+		
 		int[] indent;
 
-		public TreePanel(){
+		public TreePanel(Tree tree){
+			this.tree = tree;
 		}
 		private int getIndent(Tree.TreeNode n){
 			int indent = 0;
@@ -260,7 +242,7 @@ public class GuiTree extends GuiElement implements ActionListener, MouseMotionLi
 				in+=index[i]*indent[i+1];
 			return (int)(in*drawNodeWidth);
 		}
-		public void drawTree(Graphics2D g2d ,Tree.TreeNode tree){
+		public void drawTree(Graphics2D g2d ,TreeNode tree){
 			if(tree == null) return;
 			for(Tree.TreeNode q : tree.getChildren())
 			{
@@ -272,38 +254,25 @@ public class GuiTree extends GuiElement implements ActionListener, MouseMotionLi
 				}
 			}
 		}
-		private void drawLink(Graphics2D g2d, Tree.TreeNode n, Tree.TreeNode m){
+		private void drawLink(Graphics2D g2d, TreeNode n, TreeNode m){
 
 			if(m!=null && n!=null)			
 			{	
-				
 				Color c = g2d.getColor();
 				if(pathToChanged !=null && changed !=null){
-				if((pathToChanged.contains(n) || pathToChanged.contains(m))){
-					if((pathToChanged.contains(n)&& pathToChanged.contains(m)))
-						if(changed.isAdded())
-							g2d.setColor(GuiSettings.TREEADDEDCOLOR);
-						else
-							g2d.setColor(GuiSettings.TREEREMOVEPATHCOLOR);
-					else if((pathToChanged.contains(n) && m==changed))
-						if(changed.isAdded())
-							g2d.setColor(GuiSettings.TREEADDEDCOLOR);
-						else
-							g2d.setColor(GuiSettings.TREEREMOVEPATHCOLOR);
-					else if((pathToChanged.contains(m) && n==changed))
-						if(changed.isAdded())
-							g2d.setColor(GuiSettings.TREEADDEDCOLOR);
-						else
-							g2d.setColor(GuiSettings.TREEREMOVEPATHCOLOR);
-				}
+					if((pathToChanged.contains(n) || pathToChanged.contains(m))){
+							if(changed.isAdded())
+								g2d.setColor(GuiSettings.TREEADDEDCOLOR);
+							else
+								g2d.setColor(GuiSettings.TREEREMOVEPATHCOLOR);
+					}
 				}
 				g2d.drawLine(getOffset(n)+drawNodeHeight/2, drawNodeHeight *2* n.getDepth()+drawNodeHeight,
 						getOffset(m)+drawNodeHeight/2,  drawNodeHeight *2* m.getDepth()+drawNodeHeight+drawNodeHeight/2);
-				
 				g2d.setColor(c);
 			}
 		}
-		private void drawNode(Graphics2D g2d, Tree.TreeNode n, int offset){
+		private void drawNode(Graphics2D g2d, TreeNode n, int offset){
 			Color c = g2d.getColor();
 
 			if(mousePos.x > offset && mousePos.x < offset+drawNodeWidth && 
@@ -323,7 +292,7 @@ public class GuiTree extends GuiElement implements ActionListener, MouseMotionLi
 							else
 								g2d.setColor(GuiSettings.TREEREMOVEDCOLOR);
 						}
-						else if(frame <pathToChanged.size() && n.getCurrentIndex()<=frame){						
+						else if(currentFrame <pathToChanged.size() && n.getCurrentIndex()<=currentFrame){						
 							if(changed.isAdded())
 								g2d.setColor(GuiSettings.TREEADDPATHCOLOR);
 							else
@@ -347,7 +316,7 @@ public class GuiTree extends GuiElement implements ActionListener, MouseMotionLi
 							else
 								g2d.setColor(GuiSettings.TREEREMOVEDCOLOR);
 						}
-						else if(frame <pathToChanged.size() && n.getCurrentIndex()<=frame){						
+						else if(currentFrame <pathToChanged.size() && n.getCurrentIndex()<=currentFrame){						
 							if(changed.isAdded())
 								g2d.setColor(GuiSettings.TREEADDPATHCOLOR);
 							else
@@ -369,7 +338,7 @@ public class GuiTree extends GuiElement implements ActionListener, MouseMotionLi
 		public void paintComponent(Graphics g){
 			if(!GuiSettings.isAnimated && animation.isRunning())
 				stopAnimation();
-			
+
 			Graphics2D g2d = (Graphics2D)g;
 			g2d.clearRect(0, 0, getWidth(), getHeight());
 
@@ -408,59 +377,59 @@ public class GuiTree extends GuiElement implements ActionListener, MouseMotionLi
 	}
 	public void stopAnimation(){
 		animation.stop();
-		if(changed!= null && changed.isRemoved()){
-			changed.setRemoved(false);
+		if(treePanel.changed!= null && treePanel.changed.isRemoved()){
+			treePanel.changed.setRemoved(false);
 
-			if(changed.getNumberOfChildren()==1){
-				TreeNode child = changed.getChild(0);
-				if(child!=null && changed.getParent()!=null){
-					changed.getParent().getChildren().set(changed.getParent().getChildren().indexOf(changed),child);
-					child.setParent(changed.getParent());
+			if(treePanel.changed.getNumberOfChildren()==1){
+				TreeNode child = treePanel.changed.getChild(0);
+				if(child!=null && treePanel.changed.getParent()!=null){
+					treePanel.changed.getParent().getChildren().set(treePanel.changed.getParent().getChildren().indexOf(treePanel.changed),child);
+					child.setParent(treePanel.changed.getParent());
 				}
 				else{
 					child.setParent(null);
 					tree.setRoot(child);
 				}
 			}
-			else if(changed.getNumberOfChildren()>1){
+			else if(treePanel.changed.getNumberOfChildren()>1){
 				Traversal t = tree.getTraversal();
 				tree.setTraversal(Traversal.INORDER);
-				TreeNode n = changed.getChild(0);
+				TreeNode n = treePanel.changed.getChild(0);
 				while(n.getNumberOfChildren()>0){
 					n = n.getChild(0);
 				}
-				changed.setValue(n.getValue().toString());
+				treePanel.changed.setValue(n.getValue().toString());
 				n.getParent().removeChild(n);
 				tree.setTraversal(t);
 			}
 			else{
-				if(changed.getParent()!= null)
-					changed.getParent().removeChild(changed);
+				if(treePanel.changed.getParent()!= null)
+					treePanel.changed.getParent().removeChild(treePanel.changed);
 				else
 					tree.setRoot(null);
 			}
 			tree.setIndices();
 		}
-		else if(changed!=null)changed.setAdded(false);
+		else if(treePanel.changed!=null)treePanel.changed.setAdded(false);
 
 		if(isheap) ((Heap)tree).heapify();
-		changed = null;
-		pathToChanged = null;
-		frame = 0;
+		treePanel.changed = null;
+		treePanel.pathToChanged = null;
+		currentFrame = 0;
 	}
 	public void startAnimation(){
-		super.startAnimation();
-		if(pathToChanged!=null){
-			setMaxFrame(pathToChanged.size()+1);
-			animation.setDelay((500*pathToChanged.size())/getMaxFrame());
+
+		if(treePanel.pathToChanged!=null){
+			setMaxFrame(treePanel.pathToChanged.size()+1);
+			animation.setDelay((500*treePanel.pathToChanged.size())/getMaxFrame());
 		}
 
 	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == animation){
-			frame++;
-			if(frame>getMaxFrame()){
+			currentFrame++;
+			if(currentFrame>getMaxFrame()){
 				stopAnimation();
 			}
 		}

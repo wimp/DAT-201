@@ -23,6 +23,7 @@ public class Heapsort {
 
 	public Heapsort(){
 		GuiSettings.isAnimated = false;
+		
 		//Use DemoFrame instead of JFrame
 		DemoFrame frame = new DemoFrame("Heapsort", 800, 550);
 
@@ -30,19 +31,7 @@ public class Heapsort {
 		h.getGuiElement().showValues(true);
 		h.setTraversal(Traversal.BREADTHFIRST);
 		h.setSortKey(CompareKey.ALPHABETICAL);
-		//	h.addBreadthFirst("6");
-		//	h.addBreadthFirst("13");
-		//	h.addBreadthFirst("4");
-		//	h.addBreadthFirst("5");
-		//	h.addBreadthFirst("9");
-		//	h.addBreadthFirst("2");
-		//	h.addBreadthFirst("1");
-		//	h.addBreadthFirst("12");
-		//	h.addBreadthFirst("7");
-		//	h.addBreadthFirst("8");
-		//	h.addBreadthFirst("11");
-		//	h.addBreadthFirst("10");
-
+		
 		h.addBreadthFirst("Hi");
 		h.addBreadthFirst("Elg");
 		h.addBreadthFirst("Alge");

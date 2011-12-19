@@ -1,6 +1,7 @@
 package sim.gui.elements;
 
 import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
 
 import javax.swing.JButton;
 
@@ -10,11 +11,13 @@ import javax.swing.JButton;
  */
 @SuppressWarnings("serial")
 public class GuiFunction extends GuiElement{
+	//Class variables//
 	private JButton b;
-	
+	//Getters and setters//
 	public JButton getButton(){
 		return b;
 	}
+	//Class constructor//
 	/**
 	 * Creates and adds a button to itself using the function name provided in {@param s}
 	 * @param bounds - The size and placement of the graphical element
@@ -25,5 +28,12 @@ public class GuiFunction extends GuiElement{
 		b = new JButton(s);
 		add(b);
 		setBounds(bounds);
+	}
+	//Class methods
+	public void actionPerformed(ActionEvent e) {	
+	}
+	public void startAnimation() {
+	}
+	public void stopAnimation() {
 	}
 }

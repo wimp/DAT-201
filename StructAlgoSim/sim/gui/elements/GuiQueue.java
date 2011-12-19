@@ -13,7 +13,7 @@ import javax.swing.JScrollPane;
 import javax.swing.Timer;
 
 @SuppressWarnings("serial")
-public class GuiQueue extends GuiElement implements ActionListener{
+public class GuiQueue extends GuiElement{
 	// Class variables //
 	private QueuePanel queuePanel;
 	private boolean removed;
@@ -28,6 +28,7 @@ public class GuiQueue extends GuiElement implements ActionListener{
 		removed = true;
 		recent = changed;
 	}
+	//Class constructor//
 	public GuiQueue(Rectangle bounds,Vector<Object> data){
 		super();
 
@@ -35,6 +36,7 @@ public class GuiQueue extends GuiElement implements ActionListener{
 		setBounds(bounds);
 		initGraphics(data);
 	}
+	//Class methods//
 	private void initGraphics(Vector<Object> data){
 		queuePanel = new QueuePanel(data);
 		JScrollPane listScroller = new JScrollPane(queuePanel);
@@ -45,8 +47,13 @@ public class GuiQueue extends GuiElement implements ActionListener{
 		listScroller.setPreferredSize(new Dimension(getWidth(), getHeight()));
 		this.add(listScroller);
 	}
+	public void startAnimation() {	
+		if(animation.isRunning())
+			stopAnimation();
+		animation.start();
+	}
 	public void stopAnimation(){
-		frame = 0;
+		currentFrame = 0;
 		animation.stop();
 		added = false;
 		if(removed){
@@ -54,11 +61,10 @@ public class GuiQueue extends GuiElement implements ActionListener{
 		}
 		repaint();
 	}
-	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource()==animation){
-			frame++;
-			if(frame > getMaxFrame()){
+			currentFrame++;
+			if(currentFrame > getMaxFrame()){
 				stopAnimation();
 			}
 			repaint();
@@ -152,17 +158,17 @@ public class GuiQueue extends GuiElement implements ActionListener{
 			if(removed){
 				g.setColor(GuiSettings.QUEUEELEMENTCOLOR);
 
-				g.fillRoundRect(xoffset-(xoffset/getMaxFrame())*frame-elementW,yoffset, elementW, elementH, 5, 5);
+				g.fillRoundRect(xoffset-(xoffset/getMaxFrame())*currentFrame-elementW,yoffset, elementW, elementH, 5, 5);
 				g.setColor(c);
-				g.drawRoundRect(xoffset-(xoffset/getMaxFrame())*frame-elementW,yoffset, elementW, elementH, 5, 5);
+				g.drawRoundRect(xoffset-(xoffset/getMaxFrame())*currentFrame-elementW,yoffset, elementW, elementH, 5, 5);
 				v=g.getFontMetrics(getFont()).getHeight()-g.getFontMetrics(getFont()).getHeight()/4;
 				j = 0;
 				k = recent.length();
 				while(j < k+1) {
 					if (j == k) 
-						g.drawString(recent.substring(j),xoffset-(xoffset/getMaxFrame())*frame+5-elementW, yoffset+10+(j*v));
+						g.drawString(recent.substring(j),xoffset-(xoffset/getMaxFrame())*currentFrame+5-elementW, yoffset+10+(j*v));
 					else
-						g.drawString(recent.substring(j,j+1),xoffset-(xoffset/getMaxFrame())*frame+5-elementW, yoffset+10+(j*v));
+						g.drawString(recent.substring(j,j+1),xoffset-(xoffset/getMaxFrame())*currentFrame+5-elementW, yoffset+10+(j*v));
 					j++;
 				}
 			}
@@ -179,17 +185,17 @@ public class GuiQueue extends GuiElement implements ActionListener{
 					g.setColor(GuiSettings.QUEUEELEMENTCOLOR);
 
 				if(added && s == recent){
-					g.fillRoundRect(((getWidth()-elementW*i)/getMaxFrame())*(getMaxFrame()-frame)+elementW*i+xoffset,yoffset, elementW, elementH, 5, 5);
+					g.fillRoundRect(((getWidth()-elementW*i)/getMaxFrame())*(getMaxFrame()-currentFrame)+elementW*i+xoffset,yoffset, elementW, elementH, 5, 5);
 					g.setColor(c);
-					g.drawRoundRect(((getWidth()-elementW*i)/getMaxFrame())*(getMaxFrame()-frame)+elementW*i+xoffset,yoffset, elementW, elementH, 5, 5);
+					g.drawRoundRect(((getWidth()-elementW*i)/getMaxFrame())*(getMaxFrame()-currentFrame)+elementW*i+xoffset,yoffset, elementW, elementH, 5, 5);
 					v=g.getFontMetrics(getFont()).getHeight()-g.getFontMetrics(getFont()).getHeight()/4;
 					j = 0;
 					k = s.length();
 					while(j < k+1) {
 						if (j == k) 
-							g.drawString(s.substring(j),((getWidth()-elementW*i)/getMaxFrame())*(getMaxFrame()-frame)+i*elementW+5+xoffset, yoffset+10+(j*v));
+							g.drawString(s.substring(j),((getWidth()-elementW*i)/getMaxFrame())*(getMaxFrame()-currentFrame)+i*elementW+5+xoffset, yoffset+10+(j*v));
 						else
-							g.drawString(s.substring(j,j+1),((getWidth()-elementW*i)/getMaxFrame())*(getMaxFrame()-frame)+i*elementW+5+xoffset, yoffset+10+(j*v));
+							g.drawString(s.substring(j,j+1),((getWidth()-elementW*i)/getMaxFrame())*(getMaxFrame()-currentFrame)+i*elementW+5+xoffset, yoffset+10+(j*v));
 						j++;
 					}
 				}
@@ -213,4 +219,6 @@ public class GuiQueue extends GuiElement implements ActionListener{
 			revalidate();
 		}
 	}
+
+
 }

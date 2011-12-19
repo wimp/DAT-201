@@ -30,6 +30,7 @@ public class Stack implements GraphicalStructure{
 	 */	
 	public void push(Object o){
 		s.add(o);
+		
 		gui.setAdded((String)o);
 		gui.startAnimation();
 		gui.repaint();
@@ -41,10 +42,12 @@ public class Stack implements GraphicalStructure{
 	public Object pop(){
 		if(isEmpty()) return null;
 		Object obj = s.get(s.size()-1);
-		gui.setRemoved((String)obj);
 		s.remove(obj);
+		
+		gui.setRemoved((String)obj);
 		gui.startAnimation();
 		gui.repaint();
+		
 		return obj;
 	}
 	/**
