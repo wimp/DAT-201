@@ -35,6 +35,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+@SuppressWarnings({"serial","unused"})
 public class AnimationPlayer extends JPanel implements ActionListener,ChangeListener, WindowListener{
 
 	/**
@@ -272,7 +273,7 @@ public class AnimationPlayer extends JPanel implements ActionListener,ChangeList
 			animTimer.setDelay(1000/framesPerSecond);
 
 	}
-	@SuppressWarnings("serial")
+	
 	private class AnimationPanel extends JPanel{
 
 		private int currentIndex;
