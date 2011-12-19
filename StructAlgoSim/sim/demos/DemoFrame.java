@@ -41,6 +41,7 @@ public class DemoFrame {
 		frame.add(panel);
 	}
 
+	@SuppressWarnings("serial")
 	private class DemoPanel extends JPanel{
 		
 		public DemoPanel(){

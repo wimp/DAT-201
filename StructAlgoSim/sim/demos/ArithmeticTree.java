@@ -13,6 +13,7 @@ public class ArithmeticTree {
 		
 	}
 	
+	@SuppressWarnings("unused")
 	public ArithmeticTree(){
 	JFrame frame = new JFrame();
 	frame.setTitle("StructAlgoSim 0.1 - Arithmetic tree");

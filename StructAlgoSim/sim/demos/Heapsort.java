@@ -2,8 +2,6 @@ package sim.demos;
 
 import java.awt.Rectangle;
 
-import javax.swing.JFrame;
-
 import sim.functions.Add;
 import sim.functions.Remove;
 import sim.gui.elements.GuiSettings;
