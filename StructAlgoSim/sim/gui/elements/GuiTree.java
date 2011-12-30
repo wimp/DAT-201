@@ -31,28 +31,13 @@ import sim.structures.Tree.TreeNode;
 
 @SuppressWarnings("serial")
 public class GuiTree extends GuiElement implements MouseMotionListener{
+//Class variables//
 	private boolean isheap;
 	private Tree tree;
 	private TreePanel treePanel;
 	private Point mousePos = new Point(0,0);
 	private boolean show;
-	public TreeNode getChanged() {
-		return treePanel.changed;
-	}	
 
-	public void setChanged(TreeNode changed) {
-		treePanel.changed = changed;
-	}
-
-	public Vector<TreeNode> getPathToChanged() {
-		return treePanel.pathToChanged;
-	}
-	public void setPathToChanged(Vector<TreeNode> pathToChanged) {
-		treePanel.pathToChanged = pathToChanged;
-	}	
-	public void showValues(boolean b){
-		show = b;
-	}
 	//TREE
 	private JTextField nval;
 	private ButtonGroup bg;
@@ -72,7 +57,24 @@ public class GuiTree extends GuiElement implements MouseMotionListener{
 	private JRadioButton alpha;
 	private JRadioButton num;
 	private JRadioButton strlen;
-
+	
+//Getters and setters//
+	public TreeNode getChanged() {
+		return treePanel.changed;
+	}	
+	public void setChanged(TreeNode changed) {
+		treePanel.changed = changed;
+	}
+	public Vector<TreeNode> getPathToChanged() {
+		return treePanel.pathToChanged;
+	}
+	public void setPathToChanged(Vector<TreeNode> pathToChanged) {
+		treePanel.pathToChanged = pathToChanged;
+	}	
+	public void showValues(boolean b){
+		show = b;
+	}
+//Class constructor//
 	public GuiTree(Rectangle bounds,Heap heap){
 		super();
 		isheap = true;
@@ -95,7 +97,8 @@ public class GuiTree extends GuiElement implements MouseMotionListener{
 		setBounds(bounds);			
 		initTreeGraphics();
 	}
-	private void initTreeGraphics(){
+//Class methods//	
+private void initTreeGraphics(){
 		treePanel = new TreePanel(tree);
 		treePanel.setPreferredSize(new Dimension(getWidth(), getHeight()));
 		JScrollPane listScroller = new JScrollPane(treePanel);
@@ -208,7 +211,8 @@ public class GuiTree extends GuiElement implements MouseMotionListener{
 		this.add(check, BorderLayout.NORTH);
 		this.add(listScroller, BorderLayout.CENTER);
 	}
-protected class TreePanel extends JPanel{
+//Nested classes and interfaces//
+	protected class TreePanel extends JPanel{
 
 		int drawNodeWidth = GuiSettings.TREENODEWIDTH;
 		int drawNodeHeight = GuiSettings.TREENODEHEIGHT;

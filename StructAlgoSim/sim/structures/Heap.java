@@ -9,20 +9,15 @@ import sim.gui.elements.GuiElement.GraphicalStructure;
  * A class representing an heap. Its visual component is the GuiTree.
  */
 public class Heap extends Tree implements GraphicalStructure{
-
+	//Class variables//
 	/**
-	 * The CompareKey is used to decide which method to sort this heap by when rearranging.
-	 *
+	 * Used to decide which method to sort this heap by when rearranging.
 	 */
-	public enum CompareKey{
-		ALPHABETICAL,
-		NUMERICAL,
-		STRLEN
-	}
-	
 	private CompareKey key = CompareKey.NUMERICAL;
 
 	private boolean max = true;
+	
+	//Getters and setters//
 	public boolean isMax() {
 		return max;
 	}
@@ -37,6 +32,7 @@ public class Heap extends Tree implements GraphicalStructure{
 		this.key = key;
 		heapify();
 	}
+	//Class Constructor//
 	/**
 	 * Constructor.
 	 * @param bounds The size of the graphical element.
@@ -50,6 +46,8 @@ public class Heap extends Tree implements GraphicalStructure{
 	/**
 	 * Use to remove the root.	
 	 */
+	
+	//Class methods//
 	public String removeRoot(){
 		if(getRoot() != null){
 			String value = getRoot().getValue().toString();
@@ -108,7 +106,7 @@ public class Heap extends Tree implements GraphicalStructure{
 	/**
 	 * Swaps nodes until the specified conditions are satisfied, 
 	 * this results in either a max-heap or a min-heap sorted by
-	 * the CompareKey class variable key.
+	 * the CompareKey class-variable.
 	 * 
 	 * @param n The root node of the tree to be heapified.
 	 * @param max True will result in a max-heap, false in a min-heap.
@@ -166,5 +164,15 @@ public class Heap extends Tree implements GraphicalStructure{
 
 			n = parent;
 		}
+	}
+	
+	//Nested classes and interfaces//
+	/**
+	 * The CompareKey is used to decide which method to sort by when rearranging.
+	 */
+	public enum CompareKey{
+		ALPHABETICAL,
+		NUMERICAL,
+		STRLEN
 	}
 }

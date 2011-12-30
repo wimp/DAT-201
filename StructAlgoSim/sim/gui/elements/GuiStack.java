@@ -25,10 +25,12 @@ public class GuiStack extends GuiElement{
 	// Getters and setters //
 	public void setAdded(String changed){
 		added = true;
+		removed = false;
 		recent = changed;
 	}
 	public void setRemoved(String changed){
 		removed = true;
+		added = false;
 		recent = changed;
 	}
 	//Class constructor//
@@ -48,12 +50,10 @@ public class GuiStack extends GuiElement{
 		this.add(listScroller);
 	}
 	public void startAnimation() {
-		if(animation.isRunning())
-			stopAnimation();
+		currentFrame = 0;
 		animation.start();
 	}
 	public void stopAnimation(){
-		currentFrame = 0;
 		animation.stop();
 		added = false;
 		if(removed){

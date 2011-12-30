@@ -10,9 +10,7 @@ import sim.gui.elements.GuiElement.GraphicalStructure;
  * A class representing a stack. Its visual component is the GuiStack.
  */
 public class Stack implements GraphicalStructure{
-	
 	private Vector<Object> s = new Vector<Object>();
-	
 	private GuiStack gui; 
 	public GuiElement getGuiElement(){
 		return gui;

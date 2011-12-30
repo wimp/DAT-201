@@ -54,7 +54,7 @@ public class LinkedList implements GraphicalStructure{
 		insertAt(v.size()-1, value, true);
 	}
 	/**
-	 * Removes an element at a specified index in the list.
+	 * Removes an element from a specified index in the list.
 	 * @param index The index of the element to be removed.
 	 */
 	public Object removeElementAt(int index){
@@ -92,7 +92,7 @@ public class LinkedList implements GraphicalStructure{
 		gui.repaint();
 	}
 	/**
-	 * Adds a new node before a node in the list.
+	 * Adds a new node before the node at @index in the list.
 	 * @param index The index of the element that the new node will be placed before.
 	 * @param value The object (most likely a string of text) that this node is to contain.
 	 */
@@ -154,7 +154,7 @@ public class LinkedList implements GraphicalStructure{
 	}
 
 /**
- * The Node class is an inner class of {@link LinkedList} that contains 
+ * The Node class is a nested class of {@link LinkedList} that contains 
  * information about the state of the node and its value.
  */
 public class Node{

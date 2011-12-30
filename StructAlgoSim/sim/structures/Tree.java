@@ -159,7 +159,7 @@ public class Tree implements GraphicalStructure {
 		for(TreeNode n : nodes)
 			addBreadthFirst(n.getValue().toString());
 
-		setIndices();
+				setIndices();
 	}
 	/**
 	 * Swaps the value of two nodes (effectively swapping the elements).
@@ -219,7 +219,7 @@ public class Tree implements GraphicalStructure {
 	 */
 	public void addChildAt(int index, Object value){
 		gui.stopAnimation();
-		
+
 		TreeNode n = root;
 		if(n == null){
 			root = new TreeNode(value, null);
@@ -262,25 +262,25 @@ public class Tree implements GraphicalStructure {
 		TreeNode element = elementAt(index);
 
 		if(element == null) return null;
-			element.setRemoved(true);
-			element.setAdded(false);
-			gui.setChanged(element);
+		element.setRemoved(true);
+		element.setAdded(false);
+		gui.setChanged(element);
 
 
-			Vector<TreeNode> changePath = new Vector<TreeNode>();
-			changePath = getAllNodes(new Vector<TreeNode>(), root, false);
+		Vector<TreeNode> changePath = new Vector<TreeNode>();
+		changePath = getAllNodes(new Vector<TreeNode>(), root, false);
 
-			for(int i = 0; i<changePath.size(); i++){
-				if(changePath.get(i).getCurrentIndex()>index){
-					changePath.remove(i);
-					i--;
-				}
+		for(int i = 0; i<changePath.size(); i++){
+			if(changePath.get(i).getCurrentIndex()>index){
+				changePath.remove(i);
+				i--;
 			}
-			gui.setPathToChanged(changePath);
-			gui.startAnimation();
-			gui.repaint();
-			
-			return element.getValue().toString();
+		}
+		gui.setPathToChanged(changePath);
+		gui.startAnimation();
+		gui.repaint();
+
+		return element.getValue().toString();
 
 	}
 	/**
@@ -344,7 +344,7 @@ public class Tree implements GraphicalStructure {
 		gui.setPathToChanged(changePath);
 		gui.startAnimation();
 		gui.repaint();
-		}
+	}
 
 	// GET METHODS
 	private int currentIndex = 0;
@@ -356,13 +356,13 @@ public class Tree implements GraphicalStructure {
 		setTraversal(Traversal.BREADTHFIRST);
 		nodes = getAllNodes(new Vector<TreeNode>(), root, true);
 		setTraversal(t);
-		
+
 		for(TreeNode n: nodes){
 			if(n== null) values.add(null);
 			else values.add(n.getValue().toString());
 		}
 		return values;
-		
+
 	}
 	/**
 	 * Returns a Vector<TreeNode> with all the nodes of this tree in the order found by the current traversal rule. 
@@ -399,32 +399,32 @@ public class Tree implements GraphicalStructure {
 			for(TreeNode t : n.getChildren())
 				if(t!=null || withNull)
 					getAllNodes(nodes, t, withNull);
-			
-			break;
+
+					break;
 		case POSTORDER:
 			for(TreeNode t : n.getChildren())
 				if(t!=null || withNull)
 					getAllNodes(nodes, t, withNull);
 
-			nodes.add(n);
-			break;
+					nodes.add(n);
+					break;
 		case BREADTHFIRST:
 			nodes.add(n);
 			Vector<TreeNode> tobeadded = new Vector<TreeNode>();
 			for(TreeNode ch : n.getChildren())
 				if(ch != null || withNull)
 					tobeadded.add(ch);
-			while(tobeadded.size()>0){
-				nodes.add(tobeadded.firstElement());
-				
-				if(tobeadded.firstElement()!=null)
-				for(TreeNode ch : tobeadded.firstElement().getChildren())
-					if(ch != null || withNull)
-						tobeadded.add(ch);
-				
-				tobeadded.remove(tobeadded.firstElement());
-			}
-			break;
+					while(tobeadded.size()>0){
+						nodes.add(tobeadded.firstElement());
+
+						if(tobeadded.firstElement()!=null)
+							for(TreeNode ch : tobeadded.firstElement().getChildren())
+								if(ch != null || withNull)
+									tobeadded.add(ch);
+
+									tobeadded.remove(tobeadded.firstElement());
+					}
+					break;
 		}
 		return nodes;
 	}
@@ -465,21 +465,21 @@ public class Tree implements GraphicalStructure {
 		Vector<TreeNode> added = new Vector<TreeNode>();
 		Vector<TreeNode> tobeadded = new Vector<TreeNode>();
 		added.add(currentNode);
-		
+
 		for(TreeNode ch : currentNode.getChildren())
 			if(ch != null)
 				tobeadded.add(ch);
-		
-		while(tobeadded.size()>0){
-			added.add(tobeadded.firstElement());
-			for(TreeNode ch : tobeadded.firstElement().getChildren())
-				if(ch != null)
-					tobeadded.add(ch);
-			
-			tobeadded.remove(tobeadded.firstElement());
-		}
-		if(index <added.size())
-		currentNode = added.elementAt(index);
+
+				while(tobeadded.size()>0){
+					added.add(tobeadded.firstElement());
+					for(TreeNode ch : tobeadded.firstElement().getChildren())
+						if(ch != null)
+							tobeadded.add(ch);
+
+							tobeadded.remove(tobeadded.firstElement());
+				}
+				if(index <added.size())
+					currentNode = added.elementAt(index);
 	}
 	/**
 	 * Sets the class variable currentNode = element at the index specified by the inOrder traversal rule.
@@ -523,13 +523,13 @@ public class Tree implements GraphicalStructure {
 
 		for(TreeNode ch : n.getChildren()){
 			if(ch!=null)
-			postOrderElementAt(ch, index);
+				postOrderElementAt(ch, index);
 		}		
 		if(index == currentIndex) currentNode = n;
 		currentIndex++;
 	}
 	/**
-	 * A class representing a node in a tree.
+	 * A nested class representing a node in a tree.
 	 */
 	public class TreeNode{
 		private TreeNode parent;		
@@ -554,7 +554,7 @@ public class Tree implements GraphicalStructure {
 			int count = 0;
 			for(TreeNode child: children)
 				if(child!=null) count ++;
-			return count;
+					return count;
 		}
 		public TreeNode getChild(int num){
 			if(num>maxCluster) return null;

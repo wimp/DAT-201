@@ -18,7 +18,6 @@ public class Array implements GraphicalStructure{
 	public GuiArray getGuiElement(){
 		return gui;
 	}
-	
 	/**
 	 * The total number of dimensions of this array.
 	 * @return int Total number of dimensions.
